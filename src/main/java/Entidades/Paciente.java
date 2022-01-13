@@ -12,55 +12,41 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /**
  *
  * @author yalle
  */
 @Entity
-public class Carro {
+public class Paciente {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idcarro;
+    private int idpaciente;
      
-    @JoinColumn(insertable = true,updatable = true,name="idpersona",nullable = false)
+    @JoinColumn( insertable = true,updatable = true,name="idpersona",nullable = false)
     @ManyToOne(cascade = CascadeType.ALL)
     private Persona persona;
+    
      
-      @Column(name = "marca", nullable = false)
-    private String marca;
+    @JoinColumn(name = "idhistoriaclinica", nullable = false)
+    @OneToOne(cascade = CascadeType.ALL)
+    private Historia_clinica historia_clinica;
+    
+    @Column(name = "caracteristicas", nullable = false)
+    private String caracteristicas;
 
-    public Carro(Persona persona, String marca) {
+    public Paciente(Persona persona, Historia_clinica historia_clinica) {
         this.persona = persona;
-        this.marca = marca;
+        this.historia_clinica = historia_clinica;
+    }
+    
+
+    public Paciente(){
     }
 
-    public Carro() {
-    }
+  
 
-    public int getIdcarro() {
-        return idcarro;
-    }
-
-    public void setIdcarro(int idcarro) {
-        this.idcarro = idcarro;
-    }
-
-    public Persona getPersona() {
-        return persona;
-    }
-
-    public void setPersona(Persona persona) {
-        this.persona = persona;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public void setMarca(String marca) {
-        this.marca = marca;
-    }
     
       
       
