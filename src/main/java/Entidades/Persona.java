@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,18 +23,56 @@ public class Persona {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idpersona;
         
-    @Column(name = "nombre", nullable = false)
-    private String nombre;
+    @Column(name = "nombres_apellidos", nullable = false)
+    private String nombres_apellidos;
+    
+    @Column(name = "sexo",length = 15, nullable = false)
+    private String sexo;
+    
+    @Column(name = "edad", nullable = false)
+    private int edad;
+    
+    @Column(name = "domicilio",length = 60, nullable = false)
+    private String domicilio;
+    
+    @Column(name = "dni",length = 8, nullable = false)
+    private String dni;
+    
+    @Column(name = "fecha_nacimiento", nullable = false)
+    private Date fecha_nacimiento;
+    
+    @Column(name = "lugar_de_procedencia",length = 100, nullable = false)
+    private String lugar_de_procedencia;
 
-    public Persona(String nombre) {
-        this.nombre = nombre;
+    @Column(name = "ocupacion", nullable = false)
+    private String ocupacion;
+    
+    @Column(name = "estado_civil", nullable = false)
+    private String estado_civil;
+    
+    @Column(name = "telefono", nullable = false)
+    private String telefono;
+    
+    @Column(name = "correo",length = 40, nullable = true)
+    private String correo;
+
+    public Persona() {
     }
-     public Persona() {
-        
+
+    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String estado_civil, String telefono, String correo) {
+        this.nombres_apellidos = nombres_apellidos;
+        this.sexo = sexo;
+        this.edad = edad;
+        this.domicilio = domicilio;
+        this.dni = dni;
+        this.fecha_nacimiento = fecha_nacimiento;
+        this.lugar_de_procedencia = lugar_de_procedencia;
+        this.ocupacion = ocupacion;
+        this.estado_civil = estado_civil;
+        this.telefono = telefono;
+        this.correo = correo;
     }
     
-    
-
     public int getIdpersona() {
         return idpersona;
     }
@@ -42,15 +81,92 @@ public class Persona {
         this.idpersona = idpersona;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getNombres_apellidos() {
+        return nombres_apellidos;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setNombres_apellidos(String nombres_apellidos) {
+        this.nombres_apellidos = nombres_apellidos;
     }
-    
-    
-    
-    
+
+    public String getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
+    }
+
+    public String getDomicilio() {
+        return domicilio;
+    }
+
+    public void setDomicilio(String domicilio) {
+        this.domicilio = domicilio;
+    }
+
+    public String getDni() {
+        return dni;
+    }
+
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+
+    public Date getFecha_nacimiento() {
+        return fecha_nacimiento;
+    }
+
+    public void setFecha_nacimiento(Date fecha_nacimiento) {
+        this.fecha_nacimiento = fecha_nacimiento;
+    }
+
+    public String getLugar_de_procedencia() {
+        return lugar_de_procedencia;
+    }
+
+    public void setLugar_de_procedencia(String lugar_de_procedencia) {
+        this.lugar_de_procedencia = lugar_de_procedencia;
+    }
+
+    public String getOcupacion() {
+        return ocupacion;
+    }
+
+    public void setOcupacion(String ocupacion) {
+        this.ocupacion = ocupacion;
+    }
+
+    public String getEstado_civil() {
+        return estado_civil;
+    }
+
+    public void setEstado_civil(String estado_civil) {
+        this.estado_civil = estado_civil;
+    }
+
+    public String getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+      
 }
