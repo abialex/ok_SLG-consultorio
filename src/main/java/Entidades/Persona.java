@@ -47,9 +47,6 @@ public class Persona {
     @Column(name = "ocupacion", nullable = false)
     private String ocupacion;
     
-    @Column(name = "estado_civil", nullable = false)
-    private String estado_civil;
-    
     @Column(name = "telefono", nullable = false)
     private String telefono;
     
@@ -59,7 +56,7 @@ public class Persona {
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String estado_civil, String telefono, String correo) {
+    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, String correo) {
         this.nombres_apellidos = nombres_apellidos;
         this.sexo = sexo;
         this.edad = edad;
@@ -68,7 +65,6 @@ public class Persona {
         this.fecha_nacimiento = fecha_nacimiento;
         this.lugar_de_procedencia = lugar_de_procedencia;
         this.ocupacion = ocupacion;
-        this.estado_civil = estado_civil;
         this.telefono = telefono;
         this.correo = correo;
     }
@@ -143,14 +139,6 @@ public class Persona {
 
     public void setOcupacion(String ocupacion) {
         this.ocupacion = ocupacion;
-    }
-
-    public String getEstado_civil() {
-        return estado_civil;
-    }
-
-    public void setEstado_civil(String estado_civil) {
-        this.estado_civil = estado_civil;
     }
 
     public String getTelefono() {

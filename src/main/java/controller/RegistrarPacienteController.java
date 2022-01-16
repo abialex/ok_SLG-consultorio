@@ -63,7 +63,6 @@ public class RegistrarPacienteController implements Initializable {
     @FXML TextField jtfTelefono;
     @FXML JFXTextField jtfedad;
     @FXML TextField jtflugarprocedencia;
-    @FXML ComboBox<String> jcbestadocivil;
     @FXML ComboBox<String> jcbocupacion;
     @FXML ComboBox<String> jcbsexo;
     //Fin Atributos
@@ -78,7 +77,6 @@ public class RegistrarPacienteController implements Initializable {
     @FXML TextField jtfTelefonoAct;
     @FXML JFXTextField jtfedadAct;
     @FXML TextField jtflugarprocedenciaAct;
-    @FXML ComboBox<String> jcbestadocivilAct;
     @FXML ComboBox<String> jcbocupacionAct;
     @FXML ComboBox<String> jcbsexoAct;
     
@@ -86,15 +84,12 @@ public class RegistrarPacienteController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ObservableList<String> ESTADO_CIVIL=FXCollections.observableArrayList("CASADO" ,"SOLTERO", "VIUDO");
         ObservableList<String> OCUPACION=FXCollections.observableArrayList("ESTUDIANTE", "UNIVERSITARIO", "TRABAJADOR");
         ObservableList<String> SEXO=FXCollections.observableArrayList("VARÓN", "MUJER", "MARCIANO");
-        jcbestadocivil.setItems(ESTADO_CIVIL);
         jcbocupacion.setItems(OCUPACION);
         jcbsexo.setItems(SEXO);
         
         jcbsexoAct.setItems(SEXO);
-        jcbestadocivilAct.setItems(ESTADO_CIVIL);
         jcbocupacionAct.setItems(OCUPACION);
      
         
@@ -132,7 +127,6 @@ public class RegistrarPacienteController implements Initializable {
         fechaNacimiento,
         jtflugarprocedencia.getText().trim(),
         jcbocupacion.getSelectionModel().getSelectedItem(),
-        jcbestadocivil.getSelectionModel().getSelectedItem(),        
         jtfTelefono.getText().trim(),
         "alex@gmail"
         );
@@ -160,7 +154,6 @@ public class RegistrarPacienteController implements Initializable {
         //mes
         //año
         jtfedadAct.setText(opersona.getEdad()+"");
-        jcbestadocivilAct.getSelectionModel().select(opersona.getEstado_civil());
         jtflugarprocedenciaAct.setText(opersona.getLugar_de_procedencia());
         jtfDomicilioAct.setText(opersona.getDomicilio());
         jtfTelefonoAct.setText(opersona.getTelefono());
