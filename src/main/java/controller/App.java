@@ -1,5 +1,6 @@
 package controller;
 
+import conexion.JPAUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javax.persistence.EntityManager;
 
 /**
  * JavaFX App
@@ -14,6 +16,7 @@ import java.io.IOException;
 public class App extends Application {
 
     private static Scene scene;
+    static EntityManager jpa= JPAUtil.getEntityManagerFactory().createEntityManager();
 
     @Override
     public void start(Stage stage) throws IOException {
