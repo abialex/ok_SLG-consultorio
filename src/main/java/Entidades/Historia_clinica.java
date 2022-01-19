@@ -27,10 +27,33 @@ public class Historia_clinica {
     @ManyToOne(cascade = CascadeType.ALL)
     private Paciente idpaciente;
     
-    
-    @Column(name = "cirugia_externa", nullable = false)
-    private String cirugia_externa;
 
+    public Historia_clinica( Paciente idpaciente) {
+        this.idpaciente = idpaciente;
+    }
+
+    public Historia_clinica() {
+    }
+
+    public int getIdhistoria_clinica() {
+        return idhistoria_clinica;
+    }
+
+    public void setIdhistoria_clinica(int idhistoria_clinica) {
+        this.idhistoria_clinica = idhistoria_clinica;
+    }
+
+    public Paciente getIdpaciente() {
+        return idpaciente;
+    }
+
+    public void setIdpaciente(Paciente idpaciente) {
+        this.idpaciente = idpaciente;
+    }
+
+    
+    
+    
     
     
 }
