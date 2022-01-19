@@ -28,22 +28,93 @@ public class Paciente {
     @ManyToOne(cascade = CascadeType.ALL)
     private Persona persona;
     
-     
-    @JoinColumn(name = "idhistoriaclinica", nullable = false)
-    @OneToOne(cascade = CascadeType.ALL)
-    private Historia_clinica historia_clinica;
     
-    @Column(name = "caracteristicas", nullable = false)
-    private String caracteristicas;
+    @Column(name = "motivoConsulta", nullable = false)
+    private String motivoConsulta;
+    
+    @Column(name = "sintomasEnfermedadActual" , nullable = true)
+    private String sintomasEnfermedadActual;
+    
+    @Column(name = "tiempoEnfermedadActual" , nullable = true)
+    private String tiempoEnfermedadActual;
+    
+    @Column (name = "otrasEnfermedades", nullable = true)
+    private String otrasEnfermedades;
+    
+    @Column (name = "antecedentesFamiliares", nullable = true)
+    private String antecedentesFamiliares;
 
-    public Paciente(Persona persona, Historia_clinica historia_clinica) {
+    public Paciente(Persona persona, String motivoConsulta, String sintomasEnfermedadActual, String tiempoEnfermedadActual, String otrasEnfermedades, String antecedentesFamiliares) {
         this.persona = persona;
-        this.historia_clinica = historia_clinica;
+        this.motivoConsulta = motivoConsulta;
+        this.sintomasEnfermedadActual = sintomasEnfermedadActual;
+        this.tiempoEnfermedadActual = tiempoEnfermedadActual;
+        this.otrasEnfermedades = otrasEnfermedades;
+        this.antecedentesFamiliares = antecedentesFamiliares;
     }
+    
     
 
     public Paciente(){
     }
+
+    public int getIdpaciente() {
+        return idpaciente;
+    }
+
+    public void setIdpaciente(int idpaciente) {
+        this.idpaciente = idpaciente;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    public String getMotivoConsulta() {
+        return motivoConsulta;
+    }
+
+    public void setMotivoConsulta(String motivoConsulta) {
+        this.motivoConsulta = motivoConsulta;
+    }
+
+    public String getSintomasEnfermedadActual() {
+        return sintomasEnfermedadActual;
+    }
+
+    public void setSintomasEnfermedadActual(String sintomasEnfermedadActual) {
+        this.sintomasEnfermedadActual = sintomasEnfermedadActual;
+    }
+
+    public String getTiempoEnfermedadActual() {
+        return tiempoEnfermedadActual;
+    }
+
+    public void setTiempoEnfermedadActual(String tiempoEnfermedadActual) {
+        this.tiempoEnfermedadActual = tiempoEnfermedadActual;
+    }
+
+    public String getOtrasEnfermedades() {
+        return otrasEnfermedades;
+    }
+
+    public void setOtrasEnfermedades(String otrasEnfermedades) {
+        this.otrasEnfermedades = otrasEnfermedades;
+    }
+
+    public String getAntecedentesFamiliares() {
+        return antecedentesFamiliares;
+    }
+
+    public void setAntecedentesFamiliares(String antecedentesFamiliares) {
+        this.antecedentesFamiliares = antecedentesFamiliares;
+    }
+    
+    
 
   
 
