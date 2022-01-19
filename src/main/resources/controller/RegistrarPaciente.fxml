@@ -282,16 +282,16 @@
                                                                      </rowConstraints>
                                                                      <children>
                                                                         <Label text="¿Está usted tomando algún medicamento?" GridPane.rowIndex="2" />
-                                                                        <JFXCheckBox fx:id="checkpregunta1" checkedColor="#4059a9" onAction="#unlockecdPregunta1" text=" " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                        <JFXCheckBox fx:id="checkpregunta3" checkedColor="#4059a9" onAction="#unlockecdPregunta3" text=" " GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                                         <Label text="¿Le han realizado alguna intervención quirúrjica?" GridPane.rowIndex="1" />
                                                                         <Label text="¿Reacciona  anormalmente a algún medicamento?" />
                                                                         <Label text="¿Es alérgico a la anestesia dental?" GridPane.rowIndex="3" />
-                                                                        <JFXCheckBox fx:id="checkpregunta2" checkedColor="#4059a9" onAction="#unlockecdPregunta2" text=" " GridPane.columnIndex="1" />
-                                                                        <JFXCheckBox fx:id="checkpregunta3" checkedColor="#4059a9" onAction="#unlockecdPregunta3" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                        <JFXCheckBox fx:id="checkpregunta1" checkedColor="#4059a9" onAction="#unlockecdPregunta1" text=" " GridPane.columnIndex="1" />
+                                                                        <JFXCheckBox fx:id="checkpregunta2" checkedColor="#4059a9" onAction="#unlockecdPregunta2" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                         <JFXCheckBox fx:id="checkpregunta4" checkedColor="#4059a9" onAction="#unlockecdPregunta4" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                                        <JFXTextField fx:id="jtfantPregunta2" disable="true" labelFloat="true" promptText="¿Cuál?" GridPane.columnIndex="2" />
+                                                                        <JFXTextField fx:id="jtfantPregunta1" disable="true" labelFloat="true" promptText="¿Cuál?" GridPane.columnIndex="2" />
                                                                         <JFXTextField fx:id="jtfantPregunta3" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                                                                        <JFXTextField fx:id="jtfantPregunta1" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                                                        <JFXTextField fx:id="jtfantPregunta2" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                                                                         <JFXTextField fx:id="jtfantPregunta4" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="3" />
                                                                      </children>
                                                                   </GridPane>

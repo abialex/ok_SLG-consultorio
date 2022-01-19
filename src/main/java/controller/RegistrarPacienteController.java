@@ -8,7 +8,9 @@ import Entidades.Enfermedad;
 import Entidades.Historia_clinica;
 import Entidades.Paciente;
 import Entidades.Paciente_Enfermedad;
+import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
+import Entidades.Pregunta;
 import com.itextpdf.layout.element.Image;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -97,7 +99,7 @@ public class RegistrarPacienteController implements Initializable {
     @FXML CheckBox checkenfermedaddelapiel;
     @FXML CheckBox checkenfermedadrenal;
     @FXML CheckBox checkhipertensionarterial;
-    
+        
     @FXML TextField jtfantecedentesFamiliares;
     @FXML TextField jtfotrasEnfermedades;
     
@@ -105,7 +107,8 @@ public class RegistrarPacienteController implements Initializable {
     @FXML CheckBox checkpregunta2;@FXML TextField jtfantPregunta2;
     @FXML CheckBox checkpregunta3;@FXML TextField jtfantPregunta3;
     @FXML CheckBox checkpregunta4;@FXML TextField jtfantPregunta4;
-    @FXML CheckBox checkpreguntamujer1;@FXML TextField jtfantpreguntamujer1;    
+    @FXML CheckBox checkpreguntamujer1;@FXML TextField jtfantpreguntamujer1;  
+    @FXML CheckBox checkpreguntamujer2;@FXML TextField jtfantpreguntamujer2; 
     /*----------Fin Atributos---------------*/
     
     //Atributos Actualización
@@ -122,7 +125,25 @@ public class RegistrarPacienteController implements Initializable {
     @FXML ComboBox<String> jcbsexoAct;
     
     //Fin Atributos Actualización  
-     
+    
+    //Botones y métodos de prueba
+    @FXML Button jbtnpruebita;
+    @FXML
+    void test(ActionEvent event){
+        System.out.println(event.getClass()+"   rasengan");
+        System.out.println(event.toString());
+        System.out.println(checkalergia.isSelected()); 
+        
+    }
+    @FXML
+    void testClick(ActionEvent event){
+        if(jtfantAque.isDisable()){ jtfantAque.setDisable(false);}
+        else {                      jtfantAque.setDisable(true); }
+             
+    }
+    
+    //Fin Botones y métodos de prueba
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ObservableList<String> OCUPACION=FXCollections.observableArrayList("ESTUDIANTE", "UNIVERSITARIO", "TRABAJADOR");
@@ -181,7 +202,7 @@ public class RegistrarPacienteController implements Initializable {
         jtfantecedentesFamiliares.getText().trim());     
         
         List<Paciente_Enfermedad> Lista_enfermedadesPaciente=Paciente_relacionar_enfermedad(opaciente);
-        
+        List<Paciente_Pregunta> Lista_preguntasPaciente=Paciente_relacionar_pregunta(opaciente);
         
         Historia_clinica ohistoria=new Historia_clinica(
         opaciente);
@@ -195,6 +216,9 @@ public class RegistrarPacienteController implements Initializable {
         for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
             App.jpa.persist(paciente_Enfermedad);
         }
+        for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
+            App.jpa.persist(paciente_Pregunta);
+        }
         App.jpa.persist(ohistoria);
         App.jpa.getTransaction().commit();
     }
@@ -203,9 +227,6 @@ public class RegistrarPacienteController implements Initializable {
         List<Enfermedad> list_enfermedad =App.jpa.createQuery("select p from Enfermedad p ").getResultList();
         List<Paciente_Enfermedad> list_enfermedades_paciente=new ArrayList<Paciente_Enfermedad>();
         Paciente_Enfermedad opaciente_enfermedad = null;
-        for (Enfermedad paciente_Enfermedad : list_enfermedad) {
-            System.out.println(paciente_Enfermedad.getNombre());
-        }
         if(checkalergia.isSelected()){
             for (Enfermedad enfermedad : list_enfermedad) {
                 if(enfermedad.getNombre().equals("Alergia")){
@@ -372,6 +393,81 @@ public class RegistrarPacienteController implements Initializable {
         return list_enfermedades_paciente;
        
         
+    }
+    
+    public List<Paciente_Pregunta> Paciente_relacionar_pregunta(Paciente opaciente){
+        List<Pregunta> list_pregunta =App.jpa.createQuery("select p from Pregunta p ").getResultList();
+        List<Paciente_Pregunta> list_pregunta_paciente=new ArrayList<Paciente_Pregunta>();
+        Paciente_Pregunta opaciente_enfermedad = null;
+        
+        if(checkpregunta1.isSelected()){
+                 for (Pregunta pregunta : list_pregunta) {
+                if(pregunta.getTextopregunta().equals("¿Reacciona  anormalmente a algún medicamento?")){
+                opaciente_enfermedad=new Paciente_Pregunta(
+                opaciente,
+                pregunta,
+                jtfantPregunta1.getText().trim());
+                list_pregunta_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkpregunta2.isSelected()){
+                 for (Pregunta pregunta : list_pregunta) {
+                if(pregunta.getTextopregunta().equals("¿Le han realizado alguna intervención quirúrjica?")){
+                opaciente_enfermedad=new Paciente_Pregunta(
+                opaciente,
+                pregunta,
+                jtfantPregunta2.getText().trim());
+                list_pregunta_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkpregunta3.isSelected()){
+                 for (Pregunta pregunta : list_pregunta) {
+                if(pregunta.getTextopregunta().equals("¿Está usted tomando algún medicamento?")){
+                opaciente_enfermedad=new Paciente_Pregunta(
+                opaciente,
+                pregunta,
+                jtfantPregunta3.getText().trim());
+                list_pregunta_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkpregunta4.isSelected()){
+                 for (Pregunta pregunta : list_pregunta) {
+                if(pregunta.getTextopregunta().equals("¿Es alérgico a la anestesia dental?")){
+                opaciente_enfermedad=new Paciente_Pregunta(
+                opaciente,
+                pregunta,
+                jtfantPregunta4.getText().trim());
+                list_pregunta_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkpreguntamujer1.isSelected()){
+                 for (Pregunta pregunta : list_pregunta) {
+                if(pregunta.getTextopregunta().equals("¿Está usted embarazada?")){
+                opaciente_enfermedad=new Paciente_Pregunta(
+                opaciente,
+                pregunta,
+                jtfantpreguntamujer1.getText().trim());
+                list_pregunta_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkpreguntamujer2.isSelected()){
+                 for (Pregunta pregunta : list_pregunta) {
+                if(pregunta.getTextopregunta().equals("¿Está dando de lactar?")){
+                opaciente_enfermedad=new Paciente_Pregunta(
+                opaciente,
+                pregunta,
+                "");
+                list_pregunta_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        
+        return list_pregunta_paciente;
     }
     
     @FXML
