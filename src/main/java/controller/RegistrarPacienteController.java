@@ -4,6 +4,10 @@
  */
 package controller;
 
+import Entidades.Enfermedad;
+import Entidades.Historia_clinica;
+import Entidades.Paciente;
+import Entidades.Paciente_Enfermedad;
 import Entidades.Persona;
 import com.itextpdf.layout.element.Image;
 import com.jfoenix.controls.JFXButton;
@@ -14,6 +18,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -24,6 +29,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
@@ -38,6 +44,7 @@ import javafx.scene.image.ImageView;
  */
 public class RegistrarPacienteController implements Initializable {
     
+    
     //Atributos de la ventana
     @FXML Accordion accordion;
     @FXML Accordion accordionAct;
@@ -51,9 +58,11 @@ public class RegistrarPacienteController implements Initializable {
     @FXML Label jlblnombresyapellidos;
     @FXML Label jlbldni;
     @FXML Button jbtnimprimir;
+    
 
 
-    //Atributos
+    /*--------------Atributos---------------*/
+    //Anamnesis
     @FXML TextField jtfNombresyApellidos;
     @FXML TextField jtfDomicilio;
     @FXML TextField jtfDni;
@@ -65,7 +74,39 @@ public class RegistrarPacienteController implements Initializable {
     @FXML TextField jtflugarprocedencia;
     @FXML ComboBox<String> jcbocupacion;
     @FXML ComboBox<String> jcbsexo;
-    //Fin Atributos
+    @FXML TextField jtfmotivoconsulta;
+    
+    //Enfermedad actual
+    @FXML TextField jtfsintomasEnfermedadActual;
+    @FXML TextField jtftiempoEnfermedadActual;
+    
+
+    //Antecedentes
+    @FXML CheckBox checkalergia;;@FXML TextField jtfantAque;
+    @FXML CheckBox checkfiebrereumatica;
+    @FXML CheckBox checkanemia;
+    @FXML CheckBox checkdiabetes;
+    @FXML CheckBox checktuberculosis;
+    @FXML CheckBox checkhepatitis;
+    @FXML CheckBox checkinfeccionveneria;
+    @FXML CheckBox checkenfermedadcardiaca;
+    @FXML CheckBox checkgastritis;
+    @FXML CheckBox checkepilepsia;
+    @FXML CheckBox checkdolordepecho;
+    @FXML CheckBox checkneuralgia;
+    @FXML CheckBox checkenfermedaddelapiel;
+    @FXML CheckBox checkenfermedadrenal;
+    @FXML CheckBox checkhipertensionarterial;
+    
+    @FXML TextField jtfantecedentesFamiliares;
+    @FXML TextField jtfotrasEnfermedades;
+    
+    @FXML CheckBox checkpregunta1;@FXML TextField jtfantPregunta1;
+    @FXML CheckBox checkpregunta2;@FXML TextField jtfantPregunta2;
+    @FXML CheckBox checkpregunta3;@FXML TextField jtfantPregunta3;
+    @FXML CheckBox checkpregunta4;@FXML TextField jtfantPregunta4;
+    @FXML CheckBox checkpreguntamujer1;@FXML TextField jtfantpreguntamujer1;    
+    /*----------Fin Atributos---------------*/
     
     //Atributos Actualización
     @FXML TextField jtfNombresyApellidosAct;
@@ -81,7 +122,7 @@ public class RegistrarPacienteController implements Initializable {
     @FXML ComboBox<String> jcbsexoAct;
     
     //Fin Atributos Actualización  
-    
+     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         ObservableList<String> OCUPACION=FXCollections.observableArrayList("ESTUDIANTE", "UNIVERSITARIO", "TRABAJADOR");
@@ -131,15 +172,206 @@ public class RegistrarPacienteController implements Initializable {
         "alex@gmail"
         );
         
+        Paciente opaciente= new Paciente( 
+        opersona,
+        jtfmotivoconsulta.getText().trim(),
+        jtfsintomasEnfermedadActual.getText().trim(),
+        jtftiempoEnfermedadActual.getText().trim(),
+        jtfotrasEnfermedades.getText().trim(),
+        jtfantecedentesFamiliares.getText().trim());     
+        
+        List<Paciente_Enfermedad> Lista_enfermedadesPaciente=Paciente_relacionar_enfermedad(opaciente);
+        
+        
+        Historia_clinica ohistoria=new Historia_clinica(
+        opaciente);
+        
+        //GuardarPaciente
         App.jpa.getTransaction().begin();
         App.jpa.persist(opersona);
+
+        App.jpa.persist(opaciente);
+
+        for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
+            App.jpa.persist(paciente_Enfermedad);
+        }
+        App.jpa.persist(ohistoria);
         App.jpa.getTransaction().commit();
-        
-        List<Persona> list_persona= App.jpa.createQuery("select p from Persona p").getResultList();
-        for (Persona persona : list_persona) {
-            System.out.println(persona.getNombres_apellidos());
+    }
+    
+    public List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(Paciente opaciente){
+        List<Enfermedad> list_enfermedad =App.jpa.createQuery("select p from Enfermedad p ").getResultList();
+        List<Paciente_Enfermedad> list_enfermedades_paciente=new ArrayList<Paciente_Enfermedad>();
+        Paciente_Enfermedad opaciente_enfermedad = null;
+        for (Enfermedad paciente_Enfermedad : list_enfermedad) {
+            System.out.println(paciente_Enfermedad.getNombre());
+        }
+        if(checkalergia.isSelected()){
+            for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Alergia")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                jtfantAque.getText().trim());
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }              
+            }     
+        }
+        if(checkanemia.isSelected()){
+             for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Anemia")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            } 
             
         }
+        
+        if(checkdiabetes.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Diabetes")){;
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            }      
+        }
+        if(checktuberculosis.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Tuberculosis")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            } 
+        }
+        
+        if(checkhepatitis.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Hepatitis infecciosa")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            } 
+        }
+        
+        if(checkinfeccionveneria.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Infección Venérea")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            } 
+        }
+        if(checkenfermedadcardiaca.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Enfermedad Cardiaca")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            } 
+        }
+        if(checkgastritis.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Gastritis")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkepilepsia.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Epilepsia")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkdolordepecho.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Dolor de Pecho")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkneuralgia.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Neuralgia")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkenfermedaddelapiel.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Enfermedad de la piel")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkenfermedadrenal.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Enfermedad Renal")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        if(checkhipertensionarterial.isSelected()){
+                 for (Enfermedad enfermedad : list_enfermedad) {
+                if(enfermedad.getNombre().equals("Hipertensión Arterial")){
+                opaciente_enfermedad=new Paciente_Enfermedad(
+                opaciente,
+                enfermedad,
+                "");
+                list_enfermedades_paciente.add(opaciente_enfermedad);
+                }
+            }            
+        }
+        
+        
+       
+        
+        
+        return list_enfermedades_paciente;
+       
+        
     }
     
     @FXML
@@ -157,8 +389,8 @@ public class RegistrarPacienteController implements Initializable {
         jtflugarprocedenciaAct.setText(opersona.getLugar_de_procedencia());
         jtfDomicilioAct.setText(opersona.getDomicilio());
         jtfTelefonoAct.setText(opersona.getTelefono());
-        jcbocupacionAct.getSelectionModel().select(opersona.getOcupacion());
-        
+        jcbocupacionAct.getSelectionModel().select(opersona.getOcupacion());  
+    
     }
     
     
@@ -168,5 +400,43 @@ public class RegistrarPacienteController implements Initializable {
          File file=new File("pdf\\prueba.pdf");
          Desktop.getDesktop().open(file);
     }
+ 
     
+    
+    /*----------Metodos de ventana---------------*/
+    @FXML 
+    void unlockecdAlergia(ActionEvent event){
+        if(jtfantAque.isDisable()){ jtfantAque.setDisable(false);}
+        else {                      jtfantAque.setDisable(true); }
+    }
+     @FXML 
+    void unlockecdPregunta1(ActionEvent event){
+        if(jtfantPregunta1.isDisable()){ jtfantPregunta1.setDisable(false);}
+        else {                      jtfantPregunta1.setDisable(true); }
+    }
+     @FXML 
+    void unlockecdPregunta2(ActionEvent event){
+        if(jtfantPregunta2.isDisable()){ jtfantPregunta2.setDisable(false);}
+        else {                      jtfantPregunta2.setDisable(true); }
+    }
+     @FXML 
+    void unlockecdPregunta3(ActionEvent event){
+        if(jtfantPregunta3.isDisable()){ jtfantPregunta3.setDisable(false);}
+        else {                      jtfantPregunta3.setDisable(true); }
+    }
+     @FXML 
+    void unlockecdPregunta4(ActionEvent event){
+        if(jtfantPregunta4.isDisable()){ jtfantPregunta4.setDisable(false);}
+        else {                      jtfantPregunta4.setDisable(true); }
+    }
+    
+      @FXML 
+    void unlockecdPreguntamujer1(ActionEvent event){
+        if(jtfantpreguntamujer1.isDisable()){ jtfantpreguntamujer1.setDisable(false);}
+        else {                      jtfantpreguntamujer1.setDisable(true); }
+    }
+    
+
+    
+    /*------Fin Metodos de ventana---------------*/
 }
