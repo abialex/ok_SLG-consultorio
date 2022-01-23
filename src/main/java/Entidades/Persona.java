@@ -52,11 +52,15 @@ public class Persona {
     
     @Column(name = "correo",length = 40, nullable = true)
     private String correo;
+    
+    @Column(name = "urlImag",length = 150, nullable = true)
+    private String urlImag;
 
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, String correo) {
+    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, String correo
+    ,String urlImag) {
         this.nombres_apellidos = nombres_apellidos;
         this.sexo = sexo;
         this.edad = edad;
@@ -67,6 +71,7 @@ public class Persona {
         this.ocupacion = ocupacion;
         this.telefono = telefono;
         this.correo = correo;
+        this.urlImag = urlImag;
     }
     
     public int getIdpersona() {
@@ -156,5 +161,12 @@ public class Persona {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-      
+
+    public String getUrlImag() {
+        return urlImag;
+    }
+
+    public void setUrlImag(String urlImag) {
+        this.urlImag = urlImag;
+    }    
 }
