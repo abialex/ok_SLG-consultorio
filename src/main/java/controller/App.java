@@ -1,6 +1,6 @@
 package controller;
 
-import conexion.JPAUtil;
+import Util.JPAUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
