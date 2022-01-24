@@ -1,0 +1,25 @@
+
+                                            CLASES
+1- Mayuscula inicio ejm: 
+Carro
+
+2-sub guíon entre las clases ejm: 
+Paciente_historiaClinica
+
+3- Clase con 2 o mas palabras: Historiaclinica
+
+4-clases con 2 o mas palabras compuesta : Paciente_Historiaclinica
+
+                                            ATRIBUTOS
+
+1- normal : nombre,dni
+2- 2 palabras : nombres_apellidos,fecha_procedencia
+
+                                            MÉTODOS
+
+1-normal :actualizarPaciente
+2- para un método con clase compuesta: actualizarPaciente_Enfermedad
+
+                                            Variables
+1-normal : listPaciente_Historiaclinica, listEnfermedad
+
