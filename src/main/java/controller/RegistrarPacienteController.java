@@ -12,7 +12,7 @@ import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
 import Util.FileImagUtil;
-import Pdf.Impresiones;
+import Pdf.Historiaclinicapdf;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -512,7 +512,7 @@ public class RegistrarPacienteController implements Initializable {
     
     @FXML
     void ImprimirPaciente(ActionEvent evt) throws IOException{
-        Impresiones.ImprimirHistoriaClinica(oPersona);
+        Historiaclinicapdf.ImprimirHistoriaClinica(oPersona);
         File file=new File("pdf\\historia_clinica.pdf");
         Desktop.getDesktop().open(file);
     }
