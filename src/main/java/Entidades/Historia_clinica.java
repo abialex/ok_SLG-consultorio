@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -27,11 +29,18 @@ public class Historia_clinica {
     @ManyToOne(cascade = CascadeType.ALL)
     private Paciente idpaciente;
     
+    @Column (name = "fechainscripcion", nullable = true)
+    private Date fechainscripcion;
+    
+    @Column (name = "fechaultimaatencion", nullable = true)
+    private Date fechaultimaatencion;
 
-    public Historia_clinica( Paciente idpaciente) {
+    public Historia_clinica(Paciente idpaciente, Date fechainscripcion, Date fechaultimaatencion) {
         this.idpaciente = idpaciente;
+        this.fechainscripcion = fechainscripcion;
+        this.fechaultimaatencion = fechaultimaatencion;
     }
-
+    
     public Historia_clinica() {
     }
 
@@ -51,9 +60,21 @@ public class Historia_clinica {
         this.idpaciente = idpaciente;
     }
 
+    public Date getFechainscripcion() {
+        return fechainscripcion;
+    }
+
+    public void setFechainscripcion(Date fechainscripcion) {
+        this.fechainscripcion = fechainscripcion;
+    }
+
+    public Date getFechaultimaatencion() {
+        return fechaultimaatencion;
+    }
+
+    public void setFechaultimaatencion(Date fechaultimaatencion) {
+        this.fechaultimaatencion = fechaultimaatencion;
+    }
     
-    
-    
-    
-    
+ 
 }
