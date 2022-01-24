@@ -11,11 +11,13 @@ import Entidades.Paciente_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
-import com.itextpdf.layout.element.Image;
+import Util.FileImagUtil;
+import Pdf.Impresiones;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
+import controller.emergente.AlertController;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
@@ -37,6 +39,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 /**
@@ -60,9 +63,10 @@ public class RegistrarPacienteController implements Initializable {
     @FXML Label jlblnombresyapellidos;
     @FXML Label jlbldni;
     @FXML Button jbtnimprimir;
+    @FXML ImageView jimagperfil;
     
-
-
+    
+    
     /*--------------Atributos---------------*/
     //Anamnesis
     @FXML TextField jtfNombresyApellidos;
@@ -126,14 +130,17 @@ public class RegistrarPacienteController implements Initializable {
     
     //Fin Atributos Actualización  
     
-    //Botones y métodos de prueba
+    File fileImag;
+    FileImagUtil oFileUtilImag=new FileImagUtil("user.home","Buscar Imagen");
+    Persona oPersona;
+    
+    
+    //Botones y métodos de prueba   
     @FXML Button jbtnpruebita;
     @FXML
-    void test(ActionEvent event){
-        System.out.println(event.getClass()+"   rasengan");
-        System.out.println(event.toString());
-        System.out.println(checkalergia.isSelected()); 
-        
+    void test(ActionEvent event) throws IOException{
+        AlertController.Mostrar();
+   
     }
     @FXML
     void testClick(ActionEvent event){
@@ -162,15 +169,16 @@ public class RegistrarPacienteController implements Initializable {
     }    
     @FXML
     void BuscarPaciente(ActionEvent evt){
-        Persona opersona=(Persona)App.jpa.createQuery("select p from Persona p where dni="+"'"+jtfbuscar.getText().trim()+"'"
+        oPersona=(Persona)App.jpa.createQuery("select p from Persona p where dni="+"'"+jtfbuscar.getText().trim()+"'"
                 +" or "+"nombres_apellidos like "+"'%"+jtfbuscar.getText()+"%'").getSingleResult();
-        jlblnombresyapellidos.setText(opersona.getNombres_apellidos());
-        jlbldni.setText(opersona.getDni());
+        jlblnombresyapellidos.setText(oPersona.getNombres_apellidos());
+        jlbldni.setText(oPersona.getDni());
     }
     
     
     @FXML
-    void GuardarPaciente(ActionEvent evt){
+    void GuardarPaciente(ActionEvent evt) throws IOException{
+        
        Date fechaNacimiento=new Date();
         fechaNacimiento.setYear(Integer.parseInt(jtfanio.getText().trim())-1900);
         fechaNacimiento.setMonth(Integer.parseInt(jtfMes.getText().trim())-1);
@@ -190,7 +198,8 @@ public class RegistrarPacienteController implements Initializable {
         jtflugarprocedencia.getText().trim(),
         jcbocupacion.getSelectionModel().getSelectedItem(),
         jtfTelefono.getText().trim(),
-        "alex@gmail"
+        "alex@gmail",
+         oFileUtilImag.guardarImagen(fileImag)        
         );
         
         Paciente opaciente= new Paciente( 
@@ -205,7 +214,9 @@ public class RegistrarPacienteController implements Initializable {
         List<Paciente_Pregunta> Lista_preguntasPaciente=Paciente_relacionar_pregunta(opaciente);
         
         Historia_clinica ohistoria=new Historia_clinica(
-        opaciente);
+        opaciente,
+        new Date(),
+        new Date());
         
         //GuardarPaciente
         App.jpa.getTransaction().begin();
@@ -220,7 +231,7 @@ public class RegistrarPacienteController implements Initializable {
             App.jpa.persist(paciente_Pregunta);
         }
         App.jpa.persist(ohistoria);
-        App.jpa.getTransaction().commit();
+        App.jpa.getTransaction().commit(); 
     }
     
     public List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(Paciente opaciente){
@@ -470,6 +481,14 @@ public class RegistrarPacienteController implements Initializable {
         return list_pregunta_paciente;
     }
     
+     @FXML
+    public void seleccionarImagPerfil() throws IOException, IOException{ 
+        fileImag = oFileUtilImag.buscarImagen();
+        if (fileImag != null) {
+            jimagperfil.setImage(new Image(fileImag.getAbsolutePath()));
+        }
+    }
+    
     @FXML
     void ActualizarPaciente(ActionEvent evt){
         Persona opersona=(Persona)App.jpa.createQuery("select p from Persona p where dni="+"'"+jtfbuscarAct.getText().trim()+"'"
@@ -493,8 +512,9 @@ public class RegistrarPacienteController implements Initializable {
     
     @FXML
     void ImprimirPaciente(ActionEvent evt) throws IOException{
-         File file=new File("pdf\\prueba.pdf");
-         Desktop.getDesktop().open(file);
+        Impresiones.ImprimirHistoriaClinica(oPersona);
+        File file=new File("pdf\\historia_clinica.pdf");
+        Desktop.getDesktop().open(file);
     }
  
     
