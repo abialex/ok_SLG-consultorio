@@ -1,7 +1,6 @@
 package controller;
 
 import Entidades.Persona;
-import conexion.JPAUtil;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
