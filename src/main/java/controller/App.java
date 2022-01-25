@@ -16,7 +16,7 @@ import javax.persistence.EntityManager;
 public class App extends Application {
 
     private static Scene scene;
-    static EntityManager jpa= JPAUtil.getEntityManagerFactory().createEntityManager();
+    public static EntityManager jpa= JPAUtil.getEntityManagerFactory().createEntityManager();
 
     @Override
     public void start(Stage stage) throws IOException {
