@@ -22,12 +22,15 @@ public class Pregunta {
     
     @Column(name = "textopregunta", nullable = false)
     private String textopregunta;
+    
+    @Column(name = "isMujer", nullable = true)
+    private boolean isMujer;
 
-    public Pregunta(int idpregunta, String textopregunta) {
-        this.idpregunta = idpregunta;
+    public Pregunta(String textopregunta,boolean isMujer) {
+        this.isMujer=isMujer;
         this.textopregunta = textopregunta;
     }
-
+    
     public Pregunta() {
     }
 
@@ -45,6 +48,14 @@ public class Pregunta {
 
     public void setTextopregunta(String textopregunta) {
         this.textopregunta = textopregunta;
+    }
+
+    public boolean IsMujer() {
+        return isMujer;
+    }
+
+    public void setIsMujer(boolean isMujer) {
+        this.isMujer = isMujer;
     }
     
     

@@ -410,14 +410,15 @@ public class RegistrarPacienteController implements Initializable {
         List<Pregunta> list_pregunta =App.jpa.createQuery("select p from Pregunta p ").getResultList();
         List<Paciente_Pregunta> list_pregunta_paciente=new ArrayList<Paciente_Pregunta>();
         Paciente_Pregunta opaciente_enfermedad = null;
-        
+        boolean isMujer=opaciente.getPersona().getSexo().equals("MUJER");
         if(checkpregunta1.isSelected()){
                  for (Pregunta pregunta : list_pregunta) {
                 if(pregunta.getTextopregunta().equals("¿Reacciona  anormalmente a algún medicamento?")){
                 opaciente_enfermedad=new Paciente_Pregunta(
                 opaciente,
                 pregunta,
-                jtfantPregunta1.getText().trim());
+                jtfantPregunta1.getText().trim(),
+                isMujer);
                 list_pregunta_paciente.add(opaciente_enfermedad);
                 }
             }            
@@ -428,7 +429,8 @@ public class RegistrarPacienteController implements Initializable {
                 opaciente_enfermedad=new Paciente_Pregunta(
                 opaciente,
                 pregunta,
-                jtfantPregunta2.getText().trim());
+                jtfantPregunta2.getText().trim(),
+                isMujer);
                 list_pregunta_paciente.add(opaciente_enfermedad);
                 }
             }            
@@ -439,7 +441,8 @@ public class RegistrarPacienteController implements Initializable {
                 opaciente_enfermedad=new Paciente_Pregunta(
                 opaciente,
                 pregunta,
-                jtfantPregunta3.getText().trim());
+                jtfantPregunta3.getText().trim(),
+                isMujer);
                 list_pregunta_paciente.add(opaciente_enfermedad);
                 }
             }            
@@ -450,7 +453,8 @@ public class RegistrarPacienteController implements Initializable {
                 opaciente_enfermedad=new Paciente_Pregunta(
                 opaciente,
                 pregunta,
-                jtfantPregunta4.getText().trim());
+                jtfantPregunta4.getText().trim(),
+                isMujer);
                 list_pregunta_paciente.add(opaciente_enfermedad);
                 }
             }            
@@ -461,7 +465,8 @@ public class RegistrarPacienteController implements Initializable {
                 opaciente_enfermedad=new Paciente_Pregunta(
                 opaciente,
                 pregunta,
-                jtfantpreguntamujer1.getText().trim());
+                jtfantpreguntamujer1.getText().trim(),
+                isMujer);
                 list_pregunta_paciente.add(opaciente_enfermedad);
                 }
             }            
@@ -472,7 +477,8 @@ public class RegistrarPacienteController implements Initializable {
                 opaciente_enfermedad=new Paciente_Pregunta(
                 opaciente,
                 pregunta,
-                "");
+                "",
+                isMujer);
                 list_pregunta_paciente.add(opaciente_enfermedad);
                 }
             }            

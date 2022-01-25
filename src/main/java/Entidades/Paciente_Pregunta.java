@@ -33,11 +33,15 @@ public class Paciente_Pregunta {
     
     @Column (name = "especificaciones", nullable = true)
     private String especificaciones;
-
-    public Paciente_Pregunta(Paciente paciente, Pregunta pregunta, String especificaciones) {
+    
+    @Column (name = "isMujer", nullable = true)
+    private boolean isMujer;
+    
+    public Paciente_Pregunta(Paciente paciente, Pregunta pregunta, String especificaciones,boolean isMujer) {
         this.paciente = paciente;
         this.pregunta = pregunta;
         this.especificaciones = especificaciones;
+        this.isMujer=isMujer;
     }
 
     public Paciente_Pregunta() {
@@ -74,9 +78,15 @@ public class Paciente_Pregunta {
     public void setEspecificaciones(String especificaciones) {
         this.especificaciones = especificaciones;
     }
+
+    public boolean IsMujer() {
+        return isMujer;
+    }
+
+    public void setIsMujer(boolean isMujer) {
+        this.isMujer = isMujer;
+    }
     
     
-    
-    
-    
+  
 }
