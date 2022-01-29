@@ -29,16 +29,20 @@ public class Historia_clinica {
     @ManyToOne(cascade = CascadeType.ALL)
     private Paciente idpaciente;
     
+    @Column(name = "motivoConsulta", nullable = false)
+    private String motivoConsulta;
+    
     @Column (name = "fechainscripcion", nullable = true)
     private Date fechainscripcion;
     
     @Column (name = "fechaultimaatencion", nullable = true)
     private Date fechaultimaatencion;
 
-    public Historia_clinica(Paciente idpaciente, Date fechainscripcion, Date fechaultimaatencion) {
+    public Historia_clinica(Paciente idpaciente, Date fechainscripcion, Date fechaultimaatencion,String motivoConsulta) {
         this.idpaciente = idpaciente;
         this.fechainscripcion = fechainscripcion;
         this.fechaultimaatencion = fechaultimaatencion;
+        this.motivoConsulta = motivoConsulta;
     }
     
     public Historia_clinica() {
@@ -74,6 +78,14 @@ public class Historia_clinica {
 
     public void setFechaultimaatencion(Date fechaultimaatencion) {
         this.fechaultimaatencion = fechaultimaatencion;
+    }
+
+    public String getMotivoConsulta() {
+        return motivoConsulta;
+    }
+
+    public void setMotivoConsulta(String motivoConsulta) {
+        this.motivoConsulta = motivoConsulta;
     }
     
  

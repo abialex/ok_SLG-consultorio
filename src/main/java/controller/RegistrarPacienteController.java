@@ -106,7 +106,7 @@ public class RegistrarPacienteController implements Initializable {
         
     @FXML TextField jtfantecedentesFamiliares;
     @FXML TextField jtfotrasEnfermedades;
-    
+            
     @FXML CheckBox checkpregunta1;@FXML TextField jtfantPregunta1;
     @FXML CheckBox checkpregunta2;@FXML TextField jtfantPregunta2;
     @FXML CheckBox checkpregunta3;@FXML TextField jtfantPregunta3;
@@ -204,7 +204,6 @@ public class RegistrarPacienteController implements Initializable {
         
         Paciente opaciente= new Paciente( 
         opersona,
-        jtfmotivoconsulta.getText().trim(),
         jtfsintomasEnfermedadActual.getText().trim(),
         jtftiempoEnfermedadActual.getText().trim(),
         jtfotrasEnfermedades.getText().trim(),
@@ -216,7 +215,8 @@ public class RegistrarPacienteController implements Initializable {
         Historia_clinica ohistoria=new Historia_clinica(
         opaciente,
         new Date(),
-        new Date());
+        new Date(),
+        jtfmotivoconsulta.getText().trim());
         
         //GuardarPaciente
         App.jpa.getTransaction().begin();

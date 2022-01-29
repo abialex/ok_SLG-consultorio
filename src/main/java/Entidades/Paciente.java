@@ -28,10 +28,6 @@ public class Paciente {
     @ManyToOne(cascade = CascadeType.ALL)
     private Persona persona;
     
-    
-    @Column(name = "motivoConsulta", nullable = false)
-    private String motivoConsulta;
-    
     @Column(name = "sintomasEnfermedadActual" , nullable = true)
     private String sintomasEnfermedadActual;
     
@@ -44,9 +40,8 @@ public class Paciente {
     @Column (name = "antecedentesFamiliares", nullable = true)
     private String antecedentesFamiliares;
 
-    public Paciente(Persona persona, String motivoConsulta, String sintomasEnfermedadActual, String tiempoEnfermedadActual, String otrasEnfermedades, String antecedentesFamiliares) {
+    public Paciente(Persona persona, String sintomasEnfermedadActual, String tiempoEnfermedadActual, String otrasEnfermedades, String antecedentesFamiliares) {
         this.persona = persona;
-        this.motivoConsulta = motivoConsulta;
         this.sintomasEnfermedadActual = sintomasEnfermedadActual;
         this.tiempoEnfermedadActual = tiempoEnfermedadActual;
         this.otrasEnfermedades = otrasEnfermedades;
@@ -72,14 +67,6 @@ public class Paciente {
 
     public void setPersona(Persona persona) {
         this.persona = persona;
-    }
-
-    public String getMotivoConsulta() {
-        return motivoConsulta;
-    }
-
-    public void setMotivoConsulta(String motivoConsulta) {
-        this.motivoConsulta = motivoConsulta;
     }
 
     public String getSintomasEnfermedadActual() {
