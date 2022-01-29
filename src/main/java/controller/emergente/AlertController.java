@@ -20,6 +20,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -45,28 +46,51 @@ public class AlertController implements Initializable {
     Button jbtnOk;
     @FXML
     ImageView jimg;
+    @FXML
+    AnchorPane ap;
+    @FXML
+    Label lblmensaje;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Image imag = new Image(getClass().getResource("/imagenes/geminis1.jpg").toExternalForm());
-        jimg.setImage(imag);
-
-        jbtnOk.setStyle("-fx-background-color : #ffffff");
-        hboxAlert.setStyle("-fx-background-color : #ffffff");
         // TODO
     }
 
-    public static void Mostrar() throws IOException {
+    void setMensaje(String mensaje) {
+        lblmensaje.setText(mensaje);
+    }
 
+    void Asignar(String alerta) {
+        // #38940d verde
+        // #db092f rojo
+        // #e0d314 amarillo
+        Image imag = null;
+        if (alerta.equals("successful")) {
+            jbtnOk.setStyle("-fx-background-color : #38940d");
+            hboxAlert.setStyle("-fx-background-color : #38940d");
+        } else if (alerta.equals("warning")) {
+            jbtnOk.setStyle("-fx-background-color : #e0d314");
+            hboxAlert.setStyle("-fx-background-color : #e0d314");
+        } else {
+            jbtnOk.setStyle("-fx-background-color : #db092f");
+            hboxAlert.setStyle("-fx-background-color : #db092f");
+        }
+        imag = new Image(getClass().getResource("/imagenes/" + alerta + ".png").toExternalForm());
+        jimg.setImage(imag);
+    }
+
+    public void Mostrar(String alerta, String mensaje) throws IOException {
         FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(AlertController.class.getResource("/fxml/Alert.fxml"));
+        Scene scene = new Scene(loader.load());
         Stage stage = new Stage();//creando la base vacía
-        AnchorPane ap = loader.load(AlertController.class.getResource("/fxml/Alert.fxml"));
-        Scene scene = new Scene(ap);
         stage.initStyle(StageStyle.UNDECORATED);
-        //stage.resizableProperty().setValue(false);
         stage.setTitle("Guardando");
         stage.setScene(scene);
-
+        //
+        AlertController oAlertController = (AlertController) loader.getController(); //esto depende de (1)
+        oAlertController.Asignar(alerta);
+        oAlertController.setMensaje(mensaje);
         stage.show();
     }
 
@@ -77,17 +101,14 @@ public class AlertController implements Initializable {
         jimg.setImage(imag);
     }
 
-    FileChooser filechooserImagPerfil = new FileChooser();
-
     @FXML
-
-    void test(ActionEvent event) throws FileNotFoundException, IOException {
-        FileImagUtil oFileUtil = new FileImagUtil("user.home","holi");
+    void cerrar(ActionEvent event) throws FileNotFoundException, IOException {
+        ((Stage) ap.getScene().getWindow()).close();
+        /*FileImagUtil oFileUtil = new FileImagUtil("user.home", "holi");
         File fileImag = oFileUtil.buscarImagen();
         if (fileImag != null) {
             jimg.setImage(new Image(fileImag.getAbsolutePath()));
-        }
-
+        }*/
     }
 
 }

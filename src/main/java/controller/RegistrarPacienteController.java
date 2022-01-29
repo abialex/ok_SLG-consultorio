@@ -129,7 +129,7 @@ public class RegistrarPacienteController implements Initializable {
     @FXML ComboBox<String> jcbsexoAct;
     
     //Fin Atributos Actualización  
-    
+    AlertController oAlertController=new AlertController();
     File fileImag;
     FileImagUtil oFileUtilImag=new FileImagUtil("user.home","Buscar Imagen");
     Persona oPersona;
@@ -139,7 +139,7 @@ public class RegistrarPacienteController implements Initializable {
     @FXML Button jbtnpruebita;
     @FXML
     void test(ActionEvent event) throws IOException{
-        AlertController.Mostrar();
+        oAlertController.Mostrar("successful","test");
    
     }
     @FXML

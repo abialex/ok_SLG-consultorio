@@ -293,7 +293,7 @@
                                                                               <JFXTextField fx:id="jtfantpreguntamujer1" disable="true" labelFloat="true" promptText="¿Cuánto tiempo?" GridPane.columnIndex="2" />
                                                                               <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                                                 <buttons>
-                                                                                  <Button fx:id="jbtnpruebita" mnemonicParsing="false" onAction="#GuardarPaciente" text="Pruebita" />
+                                                                                  <Button fx:id="jbtnpruebita" mnemonicParsing="false" onAction="#test" text="Pruebita" />
                                                                                 </buttons>
                                                                               </ButtonBar>
                                                                            </children>
