@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.project</groupId>
     <artifactId>ConsultorioSLG</artifactId>
     <version>1</version>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-                <maven.compiler.source>16</maven.compiler.source>
+        <maven.compiler.source>16</maven.compiler.source>
         <maven.compiler.target>16</maven.compiler.target>
     </properties>
     <dependencies>
-        
-        
-  
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -24,32 +21,26 @@
             <artifactId>javafx-fxml</artifactId>
             <version>17.0.1</version>
         </dependency>
-        
         <dependency>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-data-jpa</artifactId>
-    <version>2.6.2</version>
-</dependency>
-        
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>2.6.2</version>
+        </dependency>
         <dependency>
-    <groupId>org.postgresql</groupId>
-    <artifactId>postgresql</artifactId>
-    <version>42.3.1</version>
-</dependency>
-      
-
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>42.3.1</version>
+        </dependency>
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>javax.persistence</artifactId>
             <version>2.2.1</version>
         </dependency>
- 
-            <dependency>
+        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-core</artifactId>
             <version>5.4.0.Final</version>
         </dependency>
-        
         <dependency>
             <groupId>com.itextpdf</groupId>
             <artifactId>kernel</artifactId>
@@ -61,23 +52,22 @@
             <artifactId>layout</artifactId>
             <version>7.0.0</version>
             <scope>compile</scope>
-    </dependency>
-<dependency>
-    <groupId>com.jfoenix</groupId>
-    <artifactId>jfoenix</artifactId>
-    <version>9.0.0</version>
-</dependency>
-<dependency>
-    <groupId>de.jensd</groupId>
-    <artifactId>fontawesomefx</artifactId>
-    <version>8.9</version>
-</dependency>
-
+        </dependency>
+        <dependency>
+            <groupId>com.jfoenix</groupId>
+            <artifactId>jfoenix</artifactId>
+            <version>9.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx</artifactId>
+            <version>8.9</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
             <plugin>
-                   <groupId>org.apache.maven.plugins</groupId>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.0</version>
                 <configuration>
@@ -121,11 +111,11 @@
                         <id>ide-profile</id>
                         <configuration>
                             <options>
-				<option>${profiler.jvmargs.arg1}</option>
-				<option>${profiler.jvmargs.arg2}</option>
-				<option>${profiler.jvmargs.arg3}</option>
-				<option>${profiler.jvmargs.arg4}</option>
-				<option>${profiler.jvmargs.arg5}</option>
+                                <option>${profiler.jvmargs.arg1}</option>
+                                <option>${profiler.jvmargs.arg2}</option>
+                                <option>${profiler.jvmargs.arg3}</option>
+                                <option>${profiler.jvmargs.arg4}</option>
+                                <option>${profiler.jvmargs.arg5}</option>
                             </options>
                         </configuration>
                     </execution>
@@ -144,29 +134,29 @@
 </project>
 
 
-  <!--dependency>
-            <groupId>org.netbeans.external</groupId>
-            <artifactId>AbsoluteLayout</artifactId>
-            <version>RELEASE125</version>
-        </dependency-->
+<!--dependency>
+    <groupId>org.netbeans.external</groupId>
+    <artifactId>AbsoluteLayout</artifactId>
+    <version>RELEASE125</version>
+</dependency-->
 
-        <!--dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-commons-annotations</artifactId>
-            <version>3.2.0.Final</version>
-        </dependency-->
-        <!--dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-search-engine</artifactId>
-            <version>5.11.9.Final</version>
-        </dependency-->
-        <!--dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-annotations</artifactId>
-            <version>3.5.5-Final</version>
-        </dependency-->
-        <!--dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-entitymanager</artifactId>
-            <version>5.0.1.Final</version>
-        </dependency-->
+<!--dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-commons-annotations</artifactId>
+    <version>3.2.0.Final</version>
+</dependency-->
+<!--dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-search-engine</artifactId>
+    <version>5.11.9.Final</version>
+</dependency-->
+<!--dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-annotations</artifactId>
+    <version>3.5.5-Final</version>
+</dependency-->
+<!--dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-entitymanager</artifactId>
+    <version>5.0.1.Final</version>
+</dependency-->
