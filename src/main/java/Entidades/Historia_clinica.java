@@ -27,9 +27,51 @@ public class Historia_clinica {
 
     @JoinColumn(insertable = true,updatable = true,name="idpaciente",nullable = false)
     @ManyToOne(cascade = CascadeType.ALL)
-    private Paciente idpaciente;
+    private Paciente idpaciente; 
+    //EXPLORACIÓN FÍSICA
+    @Column(name = "signosVitales", nullable = true)
+    private String signosVitales;
     
-    @Column(name = "motivoConsulta", nullable = false)
+    @Column(name = "saturacionOxigeno", nullable = true)
+    private String saturacionOxigeno;
+    
+    @Column(name = "PA", nullable = true)
+    private String PA;
+    
+    @Column(name = "FC", nullable = true)
+    private String FC;
+    
+    @Column(name = "temperatura", nullable = true)
+    private String temperatura;
+    
+    @Column(name = "FR", nullable = true)
+    private String FR;
+    
+    @Column(name = "examenClinicoGeneral", nullable = true)
+    private String examenClinicoGeneral;
+    
+    @Column(name = "examenClinicoOdontoestomtologico", nullable = true)
+    private String examenClinicoOdontoestomtologico;
+    //DIAGNÓSTICO
+    @Column(name = "diagnosticoCIE10", nullable = true)
+    private String diagnosticoCIE10;
+    
+    @Column(name = "diagnosticoPresuntivo", nullable = true)
+    private String diagnosticoPresuntivo;
+    
+    @Column(name = "diagnosticoDefinitivo", nullable = true)
+    private String diagnosticoDefinitivo;
+    //PLAN DE TRATAMIENTO
+    @Column(name = "recomendaciones", nullable = true)
+    private String recomendaciones;
+    //PRONÓSTiCO
+    @Column(name = "pronostico", nullable = true)
+    private String pronostico;
+    //ALTA PACIENTE
+    @Column(name = "altaPaciente", nullable = true)
+    private String altaPaciente;
+    
+    @Column(name = "motivoConsulta", nullable = true)
     private String motivoConsulta;
     
     @Column (name = "fechainscripcion", nullable = true)
@@ -38,16 +80,30 @@ public class Historia_clinica {
     @Column (name = "fechaultimaatencion", nullable = true)
     private Date fechaultimaatencion;
 
-    public Historia_clinica(Paciente idpaciente, Date fechainscripcion, Date fechaultimaatencion,String motivoConsulta) {
+    public Historia_clinica(Paciente idpaciente, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String diagnosticoPresuntivo, String diagnosticoDefinitivo, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, Date fechainscripcion, Date fechaultimaatencion) {
         this.idpaciente = idpaciente;
+        this.signosVitales = signosVitales;
+        this.saturacionOxigeno = saturacionOxigeno;
+        this.PA = PA;
+        this.FC = FC;
+        this.temperatura = temperatura;
+        this.FR = FR;
+        this.examenClinicoGeneral = examenClinicoGeneral;
+        this.examenClinicoOdontoestomtologico = examenClinicoOdontoestomtologico;
+        this.diagnosticoCIE10 = diagnosticoCIE10;
+        this.diagnosticoPresuntivo = diagnosticoPresuntivo;
+        this.diagnosticoDefinitivo = diagnosticoDefinitivo;
+        this.recomendaciones = recomendaciones;
+        this.pronostico = pronostico;
+        this.altaPaciente = altaPaciente;
+        this.motivoConsulta = motivoConsulta;
         this.fechainscripcion = fechainscripcion;
         this.fechaultimaatencion = fechaultimaatencion;
-        this.motivoConsulta = motivoConsulta;
-    }
-    
-    public Historia_clinica() {
     }
 
+    public Historia_clinica() {
+    }
+    
     public int getIdhistoria_clinica() {
         return idhistoria_clinica;
     }
@@ -87,6 +143,118 @@ public class Historia_clinica {
     public void setMotivoConsulta(String motivoConsulta) {
         this.motivoConsulta = motivoConsulta;
     }
+
+    public String getSignosVitales() {
+        return signosVitales;
+    }
+
+    public void setSignosVitales(String signosVitales) {
+        this.signosVitales = signosVitales;
+    }
+
+    public String getSaturacionOxigeno() {
+        return saturacionOxigeno;
+    }
+
+    public void setSaturacionOxigeno(String saturacionOxigeno) {
+        this.saturacionOxigeno = saturacionOxigeno;
+    }
+
+    public String getPA() {
+        return PA;
+    }
+
+    public void setPA(String PA) {
+        this.PA = PA;
+    }
+
+    public String getFC() {
+        return FC;
+    }
+
+    public void setFC(String FC) {
+        this.FC = FC;
+    }
+
+    public String getTemperatura() {
+        return temperatura;
+    }
+
+    public void setTemperatura(String temperatura) {
+        this.temperatura = temperatura;
+    }
+
+    public String getFR() {
+        return FR;
+    }
+
+    public void setFR(String FR) {
+        this.FR = FR;
+    }
+
+    public String getExamenClinicoGeneral() {
+        return examenClinicoGeneral;
+    }
+
+    public void setExamenClinicoGeneral(String examenClinicoGeneral) {
+        this.examenClinicoGeneral = examenClinicoGeneral;
+    }
+
+    public String getExamenClinicoOdontoestomtologico() {
+        return examenClinicoOdontoestomtologico;
+    }
+
+    public void setExamenClinicoOdontoestomtologico(String examenClinicoOdontoestomtologico) {
+        this.examenClinicoOdontoestomtologico = examenClinicoOdontoestomtologico;
+    }
+
+    public String getDiagnosticoCIE10() {
+        return diagnosticoCIE10;
+    }
+
+    public void setDiagnosticoCIE10(String diagnosticoCIE10) {
+        this.diagnosticoCIE10 = diagnosticoCIE10;
+    }
+
+    public String getDiagnosticoPresuntivo() {
+        return diagnosticoPresuntivo;
+    }
+
+    public void setDiagnosticoPresuntivo(String diagnosticoPresuntivo) {
+        this.diagnosticoPresuntivo = diagnosticoPresuntivo;
+    }
+
+    public String getDiagnosticoDefinitivo() {
+        return diagnosticoDefinitivo;
+    }
+
+    public void setDiagnosticoDefinitivo(String diagnosticoDefinitivo) {
+        this.diagnosticoDefinitivo = diagnosticoDefinitivo;
+    }
+
+    public String getRecomendaciones() {
+        return recomendaciones;
+    }
+
+    public void setRecomendaciones(String recomendaciones) {
+        this.recomendaciones = recomendaciones;
+    }
+
+    public String getPronostico() {
+        return pronostico;
+    }
+
+    public void setPronostico(String pronostico) {
+        this.pronostico = pronostico;
+    }
+
+    public String getAltaPaciente() {
+        return altaPaciente;
+    }
+
+    public void setAltaPaciente(String altaPaciente) {
+        this.altaPaciente = altaPaciente;
+    }
     
- 
+    
 }
