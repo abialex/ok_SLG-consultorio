@@ -293,7 +293,7 @@
                                                                               <JFXTextField fx:id="jtfantpreguntamujer1" disable="true" labelFloat="true" promptText="¿Cuánto tiempo?" GridPane.columnIndex="2" />
                                                                               <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                                                 <buttons>
-                                                                                  <Button fx:id="jbtnpruebita" mnemonicParsing="false" onAction="#test" text="Pruebita" />
+                                                                                  <Button fx:id="jbtnpruebita" mnemonicParsing="false" onAction="#GuardarPaciente" text="Pruebita" />
                                                                                 </buttons>
                                                                               </ButtonBar>
                                                                            </children>
@@ -480,12 +480,12 @@
                                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                               </rowConstraints>
                                                                <children>
-                                                                  <JFXTextField labelFloat="true" promptText="Signos vitales:">
+                                                                  <JFXTextField fx:id="jtfsignosvitales" labelFloat="true" promptText="Signos vitales:">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
                                                                   </JFXTextField>
-                                                                  <JFXTextField labelFloat="true" promptText="Saturación de Oxígeno" GridPane.columnIndex="1">
+                                                                  <JFXTextField fx:id="jtfsaturacionoxigeno" labelFloat="true" promptText="Saturación de Oxígeno" GridPane.columnIndex="1">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
@@ -503,34 +503,34 @@
                                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                               </rowConstraints>
                                                                <children>
-                                                                  <JFXTextField labelFloat="true" promptText="P.A ">
+                                                                  <JFXTextField fx:id="jtfPA" labelFloat="true" promptText="P.A ">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
                                                                   </JFXTextField>
-                                                                  <JFXTextField labelFloat="true" promptText="F. C" GridPane.columnIndex="1">
+                                                                  <JFXTextField fx:id="jtfFC" labelFloat="true" promptText="F. C" GridPane.columnIndex="1">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
                                                                   </JFXTextField>
-                                                                  <JFXTextField labelFloat="true" promptText="Temperatura" GridPane.columnIndex="2">
+                                                                  <JFXTextField fx:id="jtftemperatura" labelFloat="true" promptText="Temperatura" GridPane.columnIndex="2">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
                                                                   </JFXTextField>
-                                                                  <JFXTextField labelFloat="true" promptText="F. R." GridPane.columnIndex="3">
+                                                                  <JFXTextField fx:id="jtfFR" labelFloat="true" promptText="F. R." GridPane.columnIndex="3">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
                                                                   </JFXTextField>
                                                                </children>
                                                             </GridPane>
-                                                            <JFXTextField labelFloat="true" promptText="Examen clínico general" GridPane.rowIndex="2">
+                                                            <JFXTextField fx:id="jtfexamenclinicogeneral" labelFloat="true" promptText="Examen clínico general" GridPane.rowIndex="2">
                                                                <GridPane.margin>
                                                                   <Insets right="5.0" />
                                                                </GridPane.margin>
                                                             </JFXTextField>
-                                                            <JFXTextField promptText="Examen Clínico Odontoestomatlógico" GridPane.rowIndex="3">
+                                                            <JFXTextField fx:id="jtfexamenclinicoodontoestomatolgico" promptText="Examen Clínico Odontoestomatlógico" GridPane.rowIndex="3">
                                                                <GridPane.margin>
                                                                   <Insets right="5.0" />
                                                                </GridPane.margin>
@@ -557,9 +557,9 @@
                                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                         </rowConstraints>
                                                          <children>
-                                                            <JFXTextField labelFloat="true" promptText="Diagnóstico (CIE 10)" />
-                                                            <JFXTextField labelFloat="true" promptText="Diagnóstico Presuntivo" GridPane.rowIndex="1" />
-                                                            <JFXTextField labelFloat="true" promptText="Diagnóstico Definitivo" GridPane.rowIndex="2" />
+                                                            <JFXTextField fx:id="jtfdiagnosticoCIE10" labelFloat="true" promptText="Diagnóstico (CIE 10)" />
+                                                            <JFXTextField fx:id="jtfdiagnosticopresuntivo" labelFloat="true" promptText="Diagnóstico Presuntivo" GridPane.rowIndex="1" />
+                                                            <JFXTextField fx:id="jtfdiagnosticodefinitivo" labelFloat="true" promptText="Diagnóstico Definitivo" GridPane.rowIndex="2" />
                                                          </children>
                                                       </GridPane>
                                                    </children></AnchorPane>
@@ -572,7 +572,7 @@
                                              <content>
                                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                    <children>
-                                                      <JFXTextArea labelFloat="true" layoutX="30.4" layoutY="79.4" prefHeight="353.0" prefWidth="1150.0" promptText="PLAN DE TRATAMIENTO - RECOMENDACIONES" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="69.0">
+                                                      <JFXTextArea fx:id="jtfrecomendaciones" labelFloat="true" layoutX="30.4" layoutY="79.4" prefHeight="353.0" prefWidth="1150.0" promptText="PLAN DE TRATAMIENTO - RECOMENDACIONES" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="22.0" AnchorPane.topAnchor="69.0">
                                                          <font>
                                                             <Font size="18.0" />
                                                          </font>
@@ -585,7 +585,14 @@
                                           </TitledPane>
                                           <TitledPane animated="false" text="VII. PRONÓSTICO" textFill="WHITE">
                                              <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <JFXTextArea fx:id="jtapronostico" labelFloat="true" layoutX="21.0" layoutY="45.0" prefHeight="353.0" prefWidth="1150.0" promptText="PRONÓSTICO">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </JFXTextArea>
+                                                   </children></AnchorPane>
                                              </content>
                                              <font>
                                                 <Font name="System Bold" size="13.0" />
@@ -593,7 +600,14 @@
                                           </TitledPane>
                                           <TitledPane animated="false" text="VIII. ALTA DEL PACIENTE" textFill="WHITE">
                                              <content>
-                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <JFXTextArea fx:id="jtaAltapaciente" labelFloat="true" layoutX="21.0" layoutY="45.0" prefHeight="353.0" prefWidth="1150.0" promptText="ALTA DE PACIENTE">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </JFXTextArea>
+                                                   </children></AnchorPane>
                                              </content>
                                              <font>
                                                 <Font name="System Bold" size="13.0" />

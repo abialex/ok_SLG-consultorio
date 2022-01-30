@@ -37,6 +37,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
@@ -106,6 +107,25 @@ public class RegistrarPacienteController implements Initializable {
         
     @FXML TextField jtfantecedentesFamiliares;
     @FXML TextField jtfotrasEnfermedades;
+    //EXPLORACIÓN FÍSICA
+    @FXML TextField jtfsignosvitales;
+    @FXML TextField jtfsaturacionoxigeno;
+    @FXML TextField jtfPA;
+    @FXML TextField jtfFC;
+    @FXML TextField jtftemperatura;
+    @FXML TextField jtfFR;
+    @FXML TextField jtfexamenclinicogeneral;
+    @FXML TextField jtfexamenclinicoodontoestomatolgico;
+    //Diagnóstico
+    @FXML TextField jtfdiagnosticoCIE10;
+    @FXML TextField jtfdiagnosticopresuntivo;
+    @FXML TextField jtfdiagnosticodefinitivo;
+    //Plan de tratamiento
+    @FXML TextArea jtfrecomendaciones;
+    //Pronóstico
+    @FXML TextArea jtapronostico;
+    //Alta de paciente
+    @FXML TextArea jtaAltapaciente;
             
     @FXML CheckBox checkpregunta1;@FXML TextField jtfantPregunta1;
     @FXML CheckBox checkpregunta2;@FXML TextField jtfantPregunta2;
@@ -213,10 +233,24 @@ public class RegistrarPacienteController implements Initializable {
         List<Paciente_Pregunta> Lista_preguntasPaciente=Paciente_relacionar_pregunta(opaciente);
         
         Historia_clinica ohistoria=new Historia_clinica(
-        opaciente,
-        new Date(),
-        new Date(),
-        jtfmotivoconsulta.getText().trim());
+                opaciente,
+                jtfsignosvitales.getText().trim(),
+                jtfsaturacionoxigeno.getText().trim(),
+                jtfPA.getText().trim(),
+                jtfFC.getText().trim(),
+                jtftemperatura.getText().trim(),
+                jtfFR.getText(),
+                jtfexamenclinicogeneral.getText().trim(),
+                jtfexamenclinicoodontoestomatolgico.getText().trim(),
+                jtfdiagnosticoCIE10.getText().trim(),
+                jtfdiagnosticopresuntivo.getText().trim(),
+                jtfdiagnosticodefinitivo.getText().trim(),
+                jtfrecomendaciones.getText().trim(),
+                jtapronostico.getText().trim(),
+                jtaAltapaciente.getText().trim(),
+                jtfmotivoconsulta.getText().trim(),
+                new Date(), 
+                new Date());
         
         //GuardarPaciente
         App.jpa.getTransaction().begin();
