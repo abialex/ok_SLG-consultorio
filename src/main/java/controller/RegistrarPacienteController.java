@@ -64,7 +64,6 @@ public class RegistrarPacienteController implements Initializable {
     @FXML Label jlblnombresyapellidos;
     @FXML Label jlbldni;
     @FXML Button jbtnimprimir;
-    @FXML ImageView jimagperfil;
     
     
     
@@ -117,14 +116,13 @@ public class RegistrarPacienteController implements Initializable {
     @FXML TextField jtfexamenclinicogeneral;
     @FXML TextField jtfexamenclinicoodontoestomatolgico;
     //Diagnóstico
-    @FXML TextField jtfdiagnosticoCIE10;
-    @FXML TextField jtfdiagnosticopresuntivo;
-    @FXML TextField jtfdiagnosticodefinitivo;
+    @FXML TextArea jtaDiagCIE10;
+    @FXML TextArea jtaDiagPresentivo;
+    @FXML TextArea jtaDiagDefinitivo;
     //Plan de tratamiento
     @FXML TextArea jtfrecomendaciones;
-    //Pronóstico
+    //Pronóstico / alta paciente
     @FXML TextArea jtapronostico;
-    //Alta de paciente
     @FXML TextArea jtaAltapaciente;
             
     @FXML CheckBox checkpregunta1;@FXML TextField jtfantPregunta1;
@@ -150,8 +148,6 @@ public class RegistrarPacienteController implements Initializable {
     
     //Fin Atributos Actualización  
     AlertController oAlertController=new AlertController();
-    File fileImag;
-    FileImagUtil oFileUtilImag=new FileImagUtil("user.home","Buscar Imagen");
     Persona oPersona;
     
     
@@ -218,8 +214,7 @@ public class RegistrarPacienteController implements Initializable {
         jtflugarprocedencia.getText().trim(),
         jcbocupacion.getSelectionModel().getSelectedItem(),
         jtfTelefono.getText().trim(),
-        "alex@gmail",
-         oFileUtilImag.guardarImagen(fileImag)        
+        "alex@gmail"   
         );
         
         Paciente opaciente= new Paciente( 
@@ -242,9 +237,9 @@ public class RegistrarPacienteController implements Initializable {
                 jtfFR.getText(),
                 jtfexamenclinicogeneral.getText().trim(),
                 jtfexamenclinicoodontoestomatolgico.getText().trim(),
-                jtfdiagnosticoCIE10.getText().trim(),
-                jtfdiagnosticopresuntivo.getText().trim(),
-                jtfdiagnosticodefinitivo.getText().trim(),
+                jtaDiagCIE10.getText().trim(),
+                jtaDiagPresentivo.getText().trim(),
+                jtaDiagDefinitivo.getText().trim(),
                 jtfrecomendaciones.getText().trim(),
                 jtapronostico.getText().trim(),
                 jtaAltapaciente.getText().trim(),
@@ -520,15 +515,7 @@ public class RegistrarPacienteController implements Initializable {
         
         return list_pregunta_paciente;
     }
-    
-     @FXML
-    public void seleccionarImagPerfil() throws IOException, IOException{ 
-        fileImag = oFileUtilImag.buscarImagen();
-        if (fileImag != null) {
-            jimagperfil.setImage(new Image(fileImag.getAbsolutePath()));
-        }
-    }
-    
+       
     @FXML
     void ActualizarPaciente(ActionEvent evt){
         Persona opersona=(Persona)App.jpa.createQuery("select p from Persona p where dni="+"'"+jtfbuscarAct.getText().trim()+"'"

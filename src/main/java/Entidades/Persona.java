@@ -18,49 +18,45 @@ import javax.persistence.Id;
 @Entity
 
 public class Persona {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idpersona;
-        
+
     @Column(name = "nombres_apellidos", nullable = false)
     private String nombres_apellidos;
-    
-    @Column(name = "sexo",length = 15, nullable = false)
+
+    @Column(name = "sexo", length = 15, nullable = false)
     private String sexo;
-    
+
     @Column(name = "edad", nullable = false)
     private int edad;
-    
-    @Column(name = "domicilio",length = 60, nullable = false)
+
+    @Column(name = "domicilio", length = 60, nullable = false)
     private String domicilio;
-    
-    @Column(name = "dni",length = 8, nullable = false)
+
+    @Column(name = "dni", length = 8, nullable = false)
     private String dni;
-    
+
     @Column(name = "fecha_nacimiento", nullable = false)
     private Date fecha_nacimiento;
-    
-    @Column(name = "lugar_de_procedencia",length = 100, nullable = false)
+
+    @Column(name = "lugar_de_procedencia", length = 100, nullable = false)
     private String lugar_de_procedencia;
 
     @Column(name = "ocupacion", nullable = false)
     private String ocupacion;
-    
+
     @Column(name = "telefono", nullable = false)
     private String telefono;
-    
-    @Column(name = "correo",length = 40, nullable = true)
+
+    @Column(name = "correo", length = 40, nullable = true)
     private String correo;
-    
-    @Column(name = "urlImag",length = 150, nullable = true)
-    private String urlImag;
 
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, String correo
-    ,String urlImag) {
+    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, String correo) {
         this.nombres_apellidos = nombres_apellidos;
         this.sexo = sexo;
         this.edad = edad;
@@ -71,9 +67,8 @@ public class Persona {
         this.ocupacion = ocupacion;
         this.telefono = telefono;
         this.correo = correo;
-        this.urlImag = urlImag;
     }
-    
+
     public int getIdpersona() {
         return idpersona;
     }
@@ -161,12 +156,4 @@ public class Persona {
     public void setCorreo(String correo) {
         this.correo = correo;
     }
-
-    public String getUrlImag() {
-        return urlImag;
-    }
-
-    public void setUrlImag(String urlImag) {
-        this.urlImag = urlImag;
-    }    
 }

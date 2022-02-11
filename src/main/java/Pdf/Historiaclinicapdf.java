@@ -92,19 +92,11 @@ public class Historiaclinicapdf {
         Cabecera.addCell(new Cell().add(CabeceraParrafo1).addStyle(styleCell));
         Cabecera.addCell(new Cell().add(CabeceraParrafo2).addStyle(styleCell));
         //Fin Cabecera
-          Image img = null;
-        try {
-            img = new Image(ImageDataFactory.create(opersona.getUrlImag()));
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(style1.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         Cell cellImag=new Cell().add(img.scaleAbsolute(95f, 110f)).setBorder(Border.NO_BORDER); /*new SolidBorder(Color.BLACK,1*/ 
-         cellImag.setHeight(10);
         // ANAMNESIS
         Paragraph parrafoTitulo = new Paragraph("HISTORIA CLÍNICA").setFontSize(14).setFont(bold).setTextAlignment(TextAlignment.CENTER);
         Paragraph parrafoSubTitulo1 = new Paragraph("I.  ANAMNESIS").setFontSize(10).setFontColor(Color.BLUE).setFont(bold).addStyle(styleTextLeft);
 
-        Table table1Parrafo1 = new Table(new float[]{volumen * 0.95f,volumen* 1.55f , volumen * 0.3f, volumen *0.6f, volumen * 0.3f, volumen * 0.3f});
+        Table table1Parrafo1 = new Table(new float[]{volumen * 0.95f,volumen* 2.55f , volumen * 0.3f, volumen *0.6f, volumen * 0.3f, volumen * 0.3f});
         Cell cell1Parrafo1 = new Cell().add(new Paragraph("Nombres y Apellidos: ")).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo1.addCell(cell1Parrafo1);
         cell1Parrafo1 = new Cell().add(new Paragraph(opersona.getNombres_apellidos()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
@@ -118,7 +110,7 @@ public class Historiaclinicapdf {
         cell1Parrafo1 = new Cell().add(new Paragraph(opersona.getEdad()+"").setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo1.addCell(cell1Parrafo1);
 
-        Table table1Parrafo2 = new Table(new float[]{volumen * 0.5f, volumen*2.5f, volumen*0.25f, volumen*0.75f});
+        Table table1Parrafo2 = new Table(new float[]{volumen * 0.5f, volumen*3.5f, volumen*0.25f, volumen*0.75f});
         Cell cell1Parrafo2 = new Cell().add(new Paragraph("Domicilio: ")).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo2.addCell(cell1Parrafo2);
         cell1Parrafo2 = new Cell().add(new Paragraph(opersona.getDomicilio()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
@@ -128,7 +120,7 @@ public class Historiaclinicapdf {
         cell1Parrafo2 = new Cell().add(new Paragraph(opersona.getDni()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo2.addCell(cell1Parrafo2);
 
-        Table table1Parrafo3 = new Table(new float[]{volumen * 1f, volumen*0.9f,volumen *1f, volumen * 1.1f});
+        Table table1Parrafo3 = new Table(new float[]{volumen * 1f, volumen*1.4f,volumen *1f, volumen * 1.6f});
         Cell cell1Parrafo3 = new Cell().add(new Paragraph("Fecha de Nacimiento:")).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo3.addCell(cell1Parrafo3);
         cell1Parrafo3 = new Cell().add(new Paragraph(opersona.getFecha_nacimiento().getDay()+"/"+opersona.getFecha_nacimiento().getMonth()+"/"+opersona.getFecha_nacimiento().getYear())
@@ -139,7 +131,7 @@ public class Historiaclinicapdf {
         cell1Parrafo3 = new Cell().add(new Paragraph(opersona.getLugar_de_procedencia()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo3.addCell(cell1Parrafo3);
 
-        Table table1Parrafo4 = new Table(new float[]{volumen * 0.53f, volumen * 1.47f, volumen * 0.44f, volumen * 1.56f});
+        Table table1Parrafo4 = new Table(new float[]{volumen * 0.53f, volumen * 1.97f, volumen * 0.44f, volumen * 2.06f});
         Cell cell1Parrafo4 = new Cell().add(new Paragraph("Ocupación:")).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo4.addCell(cell1Parrafo4);
         cell1Parrafo4 = new Cell().add(new Paragraph(opersona.getOcupacion()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
@@ -156,9 +148,8 @@ public class Historiaclinicapdf {
             Logger.getLogger(EventoPagina.class.getName()).log(Level.SEVERE, null, ex);
         }
         Cell cellimag=new Cell().add(img.setAutoScale(true)).setBorder(Border.NO_BORDER); /* new SolidBorder(Color.BLACK,1*/
-        Table tableDatos = new Table(new float[]{volumen * 1,volumen * 4});
-        Table tableImagDatos=new Table(new float[]{volumen * 5});
-        tableImagDatos.addCell(new Cell().add(cellImag).addStyle(styleCell));
+
+
         Table tableInformacion = new Table(new float[]{volumen * 5});
         Cell cellTable1 = new Cell().add(table1Parrafo1).addStyle(styleCell);
         tableInformacion.addCell(cellTable1);
@@ -168,8 +159,7 @@ public class Historiaclinicapdf {
         tableInformacion.addCell(cellTable1);
         cellTable1 = new Cell().add(table1Parrafo4).addStyle(styleCell);
         tableInformacion.addCell(cellTable1);
-        tableDatos.addCell(new Cell().add(tableImagDatos).addStyle(styleCell));
-        tableDatos.addCell(new Cell().add(tableInformacion).addStyle(styleCell));
+
         //table1Datos.addCell(cellimag);
 
         Table TableMenorDeEdadParrafo1 = new Table(new float[]{volumen * 5});
@@ -322,7 +312,7 @@ public class Historiaclinicapdf {
         document.add(Cabecera);
         document.add(parrafoTitulo);
         document.add(parrafoSubTitulo1);
-        document.add(tableDatos);
+        document.add(tableInformacion);
         document.add(TableMenorDeEdad);
         document.add(TableCasoDeEmergencia);
         document.add(TableMotivoDeConsulta);
