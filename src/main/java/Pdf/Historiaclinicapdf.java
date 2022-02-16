@@ -314,7 +314,10 @@ public class Historiaclinicapdf {
         document.add(parrafoTitulo);
         document.add(parrafoSubTitulo1);
         document.add(tableInformacion);
+        if (opersona.getEdad() < 18) {
             document.add(TableMenorDeEdad);
+
+        }
         document.add(TableCasoDeEmergencia);
         document.add(TableMotivoDeConsulta);
 
