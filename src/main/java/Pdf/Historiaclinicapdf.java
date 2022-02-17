@@ -11,7 +11,6 @@ import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
 import com.itextpdf.io.font.FontConstants;
-import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
 import com.itextpdf.kernel.font.PdfFont;
@@ -23,27 +22,17 @@ import com.itextpdf.layout.Document;
 import com.itextpdf.layout.Style;
 import com.itextpdf.layout.border.Border;
 import com.itextpdf.layout.element.Cell;
-import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import Pdf.style.style1;
+import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.layout.border.SolidBorder;
 import controller.App;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.Period;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.text.Font;
-
 /**
  *
  * @author yalle
@@ -76,10 +65,17 @@ public class Historiaclinicapdf {
         /*--------styles-------------*/
         PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
         PdfFont bold = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+
         Style styleCell = new Style().setBorder(Border.NO_BORDER);
         Style styleTextRight = new Style().setTextAlignment(TextAlignment.RIGHT).setFontSize(10f);
         Style styleTextLeft = new Style().setTextAlignment(TextAlignment.LEFT).setFontSize(10f);
         Style styleTextCenter = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(10f);
+
+        /*---------------------Color----------*/
+        Color prueba = new DeviceRgb(0,0,0);
+        Color colorAzul = Color.BLUE;
+        Color colorSubtitulo = Color.BLACK;
+        Color colorNegro = Color.BLACK;
         /* Contenido del documento  página 1*/
         //Cabecera
         Table CabeceraParrafo1 = new Table(new float[]{volumen * 4.3f, volumen * 0.7f});
@@ -100,49 +96,49 @@ public class Historiaclinicapdf {
         //Fin Cabecera
         // ANAMNESIS
         Paragraph parrafoTitulo = new Paragraph("HISTORIA CLÍNICA").setFontSize(14).setFont(bold).setTextAlignment(TextAlignment.CENTER);
-        Paragraph parrafoSubTitulo1 = new Paragraph("I.  ANAMNESIS").setFontSize(10).setFontColor(Color.BLUE).setFont(bold).addStyle(styleTextLeft);
+        Paragraph parrafoSubTitulo1 = new Paragraph("I.  ANAMNESIS").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
 
         Table table1Parrafo1 = new Table(new float[]{volumen * 0.95f, volumen * 2.55f, volumen * 0.3f, volumen * 0.6f, volumen * 0.3f, volumen * 0.3f});
-        Cell cell1Parrafo1 = new Cell().add(new Paragraph("Nombres y Apellidos: ")).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cell1Parrafo1 = new Cell().add(new Paragraph("Nombres y Apellidos: ").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo1.addCell(cell1Parrafo1);
         cell1Parrafo1 = new Cell().add(new Paragraph(opersona.getNombres_apellidos()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo1.addCell(cell1Parrafo1);
-        cell1Parrafo1 = new Cell().add(new Paragraph("Sexo: ")).addStyle(styleCell).addStyle(styleTextLeft);
+        cell1Parrafo1 = new Cell().add(new Paragraph("Sexo: ").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo1.addCell(cell1Parrafo1);
         cell1Parrafo1 = new Cell().add(new Paragraph(opersona.getSexo()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo1.addCell(cell1Parrafo1);
-        cell1Parrafo1 = new Cell().add(new Paragraph("Edad: ")).addStyle(styleCell).addStyle(styleTextLeft);
+        cell1Parrafo1 = new Cell().add(new Paragraph("Edad: ").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo1.addCell(cell1Parrafo1);
         cell1Parrafo1 = new Cell().add(new Paragraph(opersona.getEdad() + "").setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo1.addCell(cell1Parrafo1);
 
         Table table1Parrafo2 = new Table(new float[]{volumen * 0.5f, volumen * 3.5f, volumen * 0.25f, volumen * 0.75f});
-        Cell cell1Parrafo2 = new Cell().add(new Paragraph("Domicilio: ")).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cell1Parrafo2 = new Cell().add(new Paragraph("Domicilio: ").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo2.addCell(cell1Parrafo2);
         cell1Parrafo2 = new Cell().add(new Paragraph(opersona.getDomicilio()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo2.addCell(cell1Parrafo2);
-        cell1Parrafo2 = new Cell().add(new Paragraph("DNI:")).addStyle(styleTextLeft).addStyle(styleCell).addStyle(styleTextLeft);
+        cell1Parrafo2 = new Cell().add(new Paragraph("DNI:").setFontColor(colorNegro)).addStyle(styleTextLeft).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo2.addCell(cell1Parrafo2);
         cell1Parrafo2 = new Cell().add(new Paragraph(opersona.getDni()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo2.addCell(cell1Parrafo2);
 
         Table table1Parrafo3 = new Table(new float[]{volumen * 1f, volumen * 1.4f, volumen * 1f, volumen * 1.6f});
-        Cell cell1Parrafo3 = new Cell().add(new Paragraph("Fecha de Nacimiento:")).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cell1Parrafo3 = new Cell().add(new Paragraph("Fecha de Nacimiento:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo3.addCell(cell1Parrafo3);
         cell1Parrafo3 = new Cell().add(new Paragraph(oSDF.format(opersona.getFecha_nacimiento()))
                 .setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo3.addCell(cell1Parrafo3);
-        cell1Parrafo3 = new Cell().add(new Paragraph("Lugar de Procedencia:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cell1Parrafo3 = new Cell().add(new Paragraph("Lugar de Procedencia:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo3.addCell(cell1Parrafo3);
         cell1Parrafo3 = new Cell().add(new Paragraph(opersona.getLugar_de_procedencia()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo3.addCell(cell1Parrafo3);
 
         Table table1Parrafo4 = new Table(new float[]{volumen * 0.53f, volumen * 1.97f, volumen * 0.44f, volumen * 2.06f});
-        Cell cell1Parrafo4 = new Cell().add(new Paragraph("Ocupación:")).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cell1Parrafo4 = new Cell().add(new Paragraph("Ocupación:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo4.addCell(cell1Parrafo4);
         cell1Parrafo4 = new Cell().add(new Paragraph(opersona.getOcupacion()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo4.addCell(cell1Parrafo4);
-        cell1Parrafo4 = new Cell().add(new Paragraph("Teléfono:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cell1Parrafo4 = new Cell().add(new Paragraph("Teléfono:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo4.addCell(cell1Parrafo4);
         cell1Parrafo4 = new Cell().add(new Paragraph(opersona.getTelefono()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo4.addCell(cell1Parrafo4);
@@ -166,23 +162,23 @@ public class Historiaclinicapdf {
 
         //table1Datos.addCell(cellimag);
         Table TableMenorDeEdadParrafo1 = new Table(new float[]{volumen * 5});
-        Cell cellTableMenorDeEdadParrafo1 = new Cell().add(new Paragraph("Para pacientes menores de edad:").setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellTableMenorDeEdadParrafo1 = new Cell().add(new Paragraph("Para pacientes menores de edad:").setFontColor(colorSubtitulo).setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo1.addCell(cellTableMenorDeEdadParrafo1);
 
         Table TableMenorDeEdadParrafo2 = new Table(new float[]{volumen * 4, volumen * 0.5f, volumen * 0.5f});
-        Cell cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("Nombre del Padre:")).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("Nombre del Padre:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
-        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("DNI:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("DNI:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
-        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("Telf.:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("Telf.:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
 
         Table TableMenorDeEdadParrafo3 = new Table(new float[]{volumen * 4, volumen * 0.5f, volumen * 0.5f});
-        Cell cellTableMenorDeEdadParrafo3 = new Cell().add(new Paragraph("Nombre de la Madre:")).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellTableMenorDeEdadParrafo3 = new Cell().add(new Paragraph("Nombre de la Madre:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo3.addCell(cellTableMenorDeEdadParrafo3);
-        cellTableMenorDeEdadParrafo3 = new Cell().add(new Paragraph("DNI:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cellTableMenorDeEdadParrafo3 = new Cell().add(new Paragraph("DNI:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo3.addCell(cellTableMenorDeEdadParrafo3);
-        cellTableMenorDeEdadParrafo3 = new Cell().add(new Paragraph("Telf.:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cellTableMenorDeEdadParrafo3 = new Cell().add(new Paragraph("Telf.:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo3.addCell(cellTableMenorDeEdadParrafo3);
 
         Table TableMenorDeEdad = new Table(new float[]{volumen * 5});
@@ -194,15 +190,15 @@ public class Historiaclinicapdf {
         TableMenorDeEdad.addCell(cellTableMenorDeEdad);
 
         Table TableCasoDeEmergenciaParrafo1 = new Table(new float[]{volumen * 5});
-        Cell cellTableCasoDeEmergenciaParrafo1 = new Cell().add(new Paragraph("En caso de emergencia comunicarse con:").setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellTableCasoDeEmergenciaParrafo1 = new Cell().add(new Paragraph("En caso de emergencia comunicarse con").setFontColor(colorSubtitulo).setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft);
         TableCasoDeEmergenciaParrafo1.addCell(cellTableCasoDeEmergenciaParrafo1);
 
         Table TableCasoDeEmergenciaParrafo2 = new Table(new float[]{volumen * 3, volumen * 1.5f, volumen * 0.5f});
-        Cell cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Nombre:")).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Nombre:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
-        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Parentesco:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Parentesco:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
-        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Telf.:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Telf.:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
 
         Table TableCasoDeEmergencia = new Table(new float[]{volumen * 5});
@@ -212,7 +208,7 @@ public class Historiaclinicapdf {
         TableCasoDeEmergencia.addCell(cellTableCasoDeEmergencia);
 
         Table TableMotivoDeConsultaParrafo1 = new Table(new float[]{volumen * 1, volumen * 4});
-        Cell cellTableMotivoDeConsultaParrafo1 = new Cell().add(new Paragraph("Motivo de Consulta: ").setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellTableMotivoDeConsultaParrafo1 = new Cell().add(new Paragraph("Motivo de Consulta: ").setFontColor(colorNegro).setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMotivoDeConsultaParrafo1.addCell(cellTableMotivoDeConsultaParrafo1);
         cellTableMotivoDeConsultaParrafo1 = new Cell().add(new Paragraph(oHistoriaclinica.getMotivoConsulta()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableMotivoDeConsultaParrafo1.addCell(cellTableMotivoDeConsultaParrafo1);
@@ -223,13 +219,13 @@ public class Historiaclinicapdf {
         //Fin ANAMNESIS
 
         //ENFERMEDAD ACTUAL
-        Paragraph parrafoSubTitulo2 = new Paragraph("II.  ENFERMEDAD ACTUAL").setFontSize(10).setFontColor(Color.BLUE).setFont(bold).addStyle(styleTextLeft);
+        Paragraph parrafoSubTitulo2 = new Paragraph("II.  ENFERMEDAD ACTUAL").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableEnfermedadActual = new Table(new float[]{volumen * 1.3f, volumen * 3.7f});
-        Cell cellTableEnfermedadActual = new Cell().add(new Paragraph("Signo y síntomas principales:")).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellTableEnfermedadActual = new Cell().add(new Paragraph("Signo y síntomas principales:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableEnfermedadActual.addCell(cellTableEnfermedadActual);
         cellTableEnfermedadActual = new Cell().add(new Paragraph(opaciente.getSintomasEnfermedadActual()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableEnfermedadActual.addCell(cellTableEnfermedadActual);
-        cellTableEnfermedadActual = new Cell().add(new Paragraph("Tiempo de la enfermedad:")).addStyle(styleCell).addStyle(styleTextLeft);
+        cellTableEnfermedadActual = new Cell().add(new Paragraph("Tiempo de la enfermedad:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableEnfermedadActual.addCell(cellTableEnfermedadActual);
         cellTableEnfermedadActual = new Cell().add(new Paragraph(opaciente.getTiempoEnfermedadActual()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableEnfermedadActual.addCell(cellTableEnfermedadActual);
@@ -237,7 +233,7 @@ public class Historiaclinicapdf {
 
         //ANTECEDENTES
         //Ha presentado o presenta algunos de los siguientes síntomas
-        Paragraph parrafoSubTitulo3 = new Paragraph("III.  ANTECEDENTES").setFontSize(10).setFontColor(Color.BLUE).setFont(bold).addStyle(styleTextLeft);
+        Paragraph parrafoSubTitulo3 = new Paragraph("III.  ANTECEDENTES").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableAntecedentes = new Table(new float[]{volumen * 5});
 
         Table TableAntecedentesEnfermedades = new Table(new float[]{volumen * 1.25f, volumen * 1.25f, volumen * 1.25f, volumen * 1.25f});
@@ -253,7 +249,7 @@ public class Historiaclinicapdf {
         }
 
         //Otras enfermedades
-        Table TableOtrasEnfermedades = new Table(new float[]{volumen * 1f, volumen * 4f});
+        Table TableOtrasEnfermedades = new Table(new float[]{volumen * 0.95f, volumen * 4.05f});
         Cell cellTableOtrasEnfermedades = new Cell().add(new Paragraph("Otras enfermedades: ")).addStyle(styleCell).addStyle(styleTextLeft);
         TableOtrasEnfermedades.addCell(cellTableOtrasEnfermedades);
         cellTableOtrasEnfermedades = new Cell().add(new Paragraph(opaciente.getOtrasEnfermedades()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
@@ -270,7 +266,7 @@ public class Historiaclinicapdf {
                 }
             }
             Table TableAntecedentesPreguntasParrafo = new Table(new float[]{volumen * 2.4f, volumen * 2.6f});
-            Cell cellTableAntecedentePreguntas = new Cell().add(new Paragraph(contP + ": " + pregunta.getTextopregunta())).addStyle(styleCell).addStyle(styleTextLeft);
+            Cell cellTableAntecedentePreguntas = new Cell().add(new Paragraph(contP + ": " + pregunta.getTextopregunta()).setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
             TableAntecedentesPreguntasParrafo.addCell(cellTableAntecedentePreguntas);
             cellTableAntecedentePreguntas = new Cell().add(new Paragraph(contexto).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
             TableAntecedentesPreguntasParrafo.addCell(cellTableAntecedentePreguntas);
@@ -279,7 +275,7 @@ public class Historiaclinicapdf {
         }
 
         Table TableAntecedentesPreguntasMujer = new Table(new float[]{volumen * 5f});
-        TableAntecedentesPreguntasMujer.addCell(new Cell().add(new Paragraph("Para pacientes de sexo femenino").setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft));
+        TableAntecedentesPreguntasMujer.addCell(new Cell().add(new Paragraph("Para pacientes de sexo femenino").setFontColor(colorSubtitulo).setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft));
         for (Pregunta pregunta : listPreguntaIsMujer) {
             contP++;
             String contexto = "NO";
@@ -290,22 +286,27 @@ public class Historiaclinicapdf {
 
             }
             Table TableAntecedentesPreguntasMujerParrafo = new Table(new float[]{volumen * 2.4f, volumen * 2.6f});
-            TableAntecedentesPreguntasMujerParrafo.addCell(new Cell().add(new Paragraph(contP + ": " + pregunta.getTextopregunta())).addStyle(styleCell).addStyle(styleTextLeft));
+            TableAntecedentesPreguntasMujerParrafo.addCell(new Cell().add(new Paragraph(contP + ": " + pregunta.getTextopregunta()).setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft));
             TableAntecedentesPreguntasMujerParrafo.addCell(new Cell().add(new Paragraph(contexto).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft));
             TableAntecedentesPreguntasMujer.addCell(new Cell().add(TableAntecedentesPreguntasMujerParrafo).addStyle(styleCell));
 
         }
+        Table TableAntecedente = new Table(new float[]{volumen * 1.1f, volumen * 3.9f});
+        Cell cellTableAntecedente = new Cell().add(new Paragraph("Antecedentes familiares: ")).addStyle(styleCell).addStyle(styleTextLeft);
+        TableAntecedente.addCell(cellTableAntecedente);
+        cellTableAntecedente = new Cell().add(new Paragraph(opaciente.getAntecedentesFamiliares()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        TableAntecedente.addCell(cellTableAntecedente);
 
-        TableAntecedentes.addCell(new Cell().add(new Paragraph("Ha presentado o presenta algunos de los siguientes síntomas").setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft));
+        TableAntecedentes.addCell(new Cell().add(new Paragraph("Ha presentado o presenta algunos de los siguientes síntomas").setFontColor(colorSubtitulo).setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft));
         TableAntecedentes.addCell(new Cell().add(TableAntecedentesEnfermedades).addStyle(styleCell));
         TableAntecedentes.addCell(new Cell().add(TableOtrasEnfermedades).addStyle(styleCell));
         TableAntecedentes.addCell(new Cell().add(TableAntecedentesPreguntas).addStyle(styleCell));
         TableAntecedentes.addCell(new Cell().add(TableAntecedentesPreguntasMujer).addStyle(styleCell));
-        TableAntecedentes.addCell(new Cell().add(new Paragraph("Antecedentes familiares: " + opaciente.getAntecedentesFamiliares())).addStyle(styleCell).addStyle(styleTextLeft));
+        TableAntecedentes.addCell(new Cell().add(TableAntecedente).addStyle(styleCell));
         // Fin ANTECEDENTES
 
         //EXPLORACIÓN FÍSICA
-        Paragraph parrafoSubTitulo4 = new Paragraph("IV.  EXPLORACION FÍSICA").setFontSize(10).setFontColor(Color.BLUE).setFont(bold).addStyle(styleTextLeft);
+        Paragraph parrafoSubTitulo4 = new Paragraph("IV.  EXPLORACION FÍSICA").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableExploracionFisica = new Table(new float[]{volumen * 5});
         //Fin EXPLORACIÓN FÍSICA
         /*----Fin Contenido del documento  página 1------*/
