@@ -50,13 +50,10 @@ public class Persona {
     @Column(name = "telefono", nullable = false)
     private String telefono;
 
-    @Column(name = "correo", length = 40, nullable = true)
-    private String correo;
-
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, String correo) {
+    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono) {
         this.nombres_apellidos = nombres_apellidos;
         this.sexo = sexo;
         this.edad = edad;
@@ -66,7 +63,7 @@ public class Persona {
         this.lugar_de_procedencia = lugar_de_procedencia;
         this.ocupacion = ocupacion;
         this.telefono = telefono;
-        this.correo = correo;
+
     }
 
     public int getIdpersona() {
@@ -147,13 +144,5 @@ public class Persona {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 }

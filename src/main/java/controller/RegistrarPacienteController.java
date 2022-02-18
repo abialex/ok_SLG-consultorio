@@ -213,8 +213,7 @@ public class RegistrarPacienteController implements Initializable {
         fechaNacimiento,
         jtflugarprocedencia.getText().trim(),
         jcbocupacion.getSelectionModel().getSelectedItem(),
-        jtfTelefono.getText().trim(),
-        "alex@gmail"   
+        jtfTelefono.getText().trim() 
         );
         
         Paciente opaciente= new Paciente( 

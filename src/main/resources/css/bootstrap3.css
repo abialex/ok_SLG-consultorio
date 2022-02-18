@@ -170,7 +170,6 @@ VBox > .split-menu-button.last > .arrow-button {
 .font-menu-button,
 .split-menu-button > .label, .split-menu-button > .arrow-button {
     -fx-border-color: #cccccc;
-    -fx-text-fill: #333333;
 }
 
 /*just for the special split menu button*/
