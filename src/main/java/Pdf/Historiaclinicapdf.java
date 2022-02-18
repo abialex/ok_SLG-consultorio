@@ -33,6 +33,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+
 /**
  *
  * @author yalle
@@ -72,11 +73,15 @@ public class Historiaclinicapdf {
         Style styleTextCenter = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(10f);
 
         /*---------------------Color----------*/
-        Color prueba = new DeviceRgb(0,0,0);
+        Color prueba = new DeviceRgb(0, 0, 0);
         Color colorAzul = Color.BLUE;
         Color colorSubtitulo = Color.BLACK;
-        Color colorNegro = Color.BLACK;
+        Color colorNegro = Color.ORANGE;
         /* Contenido del documento  página 1*/
+        //table raya
+        Table TableRaya = new Table(new float[]{volumen * 5});
+        Cell cellraya = new Cell().add(new Paragraph(".").setBorderBottom(new SolidBorder(1f))).addStyle(styleTextRight).addStyle(styleCell);
+        TableRaya.addCell(cellraya);
         //Cabecera
         Table CabeceraParrafo1 = new Table(new float[]{volumen * 4.3f, volumen * 0.7f});
         Cell cellCabeceraParrafo1 = new Cell().add(new Paragraph("H.C N°: ")).addStyle(styleTextRight).addStyle(styleCell);
@@ -307,8 +312,115 @@ public class Historiaclinicapdf {
 
         //EXPLORACIÓN FÍSICA
         Paragraph parrafoSubTitulo4 = new Paragraph("IV.  EXPLORACION FÍSICA").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+
+        Table TableExploracionFisicaParrafo1 = new Table(new float[]{volumen * 0.68f, volumen * 1.72f, volumen * 1.06f, volumen * 1.54f});
+        Cell cellExploracionFisicaParrafo1 = new Cell().add(new Paragraph("Signos vitales:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo1.addCell(cellExploracionFisicaParrafo1);
+        cellExploracionFisicaParrafo1 = new Cell().add(new Paragraph(oHistoriaclinica.getSignosVitales()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo1.addCell(cellExploracionFisicaParrafo1);
+        cellExploracionFisicaParrafo1 = new Cell().add(new Paragraph("Saturación de oxígeno:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo1.addCell(cellExploracionFisicaParrafo1);
+        cellExploracionFisicaParrafo1 = new Cell().add(new Paragraph(oHistoriaclinica.getSaturacionOxigeno()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo1.addCell(cellExploracionFisicaParrafo1);
+        //0
+        Table TableExploracionFisicaParrafo2 = new Table(new float[]{volumen * 0.25f, volumen * 1f, volumen * 0.25f,
+            volumen * 1f, volumen * 0.65f, volumen * 0.6f, volumen * 0.25f, volumen * 1f});
+        Cell cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph("P.A:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
+        cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph(oHistoriaclinica.getPA()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
+        cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph("F.C:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
+        cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph(oHistoriaclinica.getFC()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo1);
+        cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph("Temperatura:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
+        cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph(oHistoriaclinica.getTemperatura()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
+        cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph("F.R:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
+        cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph(oHistoriaclinica.getFR()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
+
+        Table TableExploracionFisicaParrafo3 = new Table(new float[]{volumen * 1.1f, volumen * 3.9f});
+        Cell cellExploracionFisicaParrafo3 = new Cell().add(new Paragraph("Examen clínico general:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo3.addCell(cellExploracionFisicaParrafo3);
+        cellExploracionFisicaParrafo3 = new Cell().add(new Paragraph(oHistoriaclinica.getExamenClinicoGeneral()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableExploracionFisicaParrafo3.addCell(cellExploracionFisicaParrafo3);
+
         Table TableExploracionFisica = new Table(new float[]{volumen * 5});
+        TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo1).addStyle(styleCell));
+        TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo2).addStyle(styleCell));
+        TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo3).addStyle(styleCell));
+        TableExploracionFisica.addCell(new Cell().add(TableRaya).addStyle(styleCell));
         //Fin EXPLORACIÓN FÍSICA
+
+        //DIAGNOSTICO
+        Paragraph parrafoSubTitulo5 = new Paragraph("V.  DIAGNÓSTICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+
+        Table TableDiagnosticoParrafo1 = new Table(new float[]{volumen * 0.6f, volumen * 4.4f});
+        Cell cellDiagnosticoParrafo1 = new Cell().add(new Paragraph("Diagnóstico:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableDiagnosticoParrafo1.addCell(cellDiagnosticoParrafo1);
+        cellDiagnosticoParrafo1 = new Cell().add(new Paragraph(oHistoriaclinica.getDiagnosticoCIE10()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableDiagnosticoParrafo1.addCell(cellDiagnosticoParrafo1);
+
+        Table TableDiagnosticoParrafo2 = new Table(new float[]{volumen * 1.04f, volumen * 3.96f});
+        Cell cellDiagnosticoParrafo2 = new Cell().add(new Paragraph("Diagnóstico Presuntivo:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableDiagnosticoParrafo2.addCell(cellDiagnosticoParrafo2);
+        cellDiagnosticoParrafo2 = new Cell().add(new Paragraph(oHistoriaclinica.getDiagnosticoPresuntivo()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableDiagnosticoParrafo2.addCell(cellDiagnosticoParrafo2);
+
+        Table TableDiagnosticoParrafo3 = new Table(new float[]{volumen * 1.04f, volumen * 3.96f});
+        Cell cellDiagnosticoParrafo3 = new Cell().add(new Paragraph("Diagnóstico Presuntivo:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableDiagnosticoParrafo3.addCell(cellDiagnosticoParrafo3);
+        cellDiagnosticoParrafo3 = new Cell().add(new Paragraph(oHistoriaclinica.getDiagnosticoDefinitivo()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableDiagnosticoParrafo3.addCell(cellDiagnosticoParrafo3);
+
+        Table TableDiagnostico = new Table(new float[]{volumen * 5});
+        TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo1).addStyle(styleCell));
+        TableDiagnostico.addCell(new Cell().add(TableRaya).addStyle(styleCell));
+        TableDiagnostico.addCell(new Cell().add(TableRaya).addStyle(styleCell));
+        TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo2).addStyle(styleCell));
+        TableDiagnostico.addCell(new Cell().add(TableRaya).addStyle(styleCell));
+        TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo3).addStyle(styleCell));
+        TableDiagnostico.addCell(new Cell().add(TableRaya).addStyle(styleCell));
+        //Fin DIAGNOSTICO
+
+        //PLAN DE TRATAMIENTO - RECOMENDACIONES
+        Paragraph parrafoSubTitulo6 = new Paragraph("VI. PLAN DE TRATAMIENTO - RECOMENDACIONES").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+
+        Table TableTramientoRecomendacionesParrafo1 = new Table(new float[]{volumen * 5});
+        Cell cellTramientoRecomendacionesParrafo1 = new Cell().add(new Paragraph(oHistoriaclinica.getRecomendaciones()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableTramientoRecomendacionesParrafo1.addCell(cellTramientoRecomendacionesParrafo1);
+
+        Table TableTramientoRecomendaciones = new Table(new float[]{volumen * 5});
+        TableTramientoRecomendaciones.addCell(new Cell().add(TableTramientoRecomendacionesParrafo1).addStyle(styleCell));
+        TableTramientoRecomendaciones.addCell(new Cell().add(TableRaya).addStyle(styleCell));
+        TableTramientoRecomendaciones.addCell(new Cell().add(TableRaya).addStyle(styleCell));
+        //Fin PLAN DE TRATAMIENTO - RECOMENDACIONES
+
+        //PRONOSTICO
+        Paragraph parrafoSubTitulo7 = new Paragraph("VII. PRONÓSTICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+
+        Table TablePronosticoParrafo1 = new Table(new float[]{volumen * 5});
+        Cell cellPronosticoParrafo1 = new Cell().add(new Paragraph(oHistoriaclinica.getPronostico()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TablePronosticoParrafo1.addCell(cellPronosticoParrafo1);
+
+        Table TablePronostico = new Table(new float[]{volumen * 5});
+        TablePronostico.addCell(new Cell().add(TablePronosticoParrafo1).addStyle(styleCell));
+        //fin PRONOSTICO
+
+        //ALTA PACIENTE
+        Paragraph parrafoSubTitulo8 = new Paragraph("VIII. ALTA PACIENTE").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+
+        Table TableAltaParrafo1 = new Table(new float[]{volumen * 5});
+        Cell cellAltaParrafo1 = new Cell().add(new Paragraph(oHistoriaclinica.getAltaPaciente()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableAltaParrafo1.addCell(cellAltaParrafo1);
+
+        Table TableAlta = new Table(new float[]{volumen * 5});
+        TableAlta.addCell(new Cell().add(TableAltaParrafo1).addStyle(styleCell));
+        //Fin ALTA PACIENTE
+
         /*----Fin Contenido del documento  página 1------*/
  /* Cuerpo del documentos*/
         document.add(Cabecera);
@@ -317,7 +429,6 @@ public class Historiaclinicapdf {
         document.add(tableInformacion);
         if (opersona.getEdad() < 18) {
             document.add(TableMenorDeEdad);
-
         }
         document.add(TableCasoDeEmergencia);
         document.add(TableMotivoDeConsulta);
@@ -330,6 +441,18 @@ public class Historiaclinicapdf {
 
         document.add(parrafoSubTitulo4);
         document.add(TableExploracionFisica);
+
+        document.add(parrafoSubTitulo5);
+        document.add(TableDiagnostico);
+
+        document.add(parrafoSubTitulo6);
+        document.add(TableTramientoRecomendaciones);
+
+        document.add(parrafoSubTitulo7);
+        document.add(TablePronostico);
+        
+        document.add(parrafoSubTitulo8);
+        document.add(TableAlta);
         document.close();
         /*----Fin Cuerpo del documentos-----*/
     }
