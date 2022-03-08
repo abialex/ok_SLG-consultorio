@@ -43,7 +43,6 @@ import java.util.List;
 public class Historiaclinicapdf {
 
     public static void ImprimirHistoriaClinica(Persona opersona) throws IOException {
-        SimpleDateFormat oSDF = new SimpleDateFormat("yyyy / MM / dd");
         Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
         List<Paciente_Enfermedad> listPaciente_Enfermedad = App.jpa.createQuery("select p from Paciente_Enfermedad p where idpaciente=" + opaciente.getIdpaciente()).getResultList();
@@ -94,7 +93,7 @@ public class Historiaclinicapdf {
         Table CabeceraParrafo2 = new Table(new float[]{volumen * 4.3f, volumen * 0.7f});
         Cell cellCabeceraParrafo2 = new Cell().add(new Paragraph("FECHA: ")).addStyle(styleTextRight).addStyle(styleCell);
         CabeceraParrafo2.addCell(cellCabeceraParrafo2);
-        cellCabeceraParrafo2 = new Cell().add(new Paragraph(oSDF.format(oHistoriaclinica.getFechainscripcion())).setBorderBottom(new SolidBorder(1f))).addStyle(styleTextCenter).addStyle(styleCell);
+        cellCabeceraParrafo2 = new Cell().add(new Paragraph(oHistoriaclinica.getFechainscripcion().toString()).setBorderBottom(new SolidBorder(1f))).addStyle(styleTextCenter).addStyle(styleCell);
         CabeceraParrafo2.addCell(cellCabeceraParrafo2);
 
         Table Cabecera = new Table(new float[]{volumen * 5f});

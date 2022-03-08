@@ -240,8 +240,8 @@ public class RegistrarPacienteController implements Initializable {
                 jtapronostico.getText().trim(),
                 jtaAltapaciente.getText().trim(),
                 jtfmotivoconsulta.getText().trim(),
-                new Date(), 
-                new Date());
+                LocalDate.now(), 
+                LocalDate.now());
         
         //GuardarPaciente
         App.jpa.getTransaction().begin();

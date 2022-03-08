@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -75,12 +76,12 @@ public class Historia_clinica {
     private String motivoConsulta;
     
     @Column (name = "fechainscripcion", nullable = true)
-    private Date fechainscripcion;
+    private LocalDate fechainscripcion;
     
     @Column (name = "fechaultimaatencion", nullable = true)
-    private Date fechaultimaatencion;
+    private LocalDate fechaultimaatencion;
 
-    public Historia_clinica(Paciente idpaciente, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String diagnosticoPresuntivo, String diagnosticoDefinitivo, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, Date fechainscripcion, Date fechaultimaatencion) {
+    public Historia_clinica(Paciente idpaciente, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String diagnosticoPresuntivo, String diagnosticoDefinitivo, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.idpaciente = idpaciente;
         this.signosVitales = signosVitales;
         this.saturacionOxigeno = saturacionOxigeno;
@@ -120,19 +121,19 @@ public class Historia_clinica {
         this.idpaciente = idpaciente;
     }
 
-    public Date getFechainscripcion() {
+    public LocalDate getFechainscripcion() {
         return fechainscripcion;
     }
 
-    public void setFechainscripcion(Date fechainscripcion) {
+    public void setFechainscripcion(LocalDate fechainscripcion) {
         this.fechainscripcion = fechainscripcion;
     }
 
-    public Date getFechaultimaatencion() {
+    public LocalDate getFechaultimaatencion() {
         return fechaultimaatencion;
     }
 
-    public void setFechaultimaatencion(Date fechaultimaatencion) {
+    public void setFechaultimaatencion(LocalDate fechaultimaatencion) {
         this.fechaultimaatencion = fechaultimaatencion;
     }
 
