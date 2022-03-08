@@ -30,9 +30,6 @@ public class Persona {
     @Column(name = "sexo", length = 15, nullable = false)
     private String sexo;
 
-    @Column(name = "edad", nullable = false)
-    private int edad;
-
     @Column(name = "domicilio", length = 60, nullable = false)
     private String domicilio;
 
@@ -63,10 +60,9 @@ public class Persona {
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono) {
+    public Persona(String nombres_apellidos, String sexo, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono) {
         this.nombres_apellidos = nombres_apellidos;
         this.sexo = sexo;
-        this.edad = edad;
         this.domicilio = domicilio;
         this.dni = dni;
         this.fechaNacimiento = fecha_nacimiento;
@@ -98,14 +94,6 @@ public class Persona {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
-    }
-
-    public int getEdad() {
-        return edad;
-    }
-
-    public void setEdad(int edad) {
-        this.edad = edad;
     }
 
     public String getDomicilio() {

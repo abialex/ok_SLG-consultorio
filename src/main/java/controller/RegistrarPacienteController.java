@@ -204,7 +204,6 @@ public class RegistrarPacienteController implements Initializable {
         Persona opersona= new Persona(
         jtfNombresyApellidos.getText().trim(),
         jcbsexo.getSelectionModel().getSelectedItem(),
-        24,
         jtfDomicilio.getText().trim(),
         jtfDni.getText().trim(),
         fechaNacimiento,
@@ -523,7 +522,7 @@ public class RegistrarPacienteController implements Initializable {
         //dia
         //mes
         //año
-        jtfedadAct.setText(opersona.getEdad()+"");
+        //jtfedadAct.setText(opersona.getEdad()+"");
         jtflugarprocedenciaAct.setText(opersona.getLugar_de_procedencia());
         jtfDomicilioAct.setText(opersona.getDomicilio());
         jtfTelefonoAct.setText(opersona.getTelefono());

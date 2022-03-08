@@ -34,6 +34,8 @@ import controller.App;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 
 /**
@@ -50,6 +52,9 @@ public class Historiaclinicapdf {
         List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opaciente.getIdpaciente() + " and ismujer=false").getResultList();
         List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
         List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
+         Period period = Period.between(opersona.getFecha_nacimiento(),LocalDate.now());
+         long edad = period.getYears();
+        
         int volumen = 105;
         PdfWriter writer = null;
         try {
@@ -115,7 +120,7 @@ public class Historiaclinicapdf {
         table1Parrafo1.addCell(cell1Parrafo1);
         cell1Parrafo1 = new Cell().add(new Paragraph("Edad: ").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo1.addCell(cell1Parrafo1);
-        cell1Parrafo1 = new Cell().add(new Paragraph(opersona.getEdad() + "").setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        cell1Parrafo1 = new Cell().add(new Paragraph(edad + "").setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo1.addCell(cell1Parrafo1);
 
         Table table1Parrafo2 = new Table(new float[]{volumen * 0.5f, volumen * 3.5f, volumen * 0.25f, volumen * 0.75f});
@@ -430,7 +435,7 @@ public class Historiaclinicapdf {
         document.add(parrafoTitulo);
         document.add(parrafoSubTitulo1);
         document.add(tableInformacion);
-        if (opersona.getEdad() < 18) {
+        if (edad < 18) {
             document.add(TableMenorDeEdad);
         }
         document.add(TableCasoDeEmergencia);
