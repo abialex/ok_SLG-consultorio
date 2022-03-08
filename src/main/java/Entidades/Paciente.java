@@ -39,6 +39,17 @@ public class Paciente {
     
     @Column (name = "antecedentesFamiliares", nullable = true)
     private String antecedentesFamiliares;
+    
+    @Column(name = "emergenciaNombre", nullable = true)
+    private String emergenciaNombre;
+    
+    @Column(name = "emergenciaDni", nullable = true)
+    private String emergenciaDni;
+    
+    @Column(name = "emergenciaTelefono", nullable = true)
+    private String emergenciaTelefono;    
+    
+    
 
     public Paciente(Persona persona, String sintomasEnfermedadActual, String tiempoEnfermedadActual, String otrasEnfermedades, String antecedentesFamiliares) {
         this.persona = persona;
@@ -100,6 +111,31 @@ public class Paciente {
     public void setAntecedentesFamiliares(String antecedentesFamiliares) {
         this.antecedentesFamiliares = antecedentesFamiliares;
     }
+
+    public String getEmergenciaNombre() {
+        return emergenciaNombre;
+    }
+
+    public void setEmergenciaNombre(String emergenciaNombre) {
+        this.emergenciaNombre = emergenciaNombre;
+    }
+
+    public String getEmergenciaDni() {
+        return emergenciaDni;
+    }
+
+    public void setEmergenciaDni(String emergenciaDni) {
+        this.emergenciaDni = emergenciaDni;
+    }
+
+    public String getEmergenciaTelefono() {
+        return emergenciaTelefono;
+    }
+
+    public void setEmergenciaTelefono(String emergenciaTelefono) {
+        this.emergenciaTelefono = emergenciaTelefono;
+    }
+    
     
     
 
