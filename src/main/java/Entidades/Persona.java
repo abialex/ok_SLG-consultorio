@@ -49,6 +49,15 @@ public class Persona {
 
     @Column(name = "telefono", nullable = false)
     private String telefono;
+    
+    @Column(name = "tutorNombre", nullable = true)
+    private String tutorNombre;
+    
+    @Column(name = "tutorDni", nullable = true)
+    private String tutorDni;
+    
+    @Column(name = "tutorTelefono", nullable = true)
+    private String tutorTelefono;
 
     public Persona() {
     }
@@ -145,4 +154,30 @@ public class Persona {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+    public String getTutorNombre() {
+        return tutorNombre;
+    }
+
+    public void setTutorNombre(String tutorNombre) {
+        this.tutorNombre = tutorNombre;
+    }
+
+    public String getTutorDni() {
+        return tutorDni;
+    }
+
+    public void setTutorDni(String tutorDni) {
+        this.tutorDni = tutorDni;
+    }
+
+    public String getTutorTelefono() {
+        return tutorTelefono;
+    }
+
+    public void setTutorTelefono(String tutorTelefono) {
+        this.tutorTelefono = tutorTelefono;
+    }
+    
+    
 }

@@ -43,8 +43,8 @@ public class Paciente {
     @Column(name = "emergenciaNombre", nullable = true)
     private String emergenciaNombre;
     
-    @Column(name = "emergenciaDni", nullable = true)
-    private String emergenciaDni;
+    @Column(name = "emergenciaParentesco", nullable = true)
+    private String emergenciaParentesco;
     
     @Column(name = "emergenciaTelefono", nullable = true)
     private String emergenciaTelefono;    
@@ -120,12 +120,12 @@ public class Paciente {
         this.emergenciaNombre = emergenciaNombre;
     }
 
-    public String getEmergenciaDni() {
-        return emergenciaDni;
+    public String getEmergenciaParentesco() {
+        return emergenciaParentesco;
     }
 
-    public void setEmergenciaDni(String emergenciaDni) {
-        this.emergenciaDni = emergenciaDni;
+    public void setEmergenciaParentesco(String emergenciaDni) {
+        this.emergenciaParentesco = emergenciaDni;
     }
 
     public String getEmergenciaTelefono() {
