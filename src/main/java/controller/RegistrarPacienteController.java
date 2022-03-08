@@ -22,6 +22,8 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -194,16 +196,11 @@ public class RegistrarPacienteController implements Initializable {
     
     @FXML
     void GuardarPaciente(ActionEvent evt) throws IOException{
-        
-       Date fechaNacimiento=new Date();
-        fechaNacimiento.setYear(Integer.parseInt(jtfanio.getText().trim())-1900);
-        fechaNacimiento.setMonth(Integer.parseInt(jtfMes.getText().trim())-1);
-        fechaNacimiento.setDate(Integer.parseInt(jtfDia.getText().trim()));
-        fechaNacimiento.setHours(0);
-        fechaNacimiento.setMinutes(0);
-        fechaNacimiento.setSeconds(0);
-        
-        
+        LocalDate fechaNacimiento=LocalDate.of(
+                Integer.parseInt(jtfanio.getText().trim()),
+                Integer.parseInt(jtfMes.getText().trim()),
+                Integer.parseInt(jtfDia.getText().trim()));
+       
         Persona opersona= new Persona(
         jtfNombresyApellidos.getText().trim(),
         jcbsexo.getSelectionModel().getSelectedItem(),

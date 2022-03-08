@@ -132,8 +132,7 @@ public class Historiaclinicapdf {
         Table table1Parrafo3 = new Table(new float[]{volumen * 1f, volumen * 1.4f, volumen * 1f, volumen * 1.6f});
         Cell cell1Parrafo3 = new Cell().add(new Paragraph("Fecha de Nacimiento:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo3.addCell(cell1Parrafo3);
-        cell1Parrafo3 = new Cell().add(new Paragraph(oSDF.format(opersona.getFecha_nacimiento()))
-                .setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        cell1Parrafo3 = new Cell().add(new Paragraph(opersona.getFecha_nacimiento().toString()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo3.addCell(cell1Parrafo3);
         cell1Parrafo3 = new Cell().add(new Paragraph("Lugar de Procedencia:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo3.addCell(cell1Parrafo3);

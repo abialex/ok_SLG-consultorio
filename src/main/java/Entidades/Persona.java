@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import java.time.LocalDate;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,8 +39,8 @@ public class Persona {
     @Column(name = "dni", length = 8, nullable = false)
     private String dni;
 
-    @Column(name = "fecha_nacimiento", nullable = false)
-    private Date fecha_nacimiento;
+    @Column(name = "fechaNacimiento", nullable = true)
+    private LocalDate fechaNacimiento;
 
     @Column(name = "lugar_de_procedencia", length = 100, nullable = false)
     private String lugar_de_procedencia;
@@ -62,13 +63,13 @@ public class Persona {
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, Date fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono) {
+    public Persona(String nombres_apellidos, String sexo, int edad, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono) {
         this.nombres_apellidos = nombres_apellidos;
         this.sexo = sexo;
         this.edad = edad;
         this.domicilio = domicilio;
         this.dni = dni;
-        this.fecha_nacimiento = fecha_nacimiento;
+        this.fechaNacimiento = fecha_nacimiento;
         this.lugar_de_procedencia = lugar_de_procedencia;
         this.ocupacion = ocupacion;
         this.telefono = telefono;
@@ -123,12 +124,12 @@ public class Persona {
         this.dni = dni;
     }
 
-    public Date getFecha_nacimiento() {
-        return fecha_nacimiento;
+    public LocalDate getFecha_nacimiento() {
+        return fechaNacimiento;
     }
 
-    public void setFecha_nacimiento(Date fecha_nacimiento) {
-        this.fecha_nacimiento = fecha_nacimiento;
+    public void setFecha_nacimiento(LocalDate fecha_nacimiento) {
+        this.fechaNacimiento = fecha_nacimiento;
     }
 
     public String getLugar_de_procedencia() {
