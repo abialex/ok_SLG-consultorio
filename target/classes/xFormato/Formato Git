@@ -1,0 +1,18 @@
+CLASE
+
+CREAR CLASE:        add Clase: Enfermedad, Paciente_Enfermedad
+ACTUALIZA CLASE:    update Clase Enfermedad: add(nombre,codigo,dni,fecha), delete(registro_civil,celular,holimundo)
+                    update Clase Paciente: add(nombre,codigo,dni,fecha), delete(registro_civil,celular,holimundo)
+                    update Clase Paciente: add(Métodos), delete(Métodos)
+                    update Clase Paciente: add(Constructor ), delete(Constructor)
+BORRA CLASE:        delete Clase:  Omicron
+
+Clase u otros
+add x: Impresiones
+update x: update x Impresiones add(imprimirHistoriaclinica), update(imprimirHistoriaClinica)
+
+
+
+CONTROLLER:
+add RegistrarCOntroller
+update Controller RegistrerController: contexto;
