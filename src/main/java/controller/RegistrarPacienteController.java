@@ -178,11 +178,11 @@ public class RegistrarPacienteController implements Initializable {
         
         jcbsexoAct.setItems(SEXO);
         jcbocupacionAct.setItems(OCUPACION);
-     
-        
-        
+         
         accordion.setExpandedPane(tpAnamnesis);
         accordionAct.setExpandedPane(tpAnamnesisAct);
+        
+        asignar();
  
     }    
     @FXML
@@ -256,6 +256,20 @@ public class RegistrarPacienteController implements Initializable {
         }
         App.jpa.persist(ohistoria);
         App.jpa.getTransaction().commit(); 
+    }
+    
+    List<Paciente_Enfermedad> Paciente_relacionar_enfermedad_2(List<CheckBox> listC, Paciente opaciente) {
+        List<Enfermedad> list_enfermedad = App.jpa.createQuery("select p from Enfermedad p ").getResultList();
+        List<Paciente_Enfermedad> list_enfermedades_paciente = new ArrayList<Paciente_Enfermedad>();
+        Paciente_Enfermedad opaciente_enfermedad = null;
+        for (CheckBox checkBox : listC) {
+            for (Enfermedad enfermedad : list_enfermedad) {
+                if(checkBox.getUserData().toString().equals(enfermedad.getNombre())){
+                    list_enfermedades_paciente.add(new Paciente_Enfermedad(opaciente, enfermedad, ""));
+                }                
+            }
+        }
+        return list_enfermedades_paciente;
     }
     
     public List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(Paciente opaciente){
@@ -429,6 +443,24 @@ public class RegistrarPacienteController implements Initializable {
        
         
     }
+    List<CheckBox> listcheck=new ArrayList<>();
+    @FXML
+    void cuadrarCheckbox(ActionEvent o){       
+        CheckBox ch=(CheckBox)o.getSource();
+            
+        if(ch.isSelected()){
+            listcheck.add(ch); 
+        }
+        else{
+            listcheck.remove(ch);
+        }
+      
+        for (CheckBox checkBox : listcheck) {
+            System.out.println(checkBox+"h");
+        }
+        
+        
+    }
     
     public List<Paciente_Pregunta> Paciente_relacionar_pregunta(Paciente opaciente){
         List<Pregunta> list_pregunta =App.jpa.createQuery("select p from Pregunta p ").getResultList();
@@ -509,6 +541,24 @@ public class RegistrarPacienteController implements Initializable {
         }
         
         return list_pregunta_paciente;
+    }
+    
+    void asignar(){
+        checkalergia.setUserData("Alergia");
+        checkfiebrereumatica.setUserData("Fiebre reumática");
+        checkanemia.setUserData("Anemia");
+        checkdiabetes.setUserData("Diabetes");
+        checktuberculosis.setUserData("Tuberculosis");
+        checkhepatitis.setUserData("Hepatitis");
+        checkinfeccionveneria.setUserData("Infección veneria");
+        checkenfermedadcardiaca.setUserData("Enfermedad cardiaca");
+        checkgastritis.setUserData("Gastritis");
+        checkepilepsia.setUserData("Epilepsia");
+        checkdolordepecho.setUserData("Dolor de pecho");
+        checkneuralgia.setUserData("neuralgia");
+        checkenfermedaddelapiel.setUserData("Enfermedad de la piel");
+        checkenfermedadrenal.setUserData("Enfermedad renal");
+        checkhipertensionarterial.setUserData("Hipertensión Arterial");
     }
        
     @FXML
