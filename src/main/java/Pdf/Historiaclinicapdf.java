@@ -178,15 +178,18 @@ public class Historiaclinicapdf {
         Table TableMenorDeEdadParrafo2 = new Table(new float[]{volumen * 0.95f, volumen * 1.25f, volumen * 0.3f, volumen * 1f, volumen * 0.43f, volumen * 1.08f});
         Cell cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("Nombre del tutor:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
-        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph(opersona.getTutorNombre()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        String nombreTutor= opersona.getTutorNombre()==null? "": opersona.getTutorNombre();
+        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph(nombreTutor).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
         cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("DNI:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
-        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph(opersona.getTutorDni()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        String dniTutor= opersona.getTutorDni()==null ? "": opersona.getTutorDni();
+        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph(dniTutor).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
         cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph("Telefono.:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
-        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph(opersona.getTutorTelefono()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        String telefonoTutor= opersona.getTutorTelefono()==null ? "" : opersona.getTutorTelefono();
+        cellTableMenorDeEdadParrafo2 = new Cell().add(new Paragraph(telefonoTutor).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableMenorDeEdadParrafo2.addCell(cellTableMenorDeEdadParrafo2);
 
         Table TableMenorDeEdad = new Table(new float[]{volumen * 5});
@@ -203,23 +206,27 @@ public class Historiaclinicapdf {
         Table TableCasoDeEmergenciaParrafo2 = new Table(new float[]{volumen * 0.45f, volumen * 1.25f, volumen * 0.55f, volumen * 1.25f, volumen * 0.45f, volumen * 1.05f});
         Cell cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Nombre:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
-        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph(opaciente.getEmergenciaNombre()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        String emergenciaNombre= opaciente.getEmergenciaNombre()==null ? "":opaciente.getEmergenciaNombre();
+        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph(emergenciaNombre).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
         cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Parentesco:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
-        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph(opaciente.getEmergenciaParentesco()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        String emergenciaParentesco= opaciente.getEmergenciaParentesco()==null ? "" : opaciente.getEmergenciaParentesco();
+        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph(emergenciaParentesco).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
-        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Telfono:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph("Telefono:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
-        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph(opaciente.getEmergenciaTelefono()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        String emergenciaTelefono= opaciente.getEmergenciaTelefono()==null? "":opaciente.getEmergenciaTelefono();
+        cellTableCasoDeEmergenciaParrafo2 = new Cell().add(new Paragraph(emergenciaTelefono).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         TableCasoDeEmergenciaParrafo2.addCell(cellTableCasoDeEmergenciaParrafo2);
-
+        
+        
         Table TableCasoDeEmergencia = new Table(new float[]{volumen * 5});
         Cell cellTableCasoDeEmergencia = new Cell().add(TableCasoDeEmergenciaParrafo1).addStyle(styleCell);
         TableCasoDeEmergencia.addCell(cellTableCasoDeEmergencia);
         cellTableCasoDeEmergencia = new Cell().add(TableCasoDeEmergenciaParrafo2).addStyle(styleCell);
         TableCasoDeEmergencia.addCell(cellTableCasoDeEmergencia);
-
+        
         Table TableMotivoDeConsultaParrafo1 = new Table(new float[]{volumen * 1, volumen * 4});
         Cell cellTableMotivoDeConsultaParrafo1 = new Cell().add(new Paragraph("Motivo de Consulta: ").setFontColor(colorNegro).setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft);
         TableMotivoDeConsultaParrafo1.addCell(cellTableMotivoDeConsultaParrafo1);
@@ -437,6 +444,9 @@ public class Historiaclinicapdf {
         document.add(tableInformacion);
         if (edad < 18) {
             document.add(TableMenorDeEdad);
+        }
+        else{
+            TableCasoDeEmergencia.setMarginTop(71);
         }
         document.add(TableCasoDeEmergencia);
         document.add(TableMotivoDeConsulta);
