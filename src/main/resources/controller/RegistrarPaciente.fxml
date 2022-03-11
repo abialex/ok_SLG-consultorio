@@ -24,7 +24,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="735.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegistrarPacienteController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="757.0" prefWidth="1150.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegistrarPacienteController">
    <children>
       <BorderPane layoutX="14.0" prefHeight="852.0" prefWidth="1115.0" style="-fx-background-color: #356fa1;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -415,13 +415,13 @@
                                                                               <Label maxWidth="1.7976931348623157E308" prefHeight="21.0" prefWidth="126.0" text="Alergia" />
                                                                               <JFXCheckBox fx:id="checkalergia" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" />
                                                                               <Label text="Tuberculosis" GridPane.rowIndex="4" />
-                                                                              <JFXCheckBox fx:id="checktuberculosis" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                              <JFXCheckBox fx:id="checktuberculosis" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                                               <Label text="Hepatitis infecciosa" GridPane.rowIndex="5" />
-                                                                              <JFXCheckBox fx:id="checkhepatitis" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                              <JFXCheckBox fx:id="checkhepatitis" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                                               <Label text="Infección Veneria" GridPane.rowIndex="6" />
-                                                                              <JFXCheckBox fx:id="checkinfeccionveneria" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                              <JFXCheckBox fx:id="checkinfeccionveneria" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                                                               <Label text="Enfermedad Cardiaca" GridPane.rowIndex="7" />
-                                                                              <JFXCheckBox fx:id="checkenfermedadcardiaca" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                                                                              <JFXCheckBox fx:id="checkenfermedadcardiaca" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="7" />
                                                                            </children>
                                                                         </GridPane>
                                                                         <GridPane GridPane.columnIndex="1">
@@ -449,19 +449,19 @@
                                                                                 </rowConstraints>
                                                                                  <children>
                                                                                     <Label text="Gastritis" />
-                                                                                    <JFXCheckBox fx:id="checkgastritis" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" />
+                                                                                    <JFXCheckBox fx:id="checkgastritis" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" />
                                                                                     <Label text="Epilepsia" GridPane.rowIndex="1" />
-                                                                                    <JFXCheckBox fx:id="checkepilepsia" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                                    <JFXCheckBox fx:id="checkepilepsia" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                                     <Label text="Dolor  de Pecho" GridPane.rowIndex="2" />
-                                                                                    <JFXCheckBox fx:id="checkdolordepecho" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                                                                    <JFXCheckBox fx:id="checkdolordepecho" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                                                                     <Label text="Neuralgia" GridPane.rowIndex="3" />
-                                                                                    <JFXCheckBox fx:id="checkneuralgia" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                                                                    <JFXCheckBox fx:id="checkneuralgia" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                                                                     <Label text="Enfermedad de la piel" GridPane.rowIndex="4" />
-                                                                                    <JFXCheckBox fx:id="checkenfermedaddelapiel" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                                                                    <JFXCheckBox fx:id="checkenfermedaddelapiel" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                                                                     <Label text="Enfermedad Renal" GridPane.rowIndex="5" />
-                                                                                    <JFXCheckBox fx:id="checkenfermedadrenal" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                                                                    <JFXCheckBox fx:id="checkenfermedadrenal" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="5" />
                                                                                     <Label text="Hipertensión Arterial" GridPane.rowIndex="6" />
-                                                                                    <JFXCheckBox fx:id="checkhipertensionarterial" checkedColor="#4059a9" text=" " GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                                                                    <JFXCheckBox fx:id="checkhipertensionarterial" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                                                                  </children>
                                                                               </GridPane>
                                                                               <JFXTextField fx:id="jtfantAque" disable="true" labelFloat="true" promptText="¿A qué?">

@@ -219,7 +219,7 @@ public class RegistrarPacienteController implements Initializable {
         jtfotrasEnfermedades.getText().trim(),
         jtfantecedentesFamiliares.getText().trim());     
         
-        List<Paciente_Enfermedad> Lista_enfermedadesPaciente=Paciente_relacionar_enfermedad(opaciente);
+        List<Paciente_Enfermedad> Lista_enfermedadesPaciente=Paciente_relacionar_enfermedad(listcheck,opaciente);
         List<Paciente_Pregunta> Lista_preguntasPaciente=Paciente_relacionar_pregunta(opaciente);
         
         Historia_clinica ohistoria=new Historia_clinica(
@@ -258,208 +258,43 @@ public class RegistrarPacienteController implements Initializable {
         App.jpa.getTransaction().commit(); 
     }
     
-    List<Paciente_Enfermedad> Paciente_relacionar_enfermedad_2(List<CheckBox> listC, Paciente opaciente) {
+    List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(List<CheckBox> listC, Paciente opaciente) {
         List<Enfermedad> list_enfermedad = App.jpa.createQuery("select p from Enfermedad p ").getResultList();
         List<Paciente_Enfermedad> list_enfermedades_paciente = new ArrayList<Paciente_Enfermedad>();
         Paciente_Enfermedad opaciente_enfermedad = null;
         for (CheckBox checkBox : listC) {
             for (Enfermedad enfermedad : list_enfermedad) {
                 if(checkBox.getUserData().toString().equals(enfermedad.getNombre())){
-                    list_enfermedades_paciente.add(new Paciente_Enfermedad(opaciente, enfermedad, ""));
+                    String Alergia="";
+                    if(enfermedad.getNombre().equals("Alergia")){
+                        Alergia=jtfantAque.getText().trim();
+                    }
+                    list_enfermedades_paciente.add(new Paciente_Enfermedad(opaciente, enfermedad, Alergia));
                 }                
             }
         }
-        return list_enfermedades_paciente;
-    }
-    
-    public List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(Paciente opaciente){
-        List<Enfermedad> list_enfermedad =App.jpa.createQuery("select p from Enfermedad p ").getResultList();
-        List<Paciente_Enfermedad> list_enfermedades_paciente=new ArrayList<Paciente_Enfermedad>();
-        Paciente_Enfermedad opaciente_enfermedad = null;
-        if(checkalergia.isSelected()){
-            for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Alergia")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                jtfantAque.getText().trim());
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }              
-            }     
-        }
-        if(checkanemia.isSelected()){
-             for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Anemia")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            } 
+        for (Paciente_Enfermedad paciente_Enfermedad : list_enfermedades_paciente) {
+            System.out.println(paciente_Enfermedad.getEnfermedad().getNombre());
             
         }
-        
-        if(checkdiabetes.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Diabetes")){;
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            }      
-        }
-        if(checktuberculosis.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Tuberculosis")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            } 
-        }
-        
-        if(checkhepatitis.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Hepatitis infecciosa")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            } 
-        }
-        
-        if(checkinfeccionveneria.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Infección Venérea")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            } 
-        }
-        if(checkenfermedadcardiaca.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Enfermedad Cardiaca")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            } 
-        }
-        if(checkgastritis.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Gastritis")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            }            
-        }
-        if(checkepilepsia.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Epilepsia")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            }            
-        }
-        if(checkdolordepecho.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Dolor de Pecho")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            }            
-        }
-        if(checkneuralgia.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Neuralgia")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            }            
-        }
-        if(checkenfermedaddelapiel.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Enfermedad de la piel")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            }            
-        }
-        if(checkenfermedadrenal.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Enfermedad Renal")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            }            
-        }
-        if(checkhipertensionarterial.isSelected()){
-                 for (Enfermedad enfermedad : list_enfermedad) {
-                if(enfermedad.getNombre().equals("Hipertensión Arterial")){
-                opaciente_enfermedad=new Paciente_Enfermedad(
-                opaciente,
-                enfermedad,
-                "");
-                list_enfermedades_paciente.add(opaciente_enfermedad);
-                }
-            }            
-        }
-        
-        
-       
-        
-        
         return list_enfermedades_paciente;
-       
-        
     }
+   
     List<CheckBox> listcheck=new ArrayList<>();
     @FXML
-    void cuadrarCheckbox(ActionEvent o){       
-        CheckBox ch=(CheckBox)o.getSource();
-            
-        if(ch.isSelected()){
-            listcheck.add(ch); 
-        }
-        else{
+    void cuadrarCheckbox(ActionEvent o) {
+        CheckBox ch = (CheckBox) o.getSource();
+
+        if (ch.isSelected()) {
+            listcheck.add(ch);
+
+        } else {
             listcheck.remove(ch);
         }
-      
-        for (CheckBox checkBox : listcheck) {
-            System.out.println(checkBox+"h");
+        if (ch.getUserData().toString().equals("Alergia")) {
+            unlockecdAlergia();
         }
-        
-        
+
     }
     
     public List<Paciente_Pregunta> Paciente_relacionar_pregunta(Paciente opaciente){
@@ -555,7 +390,7 @@ public class RegistrarPacienteController implements Initializable {
         checkgastritis.setUserData("Gastritis");
         checkepilepsia.setUserData("Epilepsia");
         checkdolordepecho.setUserData("Dolor de pecho");
-        checkneuralgia.setUserData("neuralgia");
+        checkneuralgia.setUserData("Neuralgia");
         checkenfermedaddelapiel.setUserData("Enfermedad de la piel");
         checkenfermedadrenal.setUserData("Enfermedad renal");
         checkhipertensionarterial.setUserData("Hipertensión Arterial");
@@ -580,20 +415,14 @@ public class RegistrarPacienteController implements Initializable {
     
     }
     
-    
-    
     @FXML
     void ImprimirPaciente(ActionEvent evt) throws IOException{
         Historiaclinicapdf.ImprimirHistoriaClinica(oPersona);
         File file=new File("pdf\\historia_clinica.pdf");
         Desktop.getDesktop().open(file);
     }
- 
-    
-    
     /*----------Metodos de ventana---------------*/
-    @FXML 
-    void unlockecdAlergia(ActionEvent event){
+    void unlockecdAlergia(){
         if(jtfantAque.isDisable()){ jtfantAque.setDisable(false);}
         else {                      jtfantAque.setDisable(true); }
     }
@@ -623,8 +452,5 @@ public class RegistrarPacienteController implements Initializable {
         if(jtfantpreguntamujer1.isDisable()){ jtfantpreguntamujer1.setDisable(false);}
         else {                      jtfantpreguntamujer1.setDisable(true); }
     }
-    
-
-    
     /*------Fin Metodos de ventana---------------*/
 }
