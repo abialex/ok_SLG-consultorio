@@ -83,6 +83,8 @@ public class RegistrarPacienteController implements Initializable {
     @FXML ComboBox<String> jcbocupacion;
     @FXML ComboBox<String> jcbsexo;
     @FXML TextField jtfmotivoconsulta;
+    @FXML TextField jtftutornombre, jtftutordni, jtftutortelefono;
+    @FXML TextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     
     //Enfermedad actual
     @FXML TextField jtfsintomasEnfermedadActual;
@@ -211,13 +213,19 @@ public class RegistrarPacienteController implements Initializable {
         jcbocupacion.getSelectionModel().getSelectedItem(),
         jtfTelefono.getText().trim() 
         );
+        opersona.setTutorDni(jtftutordni.getText().trim());
+        opersona.setTutorNombre(jtftutornombre.getText().trim());
+        opersona.setTutorTelefono(jtftutortelefono.getText().trim());
         
-        Paciente opaciente= new Paciente( 
-        opersona,
-        jtfsintomasEnfermedadActual.getText().trim(),
-        jtftiempoEnfermedadActual.getText().trim(),
-        jtfotrasEnfermedades.getText().trim(),
-        jtfantecedentesFamiliares.getText().trim());     
+        Paciente opaciente = new Paciente(
+                opersona,
+                jtfsintomasEnfermedadActual.getText().trim(),
+                jtftiempoEnfermedadActual.getText().trim(),
+                jtfotrasEnfermedades.getText().trim(),
+                jtfantecedentesFamiliares.getText().trim());     
+        opaciente.setEmergenciaNombre(jtfemergenciaNombre.getText().trim());
+        opaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText().trim());
+        opaciente.setEmergenciaTelefono(jtfemergenciatelefono.getText().trim());
         
         List<Paciente_Enfermedad> Lista_enfermedadesPaciente=Paciente_relacionar_enfermedad(listcheck,opaciente);
         List<Paciente_Pregunta> Lista_preguntasPaciente=Paciente_relacionar_pregunta(opaciente);

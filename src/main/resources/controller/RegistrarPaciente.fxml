@@ -172,19 +172,19 @@
                                                                               <Font name="System Bold" size="15.0" />
                                                                            </font>
                                                                         </Label>
-                                                                        <JFXTextField promptText="Nombre de la persona" GridPane.rowIndex="1">
+                                                                        <JFXTextField fx:id="jtfemergenciaNombre" promptText="Nombre de la persona" GridPane.rowIndex="1">
                                                                            <GridPane.margin>
                                                                               <Insets right="5.0" />
                                                                            </GridPane.margin>
                                                                         </JFXTextField>
                                                                      </children>
                                                                   </GridPane>
-                                                                  <JFXTextField labelFloat="true" promptText="Parentesco" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                                                                  <JFXTextField fx:id="jtfemergenciaParentesco" labelFloat="true" promptText="Parentesco" GridPane.columnIndex="1" GridPane.rowIndex="2">
                                                                      <GridPane.margin>
                                                                         <Insets bottom="6.0" right="5.0" />
                                                                      </GridPane.margin>
                                                                   </JFXTextField>
-                                                                  <JFXTextField labelFloat="true" promptText="telefono" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                                  <JFXTextField fx:id="jtfemergenciatelefono" labelFloat="true" promptText="telefono" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                                                      <GridPane.margin>
                                                                         <Insets bottom="6.0" right="5.0" />
                                                                      </GridPane.margin>
@@ -216,17 +216,17 @@
                                                                         <Insets left="4.0" />
                                                                      </GridPane.margin>
                                                                   </Label>
-                                                                  <JFXTextField labelFloat="true" promptText="Nombre del tutor" GridPane.rowIndex="1">
+                                                                  <JFXTextField fx:id="jtftutornombre" labelFloat="true" promptText="Nombre del tutor" GridPane.rowIndex="1">
                                                                      <GridPane.margin>
                                                                         <Insets left="4.0" right="5.0" />
                                                                      </GridPane.margin>
                                                                   </JFXTextField>
-                                                                  <JFXTextField labelFloat="true" promptText="DNI" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                                                  <JFXTextField fx:id="jtftutordni" labelFloat="true" promptText="DNI" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
                                                                   </JFXTextField>
-                                                                  <JFXTextField labelFloat="true" promptText="Telefono" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                                  <JFXTextField fx:id="jtftutortelefono" labelFloat="true" promptText="Telefono" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
