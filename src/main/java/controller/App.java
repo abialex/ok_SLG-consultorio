@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.stage.StageStyle;
 import javax.persistence.EntityManager;
 
 /**
@@ -23,6 +24,7 @@ public class App extends Application {
         scene = new Scene(loadFXML("RegistrarPaciente"));
         scene.getStylesheets().add(getClass().getResource("/css/bootstrap3.css").toExternalForm());
         stage.setScene(scene);
+        stage.initStyle(StageStyle.UNDECORATED);
         stage.show();
     }
 
