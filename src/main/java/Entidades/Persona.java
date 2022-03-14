@@ -36,7 +36,7 @@ public class Persona {
     @Column(name = "dni", length = 8, nullable = false)
     private String dni;
 
-    @Column(name = "fechaNacimiento", nullable = true)
+    @Column(name = "fechaNacimiento", nullable = false)
     private LocalDate fechaNacimiento;
 
     @Column(name = "lugar_de_procedencia", length = 100, nullable = false)

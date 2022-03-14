@@ -31,8 +31,12 @@ import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -44,6 +48,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * FXML Controller class
@@ -153,6 +160,9 @@ public class RegistrarPacienteController implements Initializable {
     //Fin Atributos Actualización  
     AlertController oAlertController=new AlertController();
     Persona oPersona;
+    Stage stagePrincipal;
+    private double x = 0;
+    private double y = 0;
     
     
     //Botones y métodos de prueba   
@@ -354,25 +364,37 @@ public class RegistrarPacienteController implements Initializable {
         checkpreguntamujer2.setUserData("¿Está dando de lactar?");
         
     }
-     /*  
+     
     @FXML
-    void ActualizarPaciente(ActionEvent evt){
-        Persona opersona=(Persona)App.jpa.createQuery("select p from Persona p where dni="+"'"+jtfbuscarAct.getText().trim()+"'"
-                +" or "+"nombres_apellidos like "+"'%"+jtfbuscarAct.getText().trim()+"%'").getSingleResult();
-        jtfNombresyApellidosAct.setText(opersona.getNombres_apellidos());
-        jtfDniAct.setText(opersona.getDni());
-        System.out.println(opersona.getSexo()+"--------------------");
-        jcbsexoAct.getSelectionModel().select(opersona.getSexo());
-        //dia
-        //mes
-        //año
-        //jtfedadAct.setText(opersona.getEdad()+"");
-        jtflugarprocedenciaAct.setText(opersona.getLugar_de_procedencia());
-        jtfDomicilioAct.setText(opersona.getDomicilio());
-        jtfTelefonoAct.setText(opersona.getTelefono());
-        jcbocupacionAct.getSelectionModel().select(opersona.getOcupacion());  
-    
-    }*/
+    void mostrarVerPaciente() throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(VerPacienteController.class.getResource("VerPaciente.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root);//instancia el controlador (!)
+        scene.getStylesheets().add(VerPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
+        Stage stage = new Stage();//creando la base vací
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner(stagePrincipal);
+        stage.setScene(scene);
+        VerPacienteController oVerController = (VerPacienteController) loader.getController(); //esto depende de (1)
+        oVerController.setController(this);
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getX();
+                y = event.getY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            }
+        });
+        stage.show();
+    }
+
     
     @FXML
     void ImprimirPaciente(ActionEvent evt) throws IOException{
@@ -441,4 +463,8 @@ public class RegistrarPacienteController implements Initializable {
         }
     }
     /*------Fin Metodos de ventana---------------*/
+
+    void setStagePrincipall(Stage stage) {
+        this.stagePrincipal=stage;
+    }
 }

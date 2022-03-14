@@ -8,6 +8,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import javafx.event.EventHandler;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.StageStyle;
 import javax.persistence.EntityManager;
 
@@ -18,16 +20,41 @@ public class App extends Application {
 
     private static Scene scene;
     public static EntityManager jpa= JPAUtil.getEntityManagerFactory().createEntityManager();
+    private double x = 0;
+    private double y = 0;
+    RegistrarPacienteController ocControlller;
+    public static Stage stagePrincpal;
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("RegistrarPaciente"));
+        stagePrincpal = stage;
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("RegistrarPaciente.fxml"));
+        fxmlLoader.setLocation(App.class.getResource("RegistrarPaciente.fxml"));
+        Parent root = fxmlLoader.load();
+        scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/bootstrap3.css").toExternalForm());
+        ocControlller = (RegistrarPacienteController) fxmlLoader.getController(); //esto depende de (1)
+        ocControlller.setStagePrincipall(stage);
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getX();
+                y = event.getY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            }
+        });
         stage.setScene(scene);
         stage.initStyle(StageStyle.UNDECORATED);
+        stage.setOnCloseRequest(event -> {
+        });
         stage.show();
     }
-
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
