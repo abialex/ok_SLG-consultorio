@@ -77,7 +77,7 @@ public class VerPacienteController implements Initializable {
         tableTelefono.setCellValueFactory(new PropertyValueFactory<Persona, String>("telefono"));
         tableDomicilio.setCellValueFactory(new PropertyValueFactory<Persona, String>("domicilio"));
         tableOcupacion.setCellValueFactory(new PropertyValueFactory<Persona, String>("ocupacion"));
-        tableAdulto.setCellValueFactory(new PropertyValueFactory<Persona, LocalDate>("fechanacimiento"));
+        tableAdulto.setCellValueFactory(new PropertyValueFactory<Persona, LocalDate>("fechaNacimiento"));
         tableOpcion.setCellValueFactory(new PropertyValueFactory<Persona, String>("dni"));  
     }
 

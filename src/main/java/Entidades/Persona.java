@@ -112,12 +112,12 @@ public class Persona {
         this.dni = dni;
     }
 
-    public LocalDate getFecha_nacimiento() {
+    public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    public void setFecha_nacimiento(LocalDate fecha_nacimiento) {
-        this.fechaNacimiento = fecha_nacimiento;
+    public void setFechaNacimiento(LocalDate fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
     }
 
     public String getLugar_de_procedencia() {

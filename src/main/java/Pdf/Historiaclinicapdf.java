@@ -52,7 +52,7 @@ public class Historiaclinicapdf {
         List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opaciente.getIdpaciente() + " and ismujer=false").getResultList();
         List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
         List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
-        Period period = Period.between(opersona.getFecha_nacimiento(), LocalDate.now());
+        Period period = Period.between(opersona.getFechaNacimiento(), LocalDate.now());
         long edad = period.getYears();
 
         int volumen = 105;
@@ -175,7 +175,7 @@ public class Historiaclinicapdf {
         Table table1Parrafo3 = new Table(new float[]{volumen * 1f, volumen * 1.4f, volumen * 1f, volumen * 1.6f});
         Cell cell1Parrafo3 = new Cell().add(new Paragraph("Fecha de Nacimiento:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo3.addCell(cell1Parrafo3);
-        cell1Parrafo3 = new Cell().add(new Paragraph(opersona.getFecha_nacimiento().toString()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
+        cell1Parrafo3 = new Cell().add(new Paragraph(opersona.getFechaNacimiento().toString()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextCenter);
         table1Parrafo3.addCell(cell1Parrafo3);
         cell1Parrafo3 = new Cell().add(new Paragraph("Lugar de Procedencia:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         table1Parrafo3.addCell(cell1Parrafo3);
