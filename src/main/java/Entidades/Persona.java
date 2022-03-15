@@ -56,6 +56,9 @@ public class Persona {
     
     @Column(name = "tutorTelefono", nullable = true)
     private String tutorTelefono;
+    
+    @Column(name = "", nullable = false)
+    private boolean flag;
 
     public Persona() {
     }
@@ -167,6 +170,15 @@ public class Persona {
     public void setTutorTelefono(String tutorTelefono) {
         this.tutorTelefono = tutorTelefono;
     }
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+    
     
     
 }

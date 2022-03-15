@@ -17,7 +17,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.jfoenix.controls.JFXTextField;
-import controller.emergente.AlertController;
+import emergente.AlertController;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
