@@ -8,12 +8,15 @@ import Entidades.Persona;
 import com.jfoenix.controls.JFXTextField;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -56,7 +59,7 @@ public class VerPacienteController implements Initializable {
     void setController(RegistrarPacienteController aThis) {
         this.oRegistrarPacienteController = aThis;
     }
-    
+
     @FXML
     void updateListaComprobante() {
         List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p order by idpersona DESC").setMaxResults(10).getResultList();
@@ -70,15 +73,38 @@ public class VerPacienteController implements Initializable {
     void cerrar() {
         ((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
     }
-    
-    void initTableView(){
+
+    void initTableView() {
         tableDni.setCellValueFactory(new PropertyValueFactory<Persona, String>("dni"));
         tableNombre.setCellValueFactory(new PropertyValueFactory<Persona, String>("nombres_apellidos"));
         tableTelefono.setCellValueFactory(new PropertyValueFactory<Persona, String>("telefono"));
         tableDomicilio.setCellValueFactory(new PropertyValueFactory<Persona, String>("domicilio"));
         tableOcupacion.setCellValueFactory(new PropertyValueFactory<Persona, String>("ocupacion"));
         tableAdulto.setCellValueFactory(new PropertyValueFactory<Persona, LocalDate>("fechaNacimiento"));
-        tableOpcion.setCellValueFactory(new PropertyValueFactory<Persona, String>("dni"));  
+        tableOpcion.setCellValueFactory(new PropertyValueFactory<Persona, String>("dni"));
+
+        tableAdulto.setCellFactory(column -> {
+            TableCell<Persona, LocalDate> cell = new TableCell<Persona, LocalDate>() {
+                @Override
+                protected void updateItem(LocalDate item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Period period = Period.between(item, LocalDate.now());
+                        long edad = period.getYears();
+                        if (edad >= 18) {
+                            setText("SI");
+                        }else{
+                            setText("NO");
+                        }
+                    }
+                }
+            };
+
+            return cell;
+        });
     }
 
 }
