@@ -5,8 +5,11 @@
 package controller;
 
 import Entidades.Persona;
+import Pdf.Historiaclinicapdf;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertConfirmarController;
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
@@ -17,6 +20,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -56,7 +60,7 @@ public class VerPacienteController implements Initializable {
 
     @FXML
     private TableColumn<Persona, String> tableDni, tableNombre, tableTelefono, tableDomicilio, tableOcupacion;
-    
+
     @FXML
     private TableColumn<Persona, Integer> tableOpcion;
 
@@ -153,6 +157,7 @@ public class VerPacienteController implements Initializable {
         Callback<TableColumn<Persona, Integer>, TableCell<Persona, Integer>> cellFoctory = (TableColumn<Persona, Integer> param) -> {
             // make cell containing buttons
             final TableCell<Persona, Integer> cell = new TableCell<Persona, Integer>() {
+
                 @Override
                 public void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
@@ -183,9 +188,22 @@ public class VerPacienteController implements Initializable {
                         editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarModificar(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
-                        HBox managebtn = new HBox(editIcon, deleteIcon);
+
+                        ImageView PrintIcon = new ImageView(new Image(getClass().getResource("/imagenes/printer-1.png").toExternalForm()));
+                        PrintIcon.setFitHeight(35);
+                        PrintIcon.setFitWidth(35);
+                        PrintIcon.setUserData(item);
+                        PrintIcon.setStyle(
+                                " -fx-cursor: hand;"
+                        );
+                        PrintIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> imprimir(event));
+                        PrintIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagImprimirMoved(event));
+                        PrintIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagImprimirFuera(event));
+                        //deleteIcon.setText("Eliminar");
+
+                        HBox managebtn = new HBox(PrintIcon, editIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
-                        HBox.setMargin(deleteIcon, new Insets(0, 0, 0, 5));
+                        HBox.setMargin(PrintIcon, new Insets(0, 0, 0, 5));
                         HBox.setMargin(editIcon, new Insets(0, 5, 0, 0));
                         setGraphic(managebtn);
                         setText(null);
@@ -251,7 +269,7 @@ public class VerPacienteController implements Initializable {
                     stage.show();
                 }
 
-                void eliminar(MouseEvent event) {            
+                void eliminar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listPersona.size(); i++) {
                         if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
@@ -268,6 +286,25 @@ public class VerPacienteController implements Initializable {
                                 }
                             }
                             break;
+                        }
+                    }
+                }
+
+                void imprimir(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    for (int i = 0; i < listPersona.size(); i++) {
+                        if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
+                            try {
+                                Persona opersona = listPersona.get(i);
+
+                                Historiaclinicapdf.ImprimirHistoriaClinica(opersona);
+                                File file = new File("pdf\\historia_clinica.pdf");
+                                Desktop.getDesktop().open(file);
+
+                                break;
+                            } catch (IOException ex) {
+                                Logger.getLogger(VerPacienteController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
                 }
@@ -290,6 +327,16 @@ public class VerPacienteController implements Initializable {
                 private void imagModificarFuera(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/imagenes/modify-1.png").toExternalForm()));
+                }
+
+                private void imagImprimirMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/printer-2.png").toExternalForm()));
+                }
+
+                private void imagImprimirFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/printer-1.png").toExternalForm()));
                 }
             };
             return cell;

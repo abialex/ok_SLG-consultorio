@@ -739,7 +739,7 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </Button>
-                                    <JFXButton onAction="#mostrarVerPaciente" />
+                                    <JFXButton onAction="#mostrarVerPaciente" text="Ver" />
                                  </children>
                               </GridPane>
                            </center>
