@@ -48,6 +48,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -81,7 +82,6 @@ public class RegistrarPacienteController implements Initializable {
     @FXML TextField jtfMes;
     @FXML TextField jtfanio;
     @FXML TextField jtfTelefono;
-    @FXML JFXTextField jtfedad;
     @FXML TextField jtflugarprocedencia;
     @FXML ComboBox<String> jcbocupacion;
     @FXML ComboBox<String> jcbsexo;
@@ -158,6 +158,7 @@ public class RegistrarPacienteController implements Initializable {
         jcbsexo.setItems(SEXO);
         accordion.setExpandedPane(tpAnamnesis); 
         asignar();
+        initRestricciones();
     }    
     
     @FXML
@@ -358,6 +359,66 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     /*--Otras ventanas fin---*/
+    void initRestricciones(){
+        jtfNombresyApellidos.addEventHandler(KeyEvent.KEY_TYPED, event-> SoloLetras(event));
+        jtfTelefono.addEventHandler(KeyEvent.KEY_TYPED, event-> SoloNumerosEntero(event));
+        jtfDni.addEventHandler(KeyEvent.KEY_TYPED, event-> SoloNumerosEnteros8(event));
+        jtfDia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
+        jtfMes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
+        jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros4(event));
+        
+        jtfemergenciaNombre.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        jtfemergenciaParentesco.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        jtfemergenciatelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+        
+        jtftutornombre.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        jtftutordni.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
+        jtftutortelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));   
+    }
+    void SoloNumerosEntero(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+    }
+    void SoloNumerosEnteros2(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 2) {
+            event.consume();
+        }
+    }
+    void SoloNumerosEnteros4(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 4) {
+            event.consume();
+        }
+    }
+    void SoloNumerosEnteros8(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 8) {
+            event.consume();
+        }
+    }
+     void SoloLetras(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (Character.isDigit(key)) {
+            event.consume();
+        }
+    }
 
  /*----------Metodos de ventana---------------*/
     void unlockecdAlergia() {

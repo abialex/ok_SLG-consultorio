@@ -177,11 +177,6 @@
                                                             <Insets right="5.0" />
                                                          </GridPane.margin>
                                                       </JFXTextField>
-                                                      <JFXTextField fx:id="jtfedad" labelFloat="true" promptText="Edad" GridPane.columnIndex="3" GridPane.rowIndex="2">
-                                                         <GridPane.margin>
-                                                            <Insets bottom="6.5" right="5.0" />
-                                                         </GridPane.margin>
-                                                      </JFXTextField>
                                                       <GridPane GridPane.rowIndex="2">
                                                          <columnConstraints>
                                                             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
