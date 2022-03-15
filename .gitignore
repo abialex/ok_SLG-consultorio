@@ -1,5 +1,6 @@
 /target/
 /pdf/
+/Pdf/
 /images/
 /src/main/resources/controller/primary.fxml
 /src/main/resources/controller/primaryController.java
