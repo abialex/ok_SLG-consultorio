@@ -245,7 +245,7 @@ public class RegistrarPacienteController implements Initializable {
         }
 
     }
-
+    
     List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(List<CheckBox> listC, Paciente opaciente) {
         List<Enfermedad> list_enfermedad = App.jpa.createQuery("select p from Enfermedad p ").getResultList();
         List<Paciente_Enfermedad> list_enfermedades_paciente = new ArrayList<Paciente_Enfermedad>();
@@ -341,6 +341,7 @@ public class RegistrarPacienteController implements Initializable {
         stage.setScene(scene);
         VerPacienteController oVerController = (VerPacienteController) loader.getController(); //esto depende de (1)
         oVerController.setController(this);
+        oVerController.setStagePrincipall(stage);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
