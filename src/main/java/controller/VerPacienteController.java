@@ -211,27 +211,26 @@ public class VerPacienteController implements Initializable {
                 }
 
                 private void mostrarModificar(MouseEvent event) {
-                    /*  ImageView buton = (ImageView) event.getSource();
+                    ImageView buton = (ImageView) event.getSource();
                     for (Persona opersona : listPersona) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
 
                             FXMLLoader loader = new FXMLLoader();
-                            loader.setLocation(VerPacienteController.class.getResource("Carta.fxml"));
-                            Parent root = null;
+                            loader.setLocation(ModificarPacienteController.class.getResource("ModificarPaciente.fxml"));
+                            Parent root=null;
                             try {
                                 root = loader.load();
                             } catch (IOException ex) {
-                                Logger.getLogger(RegistrarPacienteController.class.getName()).log(Level.SEVERE, null, ex);
+                                Logger.getLogger(ModificarPacienteController.class.getName()).log(Level.SEVERE, null, ex);
                             }
                             Scene scene = new Scene(root);//instancia el controlador (!)
-                            scene.getStylesheets().add(RegistrarPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
+                            scene.getStylesheets().add(ModificarPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
                             Stage stage = new Stage();//creando la base vací
                             stage.initStyle(StageStyle.UNDECORATED);
                             stage.initOwner(stagePrincipal);
                             stage.setScene(scene);
-                            VerPacienteController oVerController = (VerPacienteController) loader.getController(); //esto depende de (1)
+                            ModificarPacienteController oVerController = (ModificarPacienteController) loader.getController(); //esto depende de (1)
                             oVerController.setController(VerPacienteController.this);
-                            oVerController.setCarta(opersona);
                             root.setOnMousePressed(new EventHandler<MouseEvent>() {
                                 @Override
                                 public void handle(MouseEvent event) {
@@ -250,7 +249,7 @@ public class VerPacienteController implements Initializable {
                             //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
                             break;
                         }
-                    }*/
+                    }
                 }
 
                 void mostrar(Persona oPersona, int index) throws IOException {
