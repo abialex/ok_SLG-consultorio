@@ -126,11 +126,11 @@ public class ModificarPacienteController implements Initializable {
     @FXML TextArea jtapronostico;
     @FXML TextArea jtaAltapaciente;
             
-    @FXML CheckBox checkpregunta1;@FXML TextField jtfantPregunta1;
-    @FXML CheckBox checkpregunta2;@FXML TextField jtfantPregunta2;
-    @FXML CheckBox checkpregunta3;@FXML TextField jtfantPregunta3;
-    @FXML CheckBox checkpregunta4;@FXML TextField jtfantPregunta4;
-    @FXML CheckBox checkpreguntamujer1;@FXML TextField jtfantpreguntamujer1;  
+    @FXML CheckBox checkpregunta1;@FXML TextField jtfpregunta1;
+    @FXML CheckBox checkpregunta2;@FXML TextField jtfpregunta2;
+    @FXML CheckBox checkpregunta3;@FXML TextField jtfpregunta3;
+    @FXML CheckBox checkpregunta4;@FXML TextField jtfpregunta4;
+    @FXML CheckBox checkpreguntamujer1;@FXML TextField jtfPreguntamujer;  
     @FXML CheckBox checkpreguntamujer2;@FXML TextField jtfantpreguntamujer2; 
     /*----------Fin Atributos---------------*/
 
@@ -140,8 +140,11 @@ public class ModificarPacienteController implements Initializable {
     private double x = 0;
     private double y = 0;
     List<CheckBox> listcheck = new ArrayList<>();
+    List<CheckBox> listcheckPregunta = new ArrayList<>();
     List<CheckBox> listcheckG = new ArrayList<>();
+    List<CheckBox> listcheckGPregunta = new ArrayList<>();
     List<Paciente_Enfermedad> listPaciente_Enfermedad;
+    List<Paciente_Pregunta> listPaciente_pregunta;
     Persona oPersona;
     Paciente oPaciente;
     Historia_clinica oHistoria_Clinica;
@@ -159,6 +162,7 @@ public class ModificarPacienteController implements Initializable {
         accordion2.setExpandedPane(tpEnfermedades);
         asignar();
         listCheck();
+        listCheckPregunta();
         initRestricciones();
         
     }    
@@ -275,19 +279,19 @@ public class ModificarPacienteController implements Initializable {
                 if (checkBox.getUserData().toString().equals(pregunta.getTextopregunta())) {
                     String pgt = "";
                     if (checkBox.getUserData().toString().equals("¿Reacciona  anormalmente a algún medicamento?")) {
-                        pgt = jtfantPregunta1.getText().trim();
-                        isMujer = false;
-                    } else if (checkBox.getUserData().toString().equals("¿Le han realizado alguna intervención quirúrjica?")) {
-                        pgt = jtfantPregunta2.getText().trim();
+                        pgt = jtfpregunta1.getText().trim();
                         isMujer = false;
                     } else if (checkBox.getUserData().toString().equals("¿Está usted tomando algún medicamento?")) {
-                        pgt = jtfantPregunta3.getText().trim();
+                        pgt = jtfpregunta2.getText().trim();
+                        isMujer = false;
+                    } else if (checkBox.getUserData().toString().equals("¿Le han realizado alguna intervención quirúrjica?")) {
+                        pgt = jtfpregunta3.getText().trim();
                         isMujer = false;
                     } else if (checkBox.getUserData().toString().equals("¿Es alérgico a la anestesia dental?")) {
-                        pgt = jtfantPregunta4.getText().trim();
+                        pgt = jtfpregunta4.getText().trim();
                         isMujer = false;
                     } else if (checkBox.getUserData().toString().equals("¿Está usted embarazada?")) {
-                        pgt = jtfantpreguntamujer1.getText().trim();
+                        pgt = jtfPreguntamujer.getText().trim();
                     }
                     list_pregunta_paciente.add(new Paciente_Pregunta(opaciente, pregunta, pgt, isMujer));
                 }
@@ -342,11 +346,18 @@ public class ModificarPacienteController implements Initializable {
         listcheckG.add(checkenfermedaddelapiel);listcheckG.add(checkenfermedadrenal);listcheckG.add(checkhipertensionarterial);
     }
     
+    void listCheckPregunta(){
+        listcheckGPregunta.add(checkpregunta1);listcheckGPregunta.add(checkpregunta2);listcheckGPregunta.add(checkpregunta3);
+        listcheckGPregunta.add(checkpregunta4);listcheckGPregunta.add(checkpreguntamujer1);listcheckGPregunta.add(checkpreguntamujer2);     
+   }
+    
     public void setPersona(Persona opersona) {
         this.oPersona= opersona;
         this.oPaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         this.oHistoria_Clinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + oPaciente.getIdpaciente()).getSingleResult();
         listPaciente_Enfermedad = App.jpa.createQuery("select p from Paciente_Enfermedad p where idpaciente=" + oPaciente.getIdpaciente()).getResultList();
+        listPaciente_pregunta = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + oPaciente.getIdpaciente()).getResultList();
+                
         jtfNombresyApellidos.setText(opersona.getNombres_apellidos());
         jtfDni.setText(opersona.getDni());
         jtfTelefono.setText(opersona.getTelefono());
@@ -412,6 +423,34 @@ public class ModificarPacienteController implements Initializable {
                 }
             }
 
+        }
+        
+        for (CheckBox checkbox : listcheckGPregunta) {
+            for (Paciente_Pregunta pregunta : listPaciente_pregunta) {
+                if (pregunta.getPregunta().getTextopregunta().equals(checkbox.getUserData().toString())) {
+                    listcheckPregunta.add(checkbox);
+                    checkbox.setSelected(true);
+                    if (checkbox.getUserData().toString().equals("¿Reacciona  anormalmente a algún medicamento?")) {
+                        jtfpregunta1.setText(pregunta.getEspecificaciones());
+                        jtfpregunta1.setDisable(false);
+
+                    } else if (checkbox.getUserData().toString().equals("¿Está usted tomando algún medicamento?")) {
+                        jtfpregunta2.setText(pregunta.getEspecificaciones());
+                        jtfpregunta2.setDisable(false);
+                    } else if (checkbox.getUserData().toString().equals("¿Le han realizado alguna intervención quirúrjica?")) {
+                        jtfpregunta3.setText(pregunta.getEspecificaciones());
+                        jtfpregunta3.setDisable(false);
+
+                    } else if (checkbox.getUserData().toString().equals("¿Es alérgico a la anestesia dental?")) {
+                        jtfpregunta4.setText(pregunta.getEspecificaciones());
+                        jtfpregunta4.setDisable(false);
+
+                    } else if (checkbox.getUserData().toString().equals("¿Está usted embarazada?")) {
+                        jtfPreguntamujer.setText(pregunta.getEspecificaciones());
+                        jtfPreguntamujer.setDisable(false);
+                    }
+                }
+            }
         }
     }
     @FXML
@@ -493,10 +532,59 @@ public class ModificarPacienteController implements Initializable {
             }
         }
         List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheckAdd, oPaciente);
+        
+        /*---preguntas-------*/
+        for (Paciente_Pregunta oPacientePregunta : listPaciente_pregunta) {
+            boolean borrar = true;
+            for (CheckBox checkBox : listcheckPregunta) {
+                if (oPacientePregunta.getPregunta().getTextopregunta().equals(checkBox.getUserData().toString())) {
+                    borrar = false;
+                }
+            }
+            if (borrar) {
+                App.jpa.remove(oPacientePregunta);
+            }
+        }
+        List<CheckBox> listcheckAddPregunta = new ArrayList<>();
+        for (CheckBox checkBox : listcheckPregunta) {
+            boolean agregar = true;
+            for (Paciente_Pregunta oPaciente_Pregunta : listPaciente_pregunta) {
+                if (oPaciente_Pregunta.getPregunta().getTextopregunta().equals(checkBox.getUserData().toString())) {
+                    agregar = false;
+                    if (oPaciente_Pregunta.getPregunta().getTextopregunta().equals("¿Reacciona  anormalmente a algún medicamento?")) {
+                        oPaciente_Pregunta.setEspecificaciones(jtfpregunta1.getText());
+                        App.jpa.persist(oPaciente_Pregunta);
+                    } else if (oPaciente_Pregunta.getPregunta().getTextopregunta().equals("¿Está usted tomando algún medicamento?")) {
+                        oPaciente_Pregunta.setEspecificaciones(jtfpregunta2.getText());
+                        App.jpa.persist(oPaciente_Pregunta);
+                    } else if (oPaciente_Pregunta.getPregunta().getTextopregunta().equals("¿Le han realizado alguna intervención quirúrjica?")) {
+                        oPaciente_Pregunta.setEspecificaciones(jtfpregunta3.getText());
+                        App.jpa.persist(oPaciente_Pregunta);
+                    } else if (oPaciente_Pregunta.getPregunta().getTextopregunta().equals("¿Es alérgico a la anestesia dental?")) {
+                        oPaciente_Pregunta.setEspecificaciones(jtfpregunta4.getText());
+                        App.jpa.persist(oPaciente_Pregunta);
+                    } else if (oPaciente_Pregunta.getPregunta().getTextopregunta().equals("¿Está usted embarazada?")) {
+                        oPaciente_Pregunta.setEspecificaciones(jtfPreguntamujer.getText());
+                        App.jpa.persist(oPaciente_Pregunta);
+                    }
+                }
+            }
+            if (agregar) {
+                listcheckAddPregunta.add(checkBox);
+            }
+        }
+        List<Paciente_Pregunta> Lista_preguntaPaciente = Paciente_relacionar_pregunta(listcheckAddPregunta, oPaciente);
+        
+        
+        
         App.jpa.persist(oPersona);
         App.jpa.persist(oPaciente);
         for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
             App.jpa.persist(paciente_Enfermedad);
+        }
+        for (Paciente_Pregunta paciente_Pregunta : Lista_preguntaPaciente) {
+            App.jpa.persist(paciente_Pregunta);
+            
         }
         App.jpa.getTransaction().commit();
 
@@ -579,62 +667,74 @@ public class ModificarPacienteController implements Initializable {
 
     @FXML
     void unlockecdPregunta1(ActionEvent event) {
-        if (jtfantPregunta1.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfantPregunta1.setDisable(false);
+        CheckBox ch = (CheckBox) event.getSource();
+        if (ch.isSelected()) {
+            listcheckPregunta.add(ch);
+            jtfpregunta1.setDisable(false);
         } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfantPregunta1.setDisable(true);
+            listcheckPregunta.remove((CheckBox) event.getSource());
+            jtfpregunta1.setDisable(true);
         }
     }
 
     @FXML
     void unlockecdPregunta2(ActionEvent event) {
-        if (jtfantPregunta2.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfantPregunta2.setDisable(false);
+        CheckBox ch = (CheckBox) event.getSource();
+        if (ch.isSelected()) {
+            listcheckPregunta.add(ch);
+            jtfpregunta2.setDisable(false);
         } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfantPregunta2.setDisable(true);
+            listcheckPregunta.remove((CheckBox) event.getSource());
+            jtfpregunta2.setDisable(true);
         }
     }
     
     @FXML
     void unlockecdPregunta3(ActionEvent event) {
-        listcheck.add((CheckBox) event.getSource());
-        if (jtfantPregunta3.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfantPregunta3.setDisable(false);
+        CheckBox ch = (CheckBox) event.getSource();
+        if (ch.isSelected()) {
+            listcheckPregunta.add(ch);
+            jtfpregunta3.setDisable(false);
         } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfantPregunta3.setDisable(true);
+            listcheckPregunta.remove(ch);
+            jtfpregunta3.setDisable(true);
         }
     }
 
     @FXML
     void unlockecdPregunta4(ActionEvent event) {
-        listcheck.add((CheckBox) event.getSource());
-        if (jtfantPregunta4.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfantPregunta4.setDisable(false);
+        CheckBox ch = (CheckBox) event.getSource();
+        if (ch.isSelected()) {
+            listcheckPregunta.add(ch);
+            jtfpregunta4.setDisable(false);
         } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfantPregunta4.setDisable(true);
+            listcheckPregunta.remove(ch);
+            jtfpregunta4.setDisable(true);
         }
     }
 
     @FXML
     void unlockecdPreguntamujer1(ActionEvent event) {
-
-        if (jtfantpreguntamujer1.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfantpreguntamujer1.setDisable(false);
+        CheckBox ch = (CheckBox) event.getSource();
+        if (ch.isSelected()) {
+            listcheckPregunta.add(ch);
+            jtfPreguntamujer.setDisable(false);
         } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfantpreguntamujer1.setDisable(true);
+            listcheckPregunta.remove(ch);
+            jtfPreguntamujer.setDisable(true);
         }
     }
     
+    @FXML
+    void unlockecdPreguntamujer2(ActionEvent event) {
+        CheckBox ch = (CheckBox) event.getSource();
+        if (ch.isSelected()) {
+            listcheckPregunta.add(ch);
+        } else {
+            listcheckPregunta.remove(ch);
+        }
+    }
+
     @FXML
     void cerrar(){
         ((Stage)ap.getScene().getWindow()).close();

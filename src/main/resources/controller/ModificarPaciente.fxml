@@ -435,7 +435,7 @@
                                                                   <Label text="¿Está usted embarazada?" />
                                                                   <Label text="¿Está dando de lactar?" GridPane.rowIndex="1" />
                                                                   <JFXCheckBox fx:id="checkpreguntamujer1" checkedColor="#4059a9" onAction="#unlockecdPreguntamujer1" text=" " GridPane.columnIndex="1" />
-                                                                  <JFXCheckBox fx:id="checkpreguntamujer2" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                                                  <JFXCheckBox fx:id="checkpreguntamujer2" checkedColor="#4059a9" onAction="#unlockecdPreguntamujer2" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                                   <JFXTextField fx:id="jtfPreguntamujer" disable="true" labelFloat="true" promptText="¿Cuánto tiempo?" GridPane.columnIndex="2">
                                                                      <GridPane.margin>
                                                                         <Insets left="5.0" right="5.0" />
