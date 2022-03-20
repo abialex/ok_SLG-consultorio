@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="553.0" prefWidth="850.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegistrarPacienteController">
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="633.0" prefWidth="850.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegistrarPacienteController">
    <children>
       <BorderPane layoutX="390.0" layoutY="170.0" prefHeight="811.0" prefWidth="951.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -34,7 +34,7 @@
                            <children>
                               <Accordion layoutX="170.0" layoutY="114.0" prefHeight="558.0" prefWidth="688.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <panes>
-                                  <TitledPane animated="false" text="Datos personales" textFill="WHITE">
+                                  <TitledPane animated="false" text="Datos personales (Requerido)" textFill="WHITE">
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
@@ -153,13 +153,42 @@
                                           <Font name="System Bold" size="13.0" />
                                        </font>
                                   </TitledPane>
+                                    <TitledPane animated="false" text="Motivo consulta (Requerido)" textFill="WHITE">
+                                      <content>
+                                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane layoutX="166.0" layoutY="62.0" prefHeight="304.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <JFXTextArea fx:id="jtaConsulta" labelFloat="true" promptText="Motivo de la consulta">
+                                                         <font>
+                                                            <Font name="System Bold" size="18.0" />
+                                                         </font>
+                                                         <GridPane.margin>
+                                                            <Insets bottom="25.0" top="25.0" />
+                                                         </GridPane.margin>
+                                                      </JFXTextArea>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                      </content>
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                    </TitledPane>
                                   <TitledPane animated="false" text="En caso de emergencia" textFill="WHITE">
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
                                                 <GridPane layoutX="41.0" layoutY="134.0" prefHeight="464.0" prefWidth="686.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                   <columnConstraints>
-                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
                                                   </columnConstraints>
                                                   <rowConstraints>
                                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -167,9 +196,12 @@
                                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
-                                                      <JFXTextField fx:id="jtfemergenciaParentesco1" labelFloat="true" promptText="Parentesco" GridPane.rowIndex="1" />
-                                                      <JFXTextField fx:id="jtfemergenciatelefono1" labelFloat="true" promptText="telefono" GridPane.rowIndex="2" />
-                                                      <JFXTextField fx:id="jtfemergenciaNombre1" labelFloat="true" promptText="Nombre de la persona" />
+                                                      <JFXTextField fx:id="jtfemergenciaParentesco" labelFloat="true" promptText="Parentesco" GridPane.rowIndex="1" />
+                                                      <JFXTextField fx:id="jtfemergenciatelefono" labelFloat="true" promptText="telefono" GridPane.rowIndex="2" />
+                                                      <JFXTextField fx:id="jtfemergenciaNombre" labelFloat="true" promptText="Nombre de la persona">
+                                                         <GridPane.margin>
+                                                            <Insets />
+                                                         </GridPane.margin></JFXTextField>
                                                    </children>
                                                 </GridPane>
                                              </children>
@@ -193,9 +225,9 @@
                                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                   </rowConstraints>
                                                    <children>
-                                                      <JFXTextField fx:id="jtftutornombre1" labelFloat="true" promptText="Nombre del tutor" />
-                                                      <JFXTextField fx:id="jtftutordni1" labelFloat="true" promptText="DNI" GridPane.rowIndex="1" />
-                                                      <JFXTextField fx:id="jtftutortelefono1" labelFloat="true" promptText="Telefono" GridPane.rowIndex="2" />
+                                                      <JFXTextField fx:id="jtftutornombre" labelFloat="true" promptText="Nombre del tutor" />
+                                                      <JFXTextField fx:id="jtftutordni" labelFloat="true" promptText="DNI" GridPane.rowIndex="1" />
+                                                      <JFXTextField fx:id="jtftutortelefono" labelFloat="true" promptText="Telefono" GridPane.rowIndex="2" />
                                                    </children>
                                                 </GridPane>
                                              </children>
@@ -255,8 +287,8 @@
                                                       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                    </columnConstraints>
                                                    <rowConstraints>
-                                                      <RowConstraints maxHeight="353.0" minHeight="10.0" prefHeight="347.0" valignment="BASELINE" />
-                                                      <RowConstraints maxHeight="338.0" minHeight="10.0" prefHeight="124.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="353.0" minHeight="10.0" prefHeight="267.0" valignment="BASELINE" />
+                                                      <RowConstraints maxHeight="338.0" minHeight="10.0" prefHeight="74.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
                                                       <JFXTextField fx:id="jtfotrasEnfermedades" labelFloat="true" promptText="Otras enfermedades" GridPane.rowIndex="1">
@@ -276,7 +308,7 @@
                                                             <GridPane>
                                                                <columnConstraints>
                                                                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.00000762939453" minWidth="10.0" prefWidth="152.00000762939453" />
-                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="103.0" minWidth="10.0" prefWidth="38.99999237060547" />
+                                                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="38.99999237060547" />
                                                                </columnConstraints>
                                                                <rowConstraints>
                                                                   <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
@@ -347,7 +379,7 @@
                                                                         <JFXCheckBox fx:id="checkhipertensionarterial" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="6" />
                                                                      </children>
                                                                   </GridPane>
-                                                                  <JFXTextField fx:id="jtfantAque" disable="true" labelFloat="true" promptText="¿A qué?">
+                                                                  <JFXTextField fx:id="jtfAlergapregunta" disable="true" labelFloat="true" promptText="¿A qué?">
                                                                      <GridPane.margin>
                                                                         <Insets right="5.0" />
                                                                      </GridPane.margin>
@@ -403,7 +435,7 @@
                                                                   <Label text="¿Está dando de lactar?" GridPane.rowIndex="1" />
                                                                   <JFXCheckBox fx:id="checkpreguntamujer1" checkedColor="#4059a9" onAction="#unlockecdPreguntamujer1" text=" " GridPane.columnIndex="1" />
                                                                   <JFXCheckBox fx:id="checkpreguntamujer2" checkedColor="#4059a9" onAction="#cuadrarCheckbox" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                                                  <JFXTextField fx:id="jtfantpreguntamujer1" disable="true" labelFloat="true" promptText="¿Cuánto tiempo?" GridPane.columnIndex="2">
+                                                                  <JFXTextField fx:id="jtfPreguntamujer" disable="true" labelFloat="true" promptText="¿Cuánto tiempo?" GridPane.columnIndex="2">
                                                                      <GridPane.margin>
                                                                         <Insets left="5.0" right="5.0" />
                                                                      </GridPane.margin>
@@ -439,22 +471,22 @@
                                                             <JFXCheckBox fx:id="checkpregunta1" checkedColor="#4059a9" onAction="#unlockecdPregunta1" text=" " GridPane.columnIndex="1" />
                                                             <JFXCheckBox fx:id="checkpregunta2" checkedColor="#4059a9" onAction="#unlockecdPregunta2" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                                             <JFXCheckBox fx:id="checkpregunta4" checkedColor="#4059a9" onAction="#unlockecdPregunta4" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                                            <JFXTextField fx:id="jtfantPregunta1" disable="true" labelFloat="true" promptText="¿Cuál?" GridPane.columnIndex="2">
+                                                            <JFXTextField fx:id="jtfpregunta1" disable="true" labelFloat="true" promptText="¿Cuál?" GridPane.columnIndex="2">
                                                                <GridPane.margin>
                                                                   <Insets left="6.0" right="6.0" />
                                                                </GridPane.margin>
                                                             </JFXTextField>
-                                                            <JFXTextField fx:id="jtfantPregunta3" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                                            <JFXTextField fx:id="jtfpregunta3" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="2">
                                                                <GridPane.margin>
                                                                   <Insets left="6.0" right="6.0" />
                                                                </GridPane.margin>
                                                             </JFXTextField>
-                                                            <JFXTextField fx:id="jtfantPregunta2" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                                            <JFXTextField fx:id="jtfpregunta2" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                                                <GridPane.margin>
                                                                   <Insets left="6.0" right="6.0" />
                                                                </GridPane.margin>
                                                             </JFXTextField>
-                                                            <JFXTextField fx:id="jtfantPregunta4" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
+                                                            <JFXTextField fx:id="jtfpregunta4" disable="true" GridPane.columnIndex="2" GridPane.rowIndex="3">
                                                                <GridPane.margin>
                                                                   <Insets left="6.0" right="6.0" />
                                                                </GridPane.margin>
@@ -683,7 +715,7 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="TOP" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <ImageView fitHeight="19.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                        <ImageView fitHeight="19.0" fitWidth="21.0" onMouseClicked="#cerrar" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                            <image>
                               <Image url="@../imagenes/error.png" />
                            </image>
@@ -700,7 +732,7 @@
             </GridPane>
          </top>
          <bottom>
-            <GridPane prefHeight="63.0" prefWidth="848.0" style="-fx-background-color: #337ab7;" BorderPane.alignment="CENTER">
+            <GridPane prefHeight="44.0" prefWidth="848.0" style="-fx-background-color: #337ab7;" BorderPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -709,7 +741,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXButton text="GUARDAR" GridPane.columnIndex="1">
+                  <JFXButton onAction="#GuardarPaciente" text="GUARDAR" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets right="5.0" />
                      </GridPane.margin>

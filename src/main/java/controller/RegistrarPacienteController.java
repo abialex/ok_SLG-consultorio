@@ -61,234 +61,405 @@ import javafx.stage.StageStyle;
  *
  * @author yalle
  */
-public class RegistrarPacienteController implements Initializable {   
+public class RegistrarPacienteController implements Initializable {
+
     /**
      * Initializes the controller class.
      */
     @FXML
     private AnchorPane ap;
+    //I. Amnemesis
+    @FXML
+    private JFXTextField jtfNombresyApellidos, jtfDni, jtfTelefono;
 
     @FXML
-    private JFXTextField jtfNombresyApellidos;
+    private JFXComboBox<String> jcbsexo;
+
+    @FXML
+    private JFXTextField jtfDia, jtfMes, jtfanio;
+
+    @FXML
+    private JFXComboBox<String> jcbocupacion;
 
     @FXML
     private JFXTextField jtflugarprocedencia;
 
     @FXML
-    private JFXTextField jtfDni;
-
-    @FXML
-    private JFXTextField jtfTelefono;
-
-    @FXML
-    private JFXComboBox<?> jcbsexo;
-
-    @FXML
-    private JFXTextField jtfDia;
-
-    @FXML
-    private JFXTextField jtfMes;
-
-    @FXML
-    private JFXTextField jtfanio;
-
-    @FXML
-    private JFXComboBox<?> jcbocupacion;
-
-    @FXML
     private JFXTextField jtfDomicilio;
 
     @FXML
-    private JFXTextField jtfemergenciaParentesco1;
+    private JFXTextArea jtaConsulta;
 
     @FXML
-    private JFXTextField jtfemergenciatelefono1;
+    private JFXTextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
 
     @FXML
-    private JFXTextField jtfemergenciaNombre1;
+    private JFXTextField jtftutornombre, jtftutordni, jtftutortelefono;
 
+    //II. Enfermedad actual
     @FXML
-    private JFXTextField jtftutornombre1;
+    private JFXTextField jtfsintomasEnfermedadActual, jtftiempoEnfermedadActual;
 
+    //III. Antecedentes
     @FXML
-    private JFXTextField jtftutordni1;
-
-    @FXML
-    private JFXTextField jtftutortelefono1;
-
-    @FXML
-    private JFXTextField jtfsintomasEnfermedadActual;
-
-    @FXML
-    private JFXTextField jtftiempoEnfermedadActual;
-
+    private JFXCheckBox checkalergia, checkfiebrereumatica, checkanemia, checkdiabetes, checktuberculosis, checkhepatitis,
+            checkinfeccionveneria, checkenfermedadcardiaca, checkgastritis, checkepilepsia, checkdolordepecho, checkneuralgia,
+            checkenfermedaddelapiel, checkenfermedadrenal, checkhipertensionarterial;
     @FXML
     private JFXTextField jtfotrasEnfermedades;
 
     @FXML
-    private JFXCheckBox checkfiebrereumatica;
+    private JFXTextField jtfAlergapregunta;
 
     @FXML
-    private JFXCheckBox checkanemia;
+    private JFXCheckBox checkpreguntamujer1, checkpreguntamujer2;
 
     @FXML
-    private JFXCheckBox checkdiabetes;
+    private JFXTextField jtfPreguntamujer;
 
     @FXML
-    private JFXCheckBox checkalergia;
+    private JFXCheckBox checkpregunta1, checkpregunta2, checkpregunta3, checkpregunta4;
 
     @FXML
-    private JFXCheckBox checktuberculosis;
-
-    @FXML
-    private JFXCheckBox checkhepatitis;
-
-    @FXML
-    private JFXCheckBox checkinfeccionveneria;
-
-    @FXML
-    private JFXCheckBox checkenfermedadcardiaca;
-
-    @FXML
-    private JFXCheckBox checkgastritis;
-
-    @FXML
-    private JFXCheckBox checkepilepsia;
-
-    @FXML
-    private JFXCheckBox checkdolordepecho;
-
-    @FXML
-    private JFXCheckBox checkneuralgia;
-
-    @FXML
-    private JFXCheckBox checkenfermedaddelapiel;
-
-    @FXML
-    private JFXCheckBox checkenfermedadrenal;
-
-    @FXML
-    private JFXCheckBox checkhipertensionarterial;
-
-    @FXML
-    private JFXTextField jtfantAque;
-
-    @FXML
-    private JFXCheckBox checkpreguntamujer1;
-
-    @FXML
-    private JFXCheckBox checkpreguntamujer2;
-
-    @FXML
-    private JFXTextField jtfantpreguntamujer1;
-
-    @FXML
-    private JFXCheckBox checkpregunta3;
-
-    @FXML
-    private JFXCheckBox checkpregunta1;
-
-    @FXML
-    private JFXCheckBox checkpregunta2;
-
-    @FXML
-    private JFXCheckBox checkpregunta4;
-
-    @FXML
-    private JFXTextField jtfantPregunta1;
-
-    @FXML
-    private JFXTextField jtfantPregunta3;
-
-    @FXML
-    private JFXTextField jtfantPregunta2;
-
-    @FXML
-    private JFXTextField jtfantPregunta4;
+    private JFXTextField jtfpregunta1, jtfpregunta2, jtfpregunta3, jtfpregunta4;
 
     @FXML
     private JFXTextField jtfantecedentesFamiliares;
 
+    //IV. Exploración fisica
     @FXML
-    private JFXTextField jtfsignosvitales;
+    private JFXTextField jtfsignosvitales, jtfsaturacionoxigeno;
 
     @FXML
-    private JFXTextField jtfsaturacionoxigeno;
+    private JFXTextField jtfPA, jtfFC, jtftemperatura, jtfFR;
 
     @FXML
-    private JFXTextField jtfPA;
+    private JFXTextField jtfexamenclinicogeneral, jtfexamenclinicoodontoestomatolgico;
 
+    //V. Diagnostico
     @FXML
-    private JFXTextField jtfFC;
+    private JFXTextArea jtaDiagCIE10, jtaDiagPresentivo, jtaDiagDefinitivo;
 
-    @FXML
-    private JFXTextField jtftemperatura;
-
-    @FXML
-    private JFXTextField jtfFR;
-
-    @FXML
-    private JFXTextField jtfexamenclinicogeneral;
-
-    @FXML
-    private JFXTextField jtfexamenclinicoodontoestomatolgico;
-
-    @FXML
-    private JFXTextArea jtaDiagCIE10;
-
-    @FXML
-    private JFXTextArea jtaDiagPresentivo;
-
-    @FXML
-    private JFXTextArea jtaDiagDefinitivo;
-
+    //VI. Plan de tratamiento
     @FXML
     private JFXTextArea jtfrecomendaciones;
 
+    //VII. Pronostico
     @FXML
-    private JFXTextArea jtapronostico;
+    private JFXTextArea jtapronostico, jtaAltapaciente;
 
-    @FXML
-    private JFXTextArea jtaAltapaciente;
+    List<CheckBox> listcheck = new ArrayList<>();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        ObservableList<String> OCUPACION = FXCollections.observableArrayList("ESTUDIANTE", "UNIVERSITARIO", "TRABAJADOR");
+        ObservableList<String> SEXO = FXCollections.observableArrayList("VARÓN", "MUJER");
+        jcbocupacion.setItems(OCUPACION);
+        jcbsexo.setItems(SEXO);
+        //accordion.setExpandedPane(tpAnamnesis);
+        asignar();
+        initRestricciones();
+    }
+
+    @FXML
+    void GuardarPaciente(ActionEvent evt) throws IOException {
+        LocalDate fechaNacimiento = LocalDate.of(
+                Integer.parseInt(jtfanio.getText().trim()),
+                Integer.parseInt(jtfMes.getText().trim()),
+                Integer.parseInt(jtfDia.getText().trim()));
+
+        Persona opersona = new Persona(
+                jtfNombresyApellidos.getText().trim(),
+                jcbsexo.getSelectionModel().getSelectedItem(),
+                jtfDomicilio.getText().trim(),
+                jtfDni.getText().trim(),
+                fechaNacimiento,
+                jtflugarprocedencia.getText().trim(),
+                jcbocupacion.getSelectionModel().getSelectedItem(),
+                jtfTelefono.getText().trim()
+        );
+        opersona.setTutorDni(jtftutordni.getText().trim());
+        opersona.setTutorNombre(jtftutornombre.getText().trim());
+        opersona.setTutorTelefono(jtftutortelefono.getText().trim());
+
+        Paciente opaciente = new Paciente(
+                opersona,
+                jtfsintomasEnfermedadActual.getText().trim(),
+                jtftiempoEnfermedadActual.getText().trim(),
+                jtfotrasEnfermedades.getText().trim(),
+                jtfantecedentesFamiliares.getText().trim());
+        opaciente.setEmergenciaNombre(jtfemergenciaNombre.getText().trim());
+        opaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText().trim());
+        opaciente.setEmergenciaTelefono(jtfemergenciatelefono.getText().trim());
+
+        List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheck, opaciente);
+        List<Paciente_Pregunta> Lista_preguntasPaciente = Paciente_relacionar_pregunta(listcheck, opaciente);
+
+        Historia_clinica ohistoria = new Historia_clinica(
+                opaciente,
+                jtfsignosvitales.getText().trim(),
+                jtfsaturacionoxigeno.getText().trim(),
+                jtfPA.getText().trim(),
+                jtfFC.getText().trim(),
+                jtftemperatura.getText().trim(),
+                jtfFR.getText(),
+                jtfexamenclinicogeneral.getText().trim(),
+                jtfexamenclinicoodontoestomatolgico.getText().trim(),
+                jtaDiagCIE10.getText().trim(),
+                jtaDiagPresentivo.getText().trim(),
+                jtaDiagDefinitivo.getText().trim(),
+                jtfrecomendaciones.getText().trim(),
+                jtapronostico.getText().trim(),
+                jtaAltapaciente.getText().trim(),
+                jtaConsulta.getText().trim(),
+                LocalDate.now(),
+                LocalDate.now());
+        //GuardarPaciente
+        App.jpa.getTransaction().begin();
+        App.jpa.persist(opersona);
+
+        App.jpa.persist(opaciente);
+
+        for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
+            App.jpa.persist(paciente_Enfermedad);
+        }
+        for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
+            App.jpa.persist(paciente_Pregunta);
+        }
+        App.jpa.persist(ohistoria);
+        App.jpa.getTransaction().commit();
+    }
+
+    List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(List<CheckBox> listC, Paciente opaciente) {
+        List<Enfermedad> list_enfermedad = App.jpa.createQuery("select p from Enfermedad p ").getResultList();
+        List<Paciente_Enfermedad> list_enfermedades_paciente = new ArrayList<Paciente_Enfermedad>();
+        for (CheckBox checkBox : listC) {
+            for (Enfermedad enfermedad : list_enfermedad) {
+                if (checkBox.getUserData().toString().equals(enfermedad.getNombre())) {
+                    String Alergia = "";
+                    if (enfermedad.getNombre().equals("Alergia")) {
+                        Alergia = jtfAlergapregunta.getText().trim();
+                    }
+                    list_enfermedades_paciente.add(new Paciente_Enfermedad(opaciente, enfermedad, Alergia));
+                }
+            }
+        }
+        for (Paciente_Enfermedad paciente_Enfermedad : list_enfermedades_paciente) {
+            System.out.println(paciente_Enfermedad.getEnfermedad().getNombre());
+
+        }
+        return list_enfermedades_paciente;
+    }
+
+    List<Paciente_Pregunta> Paciente_relacionar_pregunta(List<CheckBox> listcb, Paciente opaciente) {
+        List<Pregunta> list_pregunta = App.jpa.createQuery("select p from Pregunta p ").getResultList();
+        List<Paciente_Pregunta> list_pregunta_paciente = new ArrayList<Paciente_Pregunta>();
+
+        for (CheckBox checkBox : listcb) {
+            for (Pregunta pregunta : list_pregunta) {
+                boolean isMujer = opaciente.getPersona().getSexo().equals("MUJER");
+                if (checkBox.getUserData().toString().equals(pregunta.getTextopregunta())) {
+                    String pgt = "";
+                    if (checkBox.getUserData().toString().equals("¿Reacciona  anormalmente a algún medicamento?")) {
+                        pgt = jtfpregunta1.getText().trim();
+                        isMujer = false;
+                    } else if (checkBox.getUserData().toString().equals("¿Le han realizado alguna intervención quirúrjica?")) {
+                        pgt = jtfpregunta2.getText().trim();
+                        isMujer = false;
+                    } else if (checkBox.getUserData().toString().equals("¿Está usted tomando algún medicamento?")) {
+                        pgt = jtfpregunta3.getText().trim();
+                        isMujer = false;
+                    } else if (checkBox.getUserData().toString().equals("¿Es alérgico a la anestesia dental?")) {
+                        pgt = jtfpregunta4.getText().trim();
+                        isMujer = false;
+                    } else if (checkBox.getUserData().toString().equals("¿Está usted embarazada?")) {
+                        pgt = jtfPreguntamujer.getText().trim();
+                    }
+                    list_pregunta_paciente.add(new Paciente_Pregunta(opaciente, pregunta, pgt, isMujer));
+                }
+            }
+        }
+        return list_pregunta_paciente;
+    }
+
+    @FXML
+    void cuadrarCheckbox(ActionEvent o) {
+        CheckBox ch = (CheckBox) o.getSource();
+
+        if (ch.isSelected()) {
+            listcheck.add(ch);
+
+        } else {
+            listcheck.remove(ch);
+        }
+        if (ch.getUserData().toString().equals("Alergia")) {
+            unlockecdAlergia();
+        }
+
     }
 
     void setController(VerPacienteController aThis) {
     }
 
-    @FXML
-    void cuadrarCheckbox() {
+    void asignar() {
+        checkalergia.setUserData("Alergia");
+        checkfiebrereumatica.setUserData("Fiebre reumática");
+        checkanemia.setUserData("Anemia");
+        checkdiabetes.setUserData("Diabetes");
+        checktuberculosis.setUserData("Tuberculosis");
+        checkhepatitis.setUserData("Hepatitis");
+        checkinfeccionveneria.setUserData("Infección veneria");
+        checkenfermedadcardiaca.setUserData("Enfermedad cardiaca");
+        checkgastritis.setUserData("Gastritis");
+        checkepilepsia.setUserData("Epilepsia");
+        checkdolordepecho.setUserData("Dolor de pecho");
+        checkneuralgia.setUserData("Neuralgia");
+        checkenfermedaddelapiel.setUserData("Enfermedad de la piel");
+        checkenfermedadrenal.setUserData("Enfermedad renal");
+        checkhipertensionarterial.setUserData("Hipertensión Arterial");
+        checkpregunta1.setUserData("¿Reacciona  anormalmente a algún medicamento?");
+        checkpregunta2.setUserData("¿Está usted tomando algún medicamento?");
+        checkpregunta3.setUserData("¿Le han realizado alguna intervención quirúrjica?");
+        checkpregunta4.setUserData("¿Es alérgico a la anestesia dental?");
+        checkpreguntamujer1.setUserData("¿Está usted embarazada?");
+        checkpreguntamujer2.setUserData("¿Está dando de lactar?");
 
     }
 
-    @FXML
-    void unlockecdPregunta1() {
+    void initRestricciones() {
+        jtfNombresyApellidos.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        jtfTelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+        jtfDni.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
+        jtfDia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
+        jtfMes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
+        jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros4(event));
 
+        jtfemergenciaNombre.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        jtfemergenciaParentesco.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        jtfemergenciatelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+
+        jtftutornombre.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        jtftutordni.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
+        jtftutortelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+    }
+
+    void SoloNumerosEntero(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+    }
+
+    void SoloNumerosEnteros2(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 2) {
+            event.consume();
+        }
+    }
+
+    void SoloNumerosEnteros4(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 4) {
+            event.consume();
+        }
+    }
+
+    void SoloNumerosEnteros8(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 8) {
+            event.consume();
+        }
+    }
+
+    void SoloLetras(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (Character.isDigit(key)) {
+            event.consume();
+        }
+    }
+
+    /*----------Metodos de ventana---------------*/
+    void unlockecdAlergia() {
+        if (jtfAlergapregunta.isDisable()) {
+            jtfAlergapregunta.setDisable(false);
+        } else {
+            jtfAlergapregunta.setDisable(true);
+        }
     }
 
     @FXML
-    void unlockecdPregunta2() {
-
+    void unlockecdPregunta1(ActionEvent event) {
+        if (jtfpregunta1.isDisable()) {
+            listcheck.add((CheckBox) event.getSource());
+            jtfpregunta1.setDisable(false);
+        } else {
+            listcheck.remove((CheckBox) event.getSource());
+            jtfpregunta1.setDisable(true);
+        }
     }
 
     @FXML
-    void unlockecdPregunta3() {
-
+    void unlockecdPregunta2(ActionEvent event) {
+        if (jtfpregunta2.isDisable()) {
+            listcheck.add((CheckBox) event.getSource());
+            jtfpregunta2.setDisable(false);
+        } else {
+            listcheck.remove((CheckBox) event.getSource());
+            jtfpregunta2.setDisable(true);
+        }
     }
 
     @FXML
-    void unlockecdPregunta4() {
-
+    void unlockecdPregunta3(ActionEvent event) {
+        listcheck.add((CheckBox) event.getSource());
+        if (jtfpregunta3.isDisable()) {
+            listcheck.add((CheckBox) event.getSource());
+            jtfpregunta3.setDisable(false);
+        } else {
+            listcheck.remove((CheckBox) event.getSource());
+            jtfpregunta3.setDisable(true);
+        }
     }
 
     @FXML
-    void unlockecdPreguntamujer1() {
-
+    void unlockecdPregunta4(ActionEvent event) {
+        listcheck.add((CheckBox) event.getSource());
+        if (jtfpregunta4.isDisable()) {
+            listcheck.add((CheckBox) event.getSource());
+            jtfpregunta4.setDisable(false);
+        } else {
+            listcheck.remove((CheckBox) event.getSource());
+            jtfpregunta4.setDisable(true);
+        }
     }
 
+    @FXML
+    void unlockecdPreguntamujer1(ActionEvent event) {
+
+        if (jtfPreguntamujer.isDisable()) {
+            listcheck.add((CheckBox) event.getSource());
+            jtfPreguntamujer.setDisable(false);
+        } else {
+            listcheck.remove((CheckBox) event.getSource());
+            jtfPreguntamujer.setDisable(true);
+        }
+    }
+
+    /*------Fin Metodos de ventana---------------*/
     @FXML
     void test() {
 
