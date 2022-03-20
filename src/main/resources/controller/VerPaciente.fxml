@@ -77,7 +77,7 @@
                             <RowConstraints minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
                           </rowConstraints>
                            <children>
-                              <ImageView fx:id="imgAdduser" fitHeight="84.0" fitWidth="97.0" onMouseExited="#imagAddpacienteFuera" onMouseMoved="#imagAddpacienteMoved" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                              <ImageView fx:id="imgAdduser" fitHeight="84.0" fitWidth="97.0" onMouseClicked="#mostrarRegistrarpaciente" onMouseExited="#imagAddpacienteFuera" onMouseMoved="#imagAddpacienteMoved" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
                                  <image>
                                     <Image url="@../imagenes/medical-1.png" />
                                  </image>
