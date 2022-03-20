@@ -214,7 +214,8 @@ public class VerPacienteController implements Initializable {
                     ImageView buton = (ImageView) event.getSource();
                     for (Persona opersona : listPersona) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
-                            ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana("ModificarPaciente");
+                            ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class,"ModificarPaciente");
+                            oModificarPacienteController.jeje(opersona);
                             break;
                         }
                     }
@@ -225,7 +226,7 @@ public class VerPacienteController implements Initializable {
                     for (int i = 0; i < listPersona.size(); i++) {
                         if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
                             Persona carta = listPersona.get(i);
-                            oAlertConfimarController1 = (AlertConfirmarController) mostrarVentana("/fxml/AlertConfirmar");
+                            oAlertConfimarController1 = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class,"/fxml/AlertConfirmar");
                             oAlertConfimarController1.setController(odc);
                             oAlertConfimarController1.setMensaje(" ¿Está seguro de eliminar?");
                             oAlertConfimarController1.setCartaIndex(carta, i);
@@ -302,18 +303,18 @@ public class VerPacienteController implements Initializable {
 
     @FXML
     void mostrarRegistrarpaciente() {
-        RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana("RegistrarPaciente");
+        RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana(RegistrarPacienteController.class,"RegistrarPaciente");
         //oRegistrarController.setController(VerPacienteController.this);
     }
 
-    public Object mostrarVentana(String nameFXML) {
+    public Object mostrarVentana(Class generico,String nameFXML) {
         FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(RegistrarPacienteController.class.getResource(nameFXML + ".fxml"));
+        loader.setLocation(generico.getResource(nameFXML + ".fxml"));
         Parent root = null;
         try {
             root = loader.load();
         } catch (IOException ex) {
-            Logger.getLogger(VerPacienteController.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(generico.getName()).log(Level.SEVERE, null, ex);
         }
         Scene scene = new Scene(root);//instancia el controlador (!)
         scene.getStylesheets().add(VerPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
