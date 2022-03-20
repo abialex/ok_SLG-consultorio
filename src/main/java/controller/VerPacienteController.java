@@ -217,7 +217,7 @@ public class VerPacienteController implements Initializable {
 
                             FXMLLoader loader = new FXMLLoader();
                             loader.setLocation(ModificarPacienteController.class.getResource("ModificarPaciente.fxml"));
-                            Parent root=null;
+                            Parent root = null;
                             try {
                                 root = loader.load();
                             } catch (IOException ex) {
@@ -341,6 +341,18 @@ public class VerPacienteController implements Initializable {
             return cell;
         };
         tableOpcion.setCellFactory(cellFoctory);
+    }
+
+    @FXML
+    void imagAddpacienteMoved(MouseEvent event) {
+        ImageView imag = (ImageView) event.getSource();
+        imag.setImage(new Image(getClass().getResource("/imagenes/medical-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagAddpacienteFuera(MouseEvent event) {
+        ImageView imag = (ImageView) event.getSource();
+        imag.setImage(new Image(getClass().getResource("/imagenes/medical-1.png").toExternalForm()));
     }
 
 }
