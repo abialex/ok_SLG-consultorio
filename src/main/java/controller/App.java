@@ -22,18 +22,18 @@ public class App extends Application {
     public static EntityManager jpa= JPAUtil.getEntityManagerFactory().createEntityManager();
     private double x = 0;
     private double y = 0;
-    RegistrarPacienteController ocControlller;
+    VerPacienteController ocControlller;
     public static Stage stagePrincpal;
 
     @Override
     public void start(Stage stage) throws IOException {
         stagePrincpal = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("RegistrarPaciente.fxml"));
-        fxmlLoader.setLocation(App.class.getResource("RegistrarPaciente.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("VerPaciente.fxml"));
+        fxmlLoader.setLocation(App.class.getResource("VerPaciente.fxml"));
         Parent root = fxmlLoader.load();
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("/css/bootstrap3.css").toExternalForm());
-        ocControlller = (RegistrarPacienteController) fxmlLoader.getController(); //esto depende de (1)
+        ocControlller = (VerPacienteController) fxmlLoader.getController(); //esto depende de (1)
         ocControlller.setStagePrincipall(stage);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
