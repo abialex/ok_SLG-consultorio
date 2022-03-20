@@ -20,6 +20,7 @@ import emergente.AlertController;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -55,8 +56,9 @@ import javafx.stage.StageStyle;
  */
 public class ModificarPacienteController implements Initializable {       
     //Atributos de la ventana
-    @FXML Accordion accordion;
-    @FXML TitledPane tpAnamnesis;
+    @FXML AnchorPane ap;
+    @FXML Accordion accordion,accordion2;
+    @FXML TitledPane tpAnamnesis, tpEnfermedades;
     @FXML TitledPane tpAnamnesisAct;
     @FXML JFXDatePicker dtpicker;
     @FXML Button jbtnGuardar;
@@ -78,7 +80,7 @@ public class ModificarPacienteController implements Initializable {
     @FXML TextField jtflugarprocedencia;
     @FXML ComboBox<String> jcbocupacion;
     @FXML ComboBox<String> jcbsexo;
-    @FXML TextField jtfmotivoconsulta;
+    @FXML TextArea jtfmotivoconsulta;
     @FXML TextField jtftutornombre, jtftutordni, jtftutortelefono;
     @FXML TextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     
@@ -87,7 +89,7 @@ public class ModificarPacienteController implements Initializable {
     @FXML TextField jtftiempoEnfermedadActual;
     
     //Antecedentes
-    @FXML CheckBox checkalergia;;@FXML TextField jtfantAque;
+    @FXML CheckBox checkalergia;;@FXML TextField jtfAlergapregunta;
     @FXML CheckBox checkfiebrereumatica;
     @FXML CheckBox checkanemia;
     @FXML CheckBox checkdiabetes;
@@ -134,11 +136,15 @@ public class ModificarPacienteController implements Initializable {
 
     //Fin Atributos Actualización  
     AlertController oAlertController=new AlertController();
-    Persona oPersona;
     Stage stagePrincipal;
     private double x = 0;
     private double y = 0;
     List<CheckBox> listcheck = new ArrayList<>();
+    List<CheckBox> listcheckG = new ArrayList<>();
+    List<Paciente_Enfermedad> listPaciente_Enfermedad;
+    Persona oPersona;
+    Paciente oPaciente;
+    Historia_clinica oHistoria_Clinica;
     //Botones y métodos de prueba   
     
     //Fin Botones y métodos de prueba
@@ -150,8 +156,11 @@ public class ModificarPacienteController implements Initializable {
         jcbocupacion.setItems(OCUPACION);
         jcbsexo.setItems(SEXO);
         accordion.setExpandedPane(tpAnamnesis); 
+        accordion2.setExpandedPane(tpEnfermedades);
         asignar();
+        listCheck();
         initRestricciones();
+        
     }    
     
     @FXML
@@ -247,15 +256,11 @@ public class ModificarPacienteController implements Initializable {
                 if (checkBox.getUserData().toString().equals(enfermedad.getNombre())) {
                     String Alergia = "";
                     if (enfermedad.getNombre().equals("Alergia")) {
-                        Alergia = jtfantAque.getText().trim();
+                        Alergia = jtfAlergapregunta.getText().trim();
                     }
                     list_enfermedades_paciente.add(new Paciente_Enfermedad(opaciente, enfermedad, Alergia));
                 }
             }
-        }
-        for (Paciente_Enfermedad paciente_Enfermedad : list_enfermedades_paciente) {
-            System.out.println(paciente_Enfermedad.getEnfermedad().getNombre());
-
         }
         return list_enfermedades_paciente;
     }
@@ -295,6 +300,13 @@ public class ModificarPacienteController implements Initializable {
         this.stagePrincipal = stage;
     }
 
+    @FXML
+    void test(){
+        for (CheckBox checkBox : listcheck) {
+            System.out.println(checkBox.getUserData().toString());
+        }
+        
+    }
     void asignar() {
         checkalergia.setUserData("Alergia");
         checkfiebrereumatica.setUserData("Fiebre reumática");
@@ -311,46 +323,188 @@ public class ModificarPacienteController implements Initializable {
         checkenfermedaddelapiel.setUserData("Enfermedad de la piel");
         checkenfermedadrenal.setUserData("Enfermedad renal");
         checkhipertensionarterial.setUserData("Hipertensión Arterial");
+        
         checkpregunta1.setUserData("¿Reacciona  anormalmente a algún medicamento?");
         checkpregunta2.setUserData("¿Está usted tomando algún medicamento?");
         checkpregunta3.setUserData("¿Le han realizado alguna intervención quirúrjica?");
         checkpregunta4.setUserData("¿Es alérgico a la anestesia dental?");
         checkpreguntamujer1.setUserData("¿Está usted embarazada?");
         checkpreguntamujer2.setUserData("¿Está dando de lactar?");
+        
 
+    }
+    
+    void listCheck(){
+        listcheckG.add(checkalergia);listcheckG.add(checkfiebrereumatica);listcheckG.add(checkanemia);
+        listcheckG.add(checkdiabetes);listcheckG.add(checktuberculosis);listcheckG.add(checkhepatitis);
+        listcheckG.add(checkinfeccionveneria);listcheckG.add(checkenfermedadcardiaca);listcheckG.add(checkgastritis);
+        listcheckG.add(checkepilepsia);listcheckG.add(checkdolordepecho);listcheckG.add(checkneuralgia);
+        listcheckG.add(checkenfermedaddelapiel);listcheckG.add(checkenfermedadrenal);listcheckG.add(checkhipertensionarterial);
+    }
+    
+    public void setPersona(Persona opersona) {
+        this.oPersona= opersona;
+        this.oPaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
+        this.oHistoria_Clinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + oPaciente.getIdpaciente()).getSingleResult();
+        listPaciente_Enfermedad = App.jpa.createQuery("select p from Paciente_Enfermedad p where idpaciente=" + oPaciente.getIdpaciente()).getResultList();
+        jtfNombresyApellidos.setText(opersona.getNombres_apellidos());
+        jtfDni.setText(opersona.getDni());
+        jtfTelefono.setText(opersona.getTelefono());
+        jcbsexo.getSelectionModel().select(opersona.getSexo());
+        jtfDia.setText(opersona.getFechaNacimiento().getDayOfMonth()+"");
+        jtfMes.setText(opersona.getFechaNacimiento().getMonthValue()+"");
+        jtfanio.setText(opersona.getFechaNacimiento().getYear()+"");
+        jcbocupacion.getSelectionModel().select(opersona.getOcupacion());
+        jtflugarprocedencia.setText(opersona.getLugar_de_procedencia());
+        jtfDomicilio.setText(opersona.getDomicilio());
+        
+        jtfmotivoconsulta.setText(oHistoria_Clinica.getMotivoConsulta());
+        
+        jtfemergenciaNombre.setText(oPaciente.getEmergenciaNombre());
+        jtfemergenciaParentesco.setText(oPaciente.getEmergenciaParentesco());
+        jtfemergenciatelefono.setText(oPaciente.getEmergenciaTelefono());
+        
+        jtftutornombre.setText(opersona.getTutorNombre());
+        jtftutordni.setText(opersona.getTutorDni());
+        jtftutortelefono.setText(opersona.getTutorTelefono());
+        
+        //enfermedad actual
+        jtfsintomasEnfermedadActual.setText(oPaciente.getSintomasEnfermedadActual());
+        jtftiempoEnfermedadActual.setText(oPaciente.getTiempoEnfermedadActual());
+        
+        //exploracin física    
+        jtfsignosvitales.setText(oHistoria_Clinica.getSignosVitales());
+        jtfsaturacionoxigeno.setText(oHistoria_Clinica.getSaturacionOxigeno());
+        jtfPA.setText(oHistoria_Clinica.getPA());
+        jtfFC.setText(oHistoria_Clinica.getFC());
+        jtftemperatura.setText(oHistoria_Clinica.getTemperatura());
+        jtfFR.setText(oHistoria_Clinica.getFR());
+        jtfexamenclinicogeneral.setText(oHistoria_Clinica.getExamenClinicoGeneral());
+        jtfexamenclinicoodontoestomatolgico.setText(oHistoria_Clinica.getExamenClinicoOdontoestomtologico());
+        
+        //diagnostico
+        jtaDiagCIE10.setText(oHistoria_Clinica.getDiagnosticoCIE10());
+        jtaDiagPresentivo.setText(oHistoria_Clinica.getDiagnosticoPresuntivo());
+        jtaDiagDefinitivo.setText(oHistoria_Clinica.getDiagnosticoDefinitivo());
+
+        //Plan de tratamiento
+        jtfrecomendaciones.setText(oHistoria_Clinica.getRecomendaciones());
+        
+        //Pronóstico
+        jtapronostico.setText(oHistoria_Clinica.getPronostico());
+        jtaAltapaciente.setText(oHistoria_Clinica.getAltaPaciente());
+        
+        //Antecedentes
+        jtfotrasEnfermedades.setText(oPaciente.getOtrasEnfermedades());
+        jtfantecedentesFamiliares.setText(oPaciente.getAntecedentesFamiliares());
+        
+        
+        //antecendentes
+        for (CheckBox checkBox : listcheckG) {
+            for (Paciente_Enfermedad paciente_Enfermedad : listPaciente_Enfermedad) {
+                if (checkBox.getUserData().toString().equals(paciente_Enfermedad.getEnfermedad().getNombre())) {
+                    listcheck.add(checkBox);
+                    checkBox.setSelected(true);
+                    if (paciente_Enfermedad.getEnfermedad().getNombre().equals("Alergia")) {
+                        jtfAlergapregunta.setText(paciente_Enfermedad.getDetalleEnfermedad());
+                        jtfAlergapregunta.setDisable(false);
+                    }
+                }
+            }
+
+        }
+    }
+    @FXML
+    void actualizar() {
+        oPersona.setNombres_apellidos(jtfNombresyApellidos.getText());
+        oPersona.setDni(jtfDni.getText());
+        oPersona.setTelefono(jtfTelefono.getText());
+        oPersona.setSexo(jcbsexo.getSelectionModel().getSelectedItem());
+        oPersona.setFechaNacimiento(LocalDate.of(Integer.parseInt(jtfanio.getText()), Integer.parseInt(jtfMes.getText()), Integer.parseInt(jtfDia.getText())));
+        oPersona.setOcupacion(jcbocupacion.getSelectionModel().getSelectedItem());
+        oPersona.setLugar_de_procedencia(jtflugarprocedencia.getText());
+        oPersona.setDomicilio(jtfDomicilio.getText());
+
+        oHistoria_Clinica.setMotivoConsulta(jtfmotivoconsulta.getText());
+        
+        oPaciente.setEmergenciaNombre(jtfemergenciaNombre.getText());
+        oPaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText());
+        oPaciente.setEmergenciaTelefono(jtfemergenciatelefono.getText());
+        
+        oPersona.setTutorNombre(jtftutornombre.getText());
+        oPersona.setTutorDni(jtftutordni.getText());
+        oPersona.setTutorTelefono(jtftutortelefono.getText());
+        
+        //Enfermedad actual
+        oPaciente.setSintomasEnfermedadActual(jtfsintomasEnfermedadActual.getText());
+        oPaciente.setTiempoEnfermedadActual(jtftiempoEnfermedadActual.getText());
+        
+        //Exploración física
+        oHistoria_Clinica.setSignosVitales(jtfsignosvitales.getText());
+        oHistoria_Clinica.setSaturacionOxigeno(jtfsaturacionoxigeno.getText());
+        oHistoria_Clinica.setPA(jtfPA.getText());
+        oHistoria_Clinica.setFC(jtfFC.getText());
+        oHistoria_Clinica.setTemperatura(jtftemperatura.getText());
+        oHistoria_Clinica.setFR(jtfFR.getText());
+        oHistoria_Clinica.setExamenClinicoGeneral(jtfexamenclinicogeneral.getText());
+        oHistoria_Clinica.setExamenClinicoOdontoestomtologico(jtfexamenclinicoodontoestomatolgico.getText());
+        
+        //diagnostico
+        oHistoria_Clinica.setDiagnosticoCIE10(jtaDiagCIE10.getText());
+        oHistoria_Clinica.setDiagnosticoPresuntivo(jtaDiagPresentivo.getText());
+        oHistoria_Clinica.setDiagnosticoDefinitivo(jtaDiagDefinitivo.getText());
+        
+        //Plan de tratamiento
+        oHistoria_Clinica.setRecomendaciones(jtfrecomendaciones.getText());
+        
+        //Pronóstico
+        oHistoria_Clinica.setPronostico(jtapronostico.getText());
+        oHistoria_Clinica.setAltaPaciente(jtaAltapaciente.getText());
+        
+        //Antecedentes
+        oPaciente.setOtrasEnfermedades(jtfotrasEnfermedades.getText());
+        oPaciente.setAntecedentesFamiliares(jtfantecedentesFamiliares.getText());
+        App.jpa.getTransaction().begin();
+        for (Paciente_Enfermedad oPacienteEnfermedad : listPaciente_Enfermedad) {
+            boolean borrar = true;
+            for (CheckBox checkBox : listcheck) {
+                if (oPacienteEnfermedad.getEnfermedad().getNombre().equals(checkBox.getUserData().toString())) {
+                    borrar = false;
+                }
+            }
+            if (borrar) {
+                App.jpa.remove(oPacienteEnfermedad);
+            }
+        }
+        List<CheckBox> listcheckAdd = new ArrayList<>();
+        for (CheckBox checkBox : listcheck) {
+            boolean agregar = true;
+            for (Paciente_Enfermedad oPaciente_Enfermedad : listPaciente_Enfermedad) {
+                if (oPaciente_Enfermedad.getEnfermedad().getNombre().equals(checkBox.getUserData().toString())) {
+                    agregar = false;
+                    if (oPaciente_Enfermedad.getEnfermedad().getNombre().equals("Alergia")) {
+                        oPaciente_Enfermedad.setDetalleEnfermedad(jtfAlergapregunta.getText());
+                        App.jpa.persist(oPaciente_Enfermedad);
+                    }
+                }
+            }
+            if (agregar) {
+                listcheckAdd.add(checkBox);
+            }
+        }
+        List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheckAdd, oPaciente);
+        App.jpa.persist(oPersona);
+        App.jpa.persist(oPaciente);
+        for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
+            App.jpa.persist(paciente_Enfermedad);
+        }
+        App.jpa.getTransaction().commit();
+
+        cerrar();
     }
 
     /*--Otras ventanas---*/
-    @FXML
-    void mostrarVerPaciente() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(VerPacienteController.class.getResource("VerPaciente.fxml"));
-        Parent root = loader.load();
-        Scene scene = new Scene(root);//instancia el controlador (!)
-        scene.getStylesheets().add(VerPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
-        Stage stage = new Stage();//creando la base vací
-        stage.initStyle(StageStyle.UNDECORATED);
-        stage.initOwner(stagePrincipal);
-        stage.setScene(scene);
-        VerPacienteController oVerController = (VerPacienteController) loader.getController(); //esto depende de (1)
-        //oVerController.setController(this);
-        oVerController.setStagePrincipall(stage);
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                x = event.getX();
-                y = event.getY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            }
-        });
-        stage.show();
-    }
+    
 
     /*--Otras ventanas fin---*/
     void initRestricciones(){
@@ -416,10 +570,10 @@ public class ModificarPacienteController implements Initializable {
 
  /*----------Metodos de ventana---------------*/
     void unlockecdAlergia() {
-        if (jtfantAque.isDisable()) {
-            jtfantAque.setDisable(false);
+        if (jtfAlergapregunta.isDisable()) {
+            jtfAlergapregunta.setDisable(false);
         } else {
-            jtfantAque.setDisable(true);
+            jtfAlergapregunta.setDisable(true);
         }
     }
 
@@ -444,7 +598,7 @@ public class ModificarPacienteController implements Initializable {
             jtfantPregunta2.setDisable(true);
         }
     }
-
+    
     @FXML
     void unlockecdPregunta3(ActionEvent event) {
         listcheck.add((CheckBox) event.getSource());
@@ -479,6 +633,11 @@ public class ModificarPacienteController implements Initializable {
             listcheck.remove((CheckBox) event.getSource());
             jtfantpreguntamujer1.setDisable(true);
         }
+    }
+    
+    @FXML
+    void cerrar(){
+        ((Stage)ap.getScene().getWindow()).close();
     }
     /*------Fin Metodos de ventana---------------*/
 
