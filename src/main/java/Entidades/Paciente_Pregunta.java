@@ -24,11 +24,11 @@ public class Paciente_Pregunta {
     private int idpaciente_pregunta;
     
     @JoinColumn(insertable = true,updatable = true,name="idpaciente",nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Paciente paciente;
     
     @JoinColumn(insertable = true,updatable = true,name="idpregunta",nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Pregunta pregunta;
     
     @Column (name = "especificaciones", nullable = true)
