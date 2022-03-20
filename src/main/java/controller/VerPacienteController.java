@@ -173,7 +173,7 @@ public class VerPacienteController implements Initializable {
                         deleteIcon.setStyle(
                                 " -fx-cursor: hand;"
                         );
-                        deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> eliminar(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarEliminar(event));
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarMoved(event));
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarFuera(event));
                         //deleteIcon.setText("Eliminar");
@@ -196,7 +196,7 @@ public class VerPacienteController implements Initializable {
                         PrintIcon.setStyle(
                                 " -fx-cursor: hand;"
                         );
-                        PrintIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> imprimir(event));
+                        PrintIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarImprimir(event));
                         PrintIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagImprimirMoved(event));
                         PrintIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagImprimirFuera(event));
                         //deleteIcon.setText("Eliminar");
@@ -210,86 +210,31 @@ public class VerPacienteController implements Initializable {
                     }
                 }
 
-                private void mostrarModificar(MouseEvent event) {
+                void mostrarModificar(MouseEvent event) {
                     ImageView buton = (ImageView) event.getSource();
                     for (Persona opersona : listPersona) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
-
-                            FXMLLoader loader = new FXMLLoader();
-                            loader.setLocation(ModificarPacienteController.class.getResource("ModificarPaciente.fxml"));
-                            Parent root = null;
-                            try {
-                                root = loader.load();
-                            } catch (IOException ex) {
-                                Logger.getLogger(ModificarPacienteController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            Scene scene = new Scene(root);//instancia el controlador (!)
-                            scene.getStylesheets().add(ModificarPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
-                            Stage stage = new Stage();//creando la base vací
-                            stage.initStyle(StageStyle.UNDECORATED);
-                            stage.initOwner(stagePrincipal);
-                            stage.setScene(scene);
-                            ModificarPacienteController oVerController = (ModificarPacienteController) loader.getController(); //esto depende de (1)
-                            oVerController.setController(VerPacienteController.this);
-                            root.setOnMousePressed(new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    x = event.getX();
-                                    y = event.getY();
-                                }
-                            });
-                            root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    stage.setX(event.getScreenX() - x);
-                                    stage.setY(event.getScreenY() - y);
-                                }
-                            });
-                            stage.show();
-                            //((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
+                            ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana("ModificarPaciente");
                             break;
                         }
                     }
                 }
 
-                void mostrar(Persona oPersona, int index) throws IOException {
-                    FXMLLoader loader = new FXMLLoader();
-                    loader.setLocation(AlertConfirmarController.class.getResource("/fxml/AlertConfirmar.fxml"));
-                    Scene scene = new Scene(loader.load());
-                    Stage stage = new Stage();//creando la base vacía
-                    stage.initOwner(stagePrincipal);
-                    stage.initStyle(StageStyle.UNDECORATED);
-                    stage.setScene(scene);
-                    //
-                    oAlertConfimarController1 = (AlertConfirmarController) loader.getController(); //esto depende de (1)
-                    oAlertConfimarController1.setController(odc);
-                    oAlertConfimarController1.setMensaje(" ¿Está seguro de eliminar?");
-                    oAlertConfimarController1.setCartaIndex(oPersona, index);
-                    stage.show();
-                }
-
-                void eliminar(MouseEvent event) {
+                void mostrarEliminar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listPersona.size(); i++) {
                         if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
                             Persona carta = listPersona.get(i);
-                            try {
-                                mostrar(carta, i);
-                            } catch (IOException ex) {
-                                Logger.getLogger(RegistrarPacienteController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                            //si lo que eliminan es igual a lo que está seleccionado: eliminar
-                            if (selectItem() != -1) {
-                                if (listPersona.get(selectItem()) == carta) {
-                                    //limpiar();
-                                }
-                            }
+                            oAlertConfimarController1 = (AlertConfirmarController) mostrarVentana("/fxml/AlertConfirmar");
+                            oAlertConfimarController1.setController(odc);
+                            oAlertConfimarController1.setMensaje(" ¿Está seguro de eliminar?");
+                            oAlertConfimarController1.setCartaIndex(carta, i);
                             break;
                         }
                     }
                 }
 
-                void imprimir(MouseEvent event) {
+                void mostrarImprimir(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listPersona.size(); i++) {
                         if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
@@ -355,4 +300,42 @@ public class VerPacienteController implements Initializable {
         imag.setImage(new Image(getClass().getResource("/imagenes/medical-1.png").toExternalForm()));
     }
 
+    @FXML
+    void mostrarRegistrarpaciente() {
+        RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana("RegistrarPaciente");
+        //oRegistrarController.setController(VerPacienteController.this);
+    }
+
+    public Object mostrarVentana(String nameFXML) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(RegistrarPacienteController.class.getResource(nameFXML + ".fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(VerPacienteController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Scene scene = new Scene(root);//instancia el controlador (!)
+        scene.getStylesheets().add(VerPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
+        Stage stage = new Stage();//creando la base vací
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner(stagePrincipal);
+        stage.setScene(scene);
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getX();
+                y = event.getY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            }
+        });
+        stage.show();
+        return loader.getController();
+    }
 }
