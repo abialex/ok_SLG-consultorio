@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -48,14 +49,15 @@ public class AlertConfirmarController implements Initializable {
 
     public void setController(Object objectController) {
         this.oObjectController = objectController;
+        ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
     }
 
     @FXML
     void confirmar() {
         try {
-            Class[] parametro=null;
+            Class[] parametro = null;
             Object[] parametro2 = null;
-            Method a = oObjectController.getClass().getDeclaredMethod("eliminar",parametro);
+            Method a = oObjectController.getClass().getDeclaredMethod("eliminar", parametro);
             a.invoke(oObjectController, parametro2);
             cerrar();
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
@@ -65,6 +67,14 @@ public class AlertConfirmarController implements Initializable {
 
     @FXML
     void cerrar() {
+        try {
+            Class[] parametro = null;
+            Object[] parametro2 = null;
+            Method a = oObjectController.getClass().getDeclaredMethod("lockedPantalla", parametro);
+            a.invoke(oObjectController, parametro2);
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(AlertConfirmarController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         ((Stage) ap.getScene().getWindow()).close();
     }
 

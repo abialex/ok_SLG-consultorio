@@ -91,14 +91,14 @@ public class VerPacienteController implements Initializable {
 
     @FXML
     void updateListPersona() {
-        List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where (dni like "+"'"+jtfbuscar.getText()+"%'"
-                +" or "+"nombres_apellidos like "+"'%"+jtfbuscar.getText()+"%') and flag = false").setMaxResults(10).getResultList();
+        List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where (dni like " + "'" + jtfbuscar.getText() + "%'"
+                + " or " + "nombres_apellidos like " + "'%" + jtfbuscar.getText() + "%') and flag = false").setMaxResults(10).getResultList();
         listPersona.clear();
         for (Persona ocarta : olistPerson) {
             listPersona.add(ocarta);
         }
     }
-    
+
     void setStagePrincipall(Stage aThis) {
         this.stagePrincipal = aThis;
     }
@@ -106,6 +106,14 @@ public class VerPacienteController implements Initializable {
     @FXML
     void cerrar() {
         ((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
+    }
+
+    public void lockedPantalla() {
+        if (ap.isDisable()) {
+            ap.setDisable(false);
+        } else {
+            ap.setDisable(true);
+        }
     }
 
     int selectItem() {
@@ -223,10 +231,10 @@ public class VerPacienteController implements Initializable {
 
                         HBox managebtn = new HBox(PrintIcon, editIcon, cajaIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
-                        HBox.setMargin(PrintIcon, new Insets(0, 2.5, 0, 2.5));
-                        HBox.setMargin(editIcon, new Insets(0, 2.5, 0, 2.5));
-                        HBox.setMargin(deleteIcon, new Insets(0, 2.5, 0, 2.5));
-                        HBox.setMargin(cajaIcon, new Insets(0, 2.5, 0, 2.5));
+                        HBox.setMargin(PrintIcon, new Insets(0, 2.75, 0, 2.75));
+                        HBox.setMargin(editIcon, new Insets(0, 2.75, 0, 2.75));
+                        HBox.setMargin(deleteIcon, new Insets(0, 2.75, 0, 2.75));
+                        HBox.setMargin(cajaIcon, new Insets(0, 2.75, 0, 2.75));
                         setGraphic(managebtn);
                         setText(null);
                     }
@@ -251,7 +259,8 @@ public class VerPacienteController implements Initializable {
                             indexEliminar = i;
                             oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
                             oAlertConfimarController.setController(odc);
-                            oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar?");
+                            oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar al \n paciente? \n \n" + " " + oPersonaEliminar.getNombres_apellidos());
+                            lockedPantalla();
                             break;
                         }
                     }
@@ -282,6 +291,8 @@ public class VerPacienteController implements Initializable {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
                             CajaVerController oCajaVerController = (CajaVerController) mostrarVentana(CajaVerController.class, "CajaVer");
                             oCajaVerController.setPersona(opersona);
+                            oCajaVerController.setController(odc);
+                            lockedPantalla();
                             break;
                         }
                     }
