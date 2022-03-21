@@ -215,6 +215,8 @@ public class RegistrarPacienteController implements Initializable {
             }
             App.jpa.persist(ohistoria);
             App.jpa.getTransaction().commit();
+            oVerPacienteController.updateListPersona();
+            cerrar();
         }
     }
 

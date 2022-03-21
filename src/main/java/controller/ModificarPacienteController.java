@@ -595,8 +595,8 @@ public class ModificarPacienteController implements Initializable {
             
         }
         App.jpa.getTransaction().commit();
-
         cerrar();
+        oVerPacienteController.updateListPersona();
     }
 
     /*--Otras ventanas---*/
