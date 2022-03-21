@@ -31,7 +31,7 @@
                <children>
                   <ImageView fx:id="jimg" fitHeight="68.0" fitWidth="83.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
                      <image>
-                        <Image url="@../images/delete-1.png" />
+                        <Image url="@../imagenes/error.png" />
                      </image></ImageView>
                   <Label fx:id="lblmensaje" maxWidth="1.7976931348623157E308">
                      <GridPane.margin>
