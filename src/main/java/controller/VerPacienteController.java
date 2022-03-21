@@ -77,7 +77,7 @@ public class VerPacienteController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        updateListaComprobante();
+        updateListPersona();
         initTableView();
         tablePersona.setItems(listPersona);
         // TODO
@@ -88,14 +88,15 @@ public class VerPacienteController implements Initializable {
     }
 
     @FXML
-    void updateListaComprobante() {
-        List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where flag = false order by idpersona DESC").setMaxResults(10).getResultList();
+    void updateListPersona() {
+        List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where (dni like "+"'"+jtfbuscar.getText()+"%'"
+                +" or "+"nombres_apellidos like "+"'%"+jtfbuscar.getText()+"%') and flag = false").setMaxResults(10).getResultList();
         listPersona.clear();
         for (Persona ocarta : olistPerson) {
             listPersona.add(ocarta);
         }
     }
-
+    
     void setStagePrincipall(Stage aThis) {
         this.stagePrincipal = aThis;
     }
@@ -116,7 +117,7 @@ public class VerPacienteController implements Initializable {
             App.jpa.persist(oPersona);
             App.jpa.getTransaction().commit();
             listPersona.remove(index);
-            updateListaComprobante();
+            updateListPersona();
             //getitem para limpiar
             //getItem();
         }
@@ -143,15 +144,15 @@ public class VerPacienteController implements Initializable {
                         Period period = Period.between(item, LocalDate.now());
                         long edad = period.getYears();
                         Label label = new Label();
-                        String color="";
+                        String color = "";
                         if (edad >= 18) {
                             label.setText("SI");
-                            color="-fx-text-fill: BLUE;";
+                            color = "-fx-text-fill: BLUE;";
                         } else {
                             label.setText("NO");
-                            color="-fx-text-fill: RED;";
+                            color = "-fx-text-fill: RED;";
                         }
-                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; "+color);
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; " + color);
                         setGraphic(label);
                         setText(null);
                     }
@@ -173,9 +174,11 @@ public class VerPacienteController implements Initializable {
                         setGraphic(null);
                         setText(null);
                     } else {
+                        int tamHightImag = 29;
+                        int tamWidthImag = 29;
                         ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/imagenes/delete-1.png").toExternalForm()));
-                        deleteIcon.setFitHeight(35);
-                        deleteIcon.setFitWidth(35);
+                        deleteIcon.setFitHeight(tamHightImag);
+                        deleteIcon.setFitWidth(tamWidthImag);
                         deleteIcon.setUserData(item);
                         deleteIcon.setStyle(
                                 " -fx-cursor: hand;"
@@ -186,8 +189,8 @@ public class VerPacienteController implements Initializable {
                         //deleteIcon.setText("Eliminar");
 
                         ImageView editIcon = new ImageView(new Image(getClass().getResource("/imagenes/modify-1.png").toExternalForm()));
-                        editIcon.setFitHeight(35);
-                        editIcon.setFitWidth(35);
+                        editIcon.setFitHeight(tamHightImag);
+                        editIcon.setFitWidth(tamWidthImag);
                         editIcon.setUserData(item);
                         editIcon.setStyle(
                                 " -fx-cursor: hand ;"
@@ -197,8 +200,8 @@ public class VerPacienteController implements Initializable {
                         editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
 
                         ImageView PrintIcon = new ImageView(new Image(getClass().getResource("/imagenes/printer-1.png").toExternalForm()));
-                        PrintIcon.setFitHeight(35);
-                        PrintIcon.setFitWidth(35);
+                        PrintIcon.setFitHeight(tamHightImag);
+                        PrintIcon.setFitWidth(tamWidthImag);
                         PrintIcon.setUserData(item);
                         PrintIcon.setStyle(
                                 " -fx-cursor: hand;"
@@ -208,17 +211,17 @@ public class VerPacienteController implements Initializable {
                         PrintIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagImprimirFuera(event));
 
                         ImageView cajaIcon = new ImageView(new Image(getClass().getResource("/imagenes/money-1.png").toExternalForm()));
-                        cajaIcon.setFitHeight(35);
-                        cajaIcon.setFitWidth(35);
+                        cajaIcon.setFitHeight(tamHightImag);
+                        cajaIcon.setFitWidth(tamWidthImag);
                         cajaIcon.setUserData(item);
                         cajaIcon.setStyle(
                                 " -fx-cursor: hand;"
                         );
-                        cajaIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarImprimir(event));
+                        cajaIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarCaja(event));
                         cajaIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagMoneyMoved(event));
                         cajaIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagMoneyFuera(event));
 
-                        HBox managebtn = new HBox(PrintIcon, editIcon, deleteIcon, cajaIcon);
+                        HBox managebtn = new HBox(PrintIcon, editIcon, cajaIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
                         HBox.setMargin(PrintIcon, new Insets(0, 2.5, 0, 2.5));
                         HBox.setMargin(editIcon, new Insets(0, 2.5, 0, 2.5));
@@ -269,6 +272,17 @@ public class VerPacienteController implements Initializable {
                             } catch (IOException ex) {
                                 Logger.getLogger(VerPacienteController.class.getName()).log(Level.SEVERE, null, ex);
                             }
+                        }
+                    }
+                }
+
+                void mostrarCaja(MouseEvent event) {
+                    ImageView buton = (ImageView) event.getSource();
+                    for (Persona opersona : listPersona) {
+                        if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
+                            CajaVerController oCajaVerController = (CajaVerController) mostrarVentana(CajaVerController.class, "CajaVer");
+                            oCajaVerController.setPersona(opersona);
+                            break;
                         }
                     }
                 }
@@ -339,7 +353,7 @@ public class VerPacienteController implements Initializable {
 
             return cell;
         });
-        
+
         tableOcupacion.setCellFactory(column -> {
             TableCell<Persona, String> cell = new TableCell<Persona, String>() {
                 @Override
