@@ -55,6 +55,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -132,6 +133,7 @@ public class RegistrarPacienteController implements Initializable {
 
     List<CheckBox> listcheck = new ArrayList<>();
     AlertController oAlert = new AlertController();
+    VerPacienteController oVerPacienteController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -281,6 +283,8 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     void setController(VerPacienteController aThis) {
+        this.oVerPacienteController=aThis;
+        ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
     }
 
     void asignar() {
@@ -540,6 +544,7 @@ public class RegistrarPacienteController implements Initializable {
 
     @FXML
     void cerrar() {
+        oVerPacienteController.lockedPantalla();
         ((Stage) ap.getScene().getWindow()).close();
     }
 }

@@ -404,7 +404,8 @@ public class VerPacienteController implements Initializable {
     @FXML
     void mostrarRegistrarpaciente() {
         RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana(RegistrarPacienteController.class, "RegistrarPaciente");
-        //oRegistrarController.setController(VerPacienteController.this);
+        oRegistrarController.setController(odc);
+        lockedPantalla();
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {
