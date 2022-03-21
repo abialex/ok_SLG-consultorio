@@ -68,31 +68,27 @@ public class RegistrarPacienteController implements Initializable {
      */
     @FXML
     private AnchorPane ap;
+
+    @FXML
+    Accordion accordion, accordion2;
+    @FXML
+    TitledPane tpAnamnesis, tpEnfermedades;
+
     //I. Amnemesis
     @FXML
     private JFXTextField jtfNombresyApellidos, jtfDni, jtfTelefono;
-
     @FXML
     private JFXComboBox<String> jcbsexo;
-
     @FXML
     private JFXTextField jtfDia, jtfMes, jtfanio;
-
     @FXML
     private JFXComboBox<String> jcbocupacion;
-
     @FXML
-    private JFXTextField jtflugarprocedencia;
-
-    @FXML
-    private JFXTextField jtfDomicilio;
-
+    private JFXTextField jtflugarprocedencia, jtfDomicilio;
     @FXML
     private JFXTextArea jtaConsulta;
-
     @FXML
     private JFXTextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
-
     @FXML
     private JFXTextField jtftutornombre, jtftutordni, jtftutortelefono;
 
@@ -106,33 +102,19 @@ public class RegistrarPacienteController implements Initializable {
             checkinfeccionveneria, checkenfermedadcardiaca, checkgastritis, checkepilepsia, checkdolordepecho, checkneuralgia,
             checkenfermedaddelapiel, checkenfermedadrenal, checkhipertensionarterial;
     @FXML
-    private JFXTextField jtfotrasEnfermedades;
-
-    @FXML
-    private JFXTextField jtfAlergapregunta;
-
+    private JFXTextField jtfotrasEnfermedades, jtfAlergapregunta, jtfantecedentesFamiliares;
     @FXML
     private JFXCheckBox checkpreguntamujer1, checkpreguntamujer2;
-
-    @FXML
-    private JFXTextField jtfPreguntamujer;
-
     @FXML
     private JFXCheckBox checkpregunta1, checkpregunta2, checkpregunta3, checkpregunta4;
-
     @FXML
-    private JFXTextField jtfpregunta1, jtfpregunta2, jtfpregunta3, jtfpregunta4;
-
-    @FXML
-    private JFXTextField jtfantecedentesFamiliares;
+    private JFXTextField jtfpregunta1, jtfpregunta2, jtfpregunta3, jtfpregunta4, jtfPreguntamujer;
 
     //IV. Exploración fisica
     @FXML
     private JFXTextField jtfsignosvitales, jtfsaturacionoxigeno;
-
     @FXML
     private JFXTextField jtfPA, jtfFC, jtftemperatura, jtfFR;
-
     @FXML
     private JFXTextField jtfexamenclinicogeneral, jtfexamenclinicoodontoestomatolgico;
 
@@ -157,7 +139,8 @@ public class RegistrarPacienteController implements Initializable {
         ObservableList<String> SEXO = FXCollections.observableArrayList("VARÓN", "MUJER");
         jcbocupacion.setItems(OCUPACION);
         jcbsexo.setItems(SEXO);
-        //accordion.setExpandedPane(tpAnamnesis);
+        accordion.setExpandedPane(tpAnamnesis);
+        accordion2.setExpandedPane(tpEnfermedades);
         asignar();
         initRestricciones();
     }
@@ -249,7 +232,6 @@ public class RegistrarPacienteController implements Initializable {
         }
         for (Paciente_Enfermedad paciente_Enfermedad : list_enfermedades_paciente) {
             System.out.println(paciente_Enfermedad.getEnfermedad().getNombre());
-
         }
         return list_enfermedades_paciente;
     }
@@ -288,17 +270,14 @@ public class RegistrarPacienteController implements Initializable {
     @FXML
     void cuadrarCheckbox(ActionEvent o) {
         CheckBox ch = (CheckBox) o.getSource();
-
         if (ch.isSelected()) {
             listcheck.add(ch);
-
         } else {
             listcheck.remove(ch);
         }
         if (ch.getUserData().toString().equals("Alergia")) {
             unlockecdAlergia();
         }
-
     }
 
     void setController(VerPacienteController aThis) {
@@ -326,7 +305,6 @@ public class RegistrarPacienteController implements Initializable {
         checkpregunta4.setUserData("¿Es alérgico a la anestesia dental?");
         checkpreguntamujer1.setUserData("¿Está usted embarazada?");
         checkpreguntamujer2.setUserData("¿Está dando de lactar?");
-
     }
 
     void initRestricciones() {
@@ -452,7 +430,6 @@ public class RegistrarPacienteController implements Initializable {
 
     @FXML
     void unlockecdPreguntamujer1(ActionEvent event) {
-
         if (jtfPreguntamujer.isDisable()) {
             listcheck.add((CheckBox) event.getSource());
             jtfPreguntamujer.setDisable(false);
@@ -546,7 +523,6 @@ public class RegistrarPacienteController implements Initializable {
         if (!aux || !auxfecha) {
             oAlert.Mostrar("error", "Llene los cuadros en rojo");
         }
-
         return aux && auxfecha && auxfechaCorrect;
     }
 

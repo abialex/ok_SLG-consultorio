@@ -32,9 +32,9 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Accordion layoutX="170.0" layoutY="114.0" prefHeight="558.0" prefWidth="688.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Accordion fx:id="accordion" layoutX="170.0" layoutY="114.0" prefHeight="558.0" prefWidth="688.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <panes>
-                                  <TitledPane animated="false" text="Datos personales (Requerido)" textFill="WHITE">
+                                  <TitledPane fx:id="tpAnamnesis" animated="false" text="Datos personales (Requerido)" textFill="WHITE">
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
@@ -276,9 +276,9 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Accordion layoutX="218.0" layoutY="129.0" prefHeight="558.0" prefWidth="688.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <Accordion fx:id="accordion2" layoutX="218.0" layoutY="129.0" prefHeight="558.0" prefWidth="688.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                 <panes>
-                                  <TitledPane animated="false" text="Enfermedades" textFill="WHITE">
+                                  <TitledPane fx:id="tpEnfermedades" animated="false" text="Enfermedades" textFill="WHITE">
                                     <content>
                                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                              <children>
@@ -741,7 +741,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <JFXButton onAction="#GuardarPaciente" text="GUARDAR" GridPane.columnIndex="1">
+                  <JFXButton onAction="#GuardarPaciente" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="GUARDAR" GridPane.columnIndex="1">
                      <GridPane.margin>
                         <Insets right="5.0" />
                      </GridPane.margin>
