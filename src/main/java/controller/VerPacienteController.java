@@ -246,6 +246,8 @@ public class VerPacienteController implements Initializable {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
                             ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
                             oModificarPacienteController.setPersona(opersona);
+                            oModificarPacienteController.setController(odc);
+                            lockedPantalla();
                             break;
                         }
                     }

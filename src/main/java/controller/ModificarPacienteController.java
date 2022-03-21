@@ -48,6 +48,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.WindowEvent;
 
 /**
  * FXML Controller class
@@ -136,6 +137,7 @@ public class ModificarPacienteController implements Initializable {
 
     //Fin Atributos Actualización  
     AlertController oAlertController=new AlertController();
+    VerPacienteController oVerPacienteController;
     Stage stagePrincipal;
     private double x = 0;
     private double y = 0;
@@ -453,6 +455,12 @@ public class ModificarPacienteController implements Initializable {
             }
         }
     }
+
+    void setController(VerPacienteController odc) {
+        this.oVerPacienteController = odc;
+        ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
+    }
+    
     @FXML
     void actualizar() {
         oPersona.setNombres_apellidos(jtfNombresyApellidos.getText());
@@ -737,6 +745,7 @@ public class ModificarPacienteController implements Initializable {
 
     @FXML
     void cerrar(){
+        oVerPacienteController.lockedPantalla();
         ((Stage)ap.getScene().getWindow()).close();
     }
     /*------Fin Metodos de ventana---------------*/
