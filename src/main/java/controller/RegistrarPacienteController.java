@@ -149,6 +149,7 @@ public class RegistrarPacienteController implements Initializable {
     private JFXTextArea jtapronostico, jtaAltapaciente;
 
     List<CheckBox> listcheck = new ArrayList<>();
+    AlertController oAlert = new AlertController();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -163,71 +164,73 @@ public class RegistrarPacienteController implements Initializable {
 
     @FXML
     void GuardarPaciente(ActionEvent evt) throws IOException {
-        LocalDate fechaNacimiento = LocalDate.of(
-                Integer.parseInt(jtfanio.getText().trim()),
-                Integer.parseInt(jtfMes.getText().trim()),
-                Integer.parseInt(jtfDia.getText().trim()));
+        if (isCompleto()) {
+            LocalDate fechaNacimiento = LocalDate.of(
+                    Integer.parseInt(jtfanio.getText().trim()),
+                    Integer.parseInt(jtfMes.getText().trim()),
+                    Integer.parseInt(jtfDia.getText().trim()));
 
-        Persona opersona = new Persona(
-                jtfNombresyApellidos.getText().trim(),
-                jcbsexo.getSelectionModel().getSelectedItem(),
-                jtfDomicilio.getText().trim(),
-                jtfDni.getText().trim(),
-                fechaNacimiento,
-                jtflugarprocedencia.getText().trim(),
-                jcbocupacion.getSelectionModel().getSelectedItem(),
-                jtfTelefono.getText().trim()
-        );
-        opersona.setTutorDni(jtftutordni.getText().trim());
-        opersona.setTutorNombre(jtftutornombre.getText().trim());
-        opersona.setTutorTelefono(jtftutortelefono.getText().trim());
+            Persona opersona = new Persona(
+                    jtfNombresyApellidos.getText().trim(),
+                    jcbsexo.getSelectionModel().getSelectedItem(),
+                    jtfDomicilio.getText().trim(),
+                    jtfDni.getText().trim(),
+                    fechaNacimiento,
+                    jtflugarprocedencia.getText().trim(),
+                    jcbocupacion.getSelectionModel().getSelectedItem(),
+                    jtfTelefono.getText().trim()
+            );
+            opersona.setTutorDni(jtftutordni.getText().trim());
+            opersona.setTutorNombre(jtftutornombre.getText().trim());
+            opersona.setTutorTelefono(jtftutortelefono.getText().trim());
 
-        Paciente opaciente = new Paciente(
-                opersona,
-                jtfsintomasEnfermedadActual.getText().trim(),
-                jtftiempoEnfermedadActual.getText().trim(),
-                jtfotrasEnfermedades.getText().trim(),
-                jtfantecedentesFamiliares.getText().trim());
-        opaciente.setEmergenciaNombre(jtfemergenciaNombre.getText().trim());
-        opaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText().trim());
-        opaciente.setEmergenciaTelefono(jtfemergenciatelefono.getText().trim());
+            Paciente opaciente = new Paciente(
+                    opersona,
+                    jtfsintomasEnfermedadActual.getText().trim(),
+                    jtftiempoEnfermedadActual.getText().trim(),
+                    jtfotrasEnfermedades.getText().trim(),
+                    jtfantecedentesFamiliares.getText().trim());
+            opaciente.setEmergenciaNombre(jtfemergenciaNombre.getText().trim());
+            opaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText().trim());
+            opaciente.setEmergenciaTelefono(jtfemergenciatelefono.getText().trim());
 
-        List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheck, opaciente);
-        List<Paciente_Pregunta> Lista_preguntasPaciente = Paciente_relacionar_pregunta(listcheck, opaciente);
+            List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheck, opaciente);
+            List<Paciente_Pregunta> Lista_preguntasPaciente = Paciente_relacionar_pregunta(listcheck, opaciente);
 
-        Historia_clinica ohistoria = new Historia_clinica(
-                opaciente,
-                jtfsignosvitales.getText().trim(),
-                jtfsaturacionoxigeno.getText().trim(),
-                jtfPA.getText().trim(),
-                jtfFC.getText().trim(),
-                jtftemperatura.getText().trim(),
-                jtfFR.getText(),
-                jtfexamenclinicogeneral.getText().trim(),
-                jtfexamenclinicoodontoestomatolgico.getText().trim(),
-                jtaDiagCIE10.getText().trim(),
-                jtaDiagPresentivo.getText().trim(),
-                jtaDiagDefinitivo.getText().trim(),
-                jtfrecomendaciones.getText().trim(),
-                jtapronostico.getText().trim(),
-                jtaAltapaciente.getText().trim(),
-                jtaConsulta.getText().trim(),
-                LocalDate.now(),
-                LocalDate.now());
-        //GuardarPaciente
-        App.jpa.getTransaction().begin();
-        App.jpa.persist(opersona);
+            Historia_clinica ohistoria = new Historia_clinica(
+                    opaciente,
+                    jtfsignosvitales.getText().trim(),
+                    jtfsaturacionoxigeno.getText().trim(),
+                    jtfPA.getText().trim(),
+                    jtfFC.getText().trim(),
+                    jtftemperatura.getText().trim(),
+                    jtfFR.getText(),
+                    jtfexamenclinicogeneral.getText().trim(),
+                    jtfexamenclinicoodontoestomatolgico.getText().trim(),
+                    jtaDiagCIE10.getText().trim(),
+                    jtaDiagPresentivo.getText().trim(),
+                    jtaDiagDefinitivo.getText().trim(),
+                    jtfrecomendaciones.getText().trim(),
+                    jtapronostico.getText().trim(),
+                    jtaAltapaciente.getText().trim(),
+                    jtaConsulta.getText().trim(),
+                    LocalDate.now(),
+                    LocalDate.now());
+            //GuardarPaciente
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(opersona);
 
-        App.jpa.persist(opaciente);
+            App.jpa.persist(opaciente);
 
-        for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
-            App.jpa.persist(paciente_Enfermedad);
+            for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
+                App.jpa.persist(paciente_Enfermedad);
+            }
+            for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
+                App.jpa.persist(paciente_Pregunta);
+            }
+            App.jpa.persist(ohistoria);
+            App.jpa.getTransaction().commit();
         }
-        for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
-            App.jpa.persist(paciente_Pregunta);
-        }
-        App.jpa.persist(ohistoria);
-        App.jpa.getTransaction().commit();
     }
 
     List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(List<CheckBox> listC, Paciente opaciente) {
@@ -460,18 +463,103 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     /*------Fin Metodos de ventana---------------*/
-    @FXML
-    void test() {
+    boolean isCompleto() throws IOException {
+        boolean aux = true;
+        if (jtfNombresyApellidos.getText().trim().length() == 0) {
+            jtfNombresyApellidos.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfNombresyApellidos.setStyle("");
+        }
 
-        System.out.println(((Stage) ap.getScene().getWindow()).getHeight());
-        System.out.println(((Stage) ap.getScene().getWindow()).getWidth());
+        if (jtfDni.getText().trim().length() == 0) {
+            jtfDni.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfDni.setStyle("");
+        }
 
+        if (jtfTelefono.getText().trim().length() == 0) {
+            jtfTelefono.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfTelefono.setStyle("");
+        }
+
+        if (jcbsexo.getSelectionModel().getSelectedItem() == null) {
+            jcbsexo.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jcbsexo.setStyle("");
+        }
+
+        if (jcbocupacion.getSelectionModel().getSelectedItem() == null) {
+            jcbocupacion.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jcbocupacion.setStyle("");
+        }
+
+        if (jtflugarprocedencia.getText().trim().length() == 0) {
+            jtflugarprocedencia.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtflugarprocedencia.setStyle("");
+        }
+
+        if (jtfDomicilio.getText().trim().length() == 0) {
+            jtfDomicilio.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfDomicilio.setStyle("");
+        }
+
+        if (jtaConsulta.getText().trim().length() == 0) {
+            jtaConsulta.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtaConsulta.setStyle("");
+        }
+
+        boolean auxfecha = true;
+        if (jtfDia.getText().trim().length() == 0) {
+            jtfDia.setStyle("-fx-border-color: #ff052b");
+            auxfecha = false;
+        } else {
+            jtfDia.setStyle("");
+        }
+
+        if (jtfMes.getText().trim().length() == 0) {
+            jtfMes.setStyle("-fx-border-color: #ff052b");
+            auxfecha = false;
+        } else {
+            jtfMes.setStyle("");
+        }
+
+        if (jtfanio.getText().trim().length() == 0) {
+            jtfanio.setStyle("-fx-border-color: #ff052b");
+            auxfecha = false;
+        } else {
+            jtfanio.setStyle("");
+        }
+        boolean auxfechaCorrect = isfechavalid(auxfecha);
+        if (!aux || !auxfecha) {
+            oAlert.Mostrar("error", "Llene los cuadros en rojo");
+        }
+
+        return aux && auxfecha && auxfechaCorrect;
     }
 
-    @FXML
-    void test1() {
-        ((Stage) ap.getScene().getWindow()).setWidth(Integer.parseInt(jtfMes.getText()));
-        ((Stage) ap.getScene().getWindow()).setHeight(Integer.parseInt(jtfDia.getText()));
+    boolean isfechavalid(boolean aux) throws IOException {
+        try {
+            if (aux) {
+                LocalDate.of(Integer.parseInt(jtfanio.getText().trim()), Integer.parseInt(jtfMes.getText().trim()), Integer.parseInt(jtfDia.getText().trim()));
+            }
+        } catch (Exception e) {
+            aux = false;
+            oAlert.Mostrar("warning", "ingrese una fecha válida");
+        }
+        return aux;
     }
 
     @FXML
