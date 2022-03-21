@@ -38,7 +38,7 @@
                         <Insets left="5.0" right="5.0" />
                      </GridPane.margin></Label>
                   <JFXButton fx:id="jbtnOk" onAction="#cerrar" prefHeight="31.0" prefWidth="105.0" style="-fx-background-color: #874962;" text="NO" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <JFXButton fx:id="jbtnOk1" onAction="#eliminar" prefHeight="31.0" prefWidth="105.0" style="-fx-background-color: #b0354d;" text="SI" GridPane.rowIndex="1" />
+                  <JFXButton fx:id="jbtnOk1" onAction="#confirmar" prefHeight="31.0" prefWidth="105.0" style="-fx-background-color: #b0354d;" text="SI" GridPane.rowIndex="1" />
                </children>
             </GridPane>
          </center>

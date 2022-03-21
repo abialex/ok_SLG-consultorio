@@ -23,3 +23,7 @@ Paciente_historiaClinica
                                             Variables
 1-normal : listPaciente_Historiaclinica, listEnfermedad
 
+
+OBJECT(ojo)
+"eliminar" es el metodo que se invoca en alertConfirmarController debe mantener siempre ese nombre; 
+

@@ -5,18 +5,16 @@
 package emergente;
 
 import Entidades.Persona;
-import controller.RegistrarPacienteController;
-import controller.VerPacienteController;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -34,32 +32,35 @@ public class AlertConfirmarController implements Initializable {
     AnchorPane ap;
     @FXML
     Label lblmensaje;
-    
-    VerPacienteController oVerPacienteController;
+
+    Object oObjectController;
     Persona oPersona;
     int index;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
     public void setMensaje(String mensaje) {
         lblmensaje.setText(mensaje);
     }
-    
-    public void setController(VerPacienteController odc) {
-        this.oVerPacienteController = odc;
-    }
-    public void setCartaIndex(Persona oCarta, int index) {
-        this.index = index;
-        this.oPersona = oCarta;
+
+    public void setController(Object objectController) {
+        this.oObjectController = objectController;
     }
 
     @FXML
-    void eliminar() {
-        oVerPacienteController.eliminar(oPersona, index);
-        cerrar();
+    void confirmar() {
+        try {
+            Class[] parametro=null;
+            Object[] parametro2 = null;
+            Method a = oObjectController.getClass().getDeclaredMethod("eliminar",parametro);
+            a.invoke(oObjectController, parametro2);
+            cerrar();
+        } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
+            Logger.getLogger(AlertConfirmarController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @FXML

@@ -73,7 +73,9 @@ public class VerPacienteController implements Initializable {
     private double y = 0;
     Stage stagePrincipal;
     VerPacienteController odc = this;
-    AlertConfirmarController oAlertConfimarController1 = new AlertConfirmarController();
+    AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
+    Persona oPersonaEliminar;
+    int indexEliminar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -110,16 +112,14 @@ public class VerPacienteController implements Initializable {
         return listPersona.indexOf(tablePersona.getSelectionModel().getSelectedItem());
     }
 
-    public void eliminar(Persona oPersona, int index) {
-        if (index != -1) {
-            oPersona.setFlag(true);
+    public void eliminar() {
+        if (indexEliminar != -1) {
+            oPersonaEliminar.setFlag(true);
             App.jpa.getTransaction().begin();
-            App.jpa.persist(oPersona);
+            App.jpa.persist(oPersonaEliminar);
             App.jpa.getTransaction().commit();
-            listPersona.remove(index);
+            listPersona.remove(indexEliminar);
             updateListPersona();
-            //getitem para limpiar
-            //getItem();
         }
     }
 
@@ -247,11 +247,11 @@ public class VerPacienteController implements Initializable {
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listPersona.size(); i++) {
                         if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
-                            Persona carta = listPersona.get(i);
-                            oAlertConfimarController1 = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
-                            oAlertConfimarController1.setController(odc);
-                            oAlertConfimarController1.setMensaje(" ¿Está seguro de eliminar?");
-                            oAlertConfimarController1.setCartaIndex(carta, i);
+                            oPersonaEliminar = listPersona.get(i);
+                            indexEliminar = i;
+                            oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
+                            oAlertConfimarController.setController(odc);
+                            oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar?");
                             break;
                         }
                     }
