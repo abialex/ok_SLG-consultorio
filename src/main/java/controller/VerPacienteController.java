@@ -142,11 +142,18 @@ public class VerPacienteController implements Initializable {
                     } else {
                         Period period = Period.between(item, LocalDate.now());
                         long edad = period.getYears();
+                        Label label = new Label();
+                        String color="";
                         if (edad >= 18) {
-                            setText("SI");
+                            label.setText("SI");
+                            color="-fx-text-fill: BLUE;";
                         } else {
-                            setText("NO");
+                            label.setText("NO");
+                            color="-fx-text-fill: RED;";
                         }
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; "+color);
+                        setGraphic(label);
+                        setText(null);
                     }
                 }
             };
@@ -199,12 +206,24 @@ public class VerPacienteController implements Initializable {
                         PrintIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarImprimir(event));
                         PrintIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagImprimirMoved(event));
                         PrintIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagImprimirFuera(event));
-                        //deleteIcon.setText("Eliminar");
 
-                        HBox managebtn = new HBox(PrintIcon, editIcon, deleteIcon);
+                        ImageView cajaIcon = new ImageView(new Image(getClass().getResource("/imagenes/money-1.png").toExternalForm()));
+                        cajaIcon.setFitHeight(35);
+                        cajaIcon.setFitWidth(35);
+                        cajaIcon.setUserData(item);
+                        cajaIcon.setStyle(
+                                " -fx-cursor: hand;"
+                        );
+                        cajaIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarImprimir(event));
+                        cajaIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagMoneyMoved(event));
+                        cajaIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagMoneyFuera(event));
+
+                        HBox managebtn = new HBox(PrintIcon, editIcon, deleteIcon, cajaIcon);
                         managebtn.setStyle("-fx-alignment:center");
-                        HBox.setMargin(PrintIcon, new Insets(0, 0, 0, 5));
-                        HBox.setMargin(editIcon, new Insets(0, 5, 0, 0));
+                        HBox.setMargin(PrintIcon, new Insets(0, 2.5, 0, 2.5));
+                        HBox.setMargin(editIcon, new Insets(0, 2.5, 0, 2.5));
+                        HBox.setMargin(deleteIcon, new Insets(0, 2.5, 0, 2.5));
+                        HBox.setMargin(cajaIcon, new Insets(0, 2.5, 0, 2.5));
                         setGraphic(managebtn);
                         setText(null);
                     }
@@ -214,8 +233,8 @@ public class VerPacienteController implements Initializable {
                     ImageView buton = (ImageView) event.getSource();
                     for (Persona opersona : listPersona) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
-                            ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class,"ModificarPaciente");
-                            oModificarPacienteController.jeje(opersona);
+                            ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
+                            oModificarPacienteController.setPersona(opersona);
                             break;
                         }
                     }
@@ -226,7 +245,7 @@ public class VerPacienteController implements Initializable {
                     for (int i = 0; i < listPersona.size(); i++) {
                         if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
                             Persona carta = listPersona.get(i);
-                            oAlertConfimarController1 = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class,"/fxml/AlertConfirmar");
+                            oAlertConfimarController1 = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
                             oAlertConfimarController1.setController(odc);
                             oAlertConfimarController1.setMensaje(" ¿Está seguro de eliminar?");
                             oAlertConfimarController1.setCartaIndex(carta, i);
@@ -283,10 +302,66 @@ public class VerPacienteController implements Initializable {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/imagenes/printer-1.png").toExternalForm()));
                 }
+
+                private void imagMoneyMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/money-2.png").toExternalForm()));
+                }
+
+                private void imagMoneyFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/money-1.png").toExternalForm()));
+                }
             };
             return cell;
         };
         tableOpcion.setCellFactory(cellFoctory);
+
+        tableDni.setCellFactory(column -> {
+            TableCell<Persona, String> cell = new TableCell<Persona, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+
+                        label.setText(item);
+                        //fin
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999;");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+
+            return cell;
+        });
+        
+        tableOcupacion.setCellFactory(column -> {
+            TableCell<Persona, String> cell = new TableCell<Persona, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+
+                        label.setText(item);
+                        //fin
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999;");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+
+            return cell;
+        });
     }
 
     @FXML
@@ -303,11 +378,11 @@ public class VerPacienteController implements Initializable {
 
     @FXML
     void mostrarRegistrarpaciente() {
-        RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana(RegistrarPacienteController.class,"RegistrarPaciente");
+        RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana(RegistrarPacienteController.class, "RegistrarPaciente");
         //oRegistrarController.setController(VerPacienteController.this);
     }
 
-    public Object mostrarVentana(Class generico,String nameFXML) {
+    public Object mostrarVentana(Class generico, String nameFXML) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(generico.getResource(nameFXML + ".fxml"));
         Parent root = null;
