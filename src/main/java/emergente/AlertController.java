@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,10 +81,15 @@ public class AlertController implements Initializable {
         jimg.setImage(imag);
     }
 
-    public void Mostrar(String alerta, String mensaje) throws IOException {
+    public void Mostrar(String alerta, String mensaje) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(AlertController.class.getResource("/fxml/Alert.fxml"));
-        Scene scene = new Scene(loader.load());
+        Scene scene = null;
+        try {
+            scene = new Scene(loader.load());
+        } catch (IOException ex) {
+            Logger.getLogger(AlertController.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Stage stage = new Stage();//creando la base vacía
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setTitle("Guardando");
