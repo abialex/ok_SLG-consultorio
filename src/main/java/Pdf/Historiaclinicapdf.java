@@ -10,6 +10,7 @@ import Entidades.Paciente_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
+import Entidades.Tratamiento;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.kernel.color.Color;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
@@ -52,6 +53,7 @@ public class Historiaclinicapdf {
         List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opaciente.getIdpaciente() + " and ismujer=false").getResultList();
         List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
         List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
+        List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + opersona.getIdpersona() + " and flag = false order by idtratamiento DESC").setMaxResults(10).getResultList();
         Period period = Period.between(opersona.getFechaNacimiento(), LocalDate.now());
         long edad = period.getYears();
 
@@ -90,22 +92,22 @@ public class Historiaclinicapdf {
         String palabra2 = "no presenta";
 
         /*----------------Palabras vacías-------------*/
-        Paragraph palabraEnBlanco=new Paragraph().setFontColor(colorBlanco); 
-        Paragraph nombreTutor = opersona.getTutorNombre().isEmpty()? palabraEnBlanco.add(".") : new Paragraph(opersona.getTutorNombre());
-        Paragraph dniTutor = opersona.getTutorDni().isEmpty()? palabraEnBlanco.add(".") : new Paragraph(opersona.getTutorDni());
+        Paragraph palabraEnBlanco = new Paragraph().setFontColor(colorBlanco);
+        Paragraph nombreTutor = opersona.getTutorNombre().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opersona.getTutorNombre());
+        Paragraph dniTutor = opersona.getTutorDni().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opersona.getTutorDni());
         Paragraph telefonoTutor = opersona.getTutorTelefono().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opersona.getTutorTelefono());
 
         Paragraph emergenciaNombre = opaciente.getEmergenciaNombre().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaNombre());
         Paragraph emergenciaParentesco = opaciente.getEmergenciaParentesco().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaParentesco());
-        Paragraph emergenciaTelefono = opaciente.getEmergenciaTelefono().isEmpty()? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaTelefono());
+        Paragraph emergenciaTelefono = opaciente.getEmergenciaTelefono().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaTelefono());
 
-        Paragraph MOTIVOCONSULTA = oHistoriaclinica.getMotivoConsulta().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getMotivoConsulta()+"s");
+        Paragraph MOTIVOCONSULTA = oHistoriaclinica.getMotivoConsulta().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getMotivoConsulta() + "s");
 
         Paragraph SignosSintomas = opaciente.getSintomasEnfermedadActual().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getSintomasEnfermedadActual());
         Paragraph TiempoEnfermedad = opaciente.getTiempoEnfermedadActual().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getTiempoEnfermedadActual());
-        
-        Paragraph otrasEnfermedades = opaciente.getOtrasEnfermedades().isEmpty() ?  palabraEnBlanco.add(".") :  new Paragraph(opaciente.getOtrasEnfermedades());
-        Paragraph antecedentesFamiliares =  opaciente.getAntecedentesFamiliares().isEmpty() ?  palabraEnBlanco.add(".") :  new Paragraph(opaciente.getAntecedentesFamiliares());
+
+        Paragraph otrasEnfermedades = opaciente.getOtrasEnfermedades().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getOtrasEnfermedades());
+        Paragraph antecedentesFamiliares = opaciente.getAntecedentesFamiliares().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getAntecedentesFamiliares());
 
         Paragraph signosVitales = oHistoriaclinica.getSignosVitales().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getSignosVitales());
         Paragraph saturacionOxigeno = oHistoriaclinica.getSaturacionOxigeno().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getSaturacionOxigeno());
@@ -114,12 +116,12 @@ public class Historiaclinicapdf {
         Paragraph Temperatura = oHistoriaclinica.getTemperatura().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getTemperatura());
         Paragraph FR = oHistoriaclinica.getFR().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getFR());
         Paragraph examenClinicoGeneral = oHistoriaclinica.getExamenClinicoGeneral().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getExamenClinicoGeneral());
-        
+
         Paragraph recomendaciones = oHistoriaclinica.getRecomendaciones().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getRecomendaciones());
-        
+
         Paragraph pronostico = oHistoriaclinica.getPronostico().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getPronostico());
         Paragraph altaPaciente = oHistoriaclinica.getAltaPaciente().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getAltaPaciente());
-        
+
         /*---------FIN----Palabras vacías-------------*/
 
  /* Contenido del documento  página 1*/
@@ -379,7 +381,7 @@ public class Historiaclinicapdf {
         cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph("F.C:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
         cellExploracionFisicaParrafo2 = new Cell().add(FC.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
-        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo1);
+        TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
         cellExploracionFisicaParrafo2 = new Cell().add(new Paragraph("Temperatura:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
         cellExploracionFisicaParrafo2 = new Cell().add(Temperatura.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
@@ -469,7 +471,24 @@ public class Historiaclinicapdf {
         //Fin ALTA PACIENTE
 
         /*----Fin Contenido del documento  página 1------*/
- /* Cuerpo del documentos*/
+ /*--------Contenido del documento página 2--------*/
+        Table TableTratamiento = new Table(new float[]{volumen * 0.6f, volumen * 3.1f, volumen * 0.8f, volumen * 0.5f});
+        TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)));
+        TableTratamiento.addCell(new Cell().add(new Paragraph("TRATAMIENTO").setFont(bold).addStyle(styleTextCenter)));
+        TableTratamiento.addCell(new Cell().add(new Paragraph("CANCELADO").setFont(bold).addStyle(styleTextCenter)));
+        TableTratamiento.addCell(new Cell().add(new Paragraph("MONTO").setFont(bold).addStyle(styleTextCenter)));
+        int montoTotal = 0;
+        for (Tratamiento tratamiento : olistTratamiento) {
+            TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.getFechaRealizada() + "").addStyle(styleTextCenter)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.getTratamiento()).addStyle(styleTextLeft)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.isCancelado() ? "SI" : "NO").addStyle(styleTextCenter)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.getMonto() + "").addStyle(styleTextCenter)));
+            montoTotal = montoTotal + tratamiento.getMonto();
+        }
+        TableTratamiento.addCell(new Cell(1, 3).add(new Paragraph("MONTO TOTAL ").addStyle(styleTextCenter).setFont(bold)));
+        TableTratamiento.addCell(new Cell().add(new Paragraph(montoTotal + "").addStyle(styleTextCenter)));
+
+        /* Cuerpo del documentos*/
         document.add(Cabecera);
         document.add(parrafoTitulo);
         document.add(parrafoSubTitulo1);
@@ -503,6 +522,10 @@ public class Historiaclinicapdf {
 
         document.add(parrafoSubTitulo8);
         document.add(TableAlta);
+
+        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+        document.add(TableTratamiento);
+
         document.close();
         /*----Fin Cuerpo del documentos-----*/
     }
