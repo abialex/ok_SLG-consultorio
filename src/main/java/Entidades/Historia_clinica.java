@@ -22,63 +22,64 @@ import javax.persistence.Temporal;
  */
 @Entity
 public class Historia_clinica {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idhistoria_clinica;
 
-    @JoinColumn(insertable = true,updatable = true,name="idpaciente",nullable = false)
+    @JoinColumn(insertable = true, updatable = true, name = "idpaciente", nullable = false)
     @ManyToOne(cascade = CascadeType.ALL)
-    private Paciente idpaciente; 
+    private Paciente idpaciente;
     //EXPLORACIÓN FÍSICA
     @Column(name = "signosVitales", nullable = true)
     private String signosVitales;
-    
+
     @Column(name = "saturacionOxigeno", nullable = true)
     private String saturacionOxigeno;
-    
+
     @Column(name = "PA", nullable = true)
     private String PA;
-    
+
     @Column(name = "FC", nullable = true)
     private String FC;
-    
+
     @Column(name = "temperatura", nullable = true)
     private String temperatura;
-    
+
     @Column(name = "FR", nullable = true)
     private String FR;
-    
-    @Column(name = "examenClinicoGeneral", nullable = true)
+
+    @Column(name = "examenClinicoGeneral", length = 1000, nullable = true)
     private String examenClinicoGeneral;
-    
+
     @Column(name = "examenClinicoOdontoestomtologico", nullable = true)
     private String examenClinicoOdontoestomtologico;
     //DIAGNÓSTICO
-    @Column(name = "diagnosticoCIE10", nullable = true)
+    @Column(name = "diagnosticoCIE10", length = 1000, nullable = true)
     private String diagnosticoCIE10;
-    
-    @Column(name = "diagnosticoPresuntivo", nullable = true)
+
+    @Column(name = "diagnosticoPresuntivo", length = 1000, nullable = true)
     private String diagnosticoPresuntivo;
-    
-    @Column(name = "diagnosticoDefinitivo", nullable = true)
+
+    @Column(name = "diagnosticoDefinitivo", length = 1000, nullable = true)
     private String diagnosticoDefinitivo;
     //PLAN DE TRATAMIENTO
-    @Column(name = "recomendaciones", nullable = true)
+    @Column(name = "recomendaciones", length = 1000, nullable = true)
     private String recomendaciones;
     //PRONÓSTiCO
-    @Column(name = "pronostico", nullable = true)
+    @Column(name = "pronostico", length = 1000, nullable = true)
     private String pronostico;
     //ALTA PACIENTE
-    @Column(name = "altaPaciente", nullable = true)
+    @Column(name = "altaPaciente", length = 1000, nullable = true)
     private String altaPaciente;
-    
-    @Column(name = "motivoConsulta", nullable = true)
+
+    @Column(name = "motivoConsulta",length = 1000, nullable = true)
     private String motivoConsulta;
-    
-    @Column (name = "fechainscripcion", nullable = true)
+
+    @Column(name = "fechainscripcion", nullable = true)
     private LocalDate fechainscripcion;
-    
-    @Column (name = "fechaultimaatencion", nullable = true)
+
+    @Column(name = "fechaultimaatencion", nullable = true)
     private LocalDate fechaultimaatencion;
 
     public Historia_clinica(Paciente idpaciente, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String diagnosticoPresuntivo, String diagnosticoDefinitivo, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
@@ -104,7 +105,7 @@ public class Historia_clinica {
 
     public Historia_clinica() {
     }
-    
+
     public int getIdhistoria_clinica() {
         return idhistoria_clinica;
     }
@@ -256,6 +257,5 @@ public class Historia_clinica {
     public void setAltaPaciente(String altaPaciente) {
         this.altaPaciente = altaPaciente;
     }
-    
-    
+
 }
