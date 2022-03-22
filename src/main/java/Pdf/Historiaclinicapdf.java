@@ -101,7 +101,7 @@ public class Historiaclinicapdf {
         Paragraph emergenciaParentesco = opaciente.getEmergenciaParentesco().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaParentesco());
         Paragraph emergenciaTelefono = opaciente.getEmergenciaTelefono().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaTelefono());
 
-        Paragraph MOTIVOCONSULTA = oHistoriaclinica.getMotivoConsulta().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getMotivoConsulta() + "s");
+        Paragraph MOTIVOCONSULTA = oHistoriaclinica.getMotivoConsulta().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getMotivoConsulta());
 
         Paragraph SignosSintomas = opaciente.getSintomasEnfermedadActual().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getSintomasEnfermedadActual());
         Paragraph TiempoEnfermedad = opaciente.getTiempoEnfermedadActual().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getTiempoEnfermedadActual());
@@ -116,19 +116,13 @@ public class Historiaclinicapdf {
         Paragraph Temperatura = oHistoriaclinica.getTemperatura().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getTemperatura());
         Paragraph FR = oHistoriaclinica.getFR().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getFR());
         Paragraph examenClinicoGeneral = oHistoriaclinica.getExamenClinicoGeneral().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getExamenClinicoGeneral());
-
-        Paragraph recomendaciones = oHistoriaclinica.getRecomendaciones().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getRecomendaciones());
-
-        Paragraph pronostico = oHistoriaclinica.getPronostico().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getPronostico());
-        Paragraph altaPaciente = oHistoriaclinica.getAltaPaciente().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getAltaPaciente());
-
         /*---------FIN----Palabras vacías-------------*/
 
  /* Contenido del documento  página 1*/
         //table raya
-        Table TableRaya = new Table(new float[]{volumen * 5});
-        Cell cellraya = new Cell().add(new Paragraph(".").setBorderBottom(new SolidBorder(1f))).addStyle(styleTextRight).addStyle(styleCell);
-        TableRaya.addCell(cellraya);
+        Table TableRayas = new Table(new float[]{volumen * 5});
+        Cell cellraya = new Cell().add(palabraEnBlanco.add(".").setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+        TableRayas.addCell(cellraya);
         //Cabecera
         Table CabeceraParrafo1 = new Table(new float[]{volumen * 4.3f, volumen * 0.7f});
         Cell cellCabeceraParrafo1 = new Cell().add(new Paragraph("H.C N°: ")).addStyle(styleTextRight).addStyle(styleCell);
@@ -390,84 +384,40 @@ public class Historiaclinicapdf {
         TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
         cellExploracionFisicaParrafo2 = new Cell().add(FR.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
-
-        Table TableExploracionFisicaParrafo3 = new Table(new float[]{volumen * 1.1f, volumen * 3.9f});
-        Cell cellExploracionFisicaParrafo3 = new Cell().add(new Paragraph("Examen clínico general:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
-        TableExploracionFisicaParrafo3.addCell(cellExploracionFisicaParrafo3);
-        cellExploracionFisicaParrafo3 = new Cell().add(examenClinicoGeneral.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
-        TableExploracionFisicaParrafo3.addCell(cellExploracionFisicaParrafo3);
+        
+        Table TableExploracionFisicaParrafo3 = getTableField(oHistoriaclinica.getExamenClinicoGeneral(), "Examen clínico general:", 1.09f, 3.9f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
 
         Table TableExploracionFisica = new Table(new float[]{volumen * 5});
         TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo1).addStyle(styleCell));
         TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo2).addStyle(styleCell));
         TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo3).addStyle(styleCell));
-        TableExploracionFisica.addCell(new Cell().add(TableRaya).addStyle(styleCell));
-        //Fin EXPLORACIÓN FÍSICA
+        // TableExploracionFisica.addCell(new Cell().add(TableRaya).addStyle(styleCell));
 
+        //Fin EXPLORACIÓN FÍSICA
         //DIAGNOSTICO
         Paragraph parrafoSubTitulo5 = new Paragraph("V.  DIAGNÓSTICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-
-        Table TableDiagnosticoParrafo1 = new Table(new float[]{volumen * 0.6f, volumen * 4.4f});
-        Cell cellDiagnosticoParrafo1 = new Cell().add(new Paragraph("Diagnóstico:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
-        TableDiagnosticoParrafo1.addCell(cellDiagnosticoParrafo1);
-        cellDiagnosticoParrafo1 = new Cell().add(new Paragraph(oHistoriaclinica.getDiagnosticoCIE10()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
-        TableDiagnosticoParrafo1.addCell(cellDiagnosticoParrafo1);
-
-        Table TableDiagnosticoParrafo2 = new Table(new float[]{volumen * 1.04f, volumen * 3.96f});
-        Cell cellDiagnosticoParrafo2 = new Cell().add(new Paragraph("Diagnóstico Presuntivo:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
-        TableDiagnosticoParrafo2.addCell(cellDiagnosticoParrafo2);
-        cellDiagnosticoParrafo2 = new Cell().add(new Paragraph(oHistoriaclinica.getDiagnosticoPresuntivo()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
-        TableDiagnosticoParrafo2.addCell(cellDiagnosticoParrafo2);
-
-        Table TableDiagnosticoParrafo3 = new Table(new float[]{volumen * 1.04f, volumen * 3.96f});
-        Cell cellDiagnosticoParrafo3 = new Cell().add(new Paragraph("Diagnóstico Definitivo:").setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
-        TableDiagnosticoParrafo3.addCell(cellDiagnosticoParrafo3);
-        cellDiagnosticoParrafo3 = new Cell().add(new Paragraph(oHistoriaclinica.getDiagnosticoDefinitivo()).setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
-        TableDiagnosticoParrafo3.addCell(cellDiagnosticoParrafo3);
-
+        Table TableDiagnosticoParrafo1 = getTableField(oHistoriaclinica.getDiagnosticoCIE10(), "Diagnóstico:", 0.6f, 4.4f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
+        Table TableDiagnosticoParrafo2 = getTableField(oHistoriaclinica.getDiagnosticoPresuntivo(), "Diágnostico Presuntivo:", 1.05f, 3.95f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
+        Table TableDiagnosticoParrafo3 = getTableField(oHistoriaclinica.getDiagnosticoDefinitivo(), "Diágnostico Definitivo:", 1.05f, 3.95f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
         Table TableDiagnostico = new Table(new float[]{volumen * 5});
         TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo1).addStyle(styleCell));
-        TableDiagnostico.addCell(new Cell().add(TableRaya).addStyle(styleCell));
-        TableDiagnostico.addCell(new Cell().add(TableRaya).addStyle(styleCell));
         TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo2).addStyle(styleCell));
-        TableDiagnostico.addCell(new Cell().add(TableRaya).addStyle(styleCell));
         TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo3).addStyle(styleCell));
-        TableDiagnostico.addCell(new Cell().add(TableRaya).addStyle(styleCell));
         //Fin DIAGNOSTICO
 
         //PLAN DE TRATAMIENTO - RECOMENDACIONES
         Paragraph parrafoSubTitulo6 = new Paragraph("VI. PLAN DE TRATAMIENTO - RECOMENDACIONES").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-
-        Table TableTramientoRecomendacionesParrafo1 = new Table(new float[]{volumen * 5});
-        Cell cellTramientoRecomendacionesParrafo1 = new Cell().add(recomendaciones.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
-        TableTramientoRecomendacionesParrafo1.addCell(cellTramientoRecomendacionesParrafo1);
-
-        Table TableTramientoRecomendaciones = new Table(new float[]{volumen * 5});
-        TableTramientoRecomendaciones.addCell(new Cell().add(TableTramientoRecomendacionesParrafo1).addStyle(styleCell));
-        TableTramientoRecomendaciones.addCell(new Cell().add(TableRaya).addStyle(styleCell));
-        TableTramientoRecomendaciones.addCell(new Cell().add(TableRaya).addStyle(styleCell));
+        Table TableTramientoRecomendaciones = getTable(oHistoriaclinica.getRecomendaciones(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
         //Fin PLAN DE TRATAMIENTO - RECOMENDACIONES
 
         //PRONOSTICO
         Paragraph parrafoSubTitulo7 = new Paragraph("VII. PRONÓSTICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-
-        Table TablePronosticoParrafo1 = new Table(new float[]{volumen * 5});
-        Cell cellPronosticoParrafo1 = new Cell().add(pronostico.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
-        TablePronosticoParrafo1.addCell(cellPronosticoParrafo1);
-
-        Table TablePronostico = new Table(new float[]{volumen * 5});
-        TablePronostico.addCell(new Cell().add(TablePronosticoParrafo1).addStyle(styleCell));
+        Table TablePronostico = getTable(oHistoriaclinica.getPronostico(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
         //fin PRONOSTICO
 
         //ALTA PACIENTE
         Paragraph parrafoSubTitulo8 = new Paragraph("VIII. ALTA PACIENTE").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-
-        Table TableAltaParrafo1 = new Table(new float[]{volumen * 5});
-        Cell cellAltaParrafo1 = new Cell().add(altaPaciente.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
-        TableAltaParrafo1.addCell(cellAltaParrafo1);
-
-        Table TableAlta = new Table(new float[]{volumen * 5});
-        TableAlta.addCell(new Cell().add(TableAltaParrafo1).addStyle(styleCell));
+        Table TableAlta = getTable(oHistoriaclinica.getAltaPaciente(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
         //Fin ALTA PACIENTE
 
         /*----Fin Contenido del documento  página 1------*/
@@ -528,6 +478,58 @@ public class Historiaclinicapdf {
 
         document.close();
         /*----Fin Cuerpo del documentos-----*/
+    }
+
+    public static Table getTable(String cadena, int volumen, Paragraph palabraEnBlanco, Style styleCell, Style styleTextLeft) {
+        Table TablePrincipal = new Table(new float[]{volumen * 5});
+        Table TableParrafo = new Table(new float[]{volumen * 5});
+        Paragraph oParagrah;
+        int numCharacteres = 108;
+        int iteracion = cadena.length() / numCharacteres;
+        for (int i = 0; i < iteracion; i++) {
+            oParagrah = new Paragraph(cadena.substring(i * numCharacteres, (i + 1) * numCharacteres));
+            Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+            TableParrafo.addCell(cellParrafo1);
+        }
+        oParagrah = cadena.isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length()));;
+        Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableParrafo.addCell(cellParrafo1);
+        for (int i = 0; i < 2 - iteracion; i++) {
+            Cell cellraya = new Cell().add(palabraEnBlanco.add(".").setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+            TableParrafo.addCell(cellraya);
+        }
+        TablePrincipal.addCell(new Cell().add(TableParrafo).addStyle(styleCell));
+        return TablePrincipal;
+    }
+
+    public static Table getTableField(String cadena, String titulo, float tamfield, float tamfield2, int volumen, Color colorNegro, Style styleCell, Style styleTextLeft, Paragraph palabraEnBlanco) {
+        Table TableAtributo = new Table(new float[]{volumen * tamfield, volumen * tamfield2});
+        Table TableParrafo = new Table(new float[]{volumen * 5});
+        Paragraph oParagrah;
+        int subnumCharacteres = 75;
+        int numCharacteres = 100;
+        int iteracion = cadena.length() / numCharacteres;
+        int division = cadena.length() / subnumCharacteres;
+        boolean aux = division == 0;
+        Cell cellDi = new Cell().add(new Paragraph(titulo).setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
+        TableAtributo.addCell(cellDi);
+        Paragraph oParagra = cadena.length() == 0 ? palabraEnBlanco.add(".") : new Paragraph(aux ? cadena : cadena.substring(0 * numCharacteres, (0 + 1) * subnumCharacteres));
+        Cell cellParraf = new Cell().add(oParagra.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableAtributo.addCell(cellParraf);
+        TableParrafo.addCell(new Cell().add(TableAtributo).addStyle(styleCell));
+        for (int i = 1; i < iteracion; i++) {
+            oParagrah = new Paragraph(cadena.substring(i * numCharacteres, (i + 1) * numCharacteres));
+            Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+            TableParrafo.addCell(cellParrafo1);
+        }
+        oParagrah = aux ? palabraEnBlanco.add(".") : new Paragraph(cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length()));;
+        Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        TableParrafo.addCell(cellParrafo1);
+        if (iteracion == 1 || iteracion == 0) {
+            Cell cellraya2 = new Cell().add(palabraEnBlanco.add(".").setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+            TableParrafo.addCell(cellraya2);
+        }
+        return TableParrafo;
     }
 
 }
