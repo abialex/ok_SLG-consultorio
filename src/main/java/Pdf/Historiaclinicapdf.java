@@ -53,7 +53,7 @@ public class Historiaclinicapdf {
         List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opaciente.getIdpaciente() + " and ismujer=false").getResultList();
         List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
         List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
-        List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + opersona.getIdpersona() + " and flag = false order by idtratamiento DESC").setMaxResults(10).getResultList();
+        List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + opersona.getIdpersona() + " and flag = false order by idtratamiento ASC").setMaxResults(10).getResultList();
         Period period = Period.between(opersona.getFechaNacimiento(), LocalDate.now());
         long edad = period.getYears();
 
@@ -92,36 +92,36 @@ public class Historiaclinicapdf {
         String palabra2 = "no presenta";
 
         /*----------------Palabras vacías-------------*/
-        Paragraph palabraEnBlanco = new Paragraph().setFontColor(colorBlanco);
-        Paragraph nombreTutor = opersona.getTutorNombre().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opersona.getTutorNombre());
-        Paragraph dniTutor = opersona.getTutorDni().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opersona.getTutorDni());
-        Paragraph telefonoTutor = opersona.getTutorTelefono().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opersona.getTutorTelefono());
+        Paragraph palabraEnBlanco = new Paragraph(".").setFontColor(colorBlanco);
+        Paragraph nombreTutor = opersona.getTutorNombre().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorNombre());
+        Paragraph dniTutor = opersona.getTutorDni().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorDni());
+        Paragraph telefonoTutor = opersona.getTutorTelefono().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorTelefono());
 
-        Paragraph emergenciaNombre = opaciente.getEmergenciaNombre().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaNombre());
-        Paragraph emergenciaParentesco = opaciente.getEmergenciaParentesco().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaParentesco());
-        Paragraph emergenciaTelefono = opaciente.getEmergenciaTelefono().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getEmergenciaTelefono());
+        Paragraph emergenciaNombre = opaciente.getEmergenciaNombre().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getEmergenciaNombre());
+        Paragraph emergenciaParentesco = opaciente.getEmergenciaParentesco().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getEmergenciaParentesco());
+        Paragraph emergenciaTelefono = opaciente.getEmergenciaTelefono().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getEmergenciaTelefono());
 
-        Paragraph MOTIVOCONSULTA = oHistoriaclinica.getMotivoConsulta().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getMotivoConsulta());
+        Paragraph MOTIVOCONSULTA = oHistoriaclinica.getMotivoConsulta().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getMotivoConsulta());
 
-        Paragraph SignosSintomas = opaciente.getSintomasEnfermedadActual().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getSintomasEnfermedadActual());
-        Paragraph TiempoEnfermedad = opaciente.getTiempoEnfermedadActual().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getTiempoEnfermedadActual());
+        Paragraph SignosSintomas = opaciente.getSintomasEnfermedadActual().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getSintomasEnfermedadActual());
+        Paragraph TiempoEnfermedad = opaciente.getTiempoEnfermedadActual().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getTiempoEnfermedadActual());
 
-        Paragraph otrasEnfermedades = opaciente.getOtrasEnfermedades().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getOtrasEnfermedades());
-        Paragraph antecedentesFamiliares = opaciente.getAntecedentesFamiliares().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(opaciente.getAntecedentesFamiliares());
+        Paragraph otrasEnfermedades = opaciente.getOtrasEnfermedades().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getOtrasEnfermedades());
+        Paragraph antecedentesFamiliares = opaciente.getAntecedentesFamiliares().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getAntecedentesFamiliares());
 
-        Paragraph signosVitales = oHistoriaclinica.getSignosVitales().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getSignosVitales());
-        Paragraph saturacionOxigeno = oHistoriaclinica.getSaturacionOxigeno().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getSaturacionOxigeno());
-        Paragraph PA = oHistoriaclinica.getPA().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getPA());
-        Paragraph FC = oHistoriaclinica.getFC().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getFC());
-        Paragraph Temperatura = oHistoriaclinica.getTemperatura().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getTemperatura());
-        Paragraph FR = oHistoriaclinica.getFR().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getFR());
-        Paragraph examenClinicoGeneral = oHistoriaclinica.getExamenClinicoGeneral().isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(oHistoriaclinica.getExamenClinicoGeneral());
+        Paragraph signosVitales = oHistoriaclinica.getSignosVitales().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getSignosVitales());
+        Paragraph saturacionOxigeno = oHistoriaclinica.getSaturacionOxigeno().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getSaturacionOxigeno());
+        Paragraph PA = oHistoriaclinica.getPA().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getPA());
+        Paragraph FC = oHistoriaclinica.getFC().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getFC());
+        Paragraph Temperatura = oHistoriaclinica.getTemperatura().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getTemperatura());
+        Paragraph FR = oHistoriaclinica.getFR().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getFR());
+        Paragraph examenClinicoGeneral = oHistoriaclinica.getExamenClinicoGeneral().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getExamenClinicoGeneral());
         /*---------FIN----Palabras vacías-------------*/
 
  /* Contenido del documento  página 1*/
         //table raya
         Table TableRayas = new Table(new float[]{volumen * 5});
-        Cell cellraya = new Cell().add(palabraEnBlanco.add(".").setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+        Cell cellraya = new Cell().add(palabraEnBlanco.setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
         TableRayas.addCell(cellraya);
         //Cabecera
         Table CabeceraParrafo1 = new Table(new float[]{volumen * 4.3f, volumen * 0.7f});
@@ -491,11 +491,11 @@ public class Historiaclinicapdf {
             Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
             TableParrafo.addCell(cellParrafo1);
         }
-        oParagrah = cadena.isEmpty() ? palabraEnBlanco.add(".") : new Paragraph(cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length()));;
+        oParagrah = cadena.isEmpty() ? palabraEnBlanco : new Paragraph(cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length()));;
         Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableParrafo.addCell(cellParrafo1);
         for (int i = 0; i < 2 - iteracion; i++) {
-            Cell cellraya = new Cell().add(palabraEnBlanco.add(".").setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+            Cell cellraya = new Cell().add(palabraEnBlanco.setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
             TableParrafo.addCell(cellraya);
         }
         TablePrincipal.addCell(new Cell().add(TableParrafo).addStyle(styleCell));
@@ -513,7 +513,7 @@ public class Historiaclinicapdf {
         boolean aux = division == 0;
         Cell cellDi = new Cell().add(new Paragraph(titulo).setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableAtributo.addCell(cellDi);
-        Paragraph oParagra = cadena.length() == 0 ? palabraEnBlanco.add(".") : new Paragraph(aux ? cadena : cadena.substring(0 * numCharacteres, (0 + 1) * subnumCharacteres));
+        Paragraph oParagra = cadena.length() == 0 ? palabraEnBlanco : new Paragraph(aux ? cadena : cadena.substring(0 * numCharacteres, (0 + 1) * subnumCharacteres));
         Cell cellParraf = new Cell().add(oParagra.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableAtributo.addCell(cellParraf);
         TableParrafo.addCell(new Cell().add(TableAtributo).addStyle(styleCell));
@@ -522,11 +522,11 @@ public class Historiaclinicapdf {
             Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
             TableParrafo.addCell(cellParrafo1);
         }
-        oParagrah = aux ? palabraEnBlanco.add(".") : new Paragraph(cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length()));;
+        oParagrah = aux ? palabraEnBlanco : new Paragraph(cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length()));;
         Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableParrafo.addCell(cellParrafo1);
         if (iteracion == 1 || iteracion == 0) {
-            Cell cellraya2 = new Cell().add(palabraEnBlanco.add(".").setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+            Cell cellraya2 = new Cell().add(palabraEnBlanco.setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
             TableParrafo.addCell(cellraya2);
         }
         return TableParrafo;
