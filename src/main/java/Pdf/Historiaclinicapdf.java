@@ -32,12 +32,16 @@ import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.property.AreaBreakType;
 import controller.App;
+import java.awt.Label;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -45,7 +49,7 @@ import java.util.List;
  */
 public class Historiaclinicapdf {
 
-    public static void ImprimirHistoriaClinica(Persona opersona) throws IOException {
+    public static void ImprimirHistoriaClinica(Persona opersona) {
         Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
         List<Paciente_Enfermedad> listPaciente_Enfermedad = App.jpa.createQuery("select p from Paciente_Enfermedad p where idpaciente=" + opaciente.getIdpaciente()).getResultList();
@@ -62,7 +66,7 @@ public class Historiaclinicapdf {
         try {
             writer = new PdfWriter("Pdf\\historia_clinica.pdf");
         } catch (FileNotFoundException e) {
-
+            JOptionPane.showMessageDialog(new Label(), "agregue la carpeta Pdf");
         }
         PdfDocument pdf = new PdfDocument(writer);
         Document document = new Document(pdf, PageSize.A4);
@@ -70,10 +74,14 @@ public class Historiaclinicapdf {
 
         style1 evento = new style1(document);
         pdf.addEventHandler(PdfDocumentEvent.START_PAGE, evento);
-
-        /*--------styles-------------*/
-        PdfFont font = PdfFontFactory.createFont(FontConstants.HELVETICA);
-        PdfFont bold = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+        PdfFont bold = null, font;
+        try {
+            /*--------styles-------------*/
+            font = PdfFontFactory.createFont(FontConstants.HELVETICA);
+            bold = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+        } catch (IOException ex) {
+            Logger.getLogger(Historiaclinicapdf.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         Style styleCell = new Style().setBorder(Border.NO_BORDER);
         Style styleTextRight = new Style().setTextAlignment(TextAlignment.RIGHT).setFontSize(10f);
@@ -384,7 +392,7 @@ public class Historiaclinicapdf {
         TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
         cellExploracionFisicaParrafo2 = new Cell().add(FR.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableExploracionFisicaParrafo2.addCell(cellExploracionFisicaParrafo2);
-        
+
         Table TableExploracionFisicaParrafo3 = getTableField(oHistoriaclinica.getExamenClinicoGeneral(), "Examen clínico general:", 1.09f, 3.9f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
 
         Table TableExploracionFisica = new Table(new float[]{volumen * 5});
