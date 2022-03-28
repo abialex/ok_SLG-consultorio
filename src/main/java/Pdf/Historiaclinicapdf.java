@@ -100,7 +100,8 @@ public class Historiaclinicapdf {
         String palabra2 = "no presenta";
 
         /*----------------Palabras vacías-------------*/
-        Paragraph palabraEnBlanco = new Paragraph(".").setFontColor(colorBlanco);
+        Paragraph palabraEnBlancoLimpio = new Paragraph(".").setFontColor(colorBlanco);
+        Paragraph palabraEnBlanco = new Paragraph(".").setFontColor(colorBlanco).setBorderBottom(new SolidBorder(1f));
         Paragraph nombreTutor = opersona.getTutorNombre().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorNombre());
         Paragraph dniTutor = opersona.getTutorDni().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorDni());
         Paragraph telefonoTutor = opersona.getTutorTelefono().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorTelefono());
@@ -129,7 +130,7 @@ public class Historiaclinicapdf {
  /* Contenido del documento  página 1*/
         //table raya
         Table TableRayas = new Table(new float[]{volumen * 5});
-        Cell cellraya = new Cell().add(palabraEnBlanco.setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+        Cell cellraya = new Cell().add(palabraEnBlanco).addStyle(styleTextLeft).addStyle(styleCell);
         TableRayas.addCell(cellraya);
         //Cabecera
         Table CabeceraParrafo1 = new Table(new float[]{volumen * 4.3f, volumen * 0.7f});
@@ -443,6 +444,15 @@ public class Historiaclinicapdf {
             TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.getMonto() + "").addStyle(styleTextCenter)));
             montoTotal = montoTotal + tratamiento.getMonto();
         }
+        int contadorEspacio = 35 - olistTratamiento.size();
+        for (int i = 0; i < contadorEspacio; i++) {
+            TableTratamiento.addCell(new Cell().add(palabraEnBlancoLimpio.addStyle(styleTextCenter)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextCenter)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextCenter)));
+            //montoTotal = montoTotal + tratamiento.getMonto();
+        }
+
         TableTratamiento.addCell(new Cell(1, 3).add(new Paragraph("MONTO TOTAL ").addStyle(styleTextCenter).setFont(bold)));
         TableTratamiento.addCell(new Cell().add(new Paragraph(montoTotal + "").addStyle(styleTextCenter)));
 
@@ -503,7 +513,7 @@ public class Historiaclinicapdf {
         Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableParrafo.addCell(cellParrafo1);
         for (int i = 0; i < 2 - iteracion; i++) {
-            Cell cellraya = new Cell().add(palabraEnBlanco.setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+            Cell cellraya = new Cell().add(palabraEnBlanco).addStyle(styleTextLeft).addStyle(styleCell);
             TableParrafo.addCell(cellraya);
         }
         TablePrincipal.addCell(new Cell().add(TableParrafo).addStyle(styleCell));
@@ -534,7 +544,7 @@ public class Historiaclinicapdf {
         Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableParrafo.addCell(cellParrafo1);
         if (iteracion == 1 || iteracion == 0) {
-            Cell cellraya2 = new Cell().add(palabraEnBlanco.setBorderBottom(new SolidBorder(1f))).addStyle(styleTextLeft).addStyle(styleCell);
+            Cell cellraya2 = new Cell().add(palabraEnBlanco).addStyle(styleTextLeft).addStyle(styleCell);
             TableParrafo.addCell(cellraya2);
         }
         return TableParrafo;
