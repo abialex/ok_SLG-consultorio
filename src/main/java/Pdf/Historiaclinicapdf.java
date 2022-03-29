@@ -106,29 +106,6 @@ public class Historiaclinicapdf {
         /*----------------Palabras vacías-------------*/
         Paragraph palabraEnBlancoLimpio = new Paragraph(".").setFontColor(colorBlanco);
         Paragraph palabraEnBlanco = new Paragraph(".").setFontColor(colorBlanco).setBorderBottom(new SolidBorder(1f));
-        Paragraph nombreTutor = opersona.getTutorNombre().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorNombre());
-        Paragraph dniTutor = opersona.getTutorDni().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorDni());
-        Paragraph telefonoTutor = opersona.getTutorTelefono().isEmpty() ? palabraEnBlanco : new Paragraph(opersona.getTutorTelefono());
-
-        Paragraph emergenciaNombre = opaciente.getEmergenciaNombre().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getEmergenciaNombre());
-        Paragraph emergenciaParentesco = opaciente.getEmergenciaParentesco().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getEmergenciaParentesco());
-        Paragraph emergenciaTelefono = opaciente.getEmergenciaTelefono().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getEmergenciaTelefono());
-
-        Paragraph MOTIVOCONSULTA = oHistoriaclinica.getMotivoConsulta().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getMotivoConsulta());
-
-        Paragraph SignosSintomas = opaciente.getSintomasEnfermedadActual().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getSintomasEnfermedadActual());
-        Paragraph TiempoEnfermedad = opaciente.getTiempoEnfermedadActual().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getTiempoEnfermedadActual());
-
-        Paragraph otrasEnfermedades = opaciente.getOtrasEnfermedades().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getOtrasEnfermedades());
-        Paragraph antecedentesFamiliares = opaciente.getAntecedentesFamiliares().isEmpty() ? palabraEnBlanco : new Paragraph(opaciente.getAntecedentesFamiliares());
-
-        Paragraph signosVitales = oHistoriaclinica.getSignosVitales().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getSignosVitales());
-        Paragraph saturacionOxigeno = oHistoriaclinica.getSaturacionOxigeno().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getSaturacionOxigeno());
-        Paragraph PA = oHistoriaclinica.getPA().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getPA());
-        Paragraph FC = oHistoriaclinica.getFC().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getFC());
-        Paragraph Temperatura = oHistoriaclinica.getTemperatura().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getTemperatura());
-        Paragraph FR = oHistoriaclinica.getFR().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getFR());
-        Paragraph examenClinicoGeneral = oHistoriaclinica.getExamenClinicoGeneral().isEmpty() ? palabraEnBlanco : new Paragraph(oHistoriaclinica.getExamenClinicoGeneral());
         /*---------FIN----Palabras vacías-------------*/
 
  /* Contenido del documento  página 1*/
