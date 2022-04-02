@@ -9,6 +9,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import javafx.event.EventHandler;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.StageStyle;
 import javax.persistence.EntityManager;
@@ -50,6 +51,7 @@ public class App extends Application {
             }
         });
         stage.setScene(scene);
+        stage.getIcons().add(new Image(getClass().getResource("/imagenes/logo.jpg").toExternalForm()));
         stage.initStyle(StageStyle.UNDECORATED);
         stage.setOnCloseRequest(event -> {
         });
