@@ -116,8 +116,21 @@ public class VerPacienteController implements Initializable {
         }
     }
 
-    int selectItem() {
-        return listPersona.indexOf(tablePersona.getSelectionModel().getSelectedItem());
+    void selectAgregado() {
+        if (!listPersona.isEmpty()) {
+            tablePersona.getSelectionModel().select(listPersona.get(0));
+        }
+    }
+
+    void selectModificado(Persona opersona) {
+        if (!listPersona.isEmpty()) {
+            for (Persona persona : listPersona) {
+                if (opersona == persona) {
+                    tablePersona.getSelectionModel().select(persona);
+                    break;
+                }
+            }
+        }
     }
 
     public void eliminar() {
