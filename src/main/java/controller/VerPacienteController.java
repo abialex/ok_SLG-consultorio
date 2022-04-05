@@ -6,6 +6,7 @@ package controller;
 
 import Entidades.Persona;
 import Pdf.Historiaclinicapdf;
+import Util.FileImagUtil;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertConfirmarController;
 import java.awt.Desktop;
@@ -312,7 +313,26 @@ public class VerPacienteController implements Initializable {
                         }
                     }
                 }
+                
+                 void mostrarCarpeta(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    for (int i = 0; i < listPersona.size(); i++) {
+                        if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
 
+                            Persona opersona = listPersona.get(i);
+                            String url = (new File(".").getAbsolutePath()) + "/Archivos paciente/"+opersona.getNombres_apellidos();
+                            FileImagUtil oFileImagUtil = new FileImagUtil(url, "Archivos de "+opersona.getNombres_apellidos());
+                            try {
+                                oFileImagUtil.buscarArchivo();
+                                //   lblpdf.setText(oPdf.getName());
+                            } catch (IOException ex) {
+                                Logger.getLogger(VerPacienteController.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            break;
+                        }
+                    }
+                }
+                
                 private void imagEliminarMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/imagenes/delete-2.png").toExternalForm()));

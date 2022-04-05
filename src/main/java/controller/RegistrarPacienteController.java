@@ -217,6 +217,10 @@ public class RegistrarPacienteController implements Initializable {
             App.jpa.getTransaction().commit();
             oVerPacienteController.updateListPersona();
             oVerPacienteController.selectAgregado();
+            File carpetaImages = new File("Archivos paciente/"+opersona.getNombres_apellidos());
+            if (!carpetaImages.exists()) {
+                carpetaImages.mkdirs();
+            }
             cerrar();
         }
     }

@@ -1,6 +1,7 @@
 package controller;
 
 import Util.JPAUtil;
+import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -28,6 +29,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        CrearArchivos();
         stagePrincpal = stage;
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource("VerPaciente.fxml"));
         fxmlLoader.setLocation(App.class.getResource("VerPaciente.fxml"));
@@ -68,6 +70,16 @@ public class App extends Application {
 
     public static void main(String[] args) {
         launch();
+    }
+    static void CrearArchivos(){
+        File carpetaImages = new File("Archivos paciente");
+        if (!carpetaImages.exists()) {
+            carpetaImages.mkdirs();
+        }
+        File carpetaPdf = new File("Pdf");
+        if (!carpetaPdf.exists()) {
+            carpetaPdf.mkdirs();
+        }
     }
 
 }
