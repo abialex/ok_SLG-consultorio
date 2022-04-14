@@ -155,6 +155,10 @@ public class Historiaclinicapdf {
         table1Parrafo4.addCell(getCell(opersona.getOcupacion(), styleTextCenter, styleCell, subrayado));
         table1Parrafo4.addCell(getCell("Teléfono:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo4.addCell(getCell(opersona.getTelefono(), styleTextCenter, styleCell, subrayado));
+        
+        Table table1Parrafo5 = new Table(new float[]{volumen * 1f, volumen * 4f});
+        table1Parrafo5.addCell(getCell("Doctor (Operador)", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
+        table1Parrafo5.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getNombres_apellidos(), styleTextCenter, styleCell, subrayado));
 
         /* Image img = null;
         try {
@@ -168,6 +172,7 @@ public class Historiaclinicapdf {
         tableInformacion.addCell(new Cell().add(table1Parrafo2).addStyle(styleCell));
         tableInformacion.addCell(new Cell().add(table1Parrafo3).addStyle(styleCell));
         tableInformacion.addCell(new Cell().add(table1Parrafo4).addStyle(styleCell));
+        tableInformacion.addCell(new Cell().add(table1Parrafo5).addStyle(styleCell));
 
         //table1Datos.addCell(cellimag);
         Table TableMenorDeEdadParrafo1 = new Table(new float[]{volumen * 5});

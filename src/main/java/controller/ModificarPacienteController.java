@@ -4,6 +4,7 @@
  */
 package controller;
 
+import Entidades.Doctor;
 import Entidades.Enfermedad;
 import Entidades.Historia_clinica;
 import Entidades.Paciente;
@@ -84,6 +85,7 @@ public class ModificarPacienteController implements Initializable {
     @FXML TextArea jtfmotivoconsulta;
     @FXML TextField jtftutornombre, jtftutordni, jtftutortelefono;
     @FXML TextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
+    @FXML JFXComboBox<Doctor> jcbDoctor;
     
     //Enfermedad actual
     @FXML TextField jtfsintomasEnfermedadActual;
@@ -166,8 +168,19 @@ public class ModificarPacienteController implements Initializable {
         listCheck();
         listCheckPregunta();
         initRestricciones();
+        cargarDoctor();
         
     }    
+    
+    void cargarDoctor(){
+        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p ").getResultList();      
+        ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
+        for (Doctor odoct : listDoctorG) {
+            listDoctor.add(odoct);
+        }
+        jcbDoctor.setItems(listDoctor);
+    }
+
     
     @FXML
     void GuardarPaciente(ActionEvent evt) throws IOException {
@@ -205,6 +218,7 @@ public class ModificarPacienteController implements Initializable {
 
         Historia_clinica ohistoria = new Historia_clinica(
                 opaciente,
+                jcbDoctor.getSelectionModel().getSelectedItem(),
                 jtfsignosvitales.getText().trim(),
                 jtfsaturacionoxigeno.getText().trim(),
                 jtfPA.getText().trim(),
@@ -370,6 +384,7 @@ public class ModificarPacienteController implements Initializable {
         jcbocupacion.getSelectionModel().select(opersona.getOcupacion());
         jtflugarprocedencia.setText(opersona.getLugar_de_procedencia());
         jtfDomicilio.setText(opersona.getDomicilio());
+        jcbDoctor.getSelectionModel().select(oHistoria_Clinica.getDoctor());
         
         jtfmotivoconsulta.setText(oHistoria_Clinica.getMotivoConsulta());
         

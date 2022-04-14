@@ -4,6 +4,7 @@
  */
 package controller;
 
+import Entidades.Doctor;
 import Entidades.Enfermedad;
 import Entidades.Historia_clinica;
 import Entidades.Paciente;
@@ -92,6 +93,8 @@ public class RegistrarPacienteController implements Initializable {
     private JFXTextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     @FXML
     private JFXTextField jtftutornombre, jtftutordni, jtftutortelefono;
+    @FXML
+    private JFXComboBox<Doctor> jcbDoctor;
 
     //II. Enfermedad actual
     @FXML
@@ -145,6 +148,16 @@ public class RegistrarPacienteController implements Initializable {
         accordion2.setExpandedPane(tpEnfermedades);
         asignar();
         initRestricciones();
+        cargarDoctor();
+    }
+    
+    void cargarDoctor(){
+        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p ").getResultList();      
+        ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
+        for (Doctor odoct : listDoctorG) {
+            listDoctor.add(odoct);
+        }
+        jcbDoctor.setItems(listDoctor);
     }
 
     @FXML
@@ -181,9 +194,10 @@ public class RegistrarPacienteController implements Initializable {
 
             List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheck, opaciente);
             List<Paciente_Pregunta> Lista_preguntasPaciente = Paciente_relacionar_pregunta(listcheck, opaciente);
-
+            
             Historia_clinica ohistoria = new Historia_clinica(
                     opaciente,
+                    jcbDoctor.getSelectionModel().getSelectedItem(),
                     jtfsignosvitales.getText().trim(),
                     jtfsaturacionoxigeno.getText().trim(),
                     jtfPA.getText().trim(),
@@ -507,6 +521,13 @@ public class RegistrarPacienteController implements Initializable {
             aux = false;
         } else {
             jtaConsulta.setStyle("");
+        }
+        
+        if (jcbDoctor.getSelectionModel().getSelectedItem() == null) {
+            jcbDoctor.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jcbDoctor.setStyle("");
         }
 
         boolean auxfecha = true;

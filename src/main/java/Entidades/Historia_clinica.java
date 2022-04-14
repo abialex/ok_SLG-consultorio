@@ -82,8 +82,9 @@ public class Historia_clinica {
     @Column(name = "fechaultimaatencion", nullable = true)
     private LocalDate fechaultimaatencion;
 
-    public Historia_clinica(Paciente idpaciente, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String diagnosticoPresuntivo, String diagnosticoDefinitivo, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
+    public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String diagnosticoPresuntivo, String diagnosticoDefinitivo, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.idpaciente = idpaciente;
+        this.doctor = doctor;
         this.signosVitales = signosVitales;
         this.saturacionOxigeno = saturacionOxigeno;
         this.PA = PA;
@@ -102,6 +103,10 @@ public class Historia_clinica {
         this.fechainscripcion = fechainscripcion;
         this.fechaultimaatencion = fechaultimaatencion;
     }
+
+    @JoinColumn(insertable = true, updatable = true, name = "iddoctor", nullable = true)
+    @ManyToOne
+    private Doctor doctor;
 
     public Historia_clinica() {
     }
@@ -256,6 +261,14 @@ public class Historia_clinica {
 
     public void setAltaPaciente(String altaPaciente) {
         this.altaPaciente = altaPaciente;
+    }
+
+    public Doctor getDoctor() {
+        return doctor;
+    }
+
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
     }
 
 }
