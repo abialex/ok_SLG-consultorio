@@ -260,7 +260,6 @@ public class VerPacienteController implements Initializable {
                     for (Persona opersona : listPersona) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
                             ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
-                            oModificarPacienteController.setPersona(opersona);
                             oModificarPacienteController.setController(odc);
                             lockedPantalla();
                             break;
@@ -459,8 +458,8 @@ public class VerPacienteController implements Initializable {
     @FXML
     void mostrarDoctor() {
         DoctorVerController oRegistrarController = (DoctorVerController) mostrarVentana(DoctorVerController.class, "DoctorVer");
-        //oRegistrarController.setController(odc);
-        //lockedPantalla();
+        oRegistrarController.setController(odc);
+        lockedPantalla();
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {

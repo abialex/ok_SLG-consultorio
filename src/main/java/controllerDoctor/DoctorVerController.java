@@ -39,7 +39,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
 /**
@@ -48,6 +51,9 @@ import javafx.util.Callback;
  * @author alexis
  */
 public class DoctorVerController implements Initializable {
+    
+    @FXML
+    private AnchorPane ap;
 
     @FXML
     private JFXTextField jtfNombres;
@@ -65,6 +71,7 @@ public class DoctorVerController implements Initializable {
     private TableColumn<Doctor, Doctor> columnActivo;
 
     ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
+    VerPacienteController oVerPacienteController;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -75,7 +82,7 @@ public class DoctorVerController implements Initializable {
 
     @FXML
     void updateListDoctor() {
-        List<Doctor> olistDoc = App.jpa.createQuery("select p from Doctor p").setMaxResults(10).getResultList();
+        List<Doctor> olistDoc = App.jpa.createQuery("select p from Doctor p order by iddoctor DESC").setMaxResults(10).getResultList();
         listDoctor.clear();
         for (Doctor oDoc : olistDoc) {
             listDoctor.add(oDoc);
@@ -205,6 +212,17 @@ public class DoctorVerController implements Initializable {
             return cell;
         };
         columnEstado.setCellFactory(cellFoctory);
+    }
+
+    public void setController(VerPacienteController odc) {
+        this.oVerPacienteController = odc;
+        ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
+    }
+    
+    @FXML
+    void cerrar(){
+        oVerPacienteController.lockedPantalla();
+        ((Stage)ap.getScene().getWindow()).close();
     }
 
 }
