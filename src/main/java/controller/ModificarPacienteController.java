@@ -488,6 +488,7 @@ public class ModificarPacienteController implements Initializable {
         oPersona.setDomicilio(jtfDomicilio.getText());
 
         oHistoria_Clinica.setMotivoConsulta(jtfmotivoconsulta.getText());
+        oHistoria_Clinica.setDoctor(jcbDoctor.getSelectionModel().getSelectedItem());
         
         oPaciente.setEmergenciaNombre(jtfemergenciaNombre.getText());
         oPaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText());
