@@ -8,6 +8,7 @@ import Entidades.Persona;
 import Pdf.Historiaclinicapdf;
 import Util.FileImagUtil;
 import com.jfoenix.controls.JFXTextField;
+import controllerDoctor.DoctorVerController;
 import emergente.AlertConfirmarController;
 import java.awt.Desktop;
 import java.io.File;
@@ -93,7 +94,7 @@ public class VerPacienteController implements Initializable {
     @FXML
     void updateListPersona() {
         List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where (dni like " + "'" + jtfbuscar.getText() + "%'"
-                + " or " + "nombres_apellidos like " + "'%" + jtfbuscar.getText() + "%') and flag = false order by idpersona DESC").setMaxResults(10).getResultList();
+                + " or " + "nombres_apellidos like " + "'%" + jtfbuscar.getText() + " %') and flag = false and ocupacion <> 'DOCTOR' order by idpersona DESC").setMaxResults(10).getResultList();
         listPersona.clear();
         for (Persona ocarta : olistPerson) {
             listPersona.add(ocarta);
@@ -253,7 +254,7 @@ public class VerPacienteController implements Initializable {
                         setText(null);
                     }
                 }
-
+                
                 void mostrarModificar(MouseEvent event) {
                     ImageView buton = (ImageView) event.getSource();
                     for (Persona opersona : listPersona) {
@@ -435,12 +436,31 @@ public class VerPacienteController implements Initializable {
         ImageView imag = (ImageView) event.getSource();
         imag.setImage(new Image(getClass().getResource("/imagenes/medical-1.png").toExternalForm()));
     }
+    
+    @FXML
+    void imagDoctoreMoved(MouseEvent event) {
+        ImageView imag = (ImageView) event.getSource();
+        imag.setImage(new Image(getClass().getResource("/imagenes/doctor-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagDoctorFuera(MouseEvent event) {
+        ImageView imag = (ImageView) event.getSource();
+        imag.setImage(new Image(getClass().getResource("/imagenes/doctor-1.png").toExternalForm()));
+    }
 
     @FXML
     void mostrarRegistrarpaciente() {
         RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana(RegistrarPacienteController.class, "RegistrarPaciente");
         oRegistrarController.setController(odc);
         lockedPantalla();
+    }
+    
+    @FXML
+    void mostrarDoctor() {
+        DoctorVerController oRegistrarController = (DoctorVerController) mostrarVentana(DoctorVerController.class, "DoctorVer");
+        //oRegistrarController.setController(odc);
+        //lockedPantalla();
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {

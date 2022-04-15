@@ -173,7 +173,7 @@ public class ModificarPacienteController implements Initializable {
     }    
     
     void cargarDoctor(){
-        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p ").getResultList();      
+        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag=false").getResultList();      
         ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
         for (Doctor odoct : listDoctorG) {
             listDoctor.add(odoct);
@@ -384,7 +384,7 @@ public class ModificarPacienteController implements Initializable {
         jcbocupacion.getSelectionModel().select(opersona.getOcupacion());
         jtflugarprocedencia.setText(opersona.getLugar_de_procedencia());
         jtfDomicilio.setText(opersona.getDomicilio());
-        jcbDoctor.getSelectionModel().select(oHistoria_Clinica.getDoctor());
+        jcbDoctor.getSelectionModel().select(oHistoria_Clinica.getDoctor().isFlag()? null: oHistoria_Clinica.getDoctor());
         
         jtfmotivoconsulta.setText(oHistoria_Clinica.getMotivoConsulta());
         

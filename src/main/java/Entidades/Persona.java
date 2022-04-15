@@ -178,6 +178,11 @@ public class Persona {
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
+
+    @Override
+    public String toString() {
+        return this.nombres_apellidos;
+    }
     
     
     

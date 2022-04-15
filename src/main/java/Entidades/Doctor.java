@@ -61,6 +61,10 @@ public class Doctor {
     public void setFlag(boolean flag) {
         this.flag = flag;
     }
+    
+    public Doctor getDoctor(){
+        return this;
+    }
 
     @Override
     public String toString() {
