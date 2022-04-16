@@ -64,7 +64,7 @@ public class Historiaclinicapdf {
         int volumen = 105;
         PdfWriter writer = null;
         try {
-            writer = new PdfWriter("Pdf\\historia_clinica.pdf");
+            writer = new PdfWriter("Pdf\\historia_clinica_"+opersona.getNombres_apellidos()+"_"+opersona.getDni()+".pdf");
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(new Label(), "agregue la carpeta Pdf");
         }

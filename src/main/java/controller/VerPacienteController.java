@@ -291,7 +291,7 @@ public class VerPacienteController implements Initializable {
                                 Persona opersona = listPersona.get(i);
 
                                 Historiaclinicapdf.ImprimirHistoriaClinica(opersona);
-                                File file = new File("pdf\\historia_clinica.pdf");
+                                File file = new File("Pdf\\historia_clinica_"+opersona.getNombres_apellidos()+"_"+opersona.getDni()+".pdf");
                                 Desktop.getDesktop().open(file);
 
                                 break;
@@ -448,7 +448,7 @@ public class VerPacienteController implements Initializable {
         ImageView imag = (ImageView) event.getSource();
         imag.setImage(new Image(getClass().getResource("/imagenes/doctor-1.png").toExternalForm()));
     }
-
+    
     @FXML
     void mostrarRegistrarpaciente() {
         RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana(RegistrarPacienteController.class, "RegistrarPaciente");
