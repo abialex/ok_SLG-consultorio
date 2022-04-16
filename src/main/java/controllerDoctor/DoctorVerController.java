@@ -25,6 +25,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -38,6 +40,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -51,7 +55,7 @@ import javafx.util.Callback;
  * @author alexis
  */
 public class DoctorVerController implements Initializable {
-    
+
     @FXML
     private AnchorPane ap;
 
@@ -88,18 +92,18 @@ public class DoctorVerController implements Initializable {
             listDoctor.add(oDoc);
         }
     }
-    
+
     @FXML
-    void guardarDoctor(){
-        if(jtfNombres.getText().length()!=0){
-            Persona opersona=new Persona(
+    void guardarDoctor() {
+        if (jtfNombres.getText().length() != 0) {
+            Persona opersona = new Persona(
                     jtfNombres.getText(),
                     "NA",
                     "NA",
-                    "NA", 
-                    LocalDate.now(), 
+                    "NA",
+                    LocalDate.now(),
                     "NA", "DOCTOR", "NA");
-            Doctor odoctor=new Doctor(opersona);
+            Doctor odoctor = new Doctor(opersona);
             App.jpa.getTransaction().begin();
             App.jpa.persist(opersona);
             App.jpa.persist(odoctor);
@@ -124,7 +128,7 @@ public class DoctorVerController implements Initializable {
                     } else {
                         JFXCheckBox checkbox = new JFXCheckBox();
                         checkbox.setUserData(item);
-                        checkbox.setStyle("-fx-alignment: center; -fx-max-width:999;");
+                        checkbox.setStyle("-fx-alignment: center; -fx-max-width:999; -fx-cursor: hand;");
                         checkbox.addEventHandler(ActionEvent.ACTION, event -> changueActivo(event));
                         checkbox.setSelected(!item.isFlag());
                         setGraphic(checkbox);
@@ -134,7 +138,7 @@ public class DoctorVerController implements Initializable {
 
                 void changueActivo(ActionEvent event) {
                     JFXCheckBox check = (JFXCheckBox) event.getSource();
-                    Doctor odoc=(Doctor) check.getUserData();
+                    Doctor odoc = (Doctor) check.getUserData();
                     odoc.setFlag(!check.isSelected());
                     App.jpa.getTransaction().begin();
                     App.jpa.persist(odoc);
@@ -143,6 +147,65 @@ public class DoctorVerController implements Initializable {
 
             };
 
+            return cell;
+        });
+
+        columnNombres.setCellFactory(column -> {
+            TableCell<Doctor, Persona> cell = new TableCell<Doctor, Persona>() {
+                @Override
+                protected void updateItem(Persona item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        JFXTextField field = new JFXTextField();
+                        field.setUserData(item);
+
+                        field.setText(item.getNombres_apellidos());
+                        field.setEditable(false);
+                        field.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> changueActivo(event));
+                        field.addEventHandler(KeyEvent.KEY_RELEASED, event -> modificar(event));
+                        field.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                            @Override
+                            public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                                if (newPropertyValue) {
+                                    field.setStyle("-fx-border-color:BLACK;");
+                                } else {
+                                    field.setStyle("");
+                                }
+                            }
+                        });
+                        setGraphic(field);
+                        setText(null);
+                    }
+                }
+
+                void changueActivo(MouseEvent event) {
+                    JFXTextField check = (JFXTextField) event.getSource();
+                    check.setStyle("-fx-border-color:BLACK;");
+
+                    check.setEditable(true);
+
+                }
+
+                void modificar(KeyEvent event) {
+                    JFXTextField check = (JFXTextField) event.getSource();
+                    Persona oper = (Persona) check.getUserData();
+                    if (event.getCode() == (KeyCode.ENTER)) {
+                        if (check.getText().length() != 0) {
+                            oper.setNombres_apellidos(check.getText());
+                            App.jpa.getTransaction().begin();
+                            App.jpa.persist(oper);
+                            App.jpa.getTransaction().commit();
+                            updateListDoctor();
+                        }
+                    }
+                    if (event.getCode() == (KeyCode.ESCAPE)) {
+                        updateListDoctor();
+                    }
+                }
+            };
             return cell;
         });
 
@@ -218,11 +281,11 @@ public class DoctorVerController implements Initializable {
         this.oVerPacienteController = odc;
         ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
     }
-    
+
     @FXML
-    void cerrar(){
+    void cerrar() {
         oVerPacienteController.lockedPantalla();
-        ((Stage)ap.getScene().getWindow()).close();
+        ((Stage) ap.getScene().getWindow()).close();
     }
 
 }
