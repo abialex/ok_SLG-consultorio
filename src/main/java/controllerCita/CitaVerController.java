@@ -254,6 +254,7 @@ public class CitaVerController implements Initializable {
                             button.setStyle("-fx-font-size: 10");
                             button.setMaxHeight(9);
                             button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
+                            button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
                             fp.getChildren().add(button);
                         }
                         fp.setMinHeight(tam);
@@ -261,6 +262,16 @@ public class CitaVerController implements Initializable {
                         setText(null);
                         setStyle("-fx-pref-height: 0px");
                     }
+                }
+
+                void modificarCita(ActionEvent event) {
+                    JFXButton buton = (JFXButton) event.getSource();
+                    Cita oCita = (Cita) buton.getUserData();
+                    CitaModificarController oCitaModificarController = (CitaModificarController) mostrarVentana(CitaModificarController.class, "CitaModificar");
+                    oCitaModificarController.setController(odc);
+                    oCitaModificarController.setCita(oCita);
+                    lockedPantalla();
+                    
                 }
             };
 
@@ -531,8 +542,8 @@ public class CitaVerController implements Initializable {
         this.oVerPacienteController = odc;
         ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
     }
-    
-     @FXML
+
+    @FXML
     void cerrar() {
         oVerPacienteController.lockedPantalla();
         ((Stage) ap.getScene().getWindow()).close();
