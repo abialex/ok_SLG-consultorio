@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -193,14 +195,35 @@ public class CitaVerController implements Initializable {
             JFXButton bt = new JFXButton();
             bt.setUserData(fechaCita);
             bt.addEventHandler(ActionEvent.ACTION, event -> setFecha(event));
-            bt.setStyle("-fx-background-color: #ffffff; -fx-border-color: #000000");
+            String colorDefault = "-fx-background-color: #ffffff; -fx-border-color: #000000";
+            String colorRed = "-fx-background-color: RED; -fx-border-color: #000000";
+            String colorPlomo = "-fx-background-color:GRAY; -fx-border-color: #000000";
+            String colorBlue = "-fx-background-color:BLUE; -fx-border-color: #000000";
+            bt.setStyle(colorDefault);
             int diaSemana = fechaCita.getDayOfWeek().getValue();
             if (diaSemana == 7) {
-                bt.setStyle("-fx-background-color: RED; -fx-border-color: #000000");
+                bt.setStyle(colorRed);
             }
             if (fechaCita.equals(fechaNow)) {
-
+                bt.setStyle(colorPlomo);
             }
+
+            bt.focusedProperty().addListener(new ChangeListener<Boolean>() {
+                @Override
+                public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+                    if (newPropertyValue) {
+                        bt.setStyle(colorBlue);
+                    } else {
+                        bt.setStyle(colorDefault);
+                        if (fechaCita.equals(fechaNow)) {
+                            bt.setStyle(colorPlomo);
+                        }
+                        if (diaSemana == 7) {
+                            bt.setStyle(colorRed);
+                        }
+                    }
+                }
+            });
             bt.setText("" + i);
             FlowPane.setMargin(bt, new Insets(2, 4, 2, 4));
             fpDias.getChildren().add(bt);
@@ -271,7 +294,7 @@ public class CitaVerController implements Initializable {
                     oCitaModificarController.setController(odc);
                     oCitaModificarController.setCita(oCita);
                     lockedPantalla();
-                    
+
                 }
             };
 
