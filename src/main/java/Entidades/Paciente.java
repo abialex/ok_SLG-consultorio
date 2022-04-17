@@ -59,8 +59,6 @@ public class Paciente {
         this.antecedentesFamiliares = antecedentesFamiliares;
     }
     
-    
-
     public Paciente(){
     }
 
@@ -135,14 +133,10 @@ public class Paciente {
     public void setEmergenciaTelefono(String emergenciaTelefono) {
         this.emergenciaTelefono = emergenciaTelefono;
     }
-    
-    
-    
 
-  
-
-    
-      
-      
+    @Override
+    public String toString() {
+        return this.persona.getNombres_apellidos();
+    }
     
 }

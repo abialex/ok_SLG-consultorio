@@ -8,6 +8,7 @@ import Entidades.Persona;
 import Pdf.Historiaclinicapdf;
 import Util.FileImagUtil;
 import com.jfoenix.controls.JFXTextField;
+import controllerCita.CitaVerController;
 import controllerDoctor.DoctorVerController;
 import emergente.AlertConfirmarController;
 import java.awt.Desktop;
@@ -450,6 +451,18 @@ public class VerPacienteController implements Initializable {
     }
     
     @FXML
+    void imagCitaMoved(MouseEvent event) {
+        ImageView imag = (ImageView) event.getSource();
+        imag.setImage(new Image(getClass().getResource("/imagenes/cita-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagCitaFuera(MouseEvent event) {
+        ImageView imag = (ImageView) event.getSource();
+        imag.setImage(new Image(getClass().getResource("/imagenes/cita-1.png").toExternalForm()));
+    }
+
+    @FXML
     void mostrarRegistrarpaciente() {
         RegistrarPacienteController oRegistrarController = (RegistrarPacienteController) mostrarVentana(RegistrarPacienteController.class, "RegistrarPaciente");
         oRegistrarController.setController(odc);
@@ -460,6 +473,13 @@ public class VerPacienteController implements Initializable {
     void mostrarDoctor() {
         DoctorVerController oRegistrarController = (DoctorVerController) mostrarVentana(DoctorVerController.class, "DoctorVer");
         oRegistrarController.setController(odc);
+        lockedPantalla();
+    }
+    
+    @FXML
+    void mostrarCita() {
+        CitaVerController oCitaVerController = (CitaVerController) mostrarVentana(CitaVerController.class, "CitaVer");
+        oCitaVerController.setController(odc);
         lockedPantalla();
     }
 

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="740.0" prefWidth="1242.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerCita.CitaVerController">
+    <children>
+        <BorderPane layoutX="173.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <top>
+                <Label text="CITAS" BorderPane.alignment="CENTER">
+                    <font>
+                        <Font name="System Bold" size="30.0" />
+                    </font>
+                </Label>
+            </top>
+            <center>
+                <GridPane BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="292.0" minHeight="10.0" prefHeight="39.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="569.0" minHeight="10.0" prefHeight="569.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <GridPane GridPane.rowIndex="1">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints maxHeight="195.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
+                                <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="526.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <JFXComboBox fx:id="jcbDoctor1" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#setFechaComboBox" promptText="Doctor 1">
+                                    <GridPane.margin>
+                                        <Insets left="5.0" right="5.0" />
+                                    </GridPane.margin>
+                                </JFXComboBox>
+                                <JFXComboBox labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Doctor 2" GridPane.columnIndex="1">
+                                    <GridPane.margin>
+                                        <Insets left="5.0" right="5.0" />
+                                    </GridPane.margin>
+                                </JFXComboBox>
+                                <JFXComboBox labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Doctor 3" GridPane.columnIndex="2">
+                                    <GridPane.margin>
+                                        <Insets left="5.0" right="5.0" />
+                                    </GridPane.margin>
+                                </JFXComboBox>
+                                <JFXComboBox labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Doctor 4" GridPane.columnIndex="3">
+                                    <GridPane.margin>
+                                        <Insets left="5.0" right="5.0" />
+                                    </GridPane.margin>
+                                </JFXComboBox>
+                                <TableView fx:id="tableDoctor1" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" GridPane.rowIndex="1">
+                                    <columns>
+                                        <TableColumn fx:id="columnHoraAtencion" prefWidth="45.0" text="Hora" />
+                                        <TableColumn fx:id="columnCitas" prefWidth="230.0" text="Citas" />
+                                        <TableColumn fx:id="columnEstado" prefWidth="26.0" />
+                                    </columns>
+                                    <GridPane.margin>
+                                        <Insets left="1.0" right="1.0" />
+                                    </GridPane.margin>
+                                </TableView>
+                                <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                    <columns>
+                                        <TableColumn prefWidth="75.0" text="C1" />
+                                        <TableColumn prefWidth="75.0" text="C2" />
+                                    </columns>
+                                    <GridPane.margin>
+                                        <Insets left="1.0" right="1.0" />
+                                    </GridPane.margin>
+                                </TableView>
+                                
+                                <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                    <columns>
+                                        <TableColumn prefWidth="75.0" text="C1" />
+                                        <TableColumn prefWidth="75.0" text="C2" />
+                                    </columns>
+                                    <GridPane.margin>
+                                        <Insets left="1.0" right="1.0" />
+                                    </GridPane.margin>
+                                </TableView>      
+                                <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                                    <columns>
+                                        <TableColumn prefWidth="75.0" text="C1" />
+                                        <TableColumn prefWidth="75.0" text="C2" />
+                                    </columns>
+                                    <GridPane.margin>
+                                        <Insets left="1.0" right="5.0" />
+                                    </GridPane.margin>
+                                </TableView>                                      
+                            </children>
+                        </GridPane>
+                        <GridPane prefHeight="41.0" prefWidth="1240.0">
+                            <columnConstraints>
+                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1018.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <children>
+                                <Label fx:id="lblfecha" text="ABRIL - 30">
+                                    <font>
+                                        <Font name="System Bold" size="34.0" />
+                                    </font>
+                                </Label>
+                                <ImageView fitHeight="58.0" fitWidth="49.0" pickOnBounds="true" preserveRatio="true">
+                                    <GridPane.margin>
+                                        <Insets left="1045.0" />
+                                    </GridPane.margin>
+                                    <image>
+                                        <Image url="@../imagenes/find.png" />
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </ImageView>
+                            </children>
+                        </GridPane>
+                    </children>
+                </GridPane>
+            </center>
+            <bottom>
+                <GridPane prefHeight="85.0" prefWidth="1240.0" BorderPane.alignment="CENTER">
+                    <columnConstraints>
+                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="556.0" minWidth="10.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="556.0" minWidth="10.0" prefWidth="250.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="556.0" minWidth="10.0" prefWidth="250.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="879.0" minWidth="10.0" prefWidth="879.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                    <children>
+                        <FlowPane fx:id="fpDias" alignment="CENTER" columnHalignment="CENTER" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3">
+                            <GridPane.margin>
+                                <Insets />
+                            </GridPane.margin>
+                        </FlowPane>
+                        <JFXComboBox fx:id="jcbMes" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#changueMes" promptText="Mes" GridPane.columnIndex="2">
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </JFXComboBox>
+                        <JFXComboBox fx:id="jcbAnio" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#changueMes" promptText="Año" GridPane.columnIndex="1">
+                            <GridPane.margin>
+                                <Insets left="5.0" right="5.0" />
+                            </GridPane.margin>
+                        </JFXComboBox>
+                  <JFXButton onAction="#reiniciar" text="R" />
+                    </children>
+                </GridPane>
+            </bottom>
+      
+        </BorderPane>
+    </children>
+</AnchorPane>
