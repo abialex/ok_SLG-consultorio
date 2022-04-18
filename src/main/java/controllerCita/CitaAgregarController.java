@@ -88,7 +88,7 @@ public class CitaAgregarController implements Initializable {
         App.jpa.getTransaction().begin();
         App.jpa.persist(ocita);
         App.jpa.getTransaction().commit();
-        citaControol.actualizarTable(oFechaCita, oDoctor);
+        citaControol.initTable();
         cerrar();
     }
 

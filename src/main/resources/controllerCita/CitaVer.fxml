@@ -49,64 +49,57 @@
                                 <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="526.0" vgrow="SOMETIMES" />
                             </rowConstraints>
                             <children>
-                                <JFXComboBox fx:id="jcbDoctor1" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#setFechaComboBox" promptText="Doctor 1">
+                                <JFXComboBox fx:id="jcbDoctor1" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#setFechaComboBox1" promptText="Doctor 1">
                                     <GridPane.margin>
                                         <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                 </JFXComboBox>
-                                <JFXComboBox labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Doctor 2" GridPane.columnIndex="1">
+                                <JFXComboBox fx:id="jcbDoctor2" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#setFechaComboBox2" promptText="Doctor 2" GridPane.columnIndex="1">
                                     <GridPane.margin>
                                         <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                 </JFXComboBox>
-                                <JFXComboBox labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Doctor 3" GridPane.columnIndex="2">
+                                <JFXComboBox fx:id="jcbDoctor3" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#setFechaComboBox3" promptText="Doctor 3" GridPane.columnIndex="2">
                                     <GridPane.margin>
                                         <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                 </JFXComboBox>
-                                <JFXComboBox labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Doctor 4" GridPane.columnIndex="3">
+                                <JFXComboBox fx:id="jcbDoctor4" labelFloat="true" maxWidth="1.7976931348623157E308" onAction="#setFechaComboBox4" promptText="Doctor 4" GridPane.columnIndex="3">
                                     <GridPane.margin>
                                         <Insets left="5.0" right="5.0" />
                                     </GridPane.margin>
                                 </JFXComboBox>
                                 <TableView fx:id="tableDoctor1" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" GridPane.rowIndex="1">
                                     <columns>
-                                        <TableColumn fx:id="columnHoraAtencion" prefWidth="45.0" text="Hora" />
-                                        <TableColumn fx:id="columnCitas" prefWidth="230.0" text="Citas" />
-                                        <TableColumn fx:id="columnEstado" prefWidth="26.0" />
+                                        <TableColumn fx:id="columnHoraAtencion1" prefWidth="45.0" text="Hora" />
+                                        <TableColumn fx:id="columnCitas1" prefWidth="230.0" text="Citas" />
+                                        <TableColumn fx:id="columnEstado1" prefWidth="26.0" />
                                     </columns>
                                     <GridPane.margin>
                                         <Insets left="1.0" right="1.0" />
                                     </GridPane.margin>
                                 </TableView>
-                                <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                    <columns>
-                                        <TableColumn prefWidth="75.0" text="C1" />
-                                        <TableColumn prefWidth="75.0" text="C2" />
-                                    </columns>
-                                    <GridPane.margin>
-                                        <Insets left="1.0" right="1.0" />
-                                    </GridPane.margin>
-                                </TableView>
-                                
-                                <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                    <columns>
-                                        <TableColumn prefWidth="75.0" text="C1" />
-                                        <TableColumn prefWidth="75.0" text="C2" />
-                                    </columns>
-                                    <GridPane.margin>
-                                        <Insets left="1.0" right="1.0" />
-                                    </GridPane.margin>
-                                </TableView>      
-                                <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1">
-                                    <columns>
-                                        <TableColumn prefWidth="75.0" text="C1" />
-                                        <TableColumn prefWidth="75.0" text="C2" />
-                                    </columns>
-                                    <GridPane.margin>
-                                        <Insets left="1.0" right="5.0" />
-                                    </GridPane.margin>
-                                </TableView>                                      
+                        <TableView fx:id="tableDoctor2" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                           <columns>
+                              <TableColumn fx:id="columnHoraAtencion2" prefWidth="45.0" text="Hora" />
+                              <TableColumn fx:id="columnCitas2" prefWidth="230.0" text="Citas" />
+                              <TableColumn fx:id="columnEstado2" prefWidth="26.0" />
+                           </columns>
+                        </TableView>
+                        <TableView fx:id="tableDoctor3" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                           <columns>
+                              <TableColumn fx:id="columnHoraAtencion3" prefWidth="45.0" text="Hora" />
+                              <TableColumn fx:id="columnCitas3" prefWidth="230.0" text="Citas" />
+                              <TableColumn fx:id="columnEstado3" prefWidth="26.0" />
+                           </columns>
+                        </TableView>
+                        <TableView fx:id="tableDoctor4" prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: #000000;" GridPane.columnIndex="3" GridPane.rowIndex="1">
+                           <columns>
+                              <TableColumn fx:id="columnHoraAtencion4" prefWidth="45.0" text="Hora" />
+                              <TableColumn fx:id="columnCitas4" prefWidth="230.0" text="Citas" />
+                              <TableColumn fx:id="columnEstado4" prefWidth="26.0" />
+                           </columns>
+                        </TableView>                                      
                             </children>
                         </GridPane>
                         <GridPane prefHeight="41.0" prefWidth="1240.0">
