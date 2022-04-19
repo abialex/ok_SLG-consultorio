@@ -26,15 +26,15 @@ public class Cita {
     private int idcita;
 
     @JoinColumn(insertable = true, updatable = true, name = "iddoctor", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Doctor doctor;
     
     @JoinColumn(insertable = true, updatable = true, name = "idpaciente", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Paciente paciente;
     
     @JoinColumn(insertable = true, updatable = true, name = "idhoraatencion", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private HoraAtencion horaatencion;
     
     @Column(name = "minuto" , nullable = true)

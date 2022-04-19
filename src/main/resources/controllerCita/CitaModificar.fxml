@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
@@ -11,8 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="300.0" prefWidth="600.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.171" fx:controller="controllerCita.CitaModificarController">
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="300.0" prefWidth="600.0" style="-fx-border-color: #000000; -fx-background-color: #ffffff;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerCita.CitaModificarController">
    <children>
       <BorderPane layoutX="12.0" layoutY="12.0" prefHeight="412.0" prefWidth="612.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
@@ -55,8 +55,8 @@
                   <GridPane>
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="150.0" />
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="60.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -81,16 +81,16 @@
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                            </rowConstraints>
                            <children>
-                              <JFXTextField fx:id="jtfHora" editable="false" labelFloat="true" promptText="Hora">
-                                 <GridPane.margin>
-                                    <Insets left="5.0" right="5.0" />
-                                 </GridPane.margin>
-                              </JFXTextField>
                               <JFXTextField fx:id="jtfminuto" labelFloat="true" promptText="Minuto" GridPane.columnIndex="1">
                                  <GridPane.margin>
                                     <Insets left="5.0" right="5.0" />
                                  </GridPane.margin>
                               </JFXTextField>
+                              <JFXComboBox fx:id="jcbHora" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Hora">
+                                 <GridPane.margin>
+                                    <Insets left="5.0" right="5.0" top="5.0" />
+                                 </GridPane.margin>
+                              </JFXComboBox>
                            </children>
                         </GridPane>
                      </children>
@@ -125,8 +125,8 @@
                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXButton minWidth="0.0" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Modificar Cita" GridPane.columnIndex="1" />
-                        <JFXButton minWidth="0.0" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Eliminar Cita" />
+                        <JFXButton fx:id="modificarCita" minWidth="0.0" onAction="#modificarCita" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Modificar Cita" GridPane.columnIndex="1" />
+                        <JFXButton minWidth="0.0" onAction="#eliminarCita" prefHeight="33.0" prefWidth="127.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Eliminar Cita" />
                      </children>
                   </GridPane>
                </children>

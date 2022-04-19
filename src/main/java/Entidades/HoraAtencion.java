@@ -60,7 +60,10 @@ public class HoraAtencion {
     public HoraAtencion getHoraatencion(){
         return this;
     }
-    
-    
-    
+
+    @Override
+    public String toString() {
+        return this.hora+" "+this.abreviatura;// Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/OverriddenMethodBody
+    }
+
 }
