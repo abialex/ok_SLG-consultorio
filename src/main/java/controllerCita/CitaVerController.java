@@ -120,7 +120,7 @@ public class CitaVerController implements Initializable {
         tableDoctor2.setItems(listHoraatencion);
         tableDoctor3.setItems(listHoraatencion);
         tableDoctor4.setItems(listHoraatencion);
-        
+
         oFecha = LocalDate.now();
         jcbMes.getSelectionModel().select(getMesNum(LocalDate.now().getMonthValue()));
         cargarAnio();
@@ -147,7 +147,7 @@ public class CitaVerController implements Initializable {
         changueMes();
         lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
         initTable();
-        
+
     }
 
     void cargarDoctor() {
@@ -207,7 +207,7 @@ public class CitaVerController implements Initializable {
         btn = buton;
         buton.setStyle(colorYellow);
         oFecha = (LocalDate) buton.getUserData();
-        initTable();        
+        initTable();
         lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
     }
 
@@ -335,7 +335,7 @@ public class CitaVerController implements Initializable {
                             JFXButton button = new JFXButton();
                             button.setUserData(cita);
                             button.setPrefWidth(110);
-                            button.setStyle("-fx-font-size: 10");
+                            button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
                             button.setMaxHeight(9);
                             button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
                             button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
@@ -470,7 +470,7 @@ public class CitaVerController implements Initializable {
                             JFXButton button = new JFXButton();
                             button.setUserData(cita);
                             button.setPrefWidth(110);
-                            button.setStyle("-fx-font-size: 10");
+                            button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
                             button.setMaxHeight(9);
                             button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
                             button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
@@ -605,7 +605,7 @@ public class CitaVerController implements Initializable {
                             JFXButton button = new JFXButton();
                             button.setUserData(cita);
                             button.setPrefWidth(110);
-                            button.setStyle("-fx-font-size: 10");
+                            button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
                             button.setMaxHeight(9);
                             button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
                             button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
@@ -740,7 +740,7 @@ public class CitaVerController implements Initializable {
                             JFXButton button = new JFXButton();
                             button.setUserData(cita);
                             button.setPrefWidth(110);
-                            button.setStyle("-fx-font-size: 10");
+                            button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
                             button.setMaxHeight(9);
                             button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
                             button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
