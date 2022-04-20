@@ -112,6 +112,7 @@ public class CitaVerController implements Initializable {
     String colorPlomo = "-fx-background-color:GRAY; -fx-border-color: #000000";
     String colorBlue = "-fx-background-color:BLUE; -fx-border-color: #000000";
     String colorYellow = "-fx-background-color:yellow; -fx-border-color: #000000";
+    Doctor doctorNinguno;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -148,28 +149,42 @@ public class CitaVerController implements Initializable {
         changueMes();
         lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
         initTable();
-
     }
 
-    List<SettingsDoctor> cargarSettingsDoctor() {
-        List<SettingsDoctor> listDoctorG = App.jpa.createQuery("select p from SettingsDoctor p").getResultList();
+    void cargarSettingsDoctor() {
+        //1- poniendo a ninguno pordefcto
+        //2- si existe el doctor configurado y está activo: aparece en el combo box
+        List<SettingsDoctor> listDoctorG = getSettingsDoctor();
+        jcbDoctor1.getSelectionModel().select(doctorNinguno);
+        jcbDoctor2.getSelectionModel().select(doctorNinguno);
+        jcbDoctor3.getSelectionModel().select(doctorNinguno);
+        jcbDoctor4.getSelectionModel().select(doctorNinguno);
         for (SettingsDoctor settingsDoctor : listDoctorG) {
-            if (settingsDoctor.getName().equals("doctor1")) {
+            if (settingsDoctor.getName().equals("jcbDoctor1") && !settingsDoctor.getDoctor().isFlag()) {
                 jcbDoctor1.getSelectionModel().select(settingsDoctor.getDoctor());
-            } else if (settingsDoctor.getName().equals("doctor2")) {
+            } else if (settingsDoctor.getName().equals("jcbDoctor2") && !settingsDoctor.getDoctor().isFlag()) {
                 jcbDoctor2.getSelectionModel().select(settingsDoctor.getDoctor());
-            } else if (settingsDoctor.getName().equals("doctor3")) {
+            } else if (settingsDoctor.getName().equals("jcbDoctor3") && !settingsDoctor.getDoctor().isFlag()) {
                 jcbDoctor3.getSelectionModel().select(settingsDoctor.getDoctor());
-            } else {
+            } else if (!settingsDoctor.getDoctor().isFlag()) {
                 jcbDoctor4.getSelectionModel().select(settingsDoctor.getDoctor());
             }
         }
-        return listDoctorG;
     }
 
-    void cargarDoctor() {
+    List<SettingsDoctor> getSettingsDoctor() {
+        List<SettingsDoctor> listdc = App.jpa.createQuery("select p from SettingsDoctor p").getResultList();
+        return listdc;
+    }
+
+    public void cargarDoctor() {
         List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag=false ").getResultList();
         ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
+        Persona oper = new Persona();
+        doctorNinguno = new Doctor();
+        oper.setNombres_apellidos("NINGUNO");
+        doctorNinguno.setPersona(oper);
+        listDoctor.add(doctorNinguno);
         for (Doctor odoct : listDoctorG) {
             listDoctor.add(odoct);
         }
@@ -226,29 +241,59 @@ public class CitaVerController implements Initializable {
         lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
     }
 
+    void modificarSettingsDoctor(JFXComboBox jcb) {
+        List<SettingsDoctor> listDoctorSettings = getSettingsDoctor();
+        Doctor doctor = (Doctor) jcb.getSelectionModel().getSelectedItem();
+        boolean isNuevo = true;
+        for (SettingsDoctor oDoctorSettings : listDoctorSettings) {
+            if (jcb.getId().equals(oDoctorSettings.getName())) {
+                isNuevo = false;
+                if (doctor != doctorNinguno) {
+                    if (oDoctorSettings.getDoctor() != doctor) {
+                        oDoctorSettings.setDoctor(doctor);
+                        App.jpa.getTransaction().begin();
+                        App.jpa.persist(oDoctorSettings);
+                        App.jpa.getTransaction().commit();
+                    }
+                } else {
+                    App.jpa.getTransaction().begin();
+                    App.jpa.remove(oDoctorSettings);
+                    App.jpa.getTransaction().commit();
+                }
+                break;
+            }
+        }
+        if (isNuevo) {
+            SettingsDoctor sd = new SettingsDoctor(doctor, jcb.getId());
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(sd);
+            App.jpa.getTransaction().commit();
+        }
+    }
+
     //usado en combobox
     @FXML
     void setFechaComboBox1(ActionEvent event) {
         initTableView1();
-        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
+        modificarSettingsDoctor((JFXComboBox) event.getSource());
     }
 
     @FXML
     void setFechaComboBox2(ActionEvent event) {
         initTableView2();
-        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
+        modificarSettingsDoctor((JFXComboBox) event.getSource());
     }
 
     @FXML
     void setFechaComboBox3(ActionEvent event) {
         initTableView3();
-        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
+        modificarSettingsDoctor((JFXComboBox) event.getSource());
     }
 
     @FXML
     void setFechaComboBox4(ActionEvent event) {
         initTableView4();
-        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
+        modificarSettingsDoctor((JFXComboBox) event.getSource());
     }
 
     void mostrarDias(int Dias) {
@@ -308,7 +353,7 @@ public class CitaVerController implements Initializable {
     }
 
     void initTableView1() {
-        if (jcbDoctor1.getSelectionModel().getSelectedItem() != null) {
+        if (jcbDoctor1.getSelectionModel().getSelectedItem() != doctorNinguno) {
             columnHoraAtencion1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
@@ -445,7 +490,7 @@ public class CitaVerController implements Initializable {
     }
 
     void initTableView2() {
-        if (jcbDoctor2.getSelectionModel().getSelectedItem() != null) {
+        if (jcbDoctor2.getSelectionModel().getSelectedItem() != doctorNinguno) {
             columnHoraAtencion2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
@@ -582,7 +627,7 @@ public class CitaVerController implements Initializable {
     }
 
     void initTableView3() {
-        if (jcbDoctor3.getSelectionModel().getSelectedItem() != null) {
+        if (jcbDoctor3.getSelectionModel().getSelectedItem() != doctorNinguno) {
             columnHoraAtencion3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
@@ -719,7 +764,7 @@ public class CitaVerController implements Initializable {
     }
 
     void initTableView4() {
-        if (jcbDoctor4.getSelectionModel().getSelectedItem() != null) {
+        if (jcbDoctor4.getSelectionModel().getSelectedItem() != doctorNinguno) {
             columnHoraAtencion4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));

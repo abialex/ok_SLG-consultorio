@@ -34,6 +34,11 @@ public class SettingsDoctor {
     public SettingsDoctor() {
     }
 
+    public SettingsDoctor(Doctor doctor, String name) {
+        this.doctor = doctor;
+        this.name = name;
+    }
+    
     public int getId() {
         return id;
     }

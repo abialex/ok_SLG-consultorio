@@ -142,14 +142,6 @@
                                                     <Cursor fx:constant="HAND" />
                                                 </cursor>
                                             </ImageView>
-                                    <ImageView fitHeight="58.0" fitWidth="49.0" onMouseExited="#imagSettingsFuera" onMouseMoved="#imagSettingsMoved" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
-                                       <image>
-                                          <Image url="@../imagenes/settings-1.png" />
-                                       </image>
-                                       <cursor>
-                                          <Cursor fx:constant="HAND" />
-                                       </cursor>
-                                    </ImageView>
                                  </children>
                               </GridPane>
                            </children>
