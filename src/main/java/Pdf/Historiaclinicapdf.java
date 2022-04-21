@@ -27,6 +27,7 @@ import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.itextpdf.layout.property.TextAlignment;
 import Pdf.style.style1;
+import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.AreaBreak;
@@ -35,12 +36,14 @@ import controller.App;
 import java.awt.Label;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import com.itextpdf.layout.element.Image;
 import javax.swing.JOptionPane;
 
 /**
@@ -64,7 +67,7 @@ public class Historiaclinicapdf {
         int volumen = 105;
         PdfWriter writer = null;
         try {
-            writer = new PdfWriter("Pdf\\historia_clinica_"+opersona.getNombres_apellidos()+"_"+opersona.getDni()+".pdf");
+            writer = new PdfWriter("Pdf\\historia_clinica_" + opersona.getNombres_apellidos() + "_" + opersona.getDni() + ".pdf");
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(new Label(), "agregue la carpeta Pdf");
         }
@@ -155,18 +158,11 @@ public class Historiaclinicapdf {
         table1Parrafo4.addCell(getCell(opersona.getOcupacion(), styleTextCenter, styleCell, subrayado));
         table1Parrafo4.addCell(getCell("Teléfono:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo4.addCell(getCell(opersona.getTelefono(), styleTextCenter, styleCell, subrayado));
-        
+
         Table table1Parrafo5 = new Table(new float[]{volumen * 1f, volumen * 4f});
         table1Parrafo5.addCell(getCell("Doctor (Operador)", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo5.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getNombres_apellidos(), styleTextCenter, styleCell, subrayado));
 
-        /* Image img = null;
-        try {
-            img = new Image(ImageDataFactory.create("images\\imagenDiente.png"));
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(EventoPagina.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Cell cellimag=new Cell().add(img.setAutoScale(true)).setBorder(Border.NO_BORDER); /* new SolidBorder(Color.BLACK,1*/
         Table tableInformacion = new Table(new float[]{volumen * 5});
         tableInformacion.addCell(new Cell().add(table1Parrafo1).addStyle(styleCell));
         tableInformacion.addCell(new Cell().add(table1Parrafo2).addStyle(styleCell));
@@ -214,8 +210,20 @@ public class Historiaclinicapdf {
 
         Table TableMotivoDeConsulta = new Table(new float[]{volumen * 5});
         TableMotivoDeConsulta.addCell(new Cell().add(TableMotivoDeConsultaParrafo1).addStyle(styleCell));
+        TableMotivoDeConsulta.setMarginBottom(10);
         //Fin ANAMNESIS
 
+        //ODONTOGRAMA
+        Table TableOdontograma = new Table(new float[]{volumen * 5});
+        Image img = null;
+        try {
+            img = new Image(ImageDataFactory.create("images\\odontograma.png"));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Historiaclinicapdf.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Cell cellimag = new Cell().add(img.setAutoScale(true)).setBorder(Border.NO_BORDER);
+        /* new SolidBorder(Color.BLACK,1*/
+        TableOdontograma.addCell(cellimag);
         //ENFERMEDAD ACTUAL
         Paragraph parrafoSubTitulo2 = new Paragraph("II.  ENFERMEDAD ACTUAL").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableEnfermedadActual = new Table(new float[]{volumen * 1.3f, volumen * 3.7f});
@@ -385,13 +393,16 @@ public class Historiaclinicapdf {
         document.add(TableCasoDeEmergencia);
         document.add(TableMotivoDeConsulta);
 
+        document.add(TableOdontograma);
+        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+
         document.add(parrafoSubTitulo2);
         document.add(TableEnfermedadActual);
 
         document.add(parrafoSubTitulo3);
         document.add(TableAntecedentes);
 
-        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+        //document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
         document.add(parrafoSubTitulo4);
         document.add(TableExploracionFisica);
 
