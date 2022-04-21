@@ -321,15 +321,17 @@ public class CitaVerController implements Initializable {
                         bt.setStyle(colorBlue);
 
                         //el button anterior volviendo a filtrar para cambiar sus colores
-                        LocalDate locald = (LocalDate) btn.getUserData();
-                        if (locald.getDayOfWeek().getValue() == 7) {
-                            btn.setStyle(colorRed);
-                        }
-                        if (locald.equals(fechaNow)) {
-                            btn.setStyle(colorPlomo);
-                        }
-                        if (locald.equals(oFecha)) {
-                            btn.setStyle(colorYellow);
+                        if (btn != null) {
+                            LocalDate locald = (LocalDate) btn.getUserData();
+                            if (locald.getDayOfWeek().getValue() == 7) {
+                                btn.setStyle(colorRed);
+                            }
+                            if (locald.equals(fechaNow)) {
+                                btn.setStyle(colorPlomo);
+                            }
+                            if (locald.equals(oFecha)) {
+                                btn.setStyle(colorYellow);
+                            }
                         }
 
                     } else {
@@ -491,6 +493,8 @@ public class CitaVerController implements Initializable {
 
     void initTableView2() {
         if (jcbDoctor2.getSelectionModel().getSelectedItem() != doctorNinguno) {
+            Label label = new Label("ho");
+            columnEstado2.setGraphic(label);
             columnHoraAtencion2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));

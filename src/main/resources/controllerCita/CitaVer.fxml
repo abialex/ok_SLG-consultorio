@@ -14,10 +14,11 @@
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="740.0" prefWidth="1242.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerCita.CitaVerController">
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="700.0" prefWidth="1242.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllerCita.CitaVerController">
     <children>
         <BorderPane layoutX="173.0" layoutY="100.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -26,11 +27,10 @@
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                     </columnConstraints>
                     <rowConstraints>
-                        <RowConstraints maxHeight="292.0" minHeight="10.0" prefHeight="44.0" vgrow="SOMETIMES" />
                         <RowConstraints maxHeight="569.0" minHeight="10.0" prefHeight="564.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <GridPane GridPane.rowIndex="1">
+                        <GridPane>
                             <columnConstraints>
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -95,59 +95,6 @@
                         </TableView>                                      
                             </children>
                         </GridPane>
-                        <GridPane prefHeight="41.0" prefWidth="1240.0">
-                            <columnConstraints>
-                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="1018.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                            </rowConstraints>
-                            <children>
-                        <GridPane>
-                          <columnConstraints>
-                            <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                                      <Label fx:id="lblfecha" text="ABRIL - 30" GridPane.columnIndex="1">
-                                          <font>
-                                              <Font name="System Bold" size="34.0" />
-                                          </font>
-                                      </Label>
-                              <GridPane>
-                                <columnConstraints>
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                  <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                </columnConstraints>
-                                <rowConstraints>
-                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                </rowConstraints>
-                                 <children>
-                                            <ImageView fitHeight="58.0" fitWidth="49.0" onMouseExited="#imagFeriadoFuera" onMouseMoved="#imagFeriadoMoved" pickOnBounds="true" preserveRatio="true">
-                                                <GridPane.margin>
-                                                    <Insets />
-                                                </GridPane.margin>
-                                                <image>
-                                                    <Image url="@../imagenes/feriado-1.png" />
-                                                </image>
-                                                <cursor>
-                                                    <Cursor fx:constant="HAND" />
-                                                </cursor>
-                                            </ImageView>
-                                 </children>
-                              </GridPane>
-                           </children>
-                        </GridPane>
-                            </children>
-                        </GridPane>
                     </children>
                 </GridPane>
             </center>
@@ -183,21 +130,16 @@
                 </GridPane>
             </bottom>
          <top>
-            <GridPane BorderPane.alignment="CENTER">
+            <GridPane prefHeight="41.0" prefWidth="1240.0" BorderPane.alignment="CENTER">
               <columnConstraints>
-                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
+                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="400.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="50.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                      <Label text="CITAS" GridPane.columnIndex="1">
-                          <font>
-                              <Font name="System Bold" size="30.0" />
-                          </font>
-                      </Label>
                   <GridPane GridPane.columnIndex="2">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -216,11 +158,52 @@
                               <Cursor fx:constant="HAND" />
                            </cursor>
                            <GridPane.margin>
-                              <Insets bottom="2.0" right="5.0" />
+                              <Insets bottom="15.0" right="5.0" />
                            </GridPane.margin>
                         </ImageView>
                      </children>
                   </GridPane>
+                  <GridPane>
+                    <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                                <ImageView fitHeight="39.0" fitWidth="44.0" onMouseExited="#imagFeriadoFuera" onMouseMoved="#imagFeriadoMoved" pickOnBounds="true" preserveRatio="true">
+                                    <GridPane.margin>
+                                        <Insets top="2.0" />
+                                    </GridPane.margin>
+                                    <image>
+                                        <Image url="@../imagenes/feriado-1.png" />
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </ImageView>
+                     </children>
+                  </GridPane>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
+                     <children>
+                            <Label text="CITAS DEL ">
+                                <font>
+                                    <Font name="System Bold" size="30.0" />
+                                </font>
+                            </Label>
+                                <Label fx:id="lblfecha" text="JUEVES DE SETIEMBRE DE 30">
+                                    <font>
+                                        <Font name="System Bold" size="30.0" />
+                                    </font>
+                                </Label>
+                     </children>
+                  </HBox>
                </children>
             </GridPane>
          </top>
