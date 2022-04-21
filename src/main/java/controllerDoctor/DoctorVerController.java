@@ -30,9 +30,13 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -46,6 +50,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Callback;
 
@@ -76,6 +81,12 @@ public class DoctorVerController implements Initializable {
 
     ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
     VerPacienteController oVerPacienteController;
+    private double x = 0;
+    private double y = 0;
+    DoctorVerController odc = this;
+    AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
+    Doctor oDoctorEliminar;
+    int indexEliminar;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -86,7 +97,7 @@ public class DoctorVerController implements Initializable {
 
     @FXML
     void updateListDoctor() {
-        List<Doctor> olistDoc = App.jpa.createQuery("select p from Doctor p order by iddoctor DESC").setMaxResults(10).getResultList();
+        List<Doctor> olistDoc = App.jpa.createQuery("select p from Doctor p where flag = false order by iddoctor DESC").setMaxResults(10).getResultList();
         listDoctor.clear();
         for (Doctor oDoc : olistDoc) {
             listDoctor.add(oDoc);
@@ -130,7 +141,7 @@ public class DoctorVerController implements Initializable {
                         checkbox.setUserData(item);
                         checkbox.setStyle("-fx-alignment: center; -fx-max-width:999; -fx-cursor: hand;");
                         checkbox.addEventHandler(ActionEvent.ACTION, event -> changueActivo(event));
-                        checkbox.setSelected(!item.isFlag());
+                        checkbox.setSelected(item.isActivo());
                         setGraphic(checkbox);
                         setText(null);
                     }
@@ -139,7 +150,7 @@ public class DoctorVerController implements Initializable {
                 void changueActivo(ActionEvent event) {
                     JFXCheckBox check = (JFXCheckBox) event.getSource();
                     Doctor odoc = (Doctor) check.getUserData();
-                    odoc.setFlag(!check.isSelected());
+                    odoc.setActivo(check.isSelected());
                     App.jpa.getTransaction().begin();
                     App.jpa.persist(odoc);
                     App.jpa.getTransaction().commit();
@@ -224,8 +235,8 @@ public class DoctorVerController implements Initializable {
                         int tamHightImag = 23;
                         int tamWidthImag = 23;
 
-                        ImageView editIcon = newImage("modify-1.png", tamHightImag, tamWidthImag, item);
-                        editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarModificar(event));
+                        ImageView editIcon = newImage("delete-1.png", tamHightImag, tamWidthImag, item);
+                        editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarEliminar(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
 
@@ -248,33 +259,87 @@ public class DoctorVerController implements Initializable {
                     return imag;
                 }
 
-                void mostrarModificar(MouseEvent event) {/*
-                    ImageView buton = (ImageView) event.getSource();
-                    for (Doctor odoc : listDoctor) {
-                        if (odoc.getIdpersona() == (Integer) buton.getUserData()) {
-                            ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
-                            oModificarPacienteController.setPersona(odoc);
-                            oModificarPacienteController.setController(odc);
+                void mostrarEliminar(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    for (int i = 0; i < listDoctor.size(); i++) {
+                        if (listDoctor.get(i).getIddoctor() == (Integer) imag.getUserData()) {
+                            oDoctorEliminar = listDoctor.get(i);
+                            indexEliminar = i;
+                            oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
+                            oAlertConfimarController.setController(odc);
+                            oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar al \n paciente? \n \n" + " " + oDoctorEliminar.getPersona().getNombres_apellidos());
                             lockedPantalla();
                             break;
                         }
-                    }*/
+                    }
                 }
 
                 private void imagModificarMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    imag.setImage(new Image(getClass().getResource("/imagenes/modify-2.png").toExternalForm()));
+                    imag.setImage(new Image(getClass().getResource("/imagenes/delete-2.png").toExternalForm()));
                 }
 
                 private void imagModificarFuera(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    imag.setImage(new Image(getClass().getResource("/imagenes/modify-1.png").toExternalForm()));
+                    imag.setImage(new Image(getClass().getResource("/imagenes/delete-1.png").toExternalForm()));
                 }
 
             };
             return cell;
         };
         columnEstado.setCellFactory(cellFoctory);
+    }
+
+    public void eliminar() {
+        if (indexEliminar != -1) {
+            oDoctorEliminar.setFlag(true);
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(oDoctorEliminar);
+            App.jpa.getTransaction().commit();
+            listDoctor.remove(indexEliminar);
+            updateListDoctor();
+        }
+    }
+    
+    public Object mostrarVentana(Class generico, String nameFXML) {
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(generico.getResource(nameFXML + ".fxml"));
+        Parent root = null;
+        try {
+            root = loader.load();
+        } catch (IOException ex) {
+            Logger.getLogger(generico.getName()).log(Level.SEVERE, null, ex);
+        }
+        Scene scene = new Scene(root);//instancia el controlador (!)
+        scene.getStylesheets().add(VerPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
+        Stage stage = new Stage();//creando la base vací
+        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initOwner((Stage) ap.getScene().getWindow());
+        stage.setScene(scene);
+        root.setOnMousePressed(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                x = event.getX();
+                y = event.getY();
+            }
+        });
+        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                stage.setX(event.getScreenX() - x);
+                stage.setY(event.getScreenY() - y);
+            }
+        });
+        stage.show();
+        return loader.getController();
+    }
+
+    public void lockedPantalla() {
+        if (ap.isDisable()) {
+            ap.setDisable(false);
+        } else {
+            ap.setDisable(true);
+        }
     }
 
     public void setController(VerPacienteController odc) {

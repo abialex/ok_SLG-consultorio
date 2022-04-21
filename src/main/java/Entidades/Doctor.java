@@ -28,6 +28,9 @@ public class Doctor {
     @ManyToOne(cascade = CascadeType.ALL)
     private Persona persona;
     
+    @Column(name = "activo", nullable = true)
+    private boolean activo;
+    
     @Column(name = "flag", nullable = true)
     private boolean flag;
 
@@ -66,6 +69,14 @@ public class Doctor {
         return this;
     }
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+    
     @Override
     public String toString() {
         return this.persona.getNombres_apellidos();

@@ -152,7 +152,7 @@ public class RegistrarPacienteController implements Initializable {
     }
     
     void cargarDoctor(){
-        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag = false").getResultList();      
+        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag = false and activo = true").getResultList();      
         ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
         for (Doctor odoct : listDoctorG) {
             listDoctor.add(odoct);
