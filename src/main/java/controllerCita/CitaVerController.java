@@ -160,25 +160,25 @@ public class CitaVerController implements Initializable {
         jcbDoctor3.getSelectionModel().select(doctorNinguno);
         jcbDoctor4.getSelectionModel().select(doctorNinguno);
         for (SettingsDoctor settingsDoctor : listDoctorG) {
-            if (settingsDoctor.getName().equals("jcbDoctor1") && !settingsDoctor.getDoctor().isFlag()) {
+            if (settingsDoctor.getName().equals("jcbDoctor1") && settingsDoctor.getDoctor().isActivo() && !settingsDoctor.getDoctor().isFlag()) {
                 jcbDoctor1.getSelectionModel().select(settingsDoctor.getDoctor());
-            } else if (settingsDoctor.getName().equals("jcbDoctor2") && !settingsDoctor.getDoctor().isFlag()) {
+            } else if (settingsDoctor.getName().equals("jcbDoctor2") && settingsDoctor.getDoctor().isActivo() && !settingsDoctor.getDoctor().isFlag()) {
                 jcbDoctor2.getSelectionModel().select(settingsDoctor.getDoctor());
-            } else if (settingsDoctor.getName().equals("jcbDoctor3") && !settingsDoctor.getDoctor().isFlag()) {
+            } else if (settingsDoctor.getName().equals("jcbDoctor3") && settingsDoctor.getDoctor().isActivo()&& !settingsDoctor.getDoctor().isFlag()) {
                 jcbDoctor3.getSelectionModel().select(settingsDoctor.getDoctor());
-            } else if (!settingsDoctor.getDoctor().isFlag()) {
+            } else if (settingsDoctor.getDoctor().isActivo() && !settingsDoctor.getDoctor().isFlag()) {
                 jcbDoctor4.getSelectionModel().select(settingsDoctor.getDoctor());
             }
         }
     }
 
     List<SettingsDoctor> getSettingsDoctor() {
-        List<SettingsDoctor> listdc = App.jpa.createQuery("select p from SettingsDoctor p").getResultList();
+        List<SettingsDoctor> listdc = App.jpa.createQuery("select p from SettingsDoctor p ").getResultList();
         return listdc;
     }
 
     public void cargarDoctor() {
-        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag=false ").getResultList();
+        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag = false and activo = true").getResultList();
         ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
         Persona oper = new Persona();
         doctorNinguno = new Doctor();
@@ -214,6 +214,7 @@ public class CitaVerController implements Initializable {
     }
 
     void initTable() {
+
         initTableView1();
         initTableView2();
         initTableView3();
@@ -350,7 +351,10 @@ public class CitaVerController implements Initializable {
             });
             bt.setText("" + i);
             FlowPane.setMargin(bt, new Insets(2, 4, 2, 4));
-            fpDias.getChildren().add(bt);
+            if (diaSemana != 7) {
+                fpDias.getChildren().add(bt);
+            }
+
         }
     }
 
@@ -393,7 +397,7 @@ public class CitaVerController implements Initializable {
                                     + "order by minuto asc").getResultList();
 
                             FlowPane fp = new FlowPane();
-                            double tam = 48.5;
+                            double tam = 48.16;
                             for (Cita cita : listCita) {
                                 JFXButton button = new JFXButton();
                                 button.setUserData(cita);
@@ -445,23 +449,17 @@ public class CitaVerController implements Initializable {
                             editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                             editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
 
-                            HBox managebtn = new HBox(editIcon);
+                            ImageView editIcon2 = newImage("block-1.png", tamHightImag, tamWidthImag, item);
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
+
+                            VBox managebtn = new VBox(editIcon, editIcon2);
                             managebtn.setStyle("-fx-alignment:center");
-                            HBox.setMargin(editIcon, new Insets(0, 1, 0, 1));
+                            VBox.setMargin(editIcon, new Insets(4, 1, 4, 1));
                             setGraphic(managebtn);
                             setText(null);
                         }
-                    }
-
-                    ImageView newImage(String nombreImagen, int hight, int width, Object item) {
-                        ImageView imag = new ImageView(new Image(getClass().getResource("/imagenes/" + nombreImagen).toExternalForm()));
-                        imag.setFitHeight(hight);
-                        imag.setFitWidth(width);
-                        imag.setUserData(item);
-                        imag.setStyle(
-                                " -fx-cursor: hand;"
-                        );
-                        return imag;
                     }
 
                     void mostrarAgregar(MouseEvent event) {
@@ -484,6 +482,16 @@ public class CitaVerController implements Initializable {
                         ImageView imag = (ImageView) event.getSource();
                         imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
                     }
+
+                    private void imagBlockMoved(MouseEvent event) {
+                        ImageView imag = (ImageView) event.getSource();
+                        imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
+                    }
+
+                    private void imagBlockFuera(MouseEvent event) {
+                        ImageView imag = (ImageView) event.getSource();
+                        imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
+                    }
                 };
                 return cell;
             };
@@ -493,8 +501,6 @@ public class CitaVerController implements Initializable {
 
     void initTableView2() {
         if (jcbDoctor2.getSelectionModel().getSelectedItem() != doctorNinguno) {
-            Label label = new Label("ho");
-            columnEstado2.setGraphic(label);
             columnHoraAtencion2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
@@ -515,7 +521,6 @@ public class CitaVerController implements Initializable {
                 };
                 return cell;
             });
-
             columnCitas2.setCellFactory(column -> {
                 TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
                     @Override
@@ -532,7 +537,7 @@ public class CitaVerController implements Initializable {
                                     + "order by minuto asc").getResultList();
 
                             FlowPane fp = new FlowPane();
-                            double tam = 48.5;
+                            double tam = 48.16;
                             for (Cita cita : listCita) {
                                 JFXButton button = new JFXButton();
                                 button.setUserData(cita);
@@ -584,23 +589,17 @@ public class CitaVerController implements Initializable {
                             editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                             editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
 
-                            HBox managebtn = new HBox(editIcon);
+                            ImageView editIcon2 = newImage("block-1.png", tamHightImag, tamWidthImag, item);
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
+
+                            VBox managebtn = new VBox(editIcon, editIcon2);
                             managebtn.setStyle("-fx-alignment:center");
-                            HBox.setMargin(editIcon, new Insets(0, 1, 0, 1));
+                            VBox.setMargin(editIcon, new Insets(4, 1, 4, 1));
                             setGraphic(managebtn);
                             setText(null);
                         }
-                    }
-
-                    ImageView newImage(String nombreImagen, int hight, int width, Object item) {
-                        ImageView imag = new ImageView(new Image(getClass().getResource("/imagenes/" + nombreImagen).toExternalForm()));
-                        imag.setFitHeight(hight);
-                        imag.setFitWidth(width);
-                        imag.setUserData(item);
-                        imag.setStyle(
-                                " -fx-cursor: hand;"
-                        );
-                        return imag;
                     }
 
                     void mostrarAgregar(MouseEvent event) {
@@ -622,6 +621,16 @@ public class CitaVerController implements Initializable {
                     private void imagModificarFuera(MouseEvent event) {
                         ImageView imag = (ImageView) event.getSource();
                         imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
+                    }
+
+                    private void imagBlockMoved(MouseEvent event) {
+                        ImageView imag = (ImageView) event.getSource();
+                        imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
+                    }
+
+                    private void imagBlockFuera(MouseEvent event) {
+                        ImageView imag = (ImageView) event.getSource();
+                        imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
                     }
                 };
                 return cell;
@@ -669,7 +678,7 @@ public class CitaVerController implements Initializable {
                                     + "order by minuto asc").getResultList();
 
                             FlowPane fp = new FlowPane();
-                            double tam = 48.5;
+                            double tam = 48.16;
                             for (Cita cita : listCita) {
                                 JFXButton button = new JFXButton();
                                 button.setUserData(cita);
@@ -721,23 +730,17 @@ public class CitaVerController implements Initializable {
                             editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                             editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
 
-                            HBox managebtn = new HBox(editIcon);
+                            ImageView editIcon2 = newImage("block-1.png", tamHightImag, tamWidthImag, item);
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
+
+                            VBox managebtn = new VBox(editIcon, editIcon2);
                             managebtn.setStyle("-fx-alignment:center");
-                            HBox.setMargin(editIcon, new Insets(0, 1, 0, 1));
+                            VBox.setMargin(editIcon, new Insets(4, 1, 4, 1));
                             setGraphic(managebtn);
                             setText(null);
                         }
-                    }
-
-                    ImageView newImage(String nombreImagen, int hight, int width, Object item) {
-                        ImageView imag = new ImageView(new Image(getClass().getResource("/imagenes/" + nombreImagen).toExternalForm()));
-                        imag.setFitHeight(hight);
-                        imag.setFitWidth(width);
-                        imag.setUserData(item);
-                        imag.setStyle(
-                                " -fx-cursor: hand;"
-                        );
-                        return imag;
                     }
 
                     void mostrarAgregar(MouseEvent event) {
@@ -759,6 +762,16 @@ public class CitaVerController implements Initializable {
                     private void imagModificarFuera(MouseEvent event) {
                         ImageView imag = (ImageView) event.getSource();
                         imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
+                    }
+
+                    private void imagBlockMoved(MouseEvent event) {
+                        ImageView imag = (ImageView) event.getSource();
+                        imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
+                    }
+
+                    private void imagBlockFuera(MouseEvent event) {
+                        ImageView imag = (ImageView) event.getSource();
+                        imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
                     }
                 };
                 return cell;
@@ -806,7 +819,7 @@ public class CitaVerController implements Initializable {
                                     + "order by minuto asc").getResultList();
 
                             FlowPane fp = new FlowPane();
-                            double tam = 48.5;
+                            double tam = 48.16;
                             for (Cita cita : listCita) {
                                 JFXButton button = new JFXButton();
                                 button.setUserData(cita);
@@ -853,28 +866,22 @@ public class CitaVerController implements Initializable {
                             int tamHightImag = 20;
                             int tamWidthImag = 20;
 
-                            ImageView editIcon = newImage("add-1.png", tamHightImag, tamWidthImag, item);
+                            ImageView editIcon = newImage("add-2.png", tamHightImag, tamWidthImag, item);
                             editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
                             editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                             editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
 
-                            HBox managebtn = new HBox(editIcon);
+                            ImageView editIcon2 = newImage("block-2.png", tamHightImag, tamWidthImag, item);
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
+
+                            VBox managebtn = new VBox(editIcon, editIcon2);
                             managebtn.setStyle("-fx-alignment:center");
-                            HBox.setMargin(editIcon, new Insets(0, 1, 0, 1));
+                            VBox.setMargin(editIcon, new Insets(4, 0, 4, 0));
                             setGraphic(managebtn);
                             setText(null);
                         }
-                    }
-
-                    ImageView newImage(String nombreImagen, int hight, int width, Object item) {
-                        ImageView imag = new ImageView(new Image(getClass().getResource("/imagenes/" + nombreImagen).toExternalForm()));
-                        imag.setFitHeight(hight);
-                        imag.setFitWidth(width);
-                        imag.setUserData(item);
-                        imag.setStyle(
-                                " -fx-cursor: hand;"
-                        );
-                        return imag;
                     }
 
                     void mostrarAgregar(MouseEvent event) {
@@ -890,12 +897,22 @@ public class CitaVerController implements Initializable {
 
                     private void imagModificarMoved(MouseEvent event) {
                         ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-2.png").toExternalForm()));
+                        imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
                     }
 
                     private void imagModificarFuera(MouseEvent event) {
                         ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
+                        imag.setImage(new Image(getClass().getResource("/imagenes/add-2.png").toExternalForm()));
+                    }
+
+                    private void imagBlockMoved(MouseEvent event) {
+                        ImageView imag = (ImageView) event.getSource();
+                        imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
+                    }
+
+                    private void imagBlockFuera(MouseEvent event) {
+                        ImageView imag = (ImageView) event.getSource();
+                        imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
                     }
                 };
                 return cell;
@@ -910,6 +927,17 @@ public class CitaVerController implements Initializable {
         } else {
             ap.setDisable(true);
         }
+    }
+
+    ImageView newImage(String nombreImagen, int hight, int width, Object item) {
+        ImageView imag = new ImageView(new Image(getClass().getResource("/imagenes/" + nombreImagen).toExternalForm()));
+        imag.setFitHeight(hight);
+        imag.setFitWidth(width);
+        imag.setUserData(item);
+        imag.setStyle(
+                " -fx-cursor: hand;"
+        );
+        return imag;
     }
 
     @FXML
