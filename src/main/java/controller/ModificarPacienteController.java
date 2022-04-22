@@ -178,76 +178,7 @@ public class ModificarPacienteController implements Initializable {
         }
         jcbDoctor.setItems(listDoctor);
     }
-
-    
-    @FXML
-    void GuardarPaciente(ActionEvent evt) throws IOException {
-        LocalDate fechaNacimiento = LocalDate.of(
-                Integer.parseInt(jtfanio.getText().trim()),
-                Integer.parseInt(jtfMes.getText().trim()),
-                Integer.parseInt(jtfDia.getText().trim()));
-
-        Persona opersona = new Persona(
-                jtfNombresyApellidos.getText().trim(),
-                jcbsexo.getSelectionModel().getSelectedItem(),
-                jtfDomicilio.getText().trim(),
-                jtfDni.getText().trim(),
-                fechaNacimiento,
-                jtflugarprocedencia.getText().trim(),
-                jcbocupacion.getSelectionModel().getSelectedItem(),
-                jtfTelefono.getText().trim()
-        );
-        opersona.setTutorDni(jtftutordni.getText().trim());
-        opersona.setTutorNombre(jtftutornombre.getText().trim());
-        opersona.setTutorTelefono(jtftutortelefono.getText().trim());
-
-        Paciente opaciente = new Paciente(
-                opersona,
-                jtfsintomasEnfermedadActual.getText().trim(),
-                jtftiempoEnfermedadActual.getText().trim(),
-                jtfotrasEnfermedades.getText().trim(),
-                jtfantecedentesFamiliares.getText().trim());
-        opaciente.setEmergenciaNombre(jtfemergenciaNombre.getText().trim());
-        opaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText().trim());
-        opaciente.setEmergenciaTelefono(jtfemergenciatelefono.getText().trim());
-
-        List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheck, opaciente);
-        List<Paciente_Pregunta> Lista_preguntasPaciente = Paciente_relacionar_pregunta(listcheck, opaciente);
-
-        Historia_clinica ohistoria = new Historia_clinica(
-                opaciente,
-                jcbDoctor.getSelectionModel().getSelectedItem(),
-                jtfsignosvitales.getText().trim(),
-                jtfsaturacionoxigeno.getText().trim(),
-                jtfPA.getText().trim(),
-                jtfFC.getText().trim(),
-                jtftemperatura.getText().trim(),
-                jtfFR.getText(),
-                jtfexamenclinicogeneral.getText().trim(),
-                jtfexamenclinicoodontoestomatolgico.getText().trim(),
-                jtaDiagCIE10.getText().trim(),
-                jtfrecomendaciones.getText().trim(),
-                jtapronostico.getText().trim(),
-                jtaAltapaciente.getText().trim(),
-                jtfmotivoconsulta.getText().trim(),
-                LocalDate.now(),
-                LocalDate.now());
-        //GuardarPaciente
-        App.jpa.getTransaction().begin();
-        App.jpa.persist(opersona);
-
-        App.jpa.persist(opaciente);
-
-        for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
-            App.jpa.persist(paciente_Enfermedad);
-        }
-        for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
-            App.jpa.persist(paciente_Pregunta);
-        }
-        App.jpa.persist(ohistoria);
-        App.jpa.getTransaction().commit();
-    }
-    
+ 
     @FXML
     void cuadrarCheckbox(ActionEvent o) {
         CheckBox ch = (CheckBox) o.getSource();

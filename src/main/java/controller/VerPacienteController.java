@@ -234,6 +234,17 @@ public class VerPacienteController implements Initializable {
                         PrintIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagImprimirMoved(event));
                         PrintIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagImprimirFuera(event));
 
+                        ImageView presupuestoIcon = new ImageView(new Image(getClass().getResource("/imagenes/presupuesto-1.png").toExternalForm()));
+                        presupuestoIcon.setFitHeight(tamHightImag);
+                        presupuestoIcon.setFitWidth(tamWidthImag);
+                        presupuestoIcon.setUserData(item);
+                        presupuestoIcon.setStyle(
+                                " -fx-cursor: hand;"
+                        );
+                        presupuestoIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarPresupuesto(event));
+                        presupuestoIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagPresupuestoMoved(event));
+                        presupuestoIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagPresupuestoFuera(event));
+
                         ImageView cajaIcon = new ImageView(new Image(getClass().getResource("/imagenes/money-1.png").toExternalForm()));
                         cajaIcon.setFitHeight(tamHightImag);
                         cajaIcon.setFitWidth(tamWidthImag);
@@ -245,7 +256,7 @@ public class VerPacienteController implements Initializable {
                         cajaIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagMoneyMoved(event));
                         cajaIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagMoneyFuera(event));
 
-                        HBox managebtn = new HBox(PrintIcon, editIcon, cajaIcon, deleteIcon);
+                        HBox managebtn = new HBox(PrintIcon, editIcon, cajaIcon, presupuestoIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
                         HBox.setMargin(PrintIcon, new Insets(0, 2.75, 0, 2.75));
                         HBox.setMargin(editIcon, new Insets(0, 2.75, 0, 2.75));
@@ -255,14 +266,14 @@ public class VerPacienteController implements Initializable {
                         setText(null);
                     }
                 }
-                
+
                 void mostrarModificar(MouseEvent event) {
                     ImageView buton = (ImageView) event.getSource();
                     for (Persona opersona : listPersona) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
                             ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
                             oModificarPacienteController.setController(odc);
-                            oModificarPacienteController.setPersona(opersona);                            
+                            oModificarPacienteController.setPersona(opersona);
                             lockedPantalla();
                             break;
                         }
@@ -292,7 +303,7 @@ public class VerPacienteController implements Initializable {
                                 Persona opersona = listPersona.get(i);
 
                                 Historiaclinicapdf.ImprimirHistoriaClinica(opersona);
-                                File file = new File("Pdf\\historia_clinica_"+opersona.getNombres_apellidos()+"_"+opersona.getDni()+".pdf");
+                                File file = new File("Pdf\\historia_clinica_" + opersona.getNombres_apellidos() + "_" + opersona.getDni() + ".pdf");
                                 Desktop.getDesktop().open(file);
 
                                 break;
@@ -316,14 +327,27 @@ public class VerPacienteController implements Initializable {
                     }
                 }
                 
-                 void mostrarCarpeta(MouseEvent event) {
+                void mostrarPresupuesto(MouseEvent event) {
+                    ImageView buton = (ImageView) event.getSource();
+                    for (Persona opersona : listPersona) {
+                        if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
+                            PresupuestoVerController oPresupuestoVerController = (PresupuestoVerController) mostrarVentana(PresupuestoVerController.class, "PresupuestoVer");
+                            oPresupuestoVerController.setPersona(opersona);
+                            oPresupuestoVerController.setController(odc);
+                            lockedPantalla();
+                            break;
+                        }
+                    }
+                }
+
+                void mostrarCarpeta(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     for (int i = 0; i < listPersona.size(); i++) {
                         if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
 
                             Persona opersona = listPersona.get(i);
-                            String url = (new File(".").getAbsolutePath()) + "/Archivos paciente/"+opersona.getNombres_apellidos();
-                            FileImagUtil oFileImagUtil = new FileImagUtil(url, "Archivos de "+opersona.getNombres_apellidos());
+                            String url = (new File(".").getAbsolutePath()) + "/Archivos paciente/" + opersona.getNombres_apellidos();
+                            FileImagUtil oFileImagUtil = new FileImagUtil(url, "Archivos de " + opersona.getNombres_apellidos());
                             try {
                                 oFileImagUtil.buscarArchivo();
                                 //   lblpdf.setText(oPdf.getName());
@@ -334,7 +358,7 @@ public class VerPacienteController implements Initializable {
                         }
                     }
                 }
-                
+
                 private void imagEliminarMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/imagenes/delete-2.png").toExternalForm()));
@@ -373,6 +397,16 @@ public class VerPacienteController implements Initializable {
                 private void imagMoneyFuera(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/imagenes/money-1.png").toExternalForm()));
+                }
+                
+                private void imagPresupuestoMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/presupuesto-2.png").toExternalForm()));
+                }
+
+                private void imagPresupuestoFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/presupuesto-1.png").toExternalForm()));
                 }
             };
             return cell;
@@ -437,7 +471,7 @@ public class VerPacienteController implements Initializable {
         ImageView imag = (ImageView) event.getSource();
         imag.setImage(new Image(getClass().getResource("/imagenes/medical-1.png").toExternalForm()));
     }
-    
+
     @FXML
     void imagDoctoreMoved(MouseEvent event) {
         ImageView imag = (ImageView) event.getSource();
@@ -449,7 +483,7 @@ public class VerPacienteController implements Initializable {
         ImageView imag = (ImageView) event.getSource();
         imag.setImage(new Image(getClass().getResource("/imagenes/doctor-1.png").toExternalForm()));
     }
-    
+
     @FXML
     void imagCitaMoved(MouseEvent event) {
         ImageView imag = (ImageView) event.getSource();
@@ -468,14 +502,14 @@ public class VerPacienteController implements Initializable {
         oRegistrarController.setController(odc);
         lockedPantalla();
     }
-    
+
     @FXML
     void mostrarDoctor() {
         DoctorVerController oRegistrarController = (DoctorVerController) mostrarVentana(DoctorVerController.class, "DoctorVer");
         oRegistrarController.setController(odc);
         lockedPantalla();
     }
-    
+
     @FXML
     void mostrarCita() {
         CitaVerController oCitaVerController = (CitaVerController) mostrarVentana(CitaVerController.class, "CitaVer");

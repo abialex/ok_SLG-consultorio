@@ -113,7 +113,7 @@ public class DoctorVerController implements Initializable {
                     "NA",
                     "NA",
                     LocalDate.now(),
-                    "NA", "DOCTOR", "NA");
+                    "NA", "DOCTOR", "NA",0);
             Doctor odoctor = new Doctor(opersona);
             App.jpa.getTransaction().begin();
             App.jpa.persist(opersona);

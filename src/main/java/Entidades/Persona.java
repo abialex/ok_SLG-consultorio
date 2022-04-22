@@ -57,13 +57,16 @@ public class Persona {
     @Column(name = "tutorTelefono", nullable = true)
     private String tutorTelefono;
     
+    @Column(name = "presupuestoTotal", nullable = true)
+    private float presupuestoTotal;
+    
     @Column(name = "", nullable = false)
     private boolean flag;
 
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String sexo, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono) {
+    public Persona(String nombres_apellidos, String sexo, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono,float presupuesto) {
         this.nombres_apellidos = nombres_apellidos;
         this.sexo = sexo;
         this.domicilio = domicilio;
@@ -72,6 +75,7 @@ public class Persona {
         this.lugar_de_procedencia = lugar_de_procedencia;
         this.ocupacion = ocupacion;
         this.telefono = telefono;
+        this.presupuestoTotal = presupuesto;
 
     }
 
@@ -183,7 +187,13 @@ public class Persona {
     public String toString() {
         return this.nombres_apellidos;
     }
-    
-    
+
+    public float getPresupuestoTotal() {
+        return presupuestoTotal;
+    }
+
+    public void setPresupuestoTotal(float presupuestoTotal) {
+        this.presupuestoTotal = presupuestoTotal;
+    }
     
 }

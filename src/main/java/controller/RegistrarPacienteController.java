@@ -176,7 +176,8 @@ public class RegistrarPacienteController implements Initializable {
                     fechaNacimiento,
                     jtflugarprocedencia.getText().trim(),
                     jcbocupacion.getSelectionModel().getSelectedItem(),
-                    jtfTelefono.getText().trim()
+                    jtfTelefono.getText().trim(),
+                    0
             );
             opersona.setTutorDni(jtftutordni.getText().trim());
             opersona.setTutorNombre(jtftutornombre.getText().trim());
