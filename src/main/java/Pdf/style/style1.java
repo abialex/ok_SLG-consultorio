@@ -185,7 +185,7 @@ public class style1 implements IEventHandler {
         TablePie.addCell(new Cell().add(TablePie1).setMarginLeft(70).addStyle(styleCell));
         TablePie.addCell(new Cell().add(TablePie2).setMarginLeft(70).addStyle(styleCell));
         pag++;
-        if (pag == 3) {
+        if (pag == 2) {
             canvasPie.add(TablePie);
         } else {
             canvasPie.add(new Paragraph(pag + "").setTextAlignment(TextAlignment.RIGHT));

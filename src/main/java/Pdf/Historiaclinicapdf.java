@@ -147,10 +147,10 @@ public class Historiaclinicapdf {
         table1Parrafo2.addCell(getCell("DNI:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo2.addCell(getCell(opersona.getDni(), styleTextCenter, styleCell, subrayado));
 
-        Table table1Parrafo3 = new Table(new float[]{volumen * 1f, volumen * 1.4f, volumen * 1f, volumen * 1.6f});
+        Table table1Parrafo3 = new Table(new float[]{volumen * 1f, volumen * 1.4f, volumen * 0.6f, volumen * 2f});
         table1Parrafo3.addCell(getCell("Fecha de Nacimiento:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo3.addCell(getCell(opersona.getFechaNacimiento() + "", styleTextCenter, styleCell, subrayado));
-        table1Parrafo3.addCell(getCell("Lugar de Procedencia:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
+        table1Parrafo3.addCell(getCell("Procedencia:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo3.addCell(getCell(opersona.getLugar_de_procedencia(), styleTextCenter, styleCell, subrayado));
 
         Table table1Parrafo4 = new Table(new float[]{volumen * 0.53f, volumen * 1.97f, volumen * 0.44f, volumen * 2.06f});
@@ -340,14 +340,16 @@ public class Historiaclinicapdf {
         //Fin PLAN DE TRATAMIENTO - RECOMENDACIONES
 
         //PRONOSTICO
-        Paragraph parrafoSubTitulo7 = new Paragraph("VII. PRONÓSTICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-        Table TablePronostico = getTable(oHistoriaclinica.getPronostico(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
+        Table TablePronostico = new Table(new float[]{volumen * 0.9f, volumen * 4.1f});
+        TablePronostico.addCell(getCell("VII. PRONÓSTICO:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
+        TablePronostico.addCell(getCell(oHistoriaclinica.getAltaPaciente(), styleTextCenter, styleCell, subrayado));
         //fin PRONOSTICO
 
         //ALTA PACIENTE
-        Paragraph parrafoSubTitulo8 = new Paragraph("VIII. ALTA PACIENTE").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-        Table TableAlta = getTable(oHistoriaclinica.getAltaPaciente(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
+        Table TableAlta = new Table(new float[]{volumen * 1.1f, volumen * 3.9f});
         //Fin ALTA PACIENTE
+        TableAlta.addCell(getCell("VIII. ALTA PACIENTE:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
+        TableAlta.addCell(getCell(oHistoriaclinica.getAltaPaciente(), styleTextCenter, styleCell, subrayado));
 
         /*----Fin Contenido del documento  página 1------*/
  /*--------Contenido del documento página 2--------*/
@@ -389,16 +391,13 @@ public class Historiaclinicapdf {
         document.add(TableCasoDeEmergencia);
         document.add(TableMotivoDeConsulta);
 
-        document.add(TableOdontograma);
-        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-
         document.add(parrafoSubTitulo2);
         document.add(TableEnfermedadActual);
 
         document.add(parrafoSubTitulo3);
         document.add(TableAntecedentes);
 
-        //document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
         document.add(parrafoSubTitulo4);
         document.add(TableExploracionFisica);
 
@@ -408,12 +407,13 @@ public class Historiaclinicapdf {
         document.add(parrafoSubTitulo6);
         document.add(TableTramientoRecomendaciones);
 
-        document.add(parrafoSubTitulo7);
         document.add(TablePronostico);
 
-        document.add(parrafoSubTitulo8);
         document.add(TableAlta);
+        document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 
+        document.add(TableOdontograma);
+ 
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
         document.add(TableTratamiento);
 
