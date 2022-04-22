@@ -121,8 +121,6 @@ public class ModificarPacienteController implements Initializable {
     @FXML TextField jtfexamenclinicoodontoestomatolgico;
     //Diagnóstico
     @FXML TextArea jtaDiagCIE10;
-    @FXML TextArea jtaDiagPresentivo;
-    @FXML TextArea jtaDiagDefinitivo;
     //Plan de tratamiento
     @FXML TextArea jtfrecomendaciones;
     //Pronóstico / alta paciente
@@ -228,8 +226,6 @@ public class ModificarPacienteController implements Initializable {
                 jtfexamenclinicogeneral.getText().trim(),
                 jtfexamenclinicoodontoestomatolgico.getText().trim(),
                 jtaDiagCIE10.getText().trim(),
-                jtaDiagPresentivo.getText().trim(),
-                jtaDiagDefinitivo.getText().trim(),
                 jtfrecomendaciones.getText().trim(),
                 jtapronostico.getText().trim(),
                 jtaAltapaciente.getText().trim(),
@@ -412,8 +408,6 @@ public class ModificarPacienteController implements Initializable {
         
         //diagnostico
         jtaDiagCIE10.setText(oHistoria_Clinica.getDiagnosticoCIE10());
-        jtaDiagPresentivo.setText(oHistoria_Clinica.getDiagnosticoPresuntivo());
-        jtaDiagDefinitivo.setText(oHistoria_Clinica.getDiagnosticoDefinitivo());
 
         //Plan de tratamiento
         jtfrecomendaciones.setText(oHistoria_Clinica.getRecomendaciones());
@@ -514,8 +508,6 @@ public class ModificarPacienteController implements Initializable {
         
         //diagnostico
         oHistoria_Clinica.setDiagnosticoCIE10(jtaDiagCIE10.getText());
-        oHistoria_Clinica.setDiagnosticoPresuntivo(jtaDiagPresentivo.getText());
-        oHistoria_Clinica.setDiagnosticoDefinitivo(jtaDiagDefinitivo.getText());
         
         //Plan de tratamiento
         oHistoria_Clinica.setRecomendaciones(jtfrecomendaciones.getText());

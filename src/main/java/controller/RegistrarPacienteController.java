@@ -124,7 +124,7 @@ public class RegistrarPacienteController implements Initializable {
 
     //V. Diagnostico
     @FXML
-    private JFXTextArea jtaDiagCIE10, jtaDiagPresentivo, jtaDiagDefinitivo;
+    private JFXTextArea jtaDiagCIE10;
 
     //VI. Plan de tratamiento
     @FXML
@@ -207,8 +207,6 @@ public class RegistrarPacienteController implements Initializable {
                     jtfexamenclinicogeneral.getText().trim(),
                     jtfexamenclinicoodontoestomatolgico.getText().trim(),
                     jtaDiagCIE10.getText().trim(),
-                    jtaDiagPresentivo.getText().trim(),
-                    jtaDiagDefinitivo.getText().trim(),
                     jtfrecomendaciones.getText().trim(),
                     jtapronostico.getText().trim(),
                     jtaAltapaciente.getText().trim(),

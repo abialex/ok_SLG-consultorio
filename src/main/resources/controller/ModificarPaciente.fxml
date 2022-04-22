@@ -625,21 +625,9 @@
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
                                     <JFXTextArea fx:id="jtaDiagCIE10" labelFloat="true" promptText="Diagnóstico (CIE 10)">
-                                       <GridPane.margin>
-                                          <Insets bottom="25.0" left="5.0" right="5.0" top="25.0" />
-                                       </GridPane.margin>
-                                    </JFXTextArea>
-                                    <JFXTextArea fx:id="jtaDiagPresentivo" labelFloat="true" promptText="Diagnóstico Presuntivo" GridPane.rowIndex="1">
-                                       <GridPane.margin>
-                                          <Insets bottom="25.0" left="5.0" right="5.0" top="25.0" />
-                                       </GridPane.margin>
-                                    </JFXTextArea>
-                                    <JFXTextArea fx:id="jtaDiagDefinitivo" labelFloat="true" promptText="Diagnóstico Definitivo" GridPane.rowIndex="2">
                                        <GridPane.margin>
                                           <Insets bottom="25.0" left="5.0" right="5.0" top="25.0" />
                                        </GridPane.margin>

@@ -58,11 +58,6 @@ public class Historia_clinica {
     @Column(name = "diagnosticoCIE10", length = 1000, nullable = true)
     private String diagnosticoCIE10;
 
-    @Column(name = "diagnosticoPresuntivo", length = 1000, nullable = true)
-    private String diagnosticoPresuntivo;
-
-    @Column(name = "diagnosticoDefinitivo", length = 1000, nullable = true)
-    private String diagnosticoDefinitivo;
     //PLAN DE TRATAMIENTO
     @Column(name = "recomendaciones", length = 1000, nullable = true)
     private String recomendaciones;
@@ -73,7 +68,7 @@ public class Historia_clinica {
     @Column(name = "altaPaciente", length = 1000, nullable = true)
     private String altaPaciente;
 
-    @Column(name = "motivoConsulta",length = 1000, nullable = true)
+    @Column(name = "motivoConsulta", length = 1000, nullable = true)
     private String motivoConsulta;
 
     @Column(name = "fechainscripcion", nullable = true)
@@ -82,7 +77,7 @@ public class Historia_clinica {
     @Column(name = "fechaultimaatencion", nullable = true)
     private LocalDate fechaultimaatencion;
 
-    public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String diagnosticoPresuntivo, String diagnosticoDefinitivo, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
+    public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.idpaciente = idpaciente;
         this.doctor = doctor;
         this.signosVitales = signosVitales;
@@ -94,8 +89,6 @@ public class Historia_clinica {
         this.examenClinicoGeneral = examenClinicoGeneral;
         this.examenClinicoOdontoestomtologico = examenClinicoOdontoestomtologico;
         this.diagnosticoCIE10 = diagnosticoCIE10;
-        this.diagnosticoPresuntivo = diagnosticoPresuntivo;
-        this.diagnosticoDefinitivo = diagnosticoDefinitivo;
         this.recomendaciones = recomendaciones;
         this.pronostico = pronostico;
         this.altaPaciente = altaPaciente;
@@ -221,22 +214,6 @@ public class Historia_clinica {
 
     public void setDiagnosticoCIE10(String diagnosticoCIE10) {
         this.diagnosticoCIE10 = diagnosticoCIE10;
-    }
-
-    public String getDiagnosticoPresuntivo() {
-        return diagnosticoPresuntivo;
-    }
-
-    public void setDiagnosticoPresuntivo(String diagnosticoPresuntivo) {
-        this.diagnosticoPresuntivo = diagnosticoPresuntivo;
-    }
-
-    public String getDiagnosticoDefinitivo() {
-        return diagnosticoDefinitivo;
-    }
-
-    public void setDiagnosticoDefinitivo(String diagnosticoDefinitivo) {
-        this.diagnosticoDefinitivo = diagnosticoDefinitivo;
     }
 
     public String getRecomendaciones() {

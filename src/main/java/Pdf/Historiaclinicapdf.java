@@ -330,14 +330,10 @@ public class Historiaclinicapdf {
         //DIAGNOSTICO
         Paragraph parrafoSubTitulo5 = new Paragraph("V.  DIAGNÓSTICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableDiagnosticoParrafo1 = getTableField(oHistoriaclinica.getDiagnosticoCIE10(), "Diagnóstico:", 0.6f, 4.4f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
-        Table TableDiagnosticoParrafo2 = getTableField(oHistoriaclinica.getDiagnosticoPresuntivo(), "Diágnostico Presuntivo:", 1.05f, 3.95f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
-        Table TableDiagnosticoParrafo3 = getTableField(oHistoriaclinica.getDiagnosticoDefinitivo(), "Diágnostico Definitivo:", 1.05f, 3.95f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
         Table TableDiagnostico = new Table(new float[]{volumen * 5});
         TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo1).addStyle(styleCell));
-        TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo2).addStyle(styleCell));
-        TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo3).addStyle(styleCell));
-        //Fin DIAGNOSTICO
 
+        //Fin DIAGNOSTICO
         //PLAN DE TRATAMIENTO - RECOMENDACIONES
         Paragraph parrafoSubTitulo6 = new Paragraph("VI. PLAN DE TRATAMIENTO - RECOMENDACIONES").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableTramientoRecomendaciones = getTable(oHistoriaclinica.getRecomendaciones(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
