@@ -29,7 +29,7 @@ public class Cita {
     @ManyToOne
     private Doctor doctor;
     
-    @JoinColumn(insertable = true, updatable = true, name = "idpaciente", nullable = false)
+    @JoinColumn(insertable = true, updatable = true, name = "idpaciente", nullable = true)
     @ManyToOne
     private Paciente paciente;
     
@@ -56,6 +56,13 @@ public class Cita {
         this.fechacita = fechacita;
         this.razon = razon;
         this.minuto = minuto;
+    }
+    
+    public Cita(Doctor doctor, HoraAtencion horaatencion, LocalDate fechacita, String razon) {
+        this.doctor = doctor;
+        this.horaatencion = horaatencion;
+        this.fechacita = fechacita;
+        this.razon = razon;
     }
 
     public int getIdcita() {

@@ -81,7 +81,7 @@ public class Historiaclinicapdf {
         try {
             /*--------styles-------------*/
             font = PdfFontFactory.createFont(FontConstants.HELVETICA);
-            bold = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
+            bold = PdfFontFactory.createFont(FontConstants.HELVETICA);
         } catch (IOException ex) {
             Logger.getLogger(Historiaclinicapdf.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -92,14 +92,14 @@ public class Historiaclinicapdf {
         Style styleTextCenter = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(10f);
 
         /*---------------------Color----------*/
-        Color prueba = new DeviceRgb(0, 0, 0);
-        Color colorAzul = Color.BLUE;
+        Color prueba = new DeviceRgb(0, 204, 204);
+        Color colorAzul = new DeviceRgb(255, 178, 102);
         Color colorSubtitulo = Color.BLACK;
-        Color colorNegro = Color.ORANGE;
+        Color colorNegro = new DeviceRgb(0, 204, 204);
         Color colorBlanco = Color.WHITE;
 
         /*----------------Border--------------*/
-        Border subrayado = new SolidBorder(1f);
+        Border subrayado = new SolidBorder(0.5f);
         Border subrayadoNo = Border.NO_BORDER;
 
         /*-----------------Palabras default-----------*/
@@ -108,7 +108,7 @@ public class Historiaclinicapdf {
 
         /*----------------Palabras vacías-------------*/
         Paragraph palabraEnBlancoLimpio = new Paragraph(".").setFontColor(colorBlanco);
-        Paragraph palabraEnBlanco = new Paragraph(".").setFontColor(colorBlanco).setBorderBottom(new SolidBorder(1f));
+        Paragraph palabraEnBlanco = new Paragraph(".").setFontColor(colorBlanco).setBorderBottom(new SolidBorder(0.5f));
         /*---------FIN----Palabras vacías-------------*/
 
  /* Contenido del documento  página 1*/
@@ -357,7 +357,7 @@ public class Historiaclinicapdf {
  /*--------Contenido del documento página 2--------*/
         Table TableTratamiento = new Table(new float[]{volumen * 0.6f, volumen * 3.1f, volumen * 0.8f, volumen * 0.5f});
         TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)));
-        TableTratamiento.addCell(new Cell().add(new Paragraph("TRATAMIENTO").setFont(bold).addStyle(styleTextCenter)));
+        TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold).addStyle(styleTextCenter)));
         TableTratamiento.addCell(new Cell().add(new Paragraph("CANCELADO").setFont(bold).addStyle(styleTextCenter)));
         TableTratamiento.addCell(new Cell().add(new Paragraph("MONTO").setFont(bold).addStyle(styleTextCenter)));
         int montoTotal = 0;
@@ -433,11 +433,11 @@ public class Historiaclinicapdf {
         int iteracion = cadena.length() / numCharacteres;
         for (int i = 0; i < iteracion; i++) {
             oParagrah = new Paragraph(cadena.substring(i * numCharacteres, (i + 1) * numCharacteres));
-            Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+            Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(0.5f))).addStyle(styleCell).addStyle(styleTextLeft);
             TableParrafo.addCell(cellParrafo1);
         }
         oParagrah = cadena.isEmpty() ? palabraEnBlanco : new Paragraph(cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length()));;
-        Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(0.5f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableParrafo.addCell(cellParrafo1);
         for (int i = 0; i < 2 - iteracion; i++) {
             Cell cellraya = new Cell().add(palabraEnBlanco).addStyle(styleTextLeft).addStyle(styleCell);
@@ -459,16 +459,16 @@ public class Historiaclinicapdf {
         Cell cellDi = new Cell().add(new Paragraph(titulo).setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextLeft);
         TableAtributo.addCell(cellDi);
         Paragraph oParagra = cadena.length() == 0 ? palabraEnBlanco : new Paragraph(aux ? cadena : cadena.substring(0 * numCharacteres, (0 + 1) * subnumCharacteres));
-        Cell cellParraf = new Cell().add(oParagra.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellParraf = new Cell().add(oParagra.setBorderBottom(new SolidBorder(0.5f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableAtributo.addCell(cellParraf);
         TableParrafo.addCell(new Cell().add(TableAtributo).addStyle(styleCell));
         for (int i = 1; i < iteracion; i++) {
             oParagrah = new Paragraph(cadena.substring(i * numCharacteres, (i + 1) * numCharacteres));
-            Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+            Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(0.5f))).addStyle(styleCell).addStyle(styleTextLeft);
             TableParrafo.addCell(cellParrafo1);
         }
         oParagrah = aux ? palabraEnBlanco : new Paragraph(cadena.substring(cadena.length() - cadena.length() % numCharacteres, cadena.length()));;
-        Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(1f))).addStyle(styleCell).addStyle(styleTextLeft);
+        Cell cellParrafo1 = new Cell().add(oParagrah.setBorderBottom(new SolidBorder(0.5f))).addStyle(styleCell).addStyle(styleTextLeft);
         TableParrafo.addCell(cellParrafo1);
         if (iteracion == 1 || iteracion == 0) {
             Cell cellraya2 = new Cell().add(palabraEnBlanco).addStyle(styleTextLeft).addStyle(styleCell);
@@ -479,7 +479,7 @@ public class Historiaclinicapdf {
 
     public static Cell getCell(String palabra, Style posicion, Style border, Border subrayado) {
         Color colorBlanco = Color.WHITE;
-        Paragraph palabraEnBlanco = new Paragraph(".").setFontColor(colorBlanco).setBorderBottom(new SolidBorder(1f));
+        Paragraph palabraEnBlanco = new Paragraph(".").setFontColor(colorBlanco).setBorderBottom(new SolidBorder(0.5f));
         Paragraph Parapalabra = palabra.isEmpty() ? palabraEnBlanco : new Paragraph(palabra);
 
         return new Cell().add(Parapalabra.setBorderBottom(subrayado)).addStyle(posicion).addStyle(border);
