@@ -10,6 +10,7 @@ import Entidades.Paciente_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
+import Entidades.Presupuesto;
 import Entidades.Tratamiento;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.kernel.color.Color;
@@ -61,6 +62,8 @@ public class Historiaclinicapdf {
         List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
         List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
         List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + opersona.getIdpersona() + " and flag = false order by idtratamiento ASC").setMaxResults(10).getResultList();
+        List<Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Presupuesto p where idpersona= " + opersona.getIdpersona() + " order by idpresupuesto ASC").setMaxResults(10).getResultList();
+
         Period period = Period.between(opersona.getFechaNacimiento(), LocalDate.now());
         long edad = period.getYears();
 
@@ -213,17 +216,6 @@ public class Historiaclinicapdf {
         TableMotivoDeConsulta.setMarginBottom(10);
         //Fin ANAMNESIS
 
-        //ODONTOGRAMA
-        Table TableOdontograma = new Table(new float[]{volumen * 5});
-        Image img = null;
-        try {
-            img = new Image(ImageDataFactory.create("images\\odontograma.png"));
-        } catch (MalformedURLException ex) {
-            Logger.getLogger(Historiaclinicapdf.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        Cell cellimag = new Cell().add(img.setAutoScale(true)).setBorder(Border.NO_BORDER);
-        /* new SolidBorder(Color.BLACK,1*/
-        TableOdontograma.addCell(cellimag);
         //ENFERMEDAD ACTUAL
         Paragraph parrafoSubTitulo2 = new Paragraph("II.  ENFERMEDAD ACTUAL").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableEnfermedadActual = new Table(new float[]{volumen * 1.3f, volumen * 3.7f});
@@ -353,6 +345,37 @@ public class Historiaclinicapdf {
 
         /*----Fin Contenido del documento  página 1------*/
  /*--------Contenido del documento página 2--------*/
+        //ODONTOGRAMA
+        Table TableOdontograma = new Table(new float[]{volumen * 5});
+        Image img = null;
+        try {
+            img = new Image(ImageDataFactory.create("images\\odontograma.png"));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Historiaclinicapdf.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Cell cellimag = new Cell().add(img.setAutoScale(true)).setBorder(Border.NO_BORDER);
+        /* new SolidBorder(Color.BLACK,1*/
+        TableOdontograma.addCell(cellimag);
+
+        Table TablePresupuesto = new Table(new float[]{volumen * 4.4f, volumen * 0.6f});
+        TablePresupuesto.addCell(new Cell().add(new Paragraph("TRATAMIENTO Y PRESUPUESTO").setFont(bold).addStyle(styleTextCenter)));
+        TablePresupuesto.addCell(new Cell().add(new Paragraph("MONTO").setFont(bold).addStyle(styleTextCenter)));
+        float montoTotalPresupuesto = 0;
+        for (Presupuesto presupuesto : olistPresupuesto) {
+            TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getDescripcion()).addStyle(styleTextLeft)));
+            TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getMonto() + "").addStyle(styleTextCenter)));
+            montoTotalPresupuesto = montoTotalPresupuesto + presupuesto.getMonto();
+        }
+        int contadorEspacioPresupuesto = 16 - olistPresupuesto.size();
+        for (int i = 0; i < contadorEspacioPresupuesto; i++) {
+            TablePresupuesto.addCell(new Cell().add(palabraEnBlancoLimpio.addStyle(styleTextCenter)));
+            TablePresupuesto.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
+            //montoTotal = montoTotal + tratamiento.getMonto();
+        }
+
+        TablePresupuesto.addCell(new Cell().add(new Paragraph("MONTO TOTAL ").addStyle(styleTextCenter).setFont(bold)));
+        TablePresupuesto.addCell(new Cell().add(new Paragraph(montoTotalPresupuesto + "").addStyle(styleTextCenter)));
+
         Table TableTratamiento = new Table(new float[]{volumen * 0.6f, volumen * 3.1f, volumen * 0.8f, volumen * 0.5f});
         TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)));
         TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold).addStyle(styleTextCenter)));
@@ -413,7 +436,8 @@ public class Historiaclinicapdf {
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 
         document.add(TableOdontograma);
- 
+        document.add(TablePresupuesto);
+
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
         document.add(TableTratamiento);
 
