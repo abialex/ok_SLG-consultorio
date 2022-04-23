@@ -120,17 +120,33 @@ public class Historiaclinicapdf {
         Cell cellraya = new Cell().add(palabraEnBlanco).addStyle(styleTextLeft).addStyle(styleCell);
         TableRayas.addCell(cellraya);
         //Cabecera
-        Table CabeceraParrafo1 = new Table(new float[]{volumen * 4.3f, volumen * 0.7f});
+        Table CabeceraParrafo1 = new Table(new float[]{volumen * 0.5f, volumen * 0.7f});
         CabeceraParrafo1.addCell(getCell("H.C Nº:", styleTextRight, styleCell, subrayadoNo));
         CabeceraParrafo1.addCell(getCell(oHistoriaclinica.getIdhistoria_clinica() + "", styleTextCenter, styleCell, subrayado));
 
-        Table CabeceraParrafo2 = new Table(new float[]{volumen * 4.3f, volumen * 0.7f});
+        Table CabeceraParrafo2 = new Table(new float[]{volumen * 0.5f, volumen * 0.7f});
         CabeceraParrafo2.addCell(getCell("FECHA:", styleTextRight, styleCell, subrayadoNo));
         CabeceraParrafo2.addCell(getCell(oHistoriaclinica.getFechainscripcion() + "", styleTextCenter, styleCell, subrayado));
 
-        Table Cabecera = new Table(new float[]{volumen * 5f});
-        Cabecera.addCell(new Cell().add(CabeceraParrafo1).addStyle(styleCell));
-        Cabecera.addCell(new Cell().add(CabeceraParrafo2).addStyle(styleCell));
+        Image imgUp = null;
+        try {
+            imgUp = new Image(ImageDataFactory.create("images\\logoUp.png"));
+        } catch (MalformedURLException ex) {
+            Logger.getLogger(Historiaclinicapdf.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Cell cellimagUp = new Cell().add(imgUp.setAutoScale(true)).setBorder(Border.NO_BORDER);
+        /* new SolidBorder(Color.BLACK,1*/
+
+        Table TableHC = new Table(new float[]{volumen * 5});
+        TableHC.addCell(new Cell().add(CabeceraParrafo1).addStyle(styleCell));
+        TableHC.addCell(new Cell().add(CabeceraParrafo2).addStyle(styleCell));
+
+        Table Cabecera = new Table(new float[]{volumen * 1.2f, volumen * 2.6f, volumen * 1.2f});
+        Cabecera.addCell(new Cell().add(palabraEnBlancoLimpio).addStyle(styleCell));
+        Cabecera.addCell(new Cell().add(cellimagUp.setPaddingTop(-20)).addStyle(styleCell));
+        Cabecera.addCell(new Cell().add(TableHC).addStyle(styleCell));
+        Cabecera.setMarginBottom(10);
+
         //Fin Cabecera
         // ANAMNESIS
         Paragraph parrafoTitulo = new Paragraph("HISTORIA CLÍNICA").setFontSize(14).setFont(bold).setTextAlignment(TextAlignment.CENTER);
