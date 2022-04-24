@@ -742,8 +742,15 @@ public class CitaVerController implements Initializable {
                                     + "order by minuto asc").getResultList();
 
                             FlowPane fp = new FlowPane();
+                            fp.setStyle("");
+                            boolean isOcupado = false;
                             double tam = 48.16;
                             for (Cita cita : listCita) {
+                                isOcupado = cita.getPaciente() == null;
+                                if (isOcupado) {
+                                    fp.setStyle("-fx-background-color:YELLOW");
+                                    break;
+                                }
                                 JFXButton button = new JFXButton();
                                 button.setUserData(cita);
                                 button.setPrefWidth(110);
@@ -795,7 +802,7 @@ public class CitaVerController implements Initializable {
                             editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
 
                             ImageView editIcon2 = newImage("block-1.png", tamHightImag, tamWidthImag, item);
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
+                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event));
                             editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
                             editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
 
@@ -816,6 +823,31 @@ public class CitaVerController implements Initializable {
                         oCitaAgregarController.setPersona(oHora, jcbDoctor3.getSelectionModel().getSelectedItem(), oFecha);
                         lockedPantalla();
 
+                    }
+                    
+                    @FXML
+                    void guardarEliminarBloqueo(MouseEvent event) {
+                        ImageView buton = (ImageView) event.getSource();
+                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
+                        List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
+                                + "iddoctor=" + jcbDoctor3.getSelectionModel().getSelectedItem().getIddoctor() + " and "
+                                + "idhoraatencion = " + oHora.getIdhoraatencion() + " and "
+                                + "fechacita=" + "'" + oFecha.toString() + "' and"
+                                + " razon = 'OCUPADO'"
+                                + "order by minuto asc").getResultList();
+
+                        if (listCitaOcupada.isEmpty()) {
+                            Cita ocita = new Cita(jcbDoctor3.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
+                            App.jpa.getTransaction().begin();
+                            App.jpa.persist(ocita);
+                            App.jpa.getTransaction().commit();
+                            initTable();
+                        } else {
+                            App.jpa.getTransaction().begin();
+                            App.jpa.remove(listCitaOcupada.get(0));
+                            App.jpa.getTransaction().commit();
+                            initTable();
+                        }
                     }
 
                     private void imagModificarMoved(MouseEvent event) {
@@ -916,7 +948,7 @@ public class CitaVerController implements Initializable {
                         oCitaModificarController.setCita(oCita);
                         lockedPantalla();
 
-                    }
+                    }                  
                 };
 
                 return cell;
@@ -964,20 +996,20 @@ public class CitaVerController implements Initializable {
                         oCitaAgregarController.setPersona(oHora, jcbDoctor4.getSelectionModel().getSelectedItem(), oFecha);
                         lockedPantalla();
                     }
-                    
-                     @FXML
+
+                    @FXML
                     void guardarEliminarBloqueo(MouseEvent event) {
                         ImageView buton = (ImageView) event.getSource();
                         HoraAtencion oHora = (HoraAtencion) buton.getUserData();
                         List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
-                                + "iddoctor=" + jcbDoctor2.getSelectionModel().getSelectedItem().getIddoctor() + " and "
+                                + "iddoctor=" + jcbDoctor4.getSelectionModel().getSelectedItem().getIddoctor() + " and "
                                 + "idhoraatencion = " + oHora.getIdhoraatencion() + " and "
                                 + "fechacita=" + "'" + oFecha.toString() + "' and"
                                 + " razon = 'OCUPADO'"
                                 + "order by minuto asc").getResultList();
 
                         if (listCitaOcupada.isEmpty()) {
-                            Cita ocita = new Cita(jcbDoctor2.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
+                            Cita ocita = new Cita(jcbDoctor4.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
                             App.jpa.getTransaction().begin();
                             App.jpa.persist(ocita);
                             App.jpa.getTransaction().commit();
@@ -989,7 +1021,6 @@ public class CitaVerController implements Initializable {
                             initTable();
                         }
                     }
-
 
                     private void imagModificarMoved(MouseEvent event) {
                         ImageView imag = (ImageView) event.getSource();
