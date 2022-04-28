@@ -58,6 +58,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Paint;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -128,7 +129,7 @@ public class CitaVerController implements Initializable {
         cargarAnio();
         cargarMes();
         changueMes();
-        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
+        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " DE " + getMesNum(oFecha.getMonthValue()));
         initTable();
     }
 
@@ -147,7 +148,7 @@ public class CitaVerController implements Initializable {
         jcbMes.getSelectionModel().select(getMesNum(LocalDate.now().getMonthValue()));
         jcbAnio.getSelectionModel().select(LocalDate.now().getYear() + "");
         changueMes();
-        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
+        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " DE " + getMesNum(oFecha.getMonthValue()));
         initTable();
     }
 
@@ -363,171 +364,10 @@ public class CitaVerController implements Initializable {
             columnHoraAtencion1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
-            columnHoraAtencion1.setCellFactory(column -> {
-                TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-                    @Override
-                    protected void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText("");
-                        } else {
-                            setGraphic(null);
-                            setText(item.getHora() + " " + item.getAbreviatura());
 
-                        }
-                    }
-                };
-                return cell;
-            });
-
-            columnCitas1.setCellFactory(column -> {
-                TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-                    @Override
-                    protected void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText("");
-                        } else {
-                            List<Cita> listCita = App.jpa.createQuery("select p from Cita p  where "
-                                    + "iddoctor=" + jcbDoctor1.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                                    + "idhoraatencion = " + item.getIdhoraatencion() + " and "
-                                    + "fechacita=" + "'" + oFecha.toString() + "'"
-                                    + "order by minuto asc").getResultList();
-
-                            FlowPane fp = new FlowPane();
-                            fp.setStyle("");
-                            boolean isOcupado = false;
-                            double tam = 48.16;
-                            for (Cita cita : listCita) {
-                                isOcupado = cita.getPaciente() == null;
-                                if (isOcupado) {
-                                    fp.setStyle("-fx-background-color:YELLOW");
-                                    break;
-                                }
-                                JFXButton button = new JFXButton();
-                                button.setUserData(cita);
-                                button.setPrefWidth(110);
-                                button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
-                                button.setMaxHeight(9);
-                                button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
-                                button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
-                                fp.getChildren().add(button);
-                            }
-                            fp.setMinHeight(tam);
-                            setGraphic(fp);
-                            setText(null);
-                            setStyle("-fx-pref-height: 0px");
-                        }
-                    }
-
-                    void modificarCita(ActionEvent event) {
-                        JFXButton buton = (JFXButton) event.getSource();
-                        Cita oCita = (Cita) buton.getUserData();
-                        CitaModificarController oCitaModificarController = (CitaModificarController) mostrarVentana(CitaModificarController.class, "CitaModificar");
-                        oCitaModificarController.setController(odc);
-                        oCitaModificarController.setCita(oCita);
-                        lockedPantalla();
-
-                    }
-                };
-
-                return cell;
-            });
-
-            Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> cellFoctory = (TableColumn<HoraAtencion, HoraAtencion> param) -> {
-                // make cell containing buttons
-                final TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-
-                    @Override
-                    public void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        //that cell created only on non-empty rows                    
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            int tamHightImag = 20;
-                            int tamWidthImag = 20;
-
-                            ImageView editIcon = newImage("add-1.png", tamHightImag, tamWidthImag, item);
-                            editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
-                            editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
-                            editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
-
-                            ImageView editIcon2 = newImage("block-1.png", tamHightImag, tamWidthImag, item);
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event));
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
-
-                            VBox managebtn = new VBox(editIcon, editIcon2);
-                            managebtn.setStyle("-fx-alignment:center");
-                            VBox.setMargin(editIcon, new Insets(4, 1, 4, 1));
-                            setGraphic(managebtn);
-                            setText(null);
-                        }
-                    }
-
-                    void mostrarAgregar(MouseEvent event) {
-                        ImageView buton = (ImageView) event.getSource();
-                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-
-                        CitaAgregarController oCitaAgregarController = (CitaAgregarController) mostrarVentana(CitaAgregarController.class, "CitaAgregar");
-                        oCitaAgregarController.setController(odc);
-                        oCitaAgregarController.setPersona(oHora, jcbDoctor1.getSelectionModel().getSelectedItem(), oFecha);
-                        lockedPantalla();
-
-                    }
-
-                    @FXML
-                    void guardarEliminarBloqueo(MouseEvent event) {
-                        ImageView buton = (ImageView) event.getSource();
-                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-                        List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
-                                + "iddoctor=" + jcbDoctor1.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                                + "idhoraatencion = " + oHora.getIdhoraatencion() + " and "
-                                + "fechacita=" + "'" + oFecha.toString() + "' and"
-                                + " razon = 'OCUPADO'"
-                                + "order by minuto asc").getResultList();
-
-                        if (listCitaOcupada.isEmpty()) {
-                            Cita ocita = new Cita(jcbDoctor1.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
-                            App.jpa.getTransaction().begin();
-                            App.jpa.persist(ocita);
-                            App.jpa.getTransaction().commit();
-                            initTable();
-                        } else {
-                            App.jpa.getTransaction().begin();
-                            App.jpa.remove(listCitaOcupada.get(0));
-                            App.jpa.getTransaction().commit();
-                            initTable();
-                        }
-                    }
-
-                    private void imagModificarMoved(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-2.png").toExternalForm()));
-                    }
-
-                    private void imagModificarFuera(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
-                    }
-
-                    private void imagBlockMoved(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
-                    }
-
-                    private void imagBlockFuera(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
-                    }
-                };
-                return cell;
-            };
-            columnEstado1.setCellFactory(cellFoctory);
+            columnHoraAtencion1.setCellFactory(getCellHoraAtencion());
+            columnCitas1.setCellFactory(getCellCitas(jcbDoctor1));
+            columnEstado1.setCellFactory(getCellEstado(jcbDoctor1));
         }
     }
 
@@ -536,170 +376,10 @@ public class CitaVerController implements Initializable {
             columnHoraAtencion2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
-            columnHoraAtencion2.setCellFactory(column -> {
-                TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-                    @Override
-                    protected void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText("");
-                        } else {
-                            setGraphic(null);
-                            setText(item.getHora() + " " + item.getAbreviatura());
 
-                        }
-                    }
-                };
-                return cell;
-            });
-            columnCitas2.setCellFactory(column -> {
-                TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-                    @Override
-                    protected void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText("");
-                        } else {
-                            List<Cita> listCita = App.jpa.createQuery("select p from Cita p  where "
-                                    + "iddoctor=" + jcbDoctor2.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                                    + "idhoraatencion = " + item.getIdhoraatencion() + " and "
-                                    + "fechacita=" + "'" + oFecha.toString() + "'"
-                                    + "order by minuto asc").getResultList();
-
-                            FlowPane fp = new FlowPane();
-                            fp.setStyle("");
-                            boolean isOcupado = false;
-                            double tam = 48.16;
-                            for (Cita cita : listCita) {
-                                isOcupado = cita.getPaciente() == null;
-                                if (isOcupado) {
-                                    fp.setStyle("-fx-background-color:YELLOW");
-                                    break;
-                                }
-                                JFXButton button = new JFXButton();
-                                button.setUserData(cita);
-                                button.setPrefWidth(110);
-                                button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
-                                button.setMaxHeight(9);
-                                button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
-                                button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
-                                fp.getChildren().add(button);
-                            }
-                            fp.setMinHeight(tam);
-                            setGraphic(fp);
-                            setText(null);
-                            setStyle("-fx-pref-height: 0px");
-                        }
-                    }
-
-                    void modificarCita(ActionEvent event) {
-                        JFXButton buton = (JFXButton) event.getSource();
-                        Cita oCita = (Cita) buton.getUserData();
-                        CitaModificarController oCitaModificarController = (CitaModificarController) mostrarVentana(CitaModificarController.class, "CitaModificar");
-                        oCitaModificarController.setController(odc);
-                        oCitaModificarController.setCita(oCita);
-                        lockedPantalla();
-
-                    }
-                };
-
-                return cell;
-            });
-
-            Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> cellFoctory = (TableColumn<HoraAtencion, HoraAtencion> param) -> {
-                // make cell containing buttons
-                final TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-
-                    @Override
-                    public void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        //that cell created only on non-empty rows                    
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            int tamHightImag = 20;
-                            int tamWidthImag = 20;
-
-                            ImageView editIcon = newImage("add-1.png", tamHightImag, tamWidthImag, item);
-                            editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
-                            editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
-                            editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
-
-                            ImageView editIcon2 = newImage("block-1.png", tamHightImag, tamWidthImag, item);
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event));
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
-
-                            VBox managebtn = new VBox(editIcon, editIcon2);
-                            managebtn.setStyle("-fx-alignment:center");
-                            VBox.setMargin(editIcon, new Insets(4, 1, 4, 1));
-                            setGraphic(managebtn);
-                            setText(null);
-                        }
-                    }
-
-                    void mostrarAgregar(MouseEvent event) {
-                        ImageView buton = (ImageView) event.getSource();
-                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-
-                        CitaAgregarController oCitaAgregarController = (CitaAgregarController) mostrarVentana(CitaAgregarController.class, "CitaAgregar");
-                        oCitaAgregarController.setController(odc);
-                        oCitaAgregarController.setPersona(oHora, jcbDoctor2.getSelectionModel().getSelectedItem(), oFecha);
-                        lockedPantalla();
-
-                    }
-
-                    @FXML
-                    void guardarEliminarBloqueo(MouseEvent event) {
-                        ImageView buton = (ImageView) event.getSource();
-                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-                        List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
-                                + "iddoctor=" + jcbDoctor2.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                                + "idhoraatencion = " + oHora.getIdhoraatencion() + " and "
-                                + "fechacita=" + "'" + oFecha.toString() + "' and"
-                                + " razon = 'OCUPADO'"
-                                + "order by minuto asc").getResultList();
-
-                        if (listCitaOcupada.isEmpty()) {
-                            Cita ocita = new Cita(jcbDoctor2.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
-                            App.jpa.getTransaction().begin();
-                            App.jpa.persist(ocita);
-                            App.jpa.getTransaction().commit();
-                            initTable();
-                        } else {
-                            App.jpa.getTransaction().begin();
-                            App.jpa.remove(listCitaOcupada.get(0));
-                            App.jpa.getTransaction().commit();
-                            initTable();
-                        }
-                    }
-
-                    private void imagModificarMoved(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-2.png").toExternalForm()));
-                    }
-
-                    private void imagModificarFuera(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
-                    }
-
-                    private void imagBlockMoved(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
-                    }
-
-                    private void imagBlockFuera(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
-                    }
-                };
-                return cell;
-            };
-            columnEstado2.setCellFactory(cellFoctory);
+            columnHoraAtencion2.setCellFactory(getCellHoraAtencion());
+            columnCitas2.setCellFactory(getCellCitas(jcbDoctor2));
+            columnEstado2.setCellFactory(getCellEstado(jcbDoctor2));
         }
     }
 
@@ -708,171 +388,10 @@ public class CitaVerController implements Initializable {
             columnHoraAtencion3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
-            columnHoraAtencion3.setCellFactory(column -> {
-                TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-                    @Override
-                    protected void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText("");
-                        } else {
-                            setGraphic(null);
-                            setText(item.getHora() + " " + item.getAbreviatura());
 
-                        }
-                    }
-                };
-                return cell;
-            });
-
-            columnCitas3.setCellFactory(column -> {
-                TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-                    @Override
-                    protected void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText("");
-                        } else {
-                            List<Cita> listCita = App.jpa.createQuery("select p from Cita p  where "
-                                    + "iddoctor=" + jcbDoctor3.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                                    + "idhoraatencion = " + item.getIdhoraatencion() + " and "
-                                    + "fechacita=" + "'" + oFecha.toString() + "'"
-                                    + "order by minuto asc").getResultList();
-
-                            FlowPane fp = new FlowPane();
-                            fp.setStyle("");
-                            boolean isOcupado = false;
-                            double tam = 48.16;
-                            for (Cita cita : listCita) {
-                                isOcupado = cita.getPaciente() == null;
-                                if (isOcupado) {
-                                    fp.setStyle("-fx-background-color:YELLOW");
-                                    break;
-                                }
-                                JFXButton button = new JFXButton();
-                                button.setUserData(cita);
-                                button.setPrefWidth(110);
-                                button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
-                                button.setMaxHeight(9);
-                                button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
-                                button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
-                                fp.getChildren().add(button);
-                            }
-                            fp.setMinHeight(tam);
-                            setGraphic(fp);
-                            setText(null);
-                            setStyle("-fx-pref-height: 0px");
-                        }
-                    }
-
-                    void modificarCita(ActionEvent event) {
-                        JFXButton buton = (JFXButton) event.getSource();
-                        Cita oCita = (Cita) buton.getUserData();
-                        CitaModificarController oCitaModificarController = (CitaModificarController) mostrarVentana(CitaModificarController.class, "CitaModificar");
-                        oCitaModificarController.setController(odc);
-                        oCitaModificarController.setCita(oCita);
-                        lockedPantalla();
-
-                    }
-                };
-
-                return cell;
-            });
-
-            Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> cellFoctory = (TableColumn<HoraAtencion, HoraAtencion> param) -> {
-                // make cell containing buttons
-                final TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-
-                    @Override
-                    public void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        //that cell created only on non-empty rows                    
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            int tamHightImag = 20;
-                            int tamWidthImag = 20;
-
-                            ImageView editIcon = newImage("add-1.png", tamHightImag, tamWidthImag, item);
-                            editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
-                            editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
-                            editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
-
-                            ImageView editIcon2 = newImage("block-1.png", tamHightImag, tamWidthImag, item);
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event));
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
-
-                            VBox managebtn = new VBox(editIcon, editIcon2);
-                            managebtn.setStyle("-fx-alignment:center");
-                            VBox.setMargin(editIcon, new Insets(4, 1, 4, 1));
-                            setGraphic(managebtn);
-                            setText(null);
-                        }
-                    }
-
-                    void mostrarAgregar(MouseEvent event) {
-                        ImageView buton = (ImageView) event.getSource();
-                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-
-                        CitaAgregarController oCitaAgregarController = (CitaAgregarController) mostrarVentana(CitaAgregarController.class, "CitaAgregar");
-                        oCitaAgregarController.setController(odc);
-                        oCitaAgregarController.setPersona(oHora, jcbDoctor3.getSelectionModel().getSelectedItem(), oFecha);
-                        lockedPantalla();
-
-                    }
-                    
-                    @FXML
-                    void guardarEliminarBloqueo(MouseEvent event) {
-                        ImageView buton = (ImageView) event.getSource();
-                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-                        List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
-                                + "iddoctor=" + jcbDoctor3.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                                + "idhoraatencion = " + oHora.getIdhoraatencion() + " and "
-                                + "fechacita=" + "'" + oFecha.toString() + "' and"
-                                + " razon = 'OCUPADO'"
-                                + "order by minuto asc").getResultList();
-
-                        if (listCitaOcupada.isEmpty()) {
-                            Cita ocita = new Cita(jcbDoctor3.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
-                            App.jpa.getTransaction().begin();
-                            App.jpa.persist(ocita);
-                            App.jpa.getTransaction().commit();
-                            initTable();
-                        } else {
-                            App.jpa.getTransaction().begin();
-                            App.jpa.remove(listCitaOcupada.get(0));
-                            App.jpa.getTransaction().commit();
-                            initTable();
-                        }
-                    }
-
-                    private void imagModificarMoved(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-2.png").toExternalForm()));
-                    }
-
-                    private void imagModificarFuera(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
-                    }
-
-                    private void imagBlockMoved(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
-                    }
-
-                    private void imagBlockFuera(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
-                    }
-                };
-                return cell;
-            };
-            columnEstado3.setCellFactory(cellFoctory);
+            columnHoraAtencion3.setCellFactory(getCellHoraAtencion());
+            columnCitas3.setCellFactory(getCellCitas(jcbDoctor3));
+            columnEstado3.setCellFactory(getCellEstado(jcbDoctor3));
         }
     }
 
@@ -881,171 +400,187 @@ public class CitaVerController implements Initializable {
             columnHoraAtencion4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
-            columnHoraAtencion4.setCellFactory(column -> {
-                TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-                    @Override
-                    protected void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText("");
-                        } else {
-                            setGraphic(null);
-                            setText(item.getHora() + " " + item.getAbreviatura());
 
-                        }
+            columnHoraAtencion4.setCellFactory(getCellHoraAtencion());
+            columnCitas4.setCellFactory(getCellCitas(jcbDoctor4));
+            columnEstado4.setCellFactory(getCellEstado(jcbDoctor4));
+        }
+    }
+
+    Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> getCellHoraAtencion() {
+        Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> cellHoraAtencion = (TableColumn<HoraAtencion, HoraAtencion> param) -> {
+            // make cell containing buttons
+            final TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
+                @Override
+                public void updateItem(HoraAtencion item, boolean empty) {
+                    super.updateItem(item, empty);
+                    //that cell created only on non-empty rows                    
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+                    } else {
+                        Label label = new Label();
+                        label.setFont(new Font("Times New Roman Bold", 13));
+                        label.setText(item.getHora() + " " + item.getAbreviatura());
+                        setGraphic(label);
+                        setText("");
                     }
-                };
-                return cell;
-            });
+                }
+            };
+            return cell;
+        };
+        return cellHoraAtencion;
+    }
 
-            columnCitas4.setCellFactory(column -> {
-                TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-                    @Override
-                    protected void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText("");
-                        } else {
-                            List<Cita> listCita = App.jpa.createQuery("select p from Cita p  where "
-                                    + "iddoctor=" + jcbDoctor4.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                                    + "idhoraatencion = " + item.getIdhoraatencion() + " and "
-                                    + "fechacita=" + "'" + oFecha.toString() + "'"
-                                    + "order by minuto asc").getResultList();
-
-                            FlowPane fp = new FlowPane();
-                            fp.setStyle("");
-                            boolean isOcupado = false;
-                            double tam = 48.16;
-                            for (Cita cita : listCita) {
-                                isOcupado = cita.getPaciente() == null;
-                                if (isOcupado) {
-                                    fp.setStyle("-fx-background-color:YELLOW");
-                                    break;
-                                }
-                                JFXButton button = new JFXButton();
-                                button.setUserData(cita);
-                                button.setPrefWidth(110);
-                                button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
-                                button.setMaxHeight(9);
-                                button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
-                                button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
-                                fp.getChildren().add(button);
-                            }
-                            fp.setMinHeight(tam);
-                            setGraphic(fp);
-                            setText(null);
-                            setStyle("-fx-pref-height: 0px");
-                        }
-                    }
-
-                    void modificarCita(ActionEvent event) {
-                        JFXButton buton = (JFXButton) event.getSource();
-                        Cita oCita = (Cita) buton.getUserData();
-                        CitaModificarController oCitaModificarController = (CitaModificarController) mostrarVentana(CitaModificarController.class, "CitaModificar");
-                        oCitaModificarController.setController(odc);
-                        oCitaModificarController.setCita(oCita);
-                        lockedPantalla();
-
-                    }                  
-                };
-
-                return cell;
-            });
-
-            Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> cellFoctory = (TableColumn<HoraAtencion, HoraAtencion> param) -> {
-                // make cell containing buttons
-                final TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
-
-                    @Override
-                    public void updateItem(HoraAtencion item, boolean empty) {
-                        super.updateItem(item, empty);
-                        //that cell created only on non-empty rows                    
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            int tamHightImag = 20;
-                            int tamWidthImag = 20;
-
-                            ImageView editIcon = newImage("add-2.png", tamHightImag, tamWidthImag, item);
-                            editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
-                            editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
-                            editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
-
-                            ImageView editIcon2 = newImage("block-2.png", tamHightImag, tamWidthImag, item);
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event));
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
-                            editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
-
-                            VBox managebtn = new VBox(editIcon, editIcon2);
-                            managebtn.setStyle("-fx-alignment:center");
-                            VBox.setMargin(editIcon, new Insets(4, 0, 4, 0));
-                            setGraphic(managebtn);
-                            setText(null);
-                        }
-                    }
-
-                    void mostrarAgregar(MouseEvent event) {
-                        ImageView buton = (ImageView) event.getSource();
-                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-
-                        CitaAgregarController oCitaAgregarController = (CitaAgregarController) mostrarVentana(CitaAgregarController.class, "CitaAgregar");
-                        oCitaAgregarController.setController(odc);
-                        oCitaAgregarController.setPersona(oHora, jcbDoctor4.getSelectionModel().getSelectedItem(), oFecha);
-                        lockedPantalla();
-                    }
-
-                    @FXML
-                    void guardarEliminarBloqueo(MouseEvent event) {
-                        ImageView buton = (ImageView) event.getSource();
-                        HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-                        List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
-                                + "iddoctor=" + jcbDoctor4.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                                + "idhoraatencion = " + oHora.getIdhoraatencion() + " and "
-                                + "fechacita=" + "'" + oFecha.toString() + "' and"
-                                + " razon = 'OCUPADO'"
+    Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> getCellCitas(JFXComboBox<Doctor> jcb) {
+        Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> cellHoraAtencion = (TableColumn<HoraAtencion, HoraAtencion> param) -> {
+            // make cell containing buttons
+            final TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
+                @Override
+                public void updateItem(HoraAtencion item, boolean empty) {
+                    super.updateItem(item, empty);
+                    //that cell created only on non-empty rows                    
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+                    } else {
+                        List<Cita> listCita = App.jpa.createQuery("select p from Cita p  where "
+                                + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
+                                + "idhoraatencion = " + item.getIdhoraatencion() + " and "
+                                + "fechacita=" + "'" + oFecha.toString() + "'"
                                 + "order by minuto asc").getResultList();
 
-                        if (listCitaOcupada.isEmpty()) {
-                            Cita ocita = new Cita(jcbDoctor4.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
-                            App.jpa.getTransaction().begin();
-                            App.jpa.persist(ocita);
-                            App.jpa.getTransaction().commit();
-                            initTable();
-                        } else {
-                            App.jpa.getTransaction().begin();
-                            App.jpa.remove(listCitaOcupada.get(0));
-                            App.jpa.getTransaction().commit();
-                            initTable();
+                        FlowPane fp = new FlowPane();
+                        fp.setStyle("");
+                        boolean isOcupado = false;
+                        double tam = 48.16;
+                        for (Cita cita : listCita) {
+                            isOcupado = cita.getPaciente() == null;
+                            if (isOcupado) {
+                                fp.setStyle("-fx-background-color:YELLOW");
+                                break;
+                            }
+                            JFXButton button = new JFXButton();
+                            button.setUserData(cita);
+                            button.setPrefWidth(110);
+                            button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
+                            button.setMaxHeight(9);
+                            button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
+                            button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
+                            fp.getChildren().add(button);
                         }
+                        fp.setMinHeight(tam);
+                        setGraphic(fp);
+                        setText(null);
+                        setStyle("-fx-pref-height: 0px");
                     }
+                }
 
-                    private void imagModificarMoved(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
-                    }
-
-                    private void imagModificarFuera(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/add-2.png").toExternalForm()));
-                    }
-
-                    private void imagBlockMoved(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
-                    }
-
-                    private void imagBlockFuera(MouseEvent event) {
-                        ImageView imag = (ImageView) event.getSource();
-                        imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
-                    }
-                };
-                return cell;
+                void modificarCita(ActionEvent event) {
+                    JFXButton buton = (JFXButton) event.getSource();
+                    Cita oCita = (Cita) buton.getUserData();
+                    CitaModificarController oCitaModificarController = (CitaModificarController) mostrarVentana(CitaModificarController.class, "CitaModificar");
+                    oCitaModificarController.setController(odc);
+                    oCitaModificarController.setCita(oCita);
+                    lockedPantalla();
+                }
             };
-            columnEstado4.setCellFactory(cellFoctory);
-        }
+            return cell;
+        };
+        return cellHoraAtencion;
+    }
+
+    Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> getCellEstado(JFXComboBox<Doctor> jcb) {
+        Callback<TableColumn<HoraAtencion, HoraAtencion>, TableCell<HoraAtencion, HoraAtencion>> cellFoctory = (TableColumn<HoraAtencion, HoraAtencion> param) -> {
+            // make cell containing buttons
+            final TableCell<HoraAtencion, HoraAtencion> cell = new TableCell<HoraAtencion, HoraAtencion>() {
+
+                @Override
+                public void updateItem(HoraAtencion item, boolean empty) {
+                    super.updateItem(item, empty);
+                    //that cell created only on non-empty rows                    
+                    if (empty) {
+                        setGraphic(null);
+                        setText(null);
+                    } else {
+                        int tamHightImag = 20;
+                        int tamWidthImag = 20;
+
+                        ImageView editIcon = newImage("add-2.png", tamHightImag, tamWidthImag, item);
+                        editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
+                        editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
+                        editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
+
+                        ImageView editIcon2 = newImage("block-2.png", tamHightImag, tamWidthImag, item);
+                        editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event));
+                        editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
+                        editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
+
+                        VBox managebtn = new VBox(editIcon, editIcon2);
+                        managebtn.setStyle("-fx-alignment:center");
+                        VBox.setMargin(editIcon, new Insets(4, 0, 4, 0));
+                        setGraphic(managebtn);
+                        setText(null);
+                    }
+                }
+
+                void mostrarAgregar(MouseEvent event) {
+                    ImageView buton = (ImageView) event.getSource();
+                    HoraAtencion oHora = (HoraAtencion) buton.getUserData();
+
+                    CitaAgregarController oCitaAgregarController = (CitaAgregarController) mostrarVentana(CitaAgregarController.class, "CitaAgregar");
+                    oCitaAgregarController.setController(odc);
+                    oCitaAgregarController.setPersona(oHora, jcb.getSelectionModel().getSelectedItem(), oFecha);
+                    lockedPantalla();
+                }
+
+                void guardarEliminarBloqueo(MouseEvent event) {
+                    ImageView buton = (ImageView) event.getSource();
+                    HoraAtencion oHora = (HoraAtencion) buton.getUserData();
+                    List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
+                            + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
+                            + "idhoraatencion = " + oHora.getIdhoraatencion() + " and "
+                            + "fechacita=" + "'" + oFecha.toString() + "' and"
+                            + " razon = 'OCUPADO'"
+                            + "order by minuto asc").getResultList();
+
+                    if (listCitaOcupada.isEmpty()) {
+                        Cita ocita = new Cita(jcb.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
+                        App.jpa.getTransaction().begin();
+                        App.jpa.persist(ocita);
+                        App.jpa.getTransaction().commit();
+                        initTable();
+                    } else {
+                        App.jpa.getTransaction().begin();
+                        App.jpa.remove(listCitaOcupada.get(0));
+                        App.jpa.getTransaction().commit();
+                        initTable();
+                    }
+                }
+
+                private void imagModificarMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/add-1.png").toExternalForm()));
+                }
+
+                private void imagModificarFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/add-2.png").toExternalForm()));
+                }
+
+                private void imagBlockMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/block-1.png").toExternalForm()));
+                }
+
+                private void imagBlockFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/block-2.png").toExternalForm()));
+                }
+            };
+            return cell;
+        };
+        return cellFoctory;
     }
 
     public void lockedPantalla() {
