@@ -80,11 +80,11 @@ public class Historiaclinicapdf {
 
         style1 evento = new style1(document);
         pdf.addEventHandler(PdfDocumentEvent.START_PAGE, evento);
-        PdfFont bold = null, font;
+        PdfFont bold = null, font = null;
         try {
             /*--------styles-------------*/
-            font = PdfFontFactory.createFont(FontConstants.HELVETICA);
-            bold = PdfFontFactory.createFont(FontConstants.HELVETICA);
+            font = PdfFontFactory.createFont(FontConstants.TIMES_BOLD);
+            bold = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
         } catch (IOException ex) {
             Logger.getLogger(Historiaclinicapdf.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -178,8 +178,8 @@ public class Historiaclinicapdf {
         table1Parrafo4.addCell(getCell("Teléfono:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo4.addCell(getCell(opersona.getTelefono(), styleTextCenter, styleCell, subrayado));
 
-        Table table1Parrafo5 = new Table(new float[]{volumen * 1f, volumen * 4f});
-        table1Parrafo5.addCell(getCell("Doctor (Operador)", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
+        Table table1Parrafo5 = new Table(new float[]{volumen * 0.5f, volumen * 4.5f});
+        table1Parrafo5.addCell(getCell("Operador:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo5.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getNombres_apellidos(), styleTextCenter, styleCell, subrayado));
 
         Table tableInformacion = new Table(new float[]{volumen * 5});
@@ -351,10 +351,13 @@ public class Historiaclinicapdf {
         Table TablePronostico = new Table(new float[]{volumen * 0.9f, volumen * 4.1f});
         TablePronostico.addCell(getCell("VII. PRONÓSTICO:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         TablePronostico.addCell(getCell(oHistoriaclinica.getAltaPaciente(), styleTextCenter, styleCell, subrayado));
+        TablePronostico.setMarginTop(5);
+        TablePronostico.setMarginBottom(5);
+        
         //fin PRONOSTICO
 
         //ALTA PACIENTE
-        Table TableAlta = new Table(new float[]{volumen * 1.1f, volumen * 3.9f});
+        Table TableAlta = new Table(new float[]{volumen * 1.01f, volumen * 3.99f});
         //Fin ALTA PACIENTE
         TableAlta.addCell(getCell("VIII. ALTA PACIENTE:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         TableAlta.addCell(getCell(oHistoriaclinica.getAltaPaciente(), styleTextCenter, styleCell, subrayado));
