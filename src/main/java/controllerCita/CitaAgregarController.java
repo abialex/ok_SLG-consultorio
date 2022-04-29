@@ -60,6 +60,7 @@ public class CitaAgregarController implements Initializable {
     Doctor oDoctor;
     LocalDate oFechaCita;
     ObservableList<Persona> listPersona = FXCollections.observableArrayList();
+    TableView<HoraAtencion> table;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -78,7 +79,8 @@ public class CitaAgregarController implements Initializable {
         }
     }
 
-    void setController(CitaVerController odc) {
+    void setController(CitaVerController odc, TableView<HoraAtencion> table) {
+        this.table = table;
         this.citaControol = odc;
         ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
     }
@@ -99,7 +101,7 @@ public class CitaAgregarController implements Initializable {
             App.jpa.getTransaction().begin();
             App.jpa.persist(ocita);
             App.jpa.getTransaction().commit();
-            citaControol.initTable();
+            table.refresh();
             cerrar();
         }
     }

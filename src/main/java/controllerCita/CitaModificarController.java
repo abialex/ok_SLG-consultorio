@@ -26,6 +26,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -63,6 +64,7 @@ public class CitaModificarController implements Initializable {
     CitaVerController oCitaVerController;
     Cita Cita;
     AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
+    TableView<HoraAtencion> table;
     private double x = 0;
     private double y = 0;
 
@@ -78,7 +80,7 @@ public class CitaModificarController implements Initializable {
             Cita.setHoraatencion(jcbHora.getSelectionModel().getSelectedItem());
             Cita.setMinuto(jtfminuto.getText());
             Cita.setRazon(jtfrazon.getText());
-            oCitaVerController.initTable();
+            table.refresh();
             App.jpa.getTransaction().begin();
             App.jpa.persist(Cita);
             App.jpa.getTransaction().commit();
@@ -90,7 +92,7 @@ public class CitaModificarController implements Initializable {
     void eliminarCita() {
         oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
         oAlertConfimarController.setController(this);
-        oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar \n la cita de\n" + " " + Cita.getPaciente().getPersona().getNombres_apellidos()+"?");
+        oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar \n la cita de\n" + " " + Cita.getPaciente().getPersona().getNombres_apellidos() + "?");
         lockedPantalla();
     }
 
@@ -101,8 +103,8 @@ public class CitaModificarController implements Initializable {
         oCitaVerController.initTable();
         cerrar();
     }
-    
-     public void lockedPantalla() {
+
+    public void lockedPantalla() {
         if (ap.isDisable()) {
             ap.setDisable(false);
         } else {
@@ -119,7 +121,8 @@ public class CitaModificarController implements Initializable {
         jcbHora.setItems(listhora);
     }
 
-    void setController(CitaVerController odc) {
+    void setController(CitaVerController odc, TableView<HoraAtencion> table) {
+        this.table = table;
         this.oCitaVerController = odc;
         ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
     }
@@ -154,8 +157,8 @@ public class CitaModificarController implements Initializable {
         oCitaVerController.lockedPantalla();
         ((Stage) ap.getScene().getWindow()).close();
     }
-    
-     boolean isComplete() {
+
+    boolean isComplete() {
         boolean aux = true;
         if (jtfminuto.getText().trim().length() == 0) {
             jtfminuto.setStyle("-fx-border-color: #ff052b");
