@@ -95,7 +95,7 @@ public class VerPacienteController implements Initializable {
     @FXML
     void updateListPersona() {
         List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where (dni like " + "'" + jtfbuscar.getText() + "%'"
-                + " or " + "nombres_apellidos like " + "'%" + jtfbuscar.getText() + " %') and flag = false and ocupacion <> 'DOCTOR' order by idpersona DESC").setMaxResults(10).getResultList();
+                + " or " + "nombres_apellidos like " + "'%" + jtfbuscar.getText() + "%') and flag = false and ocupacion <> 'DOCTOR' order by idpersona DESC").setMaxResults(10).getResultList();
         listPersona.clear();
         for (Persona ocarta : olistPerson) {
             listPersona.add(ocarta);
