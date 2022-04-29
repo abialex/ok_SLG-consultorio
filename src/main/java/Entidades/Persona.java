@@ -4,8 +4,10 @@
  */
 package Entidades;
 
+import controller.App;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -196,4 +198,8 @@ public class Persona {
         this.presupuestoTotal = presupuestoTotal;
     }
     
+    public Paciente getPaciente(){
+        List<Paciente> listpaciente=App.jpa.createQuery("select p from Paciente p where idpersona="+idpersona).getResultList();
+        return listpaciente.get(0);
+    }
 }

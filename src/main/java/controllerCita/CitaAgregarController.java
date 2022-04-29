@@ -20,6 +20,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -44,28 +47,35 @@ public class CitaAgregarController implements Initializable {
     private JFXTextField jtfHora, jtfminuto;
 
     @FXML
-    private JFXComboBox<Paciente> jcbPaciente;
+    private JFXTextField jtfrazon, jtfBuscar;
 
     @FXML
-    private JFXTextField jtfrazon;
+    private TableView<Persona> tablePersona;
+
+    @FXML
+    private TableColumn<Persona, String> columnNombres;
 
     CitaVerController citaControol;
     HoraAtencion horaAtencion;
     Doctor oDoctor;
     LocalDate oFechaCita;
+    ObservableList<Persona> listPersona = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cargarPaciente();
+        updateListPersona();
+        initTableView();
+        tablePersona.setItems(listPersona);
     }
 
-    void cargarPaciente() {
-        List<Paciente> olistPaciente = App.jpa.createQuery("select p from Paciente p").getResultList();
-        ObservableList<Paciente> listpac = FXCollections.observableArrayList();
-        for (Paciente opacient : olistPaciente) {
-            listpac.add(opacient);
+    @FXML
+    void updateListPersona() {
+        List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where (dni like " + "'" + jtfBuscar.getText() + "%'"
+                + " or " + "nombres_apellidos like " + "'%" + jtfBuscar.getText() + "%') and flag = false and ocupacion <> 'DOCTOR' ").setMaxResults(5).getResultList();
+        listPersona.clear();
+        for (Persona ocarta : olistPerson) {
+            listPersona.add(ocarta);
         }
-        jcbPaciente.setItems(listpac);
     }
 
     void setController(CitaVerController odc) {
@@ -81,15 +91,46 @@ public class CitaAgregarController implements Initializable {
         jtfFecha.setText(oFecha.toString());
         jtfHora.setText(oHora.getHora());
     }
-    
-    @FXML 
-    void guardarCita(){
-        Cita ocita=new Cita(oDoctor, jcbPaciente.getSelectionModel().getSelectedItem(), horaAtencion, oFechaCita, jtfrazon.getText(),jtfminuto.getText());
-        App.jpa.getTransaction().begin();
-        App.jpa.persist(ocita);
-        App.jpa.getTransaction().commit();
-        citaControol.initTable();
-        cerrar();
+
+    @FXML
+    void guardarCita() {
+        if (isComplete()) {
+            Cita ocita = new Cita(oDoctor, tablePersona.getSelectionModel().getSelectedItem().getPaciente(), horaAtencion, oFechaCita, jtfrazon.getText(), jtfminuto.getText());
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(ocita);
+            App.jpa.getTransaction().commit();
+            citaControol.initTable();
+            cerrar();
+        }
+    }
+
+    void initTableView() {
+        columnNombres.setCellValueFactory(new PropertyValueFactory<Persona, String>("nombres_apellidos"));
+    }
+
+    boolean isComplete() {
+        boolean aux = true;
+        if (jtfminuto.getText().trim().length() == 0) {
+            jtfminuto.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfminuto.setStyle("");
+        }
+
+        if (jtfrazon.getText().trim().length() == 0) {
+            jtfrazon.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfrazon.setStyle("");
+        }
+
+        if (tablePersona.getSelectionModel().getSelectedItem() == null) {
+            tablePersona.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            tablePersona.setStyle("-fx-border-color: #337ab7");
+        }
+        return aux;
     }
 
     @FXML
