@@ -505,20 +505,28 @@ public class CitaVerController implements Initializable {
                     } else {
                         int tamHightImag = 20;
                         int tamWidthImag = 20;
+                        
+                        List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
+                            + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
+                            + "idhoraatencion = " + item.getIdhoraatencion() + " and "
+                            + "fechacita=" + "'" + oFecha.toString() + "' and"
+                            + " razon = 'OCUPADO'"
+                            + "order by minuto asc").getResultList();
 
-                        ImageView editIcon = newImage("add-2.png", tamHightImag, tamWidthImag, item);
-                        editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
-                        editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
-                        editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
+                        ImageView addIcon = newImage("add-2.png", tamHightImag, tamWidthImag, item);
+                        addIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
+                        addIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
+                        addIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
+                        addIcon.setVisible(listCitaOcupada.isEmpty());
 
                         ImageView editIcon2 = newImage("block-2.png", tamHightImag, tamWidthImag, item);
-                        editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event));
+                        editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event,addIcon));
                         editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
                         editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
 
-                        VBox managebtn = new VBox(editIcon, editIcon2);
+                        VBox managebtn = new VBox(addIcon, editIcon2);
                         managebtn.setStyle("-fx-alignment:center");
-                        VBox.setMargin(editIcon, new Insets(4, 0, 4, 0));
+                        VBox.setMargin(addIcon, new Insets(4, 0, 4, 0));
                         setGraphic(managebtn);
                         setText(null);
                     }
@@ -534,7 +542,7 @@ public class CitaVerController implements Initializable {
                     lockedPantalla();
                 }
 
-                void guardarEliminarBloqueo(MouseEvent event) {
+                void guardarEliminarBloqueo(MouseEvent event, ImageView addicon) {
                     ImageView buton = (ImageView) event.getSource();
                     HoraAtencion oHora = (HoraAtencion) buton.getUserData();
                     List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
