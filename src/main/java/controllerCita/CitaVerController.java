@@ -9,6 +9,7 @@ import Entidades.Doctor;
 import Entidades.HoraAtencion;
 import Entidades.Persona;
 import EntidadesSettings.SettingsDoctor;
+import Pdf.Citapdf;
 import Pdf.Historiaclinicapdf;
 import Util.FileImagUtil;
 import com.jfoenix.controls.JFXButton;
@@ -42,6 +43,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -112,7 +114,7 @@ public class CitaVerController implements Initializable {
     String colorRed = "-fx-background-color: RED; -fx-border-color: #000000";
     String colorPlomo = "-fx-background-color:GRAY; -fx-border-color: #000000";
     String colorBlue = "-fx-background-color:BLUE; -fx-border-color: #000000";
-    String colorYellow = "-fx-background-color:yellow; -fx-border-color: #000000";
+    String colorYellow = "-fx-background-color: #337ab7; -fx-border-color: #000000";
     Doctor doctorNinguno;
 
     @Override
@@ -131,6 +133,7 @@ public class CitaVerController implements Initializable {
         changueMes();
         lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " DE " + getMesNum(oFecha.getMonthValue()));
         initTable();
+
     }
 
     @FXML
@@ -240,7 +243,7 @@ public class CitaVerController implements Initializable {
         buton.setStyle(colorYellow);
         oFecha = (LocalDate) buton.getUserData();
         initTable();
-        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " de " + getMesNum(oFecha.getMonthValue()));
+        lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " DE " + getMesNum(oFecha.getMonthValue()));
     }
 
     void modificarSettingsDoctor(JFXComboBox jcb) {
@@ -361,48 +364,76 @@ public class CitaVerController implements Initializable {
 
     void initTableView1() {
         if (jcbDoctor1.getSelectionModel().getSelectedItem() != doctorNinguno) {
+            Label HoraLabel = new Label("Hora");
+            HoraLabel.setStyle("-fx-text-fill: white");
+            Label CitasLabel = new Label("Citas");
+            CitasLabel.setStyle("-fx-text-fill: white");
             columnHoraAtencion1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado1.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
 
             columnHoraAtencion1.setCellFactory(getCellHoraAtencion());
+            columnHoraAtencion1.setGraphic(HoraLabel);
             columnCitas1.setCellFactory(getCellCitas(jcbDoctor1));
+            columnCitas1.setGraphic(CitasLabel);
+            columnCitas1.setText("");
             columnEstado1.setCellFactory(getCellEstado(jcbDoctor1));
         }
     }
 
     void initTableView2() {
         if (jcbDoctor2.getSelectionModel().getSelectedItem() != doctorNinguno) {
+            Label HoraLabel = new Label("Hora");
+            HoraLabel.setStyle("-fx-text-fill: white");
+            Label CitasLabel = new Label("Citas");
+            CitasLabel.setStyle("-fx-text-fill: white");
             columnHoraAtencion2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado2.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
 
             columnHoraAtencion2.setCellFactory(getCellHoraAtencion());
+            columnHoraAtencion2.setGraphic(HoraLabel);
             columnCitas2.setCellFactory(getCellCitas(jcbDoctor2));
+            columnCitas2.setGraphic(CitasLabel);
+            columnCitas2.setText("");
             columnEstado2.setCellFactory(getCellEstado(jcbDoctor2));
         }
     }
 
     void initTableView3() {
         if (jcbDoctor3.getSelectionModel().getSelectedItem() != doctorNinguno) {
+            Label HoraLabel = new Label("Hora");
+            HoraLabel.setStyle("-fx-text-fill: white");
+            Label CitasLabel = new Label("Citas");
+            CitasLabel.setStyle("-fx-text-fill: white");
             columnHoraAtencion3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado3.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
 
             columnHoraAtencion3.setCellFactory(getCellHoraAtencion());
+            columnHoraAtencion3.setGraphic(HoraLabel);
             columnCitas3.setCellFactory(getCellCitas(jcbDoctor3));
+            columnCitas3.setGraphic(CitasLabel);
+            columnCitas3.setText("");
             columnEstado3.setCellFactory(getCellEstado(jcbDoctor3));
         }
     }
 
     void initTableView4() {
         if (jcbDoctor4.getSelectionModel().getSelectedItem() != doctorNinguno) {
+            Label HoraLabel = new Label("Hora");
+            HoraLabel.setStyle("-fx-text-fill: white");
+            Label CitasLabel = new Label("Citas");
+            CitasLabel.setStyle("-fx-text-fill: white");
             columnHoraAtencion4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnCitas4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
             columnEstado4.setCellValueFactory(new PropertyValueFactory<HoraAtencion, HoraAtencion>("horaatencion"));
 
             columnHoraAtencion4.setCellFactory(getCellHoraAtencion());
+            columnHoraAtencion4.setGraphic(HoraLabel);
             columnCitas4.setCellFactory(getCellCitas(jcbDoctor4));
+            columnCitas4.setGraphic(CitasLabel);
+            columnCitas4.setText("");
             columnEstado4.setCellFactory(getCellEstado(jcbDoctor4));
         }
     }
@@ -421,6 +452,7 @@ public class CitaVerController implements Initializable {
                     } else {
                         Label label = new Label();
                         label.setFont(new Font("Times New Roman Bold", 13));
+                        label.setStyle("-fx-text-fill: white");
                         label.setText(item.getHora() + " " + item.getAbreviatura());
                         setGraphic(label);
                         setText("");
@@ -451,28 +483,39 @@ public class CitaVerController implements Initializable {
                                 + "order by minuto asc").getResultList();
 
                         FlowPane fp = new FlowPane();
-                        fp.setStyle("");
+                        fp.setStyle("-fx-background-color: #b2caf7");
                         boolean isOcupado = false;
                         double tam = 48.16;
                         for (Cita cita : listCita) {
                             isOcupado = cita.getPaciente() == null;
                             if (isOcupado) {
-                                fp.setStyle("-fx-background-color:YELLOW");
+                                Label ocupadoLabel = new Label("OCUPADO");
+                                ocupadoLabel.setFont(new Font("Times New Roman Bold", 22));
+                                ocupadoLabel.setStyle("-fx-text-fill: red");
+                                fp.setStyle("-fx-background-color: #b2caf7");
+                                fp.setAlignment(Pos.CENTER);
+
+                                fp.getChildren().add(ocupadoLabel);
                                 break;
                             }
                             JFXButton button = new JFXButton();
                             button.setUserData(cita);
                             button.setPrefWidth(110);
-                            button.setStyle("-fx-font-size: 10; -fx-background-color:#b6deb7; -fx-border-color:#000000");
+                            button.setStyle("-fx-font-size: 10; "
+                                    + "-fx-background-color:#06007d;"
+                                    + " -fx-border-color:#000000; "
+                                    + "-fx-text-fill: white; "
+                                    + " -fx-cursor: hand;");
                             button.setMaxHeight(9);
                             button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
                             button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event));
+                            FlowPane.setMargin(button, new Insets(1, 1, 1, 1));
                             fp.getChildren().add(button);
                         }
                         fp.setMinHeight(tam);
                         setGraphic(fp);
                         setText(null);
-                        setStyle("-fx-pref-height: 0px");
+                        setStyle("-fx-pref-height: 0px; -fx-background-color: #b2caf7");
                     }
                 }
 
@@ -505,24 +548,32 @@ public class CitaVerController implements Initializable {
                     } else {
                         int tamHightImag = 20;
                         int tamWidthImag = 20;
-                        
+
                         List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
-                            + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
-                            + "idhoraatencion = " + item.getIdhoraatencion() + " and "
-                            + "fechacita=" + "'" + oFecha.toString() + "' and"
-                            + " razon = 'OCUPADO'"
-                            + "order by minuto asc").getResultList();
+                                + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
+                                + "idhoraatencion = " + item.getIdhoraatencion() + " and "
+                                + "fechacita=" + "'" + oFecha.toString() + "' and"
+                                + " razon = 'OCUPADO'"
+                                + "order by minuto asc").getResultList();
+
+                        List<Cita> listCita = App.jpa.createQuery("select p from Cita p  where "
+                                + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
+                                + "idhoraatencion = " + item.getIdhoraatencion() + " and "
+                                + "fechacita=" + "'" + oFecha.toString() + "' and"
+                                + " razon != 'OCUPADO' "
+                                + " order by minuto asc").getResultList();
 
                         ImageView addIcon = newImage("add-2.png", tamHightImag, tamWidthImag, item);
                         addIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event));
                         addIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                         addIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
-                        addIcon.setVisible(listCitaOcupada.isEmpty());
+                        addIcon.setVisible(listCitaOcupada.isEmpty() && listCita.size() < 4);
 
                         ImageView editIcon2 = newImage("block-2.png", tamHightImag, tamWidthImag, item);
-                        editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event,addIcon));
+                        editIcon2.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> guardarEliminarBloqueo(event, addIcon));
                         editIcon2.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagBlockMoved(event));
                         editIcon2.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagBlockFuera(event));
+                        editIcon2.setVisible(listCita.isEmpty());
 
                         VBox managebtn = new VBox(addIcon, editIcon2);
                         managebtn.setStyle("-fx-alignment:center");
@@ -830,6 +881,11 @@ public class CitaVerController implements Initializable {
     void cerrar() {
         oVerPacienteController.lockedPantalla();
         ((Stage) ap.getScene().getWindow()).close();
+    }
+
+    @FXML
+    void plata() {
+        Citapdf.ImprimirCita(jcbDoctor1.getSelectionModel().getSelectedItem(), oFecha);
     }
 
 }
