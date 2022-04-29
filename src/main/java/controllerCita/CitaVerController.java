@@ -642,6 +642,13 @@ public class CitaVerController implements Initializable {
         return cellFoctory;
     }
 
+    @FXML
+    void mostrarImprimir() {
+        ImprimirHorarioController oImprimirHorarioController = (ImprimirHorarioController) mostrarVentana(CitaAgregarController.class, "ImprimirHorario");
+        oImprimirHorarioController.setController(odc);
+        lockedPantalla();
+    }
+
     public void lockedPantalla() {
         if (ap.isDisable()) {
             ap.setDisable(false);
@@ -683,6 +690,18 @@ public class CitaVerController implements Initializable {
     void imagFeriadoFuera(MouseEvent event) {
         ImageView imag = (ImageView) event.getSource();
         imag.setImage(new Image(getClass().getResource("/imagenes/feriado-1.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagHorarioMoved(MouseEvent event) {
+        ImageView imag = (ImageView) event.getSource();
+        imag.setImage(new Image(getClass().getResource("/imagenes/horario-2.png").toExternalForm()));
+    }
+
+    @FXML
+    void imagHorarioFuera(MouseEvent event) {
+        ImageView imag = (ImageView) event.getSource();
+        imag.setImage(new Image(getClass().getResource("/imagenes/horario-1.png").toExternalForm()));
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {
@@ -882,10 +901,4 @@ public class CitaVerController implements Initializable {
         oVerPacienteController.lockedPantalla();
         ((Stage) ap.getScene().getWindow()).close();
     }
-
-    @FXML
-    void plata() {
-        Citapdf.ImprimirCita(jcbDoctor1.getSelectionModel().getSelectedItem(), oFecha);
-    }
-
 }
