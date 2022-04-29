@@ -26,6 +26,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TableView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -65,6 +66,7 @@ public class CitaModificarController implements Initializable {
     Cita Cita;
     AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
     TableView<HoraAtencion> table;
+    Alert alert = new Alert(Alert.AlertType.WARNING);
     private double x = 0;
     private double y = 0;
 
@@ -77,15 +79,39 @@ public class CitaModificarController implements Initializable {
     @FXML
     void modificarCita() {
         if (isComplete()) {
-            Cita.setHoraatencion(jcbHora.getSelectionModel().getSelectedItem());
-            Cita.setMinuto(jtfminuto.getText());
-            Cita.setRazon(jtfrazon.getText());
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(Cita);
-            App.jpa.getTransaction().commit();
-            oCitaVerController.actualizarListMesCita();
-            table.refresh();
-            cerrar();
+            List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p where "
+                    + " idhoraatencion= " + jcbHora.getSelectionModel().getSelectedItem().getIdhoraatencion()
+                    + "and  fechacita= " + " '" + Cita.getFechacita() + "' "
+                    + "and  iddoctor= " + Cita.getDoctor().getIddoctor()
+                    + "and razon='OCUPADO'").getResultList();
+
+            List<Cita> listCita4 = App.jpa.createQuery("select p from Cita p where "
+                    + " idhoraatencion= " + jcbHora.getSelectionModel().getSelectedItem().getIdhoraatencion()
+                    + "and  fechacita= " + " '" + Cita.getFechacita() + "' "
+                    + "and  iddoctor= " + Cita.getDoctor().getIddoctor()).getResultList();
+            if (listCitaOcupada.isEmpty()) {
+                if (listCita4.size() < 4) {
+                    Cita.setHoraatencion(jcbHora.getSelectionModel().getSelectedItem());
+                    Cita.setMinuto(jtfminuto.getText());
+                    Cita.setRazon(jtfrazon.getText());
+                    App.jpa.getTransaction().begin();
+                    App.jpa.persist(Cita);
+                    App.jpa.getTransaction().commit();
+                    oCitaVerController.actualizarListMesCita();
+                    table.refresh();
+                    cerrar();
+                } else {
+                    alert.setHeaderText(null);
+                    alert.setTitle(null);
+                    alert.setContentText("Esa hora está al máximo de atenciones");
+                    alert.showAndWait();
+                }
+            }else{
+                alert.setHeaderText(null);
+                    alert.setTitle(null);
+                    alert.setContentText("El Dr. está ocupado a las "+listCitaOcupada.get(0).getHoraatencion().getHora()+":00 "+listCitaOcupada.get(0).getHoraatencion().getAbreviatura());
+                    alert.showAndWait();
+            }
         }
     }
 
