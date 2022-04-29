@@ -26,6 +26,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -116,6 +117,7 @@ public class CitaVerController implements Initializable {
     String colorBlue = "-fx-background-color:BLUE; -fx-border-color: #000000";
     String colorYellow = "-fx-background-color: #337ab7; -fx-border-color: #000000";
     Doctor doctorNinguno;
+    List<Cita> listCitaRaiz;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -152,6 +154,7 @@ public class CitaVerController implements Initializable {
         jcbAnio.getSelectionModel().select(LocalDate.now().getYear() + "");
         changueMes();
         lblfecha.setText(getNombreDia(oFecha.getDayOfWeek().getValue()) + " " + oFecha.getDayOfMonth() + " DE " + getMesNum(oFecha.getMonthValue()));
+        actualizarListMesCita();
         refreshTable();
     }
 
@@ -207,6 +210,12 @@ public class CitaVerController implements Initializable {
         jcbMes.getSelectionModel().select(getMesNum(LocalDate.now().getMonthValue()));
     }
 
+    @FXML
+    public void actualizarListMesCita() {
+        listCitaRaiz = App.jpa.createQuery("select p from Cita p where EXTRACT(year from fechacita)=" + jcbAnio.getSelectionModel().getSelectedItem()
+                + " order by minuto asc").getResultList();
+    }
+
     void cargarAnio() {
         ObservableList<String> ANIO = FXCollections.observableArrayList("2022", "2023", "2024", "2025");
         jcbAnio.setItems(ANIO);
@@ -216,14 +225,15 @@ public class CitaVerController implements Initializable {
     @FXML
     void changueMes() {
         mostrarDias(numeroDeDiasMes(jcbMes.getSelectionModel().getSelectedItem()));
+        actualizarListMesCita();
     }
 
     void initTable() {
 
         initTableView1();
         initTableView2();
-        initTableView3();
-        initTableView4();
+       initTableView3();
+       initTableView4();
     }
 
     void refreshTable() {
@@ -476,12 +486,18 @@ public class CitaVerController implements Initializable {
                         setGraphic(null);
                         setText(null);
                     } else {
-                        List<Cita> listCita = App.jpa.createQuery("select p from Cita p  where "
+                        List<Cita> listCita = new ArrayList<>();
+                        /*listCita = App.jpa.createQuery("select p from Cita p  where "
                                 + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
                                 + "idhoraatencion = " + item.getIdhoraatencion() + " and "
                                 + "fechacita=" + "'" + oFecha.toString() + "'"
-                                + "order by minuto asc").getResultList();
-
+                                + "order by minuto asc").getResultList();*/
+                        for (Cita citaRaiz : listCitaRaiz) {
+                            if (citaRaiz.getDoctor() == jcb.getSelectionModel().getSelectedItem() && citaRaiz.getHoraatencion() == item
+                                    && citaRaiz.getFechacita().isEqual(oFecha)) {
+                                listCita.add(citaRaiz);
+                            }
+                        }
                         FlowPane fp = new FlowPane();
                         fp.setStyle("-fx-background-color: #b2caf7");
                         boolean isOcupado = false;
@@ -548,20 +564,32 @@ public class CitaVerController implements Initializable {
                     } else {
                         int tamHightImag = 20;
                         int tamWidthImag = 20;
-
-                        List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
+                        List<Cita> listCitaOcupada = new ArrayList<>();
+                        /*  listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
                                 + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
                                 + "idhoraatencion = " + item.getIdhoraatencion() + " and "
                                 + "fechacita=" + "'" + oFecha.toString() + "' and"
                                 + " razon = 'OCUPADO'"
-                                + "order by minuto asc").getResultList();
-
-                        List<Cita> listCita = App.jpa.createQuery("select p from Cita p  where "
+                                + "order by minuto asc").getResultList();*/
+                        for (Cita citaRaiz : listCitaRaiz) {
+                            if (citaRaiz.getDoctor() == jcb.getSelectionModel().getSelectedItem() && citaRaiz.getHoraatencion() == item
+                                    && citaRaiz.getFechacita().isEqual(oFecha) && citaRaiz.getRazon().equals("OCUPADO")) {
+                                listCitaOcupada.add(citaRaiz);
+                            }
+                        }
+                        List<Cita> listCita = new ArrayList<>();
+                        /*listCita = App.jpa.createQuery("select p from Cita p  where "
                                 + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
                                 + "idhoraatencion = " + item.getIdhoraatencion() + " and "
                                 + "fechacita=" + "'" + oFecha.toString() + "' and"
                                 + " razon != 'OCUPADO' "
-                                + " order by minuto asc").getResultList();
+                                + " order by minuto asc").getResultList();*/
+                        for (Cita citaRaiz : listCitaRaiz) {
+                            if (citaRaiz.getDoctor() == jcb.getSelectionModel().getSelectedItem() && citaRaiz.getHoraatencion() == item
+                                    && citaRaiz.getFechacita().isEqual(oFecha) && !citaRaiz.getRazon().equals("OCUPADO")) {
+                                listCita.add(citaRaiz);
+                            }
+                        }
 
                         ImageView addIcon = newImage("add-2.png", tamHightImag, tamWidthImag, item);
                         addIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarAgregar(event, getTableView()));
@@ -598,23 +626,33 @@ public class CitaVerController implements Initializable {
                 void guardarEliminarBloqueo(MouseEvent event, ImageView addicon) {
                     ImageView buton = (ImageView) event.getSource();
                     HoraAtencion oHora = (HoraAtencion) buton.getUserData();
-                    List<Cita> listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
+                    List<Cita> listCitaOcupada = new ArrayList<>();
+                    /*listCitaOcupada = App.jpa.createQuery("select p from Cita p  where "
                             + "iddoctor=" + jcb.getSelectionModel().getSelectedItem().getIddoctor() + " and "
                             + "idhoraatencion = " + oHora.getIdhoraatencion() + " and "
                             + "fechacita=" + "'" + oFecha.toString() + "' and"
                             + " razon = 'OCUPADO'"
-                            + "order by minuto asc").getResultList();
+                            + "order by minuto asc").getResultList();*/
+
+                    for (Cita citaRaiz : listCitaRaiz) {
+                        if (citaRaiz.getDoctor() == jcb.getSelectionModel().getSelectedItem() && citaRaiz.getHoraatencion() == oHora
+                                && citaRaiz.getFechacita().isEqual(oFecha) && citaRaiz.getRazon().equals("OCUPADO")) {
+                            listCitaOcupada.add(citaRaiz);
+                        }
+                    }
 
                     if (listCitaOcupada.isEmpty()) {
                         Cita ocita = new Cita(jcb.getSelectionModel().getSelectedItem(), oHora, oFecha, "OCUPADO");
                         App.jpa.getTransaction().begin();
                         App.jpa.persist(ocita);
                         App.jpa.getTransaction().commit();
+                        actualizarListMesCita();
                         getTableView().refresh();
                     } else {
                         App.jpa.getTransaction().begin();
                         App.jpa.remove(listCitaOcupada.get(0));
                         App.jpa.getTransaction().commit();
+                        actualizarListMesCita();
                         getTableView().refresh();
                     }
                 }

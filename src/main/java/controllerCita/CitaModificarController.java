@@ -80,10 +80,11 @@ public class CitaModificarController implements Initializable {
             Cita.setHoraatencion(jcbHora.getSelectionModel().getSelectedItem());
             Cita.setMinuto(jtfminuto.getText());
             Cita.setRazon(jtfrazon.getText());
-            table.refresh();
             App.jpa.getTransaction().begin();
             App.jpa.persist(Cita);
             App.jpa.getTransaction().commit();
+            oCitaVerController.actualizarListMesCita();
+            table.refresh();
             cerrar();
         }
     }
@@ -100,7 +101,8 @@ public class CitaModificarController implements Initializable {
         App.jpa.getTransaction().begin();
         App.jpa.remove(Cita);
         App.jpa.getTransaction().commit();
-        oCitaVerController.initTable();
+        oCitaVerController.actualizarListMesCita();
+        table.refresh();
         cerrar();
     }
 
