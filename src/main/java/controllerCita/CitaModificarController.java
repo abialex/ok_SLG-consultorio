@@ -74,7 +74,7 @@ public class CitaModificarController implements Initializable {
 
     @FXML
     void modificarCita() {
-        if (isValid()) {
+        if (isComplete()) {
             Cita.setHoraatencion(jcbHora.getSelectionModel().getSelectedItem());
             Cita.setMinuto(jtfminuto.getText());
             Cita.setRazon(jtfrazon.getText());
@@ -149,14 +149,29 @@ public class CitaModificarController implements Initializable {
         }
     }
 
-    boolean isValid() {
-        return true;
-    }
-
     @FXML
     void cerrar() {
         oCitaVerController.lockedPantalla();
         ((Stage) ap.getScene().getWindow()).close();
+    }
+    
+     boolean isComplete() {
+        boolean aux = true;
+        if (jtfminuto.getText().trim().length() == 0) {
+            jtfminuto.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfminuto.setStyle("");
+        }
+
+        if (jtfrazon.getText().trim().length() == 0) {
+            jtfrazon.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfrazon.setStyle("");
+        }
+
+        return aux;
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {
