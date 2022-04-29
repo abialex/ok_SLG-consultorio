@@ -55,6 +55,14 @@
                                 <Font name="System Bold" size="24.0" />
                             </font>
                         </Label>
+                  <ImageView fitHeight="46.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1">
+                     <GridPane.margin>
+                        <Insets bottom="10.0" right="535.0" />
+                     </GridPane.margin>
+                     <image>
+                        <Image url="@../imagenes/cita%20add.png" />
+                     </image>
+                  </ImageView>
                     </children>
                 </GridPane>
             </top>
