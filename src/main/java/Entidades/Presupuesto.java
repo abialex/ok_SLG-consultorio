@@ -22,23 +22,27 @@ public class Presupuesto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idpresupuesto;
     
-    @JoinColumn(insertable = true,updatable = true,name="idpersona",nullable = false)
+    @JoinColumn(insertable = true,updatable = true,name="idhistoria_clinica",nullable = false)
     @ManyToOne
-    private Persona persona;
+    private Historia_clinica historia_clinica;
     
-    @Column(name = "descripcion", nullable = false)
-    private String descripcion;
+    @Column(name = "monto_total", nullable = false)
+    private float  monto_total;
     
-    @Column(name = "monto", nullable = false)
-    private float monto;
+    @Column(name = "activo", nullable = false)
+    private boolean activo;
+    
+    @Column(name = "flag", nullable = false)
+    private boolean flag;
 
     public Presupuesto() {
     }
 
-    public Presupuesto(Persona persona, String descripcion, float monto) {
-        this.persona = persona;
-        this.descripcion = descripcion;
-        this.monto = monto;
+    public Presupuesto(Historia_clinica historia_clinica, int monto_total, boolean activo, boolean flag) {
+        this.historia_clinica = historia_clinica;
+        this.monto_total = monto_total;
+        this.activo = activo;
+        this.flag = flag;
     }
     
     public int getIdpresupuesto() {
@@ -49,36 +53,44 @@ public class Presupuesto {
         this.idpresupuesto = idpresupuesto;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public Historia_clinica getHistoria_clinica() {
+        return historia_clinica;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setHistoria_clinica(Historia_clinica historia_clinica) {
+        this.historia_clinica = historia_clinica;
     }
 
-    public String getDescripcion() {
-        return descripcion;
+    public float getMonto_total() {
+        return monto_total;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public void setMonto_total(float monto_total) {
+        this.monto_total = monto_total;
     }
 
-    public float getMonto() {
-        return monto;
+    public boolean isActivo() {
+        return activo;
     }
 
-    public void setMonto(float monto) {
-        this.monto = monto;
+    public void setActivo(boolean activo) {
+        this.activo = activo;
     }
-    
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
     public Presupuesto getPresupuesto(){
         return this;
     }
+
+
     
     
-    
-    
-    
+     
 }

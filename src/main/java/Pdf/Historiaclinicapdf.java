@@ -10,6 +10,7 @@ import Entidades.Paciente_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
+import Entidades.Detalle_Presupuesto;
 import Entidades.Presupuesto;
 import Entidades.Tratamiento;
 import com.itextpdf.io.font.FontConstants;
@@ -45,6 +46,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import com.itextpdf.layout.element.Image;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 /**
@@ -54,6 +56,7 @@ import javax.swing.JOptionPane;
 public class Historiaclinicapdf {
 
     public static void ImprimirHistoriaClinica(Persona opersona) {
+        List<Detalle_Presupuesto> olistDetallePresupuesto = new ArrayList<>();
         Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
         List<Paciente_Enfermedad> listPaciente_Enfermedad = App.jpa.createQuery("select p from Paciente_Enfermedad p where idpaciente=" + opaciente.getIdpaciente()).getResultList();
@@ -62,8 +65,10 @@ public class Historiaclinicapdf {
         List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
         List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
         List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + opersona.getIdpersona() + " and flag = false order by idtratamiento ASC").setMaxResults(10).getResultList();
-        List<Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Presupuesto p where idpersona= " + opersona.getIdpersona() + " order by idpresupuesto ASC").setMaxResults(10).getResultList();
-
+        List<Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
+        if (!olistPresupuesto.isEmpty()) {
+            olistDetallePresupuesto = App.jpa.createQuery("select p from Detalle_Presupuesto p where idpresupuesto= " + olistPresupuesto.get(0).getIdpresupuesto() + " order by iddetalle_presupuesto ASC").setMaxResults(10).getResultList();
+        }
         Period period = Period.between(opersona.getFechaNacimiento(), LocalDate.now());
         long edad = period.getYears();
 
@@ -384,16 +389,16 @@ public class Historiaclinicapdf {
         TablePresupuesto.addCell(new Cell().add(new Paragraph("C/U").setFont(bold).addStyle(styleTextCenter)));
         TablePresupuesto.addCell(new Cell().add(new Paragraph("MONTO").setFont(bold).addStyle(styleTextCenter)));
         float montoTotalPresupuesto = 0;
-        for (Presupuesto presupuesto : olistPresupuesto) {
+        for (Detalle_Presupuesto presupuesto : olistDetallePresupuesto) {
             TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getDescripcion()).addStyle(styleTextLeft)));
-            TablePresupuesto.addCell(new Cell().add(new Paragraph("5 F").addStyle(styleTextLeft)));
+            TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getCantidad() + "").addStyle(styleTextCenter)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getMonto() + "").addStyle(styleTextCenter)));
-            montoTotalPresupuesto = montoTotalPresupuesto + presupuesto.getMonto();
+            montoTotalPresupuesto = montoTotalPresupuesto + presupuesto.getMonto()*presupuesto.getCantidad();
         }
-        int contadorEspacioPresupuesto = 11 - olistPresupuesto.size();
+        int contadorEspacioPresupuesto = 11 - olistDetallePresupuesto.size();
         for (int i = 0; i < contadorEspacioPresupuesto; i++) {
             TablePresupuesto.addCell(new Cell().add(palabraEnBlancoLimpio.addStyle(styleTextCenter)));
-            TablePresupuesto.addCell(new Cell().add(new Paragraph("5 F").addStyle(styleTextLeft)));
+            TablePresupuesto.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
             //montoTotal = montoTotal + tratamiento.getMonto();
         }

@@ -13,7 +13,7 @@ import Entidades.Paciente_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
-import Entidades.Presupuesto;
+import Entidades.Detalle_Presupuesto;
 import Entidades.Tratamiento;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.kernel.color.Color;

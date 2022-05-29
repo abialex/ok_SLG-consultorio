@@ -5,8 +5,12 @@
 package controller;
 
 import Entidades.Persona;
+import Entidades.Detalle_Presupuesto;
+import Entidades.Historia_clinica;
+import Entidades.Paciente;
 import Entidades.Presupuesto;
 import Entidades.Tratamiento;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertConfirmarController;
@@ -14,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,6 +31,8 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -55,16 +62,19 @@ public class PresupuestoVerController implements Initializable {
     private AnchorPane ap;
 
     @FXML
-    private TableView<Presupuesto> tableTratamiento;
+    private TableView<Detalle_Presupuesto> tableTratamiento;
 
     @FXML
-    private TableColumn<Presupuesto, String> columnTratamiento;
+    private TableColumn<Detalle_Presupuesto, String> columnTratamiento;
 
     @FXML
-    private TableColumn<Presupuesto, Float> ColumnMonto;
+    private TableColumn<Detalle_Presupuesto, String> ColumnCantidad;
 
     @FXML
-    private TableColumn<Presupuesto, Presupuesto> ColumnEstado;
+    private TableColumn<Detalle_Presupuesto, Float> ColumnMonto;
+
+    @FXML
+    private TableColumn<Detalle_Presupuesto, Detalle_Presupuesto> ColumnEstado;
 
     @FXML
     private JFXTextField jtfDescripcion;
@@ -78,14 +88,22 @@ public class PresupuestoVerController implements Initializable {
     @FXML
     private Label lblMontototal;
 
+    @FXML
+    private JFXTextField jtfCantidad;
+
+    @FXML
+    private JFXButton btnGuardarPresupuesto, btnAgregar;
+
     Persona oPersona;
     double x = 0, y = 0;
     VerPacienteController oVerPacienteController;
-    ObservableList<Presupuesto> listPresupuesto = FXCollections.observableArrayList();
-    PresupuestoVerController odc= this;
+    ObservableList<Detalle_Presupuesto> listPresupuesto = FXCollections.observableArrayList();
+    PresupuestoVerController odc = this;
     AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
-    Presupuesto oPresupuestoEliminar;
-    
+    Detalle_Presupuesto oPresupuesto_detalleEliminar;
+    Presupuesto oPresupuesto;
+    Alert alert = new Alert(Alert.AlertType.WARNING);
+
     int indexEliminar;
 
     @Override
@@ -93,8 +111,26 @@ public class PresupuestoVerController implements Initializable {
         // TODO
     }
 
+    void getPresupuesto(Persona opersona) {
+        Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
+        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
+        List<Presupuesto> list_presupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
+        if (!list_presupuesto.isEmpty()) {
+            oPresupuesto = list_presupuesto.get(0);
+            btnGuardarPresupuesto.setDisable(!oPresupuesto.isActivo());
+            btnAgregar.setDisable(!oPresupuesto.isActivo());
+        } else {
+            oPresupuesto = new Presupuesto(oHistoriaclinica, 0, true, false);
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(oPresupuesto);
+            App.jpa.refresh(oPresupuesto);
+            App.jpa.getTransaction().commit();
+        }
+    }
+
     void setPersona(Persona opersona) {
         //Initialize
+        getPresupuesto(opersona);
         this.oPersona = opersona;
         lblnombre.setText(opersona.getNombres_apellidos());
         updateListaPresupuesto();
@@ -114,17 +150,34 @@ public class PresupuestoVerController implements Initializable {
             ap.setDisable(true);
         }
     }
+    @FXML
+    void cerrarPresupuesto() {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle("Info");
+        alert.setContentText("Una vez cerrado el guardado el presupuesto no se podrá modificar");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            oPresupuesto.setActivo(false);
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(oPresupuesto);
+            App.jpa.getTransaction().commit();
+            cerrar();
+        }
+    }
 
     @FXML
     void guardarPresupuesto() {
         if (isCompleto()) {
-            Presupuesto opresupuesto = new Presupuesto(oPersona,
+            Detalle_Presupuesto opresupuesto = new Detalle_Presupuesto(oPresupuesto,
                     jtfDescripcion.getText(),
+                    Integer.parseInt(jtfCantidad.getText()),
                     Float.parseFloat(jtfMonto.getText()));
-            oPersona.setPresupuestoTotal(oPersona.getPresupuestoTotal()+opresupuesto.getMonto());
+            oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() + Float.parseFloat(jtfMonto.getText()) * Float.parseFloat(jtfCantidad.getText()));
             App.jpa.getTransaction().begin();
             App.jpa.persist(opresupuesto);
             App.jpa.persist(oPersona);
+            App.jpa.persist(oPresupuesto);
             App.jpa.getTransaction().commit();
             updateListaPresupuesto();
             limpiar();
@@ -136,29 +189,30 @@ public class PresupuestoVerController implements Initializable {
 
     @FXML
     void updateListaPresupuesto() {
-        List<Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Presupuesto p where idpersona= " + oPersona.getIdpersona() + " order by idpresupuesto DESC").setMaxResults(10).getResultList();
+        List<Detalle_Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Detalle_Presupuesto p where idpresupuesto= " + oPresupuesto.getIdpresupuesto() + " order by idpresupuesto DESC").setMaxResults(10).getResultList();
         listPresupuesto.clear();
-        for (Presupuesto opresupuesto : olistPresupuesto) {
+        for (Detalle_Presupuesto opresupuesto : olistPresupuesto) {
             listPresupuesto.add(opresupuesto);
         }
         updateMontoAviso(olistPresupuesto);
     }
 
-    void updateMontoAviso(List<Presupuesto> list) {
+    void updateMontoAviso(List<Detalle_Presupuesto> list) {
         float acumMontoTotal = 0;
-        for (Presupuesto opresupuesto : list) {
-            acumMontoTotal = acumMontoTotal + opresupuesto.getMonto();
+        for (Detalle_Presupuesto opresupuesto : list) {
+            acumMontoTotal = acumMontoTotal + opresupuesto.getMonto() * opresupuesto.getCantidad();
         }
         lblMontototal.setText(acumMontoTotal + "");
     }
 
     void initTable() {
-        columnTratamiento.setCellValueFactory(new PropertyValueFactory<Presupuesto, String>("descripcion"));
-        ColumnMonto.setCellValueFactory(new PropertyValueFactory<Presupuesto, Float>("monto"));
-        ColumnEstado.setCellValueFactory(new PropertyValueFactory<Presupuesto, Presupuesto>("presupuesto"));
+        ColumnCantidad.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, String>("cantidad"));
+        columnTratamiento.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, String>("descripcion"));
+        ColumnMonto.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Float>("monto"));
+        ColumnEstado.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Detalle_Presupuesto>("DetallePresupuesto"));
 
         ColumnMonto.setCellFactory(column -> {
-            TableCell<Presupuesto, Float> cell = new TableCell<Presupuesto, Float>() {
+            TableCell<Detalle_Presupuesto, Float> cell = new TableCell<Detalle_Presupuesto, Float>() {
                 @Override
                 protected void updateItem(Float item, boolean empty) {
                     super.updateItem(item, empty);
@@ -177,12 +231,12 @@ public class PresupuestoVerController implements Initializable {
             return cell;
         });
 
-        Callback<TableColumn<Presupuesto, Presupuesto>, TableCell<Presupuesto, Presupuesto>> cellFoctory = (TableColumn<Presupuesto, Presupuesto> param) -> {
+        Callback<TableColumn<Detalle_Presupuesto, Detalle_Presupuesto>, TableCell<Detalle_Presupuesto, Detalle_Presupuesto>> cellFoctory = (TableColumn<Detalle_Presupuesto, Detalle_Presupuesto> param) -> {
             // make cell containing buttons
-            final TableCell<Presupuesto, Presupuesto> cell = new TableCell<Presupuesto, Presupuesto>() {
+            final TableCell<Detalle_Presupuesto, Detalle_Presupuesto> cell = new TableCell<Detalle_Presupuesto, Detalle_Presupuesto>() {
 
                 @Override
-                public void updateItem(Presupuesto item, boolean empty) {
+                public void updateItem(Detalle_Presupuesto item, boolean empty) {
                     super.updateItem(item, empty);
                     //that cell created only on non-empty rows                    
                     if (empty) {
@@ -201,7 +255,7 @@ public class PresupuestoVerController implements Initializable {
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarEliminar(event));
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarMoved(event));
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarFuera(event));
-                        //deleteIcon.setText("Eliminar");
+                        deleteIcon.setVisible(oPresupuesto.isActivo());
 
                         ImageView editIcon = new ImageView(new Image(getClass().getResource("/imagenes/modify-1.png").toExternalForm()));
                         editIcon.setFitHeight(tamHightImag);
@@ -213,6 +267,7 @@ public class PresupuestoVerController implements Initializable {
                         editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarModificar(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
+                        editIcon.setVisible(oPresupuesto.isActivo());
 
                         HBox managebtn = new HBox(editIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
@@ -236,8 +291,8 @@ public class PresupuestoVerController implements Initializable {
 
                 void mostrarEliminar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    Presupuesto opresupuesto = (Presupuesto) imag.getUserData();
-                    oPresupuestoEliminar = opresupuesto;
+                    Detalle_Presupuesto opresupuesto = (Detalle_Presupuesto) imag.getUserData();
+                    oPresupuesto_detalleEliminar = opresupuesto;
                     oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
                     oAlertConfimarController.setController(odc);
                     oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar \n el presupuesto?");
@@ -273,9 +328,9 @@ public class PresupuestoVerController implements Initializable {
 
     public void eliminar() {
         if (indexEliminar != -1) {
-            oPersona.setPresupuestoTotal(oPersona.getPresupuestoTotal() - oPresupuestoEliminar.getMonto());
+            oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() - oPresupuesto_detalleEliminar.getMonto() * oPresupuesto_detalleEliminar.getCantidad());
             App.jpa.getTransaction().begin();
-            App.jpa.remove(oPresupuestoEliminar);
+            App.jpa.remove(oPresupuesto_detalleEliminar);
             App.jpa.getTransaction().commit();
             listPresupuesto.remove(indexEliminar);
             updateListaPresupuesto();
@@ -304,12 +359,21 @@ public class PresupuestoVerController implements Initializable {
         } else {
             jtfMonto.setStyle("");
         }
+
+        if (jtfCantidad.getText().trim().length() == 0) {
+            jtfCantidad.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jtfCantidad.setStyle("");
+        }
         return aux;
     }
 
     void limpiar() {
+        jtfDescripcion.setText("");
         jtfMonto.setText("");
         jtfMonto.setText("");
+        jtfCantidad.setText("");
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {
@@ -344,6 +408,5 @@ public class PresupuestoVerController implements Initializable {
         stage.show();
         return loader.getController();
     }
-    
 
 }

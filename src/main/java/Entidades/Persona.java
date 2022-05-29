@@ -59,9 +59,6 @@ public class Persona {
     @Column(name = "tutorTelefono", nullable = true)
     private String tutorTelefono;
     
-    @Column(name = "presupuestoTotal", nullable = true)
-    private float presupuestoTotal;
-    
     @Column(name = "", nullable = false)
     private boolean flag;
 
@@ -77,7 +74,6 @@ public class Persona {
         this.lugar_de_procedencia = lugar_de_procedencia;
         this.ocupacion = ocupacion;
         this.telefono = telefono;
-        this.presupuestoTotal = presupuesto;
 
     }
 
@@ -190,14 +186,6 @@ public class Persona {
         return this.nombres_apellidos;
     }
 
-    public float getPresupuestoTotal() {
-        return presupuestoTotal;
-    }
-
-    public void setPresupuestoTotal(float presupuestoTotal) {
-        this.presupuestoTotal = presupuestoTotal;
-    }
-    
     public Paciente getPaciente(){
         List<Paciente> listpaciente=App.jpa.createQuery("select p from Paciente p where idpersona="+idpersona).getResultList();
         return listpaciente.get(0);
