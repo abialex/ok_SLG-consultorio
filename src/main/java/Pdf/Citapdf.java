@@ -136,7 +136,7 @@ public class Citapdf {
 
         Image imgUp = null;
         try {
-            imgUp = new Image(ImageDataFactory.create("images\\logoUp.png"));
+            imgUp = new Image(ImageDataFactory.create("images\\logoUp.jpg"));
         } catch (MalformedURLException ex) {
             Logger.getLogger(Citapdf.class.getName()).log(Level.SEVERE, null, ex);
         }
