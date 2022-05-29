@@ -4,7 +4,10 @@
  */
 package controller;
 
+import Entidades.Historia_clinica;
+import Entidades.Paciente;
 import Entidades.Persona;
+import Entidades.Presupuesto;
 import Pdf.Historiaclinicapdf;
 import Util.FileImagUtil;
 import com.jfoenix.controls.JFXTextField;
@@ -31,6 +34,7 @@ import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -79,6 +83,7 @@ public class VerPacienteController implements Initializable {
     AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
     Persona oPersonaEliminar;
     int indexEliminar;
+    Alert alert = new Alert(Alert.AlertType.WARNING);
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -318,15 +323,25 @@ public class VerPacienteController implements Initializable {
                     ImageView buton = (ImageView) event.getSource();
                     for (Persona opersona : listPersona) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
-                            CajaVerController oCajaVerController = (CajaVerController) mostrarVentana(CajaVerController.class, "CajaVer");
-                            oCajaVerController.setPersona(opersona);
-                            oCajaVerController.setController(odc);
-                            lockedPantalla();
+                            Presupuesto opresupuesto = getPresupuesto(opersona);
+                            if (opresupuesto.isActivo()) {
+                                alert.setHeaderText(null);
+                                alert.setTitle("Tratamiento");
+                                alert.setContentText("No tiene presupuesto finalizado");
+                                alert.showAndWait();
+
+                            } else {
+                                CajaVerController oCajaVerController = (CajaVerController) mostrarVentana(CajaVerController.class, "CajaVer");
+                                oCajaVerController.setPersona(opersona, opresupuesto);
+                                oCajaVerController.setController(odc);
+                                lockedPantalla();
+
+                            }
                             break;
                         }
                     }
                 }
-                
+
                 void mostrarPresupuesto(MouseEvent event) {
                     ImageView buton = (ImageView) event.getSource();
                     for (Persona opersona : listPersona) {
@@ -398,7 +413,7 @@ public class VerPacienteController implements Initializable {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/imagenes/money-1.png").toExternalForm()));
                 }
-                
+
                 private void imagPresupuestoMoved(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     imag.setImage(new Image(getClass().getResource("/imagenes/presupuesto-2.png").toExternalForm()));
@@ -515,6 +530,19 @@ public class VerPacienteController implements Initializable {
         CitaVerController oCitaVerController = (CitaVerController) mostrarVentana(CitaVerController.class, "CitaVer");
         oCitaVerController.setController(odc);
         lockedPantalla();
+    }
+
+    Presupuesto getPresupuesto(Persona opersona) {
+        Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
+        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
+        List<Presupuesto> list_presupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
+        if (!list_presupuesto.isEmpty()) {
+            return list_presupuesto.get(0);
+        } else {
+            Presupuesto opre = new Presupuesto();
+            opre.setActivo(false);
+            return opre;
+        }
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {

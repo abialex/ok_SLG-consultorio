@@ -5,8 +5,10 @@
 package controller;
 
 import Entidades.Persona;
+import Entidades.Presupuesto;
 import Entidades.Tratamiento;
 import Pdf.Historiaclinicapdf;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertConfirmarController;
@@ -83,7 +85,10 @@ public class CajaVerController implements Initializable {
     private JFXComboBox<String> jcbCancelado;
 
     @FXML
-    private Label lblnombre, lblMontototal, lblAviso;
+    private Label lblnombre, lblMontototal, lblAviso, lblAvisoPresupuesto;
+
+    @FXML
+    private JFXButton btnAgregar;
 
     double x = 0, y = 0;
     Persona oPersona;
@@ -95,6 +100,7 @@ public class CajaVerController implements Initializable {
     int indexEliminar;
     AlertController oAlertController = new AlertController();
     VerPacienteController oVerPacienteController;
+    Presupuesto oPresupuesto;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -123,8 +129,10 @@ public class CajaVerController implements Initializable {
         }
     }
 
-    void setPersona(Persona opersona) {
+    void setPersona(Persona opersona, Presupuesto opresupuesto) {
         //Initialize
+        oPresupuesto = opresupuesto;
+        lblMontototal.setText(oPresupuesto.getMonto_total() + "");
         this.oPersona = opersona;
         lblnombre.setText(opersona.getNombres_apellidos());
         updateListaTratamiento();
@@ -154,8 +162,7 @@ public class CajaVerController implements Initializable {
             acumMontoTotal = acumMontoTotal + otratamiento.getMonto();
             aviso = aviso + (otratamiento.isCancelado() ? 0 : 1);
         }
-        lblAviso.setText(aviso == 0 ? "No debe" : "Debe " + aviso + " tratamiento(s)");
-        lblMontototal.setText(acumMontoTotal + "");
+        lblAviso.setText(aviso == 0 ? "No debe" : "Debe " + aviso + " tratamiento(s)"); 
     }
 
     void initRestricciones() {
@@ -353,7 +360,6 @@ public class CajaVerController implements Initializable {
     void setStagePrincipall(Stage aThis) {
         this.stagePrincipal = aThis;
     }
-
 
     public Object mostrarVentana(Class generico, String nameFXML) {
         FXMLLoader loader = new FXMLLoader();
