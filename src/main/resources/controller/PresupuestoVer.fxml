@@ -32,9 +32,9 @@
                <children>
                   <TableView fx:id="tableTratamiento" prefHeight="280.0" prefWidth="656.0" GridPane.rowIndex="1">
                      <columns>
-                        <TableColumn fx:id="columnTratamiento" prefWidth="429.0" text="Tratamiento" />
-                        <TableColumn fx:id="ColumnMonto" minWidth="0.0" prefWidth="75.0" text="Monto" />
-                        <TableColumn fx:id="ColumnCantidad" prefWidth="75.0" text="Cantidad" />
+                        <TableColumn fx:id="columnTratamiento" prefWidth="429.0" sortable="false" text="Tratamiento" />
+                        <TableColumn fx:id="ColumnMonto" minWidth="0.0" prefWidth="75.0" sortable="false" text="Monto" />
+                        <TableColumn fx:id="ColumnCantidad" prefWidth="75.0" sortable="false" text="Cantidad" />
                         <TableColumn fx:id="ColumnEstado" prefWidth="75.0" />
                      </columns>
                      <GridPane.margin>
@@ -56,7 +56,7 @@
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="350.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="30.0" />
                               <ColumnConstraints hgrow="SOMETIMES" maxWidth="218.0" minWidth="10.0" prefWidth="30.0" />
-                              <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="50.0" />
+                              <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="201.0" minWidth="10.0" prefWidth="50.0" />
                            </columnConstraints>
                            <rowConstraints>
                               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -75,7 +75,10 @@
                               <JFXButton fx:id="btnAgregar" onAction="#guardarPresupuesto" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Agregar" GridPane.columnIndex="3">
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
-                                 </cursor></JFXButton>
+                                 </cursor>
+                                 <GridPane.margin>
+                                    <Insets right="5.0" />
+                                 </GridPane.margin></JFXButton>
                               <JFXTextField fx:id="jtfCantidad" labelFloat="true" promptText="Cantidad" GridPane.columnIndex="2">
                                  <GridPane.margin>
                                     <Insets bottom="5.0" left="5.0" right="5.0" />
@@ -116,9 +119,9 @@
                   </GridPane>
                   <GridPane GridPane.rowIndex="2">
                      <columnConstraints>
-                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="574.0" minWidth="10.0" prefWidth="209.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="328.0" minWidth="10.0" prefWidth="77.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="574.0" minWidth="10.0" prefWidth="345.0" />
+                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="574.0" minWidth="10.0" prefWidth="184.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="328.0" minWidth="10.0" prefWidth="78.0" />
+                        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="574.0" minWidth="10.0" prefWidth="403.0" />
                      </columnConstraints>
                      <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -128,6 +131,9 @@
                            <font>
                               <Font name="System Bold" size="20.0" />
                            </font>
+                           <GridPane.margin>
+                              <Insets left="5.0" />
+                           </GridPane.margin>
                         </Label>
                         <Label fx:id="lblMontototal" text="999999" GridPane.columnIndex="1">
                            <font>
@@ -138,6 +144,9 @@
                            <cursor>
                               <Cursor fx:constant="HAND" />
                            </cursor>
+                           <GridPane.margin>
+                              <Insets right="5.0" />
+                           </GridPane.margin>
                         </JFXButton>
                      </children>
                   </GridPane>
