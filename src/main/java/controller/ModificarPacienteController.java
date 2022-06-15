@@ -83,6 +83,7 @@ public class ModificarPacienteController implements Initializable {
     @FXML ComboBox<String> jcbocupacion;
     @FXML ComboBox<String> jcbsexo;
     @FXML TextArea jtfmotivoconsulta;
+    @FXML TextField jtfInformeradiografico;    
     @FXML TextField jtftutornombre, jtftutordni, jtftutortelefono;
     @FXML TextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     @FXML JFXComboBox<Doctor> jcbDoctor;
@@ -314,6 +315,7 @@ public class ModificarPacienteController implements Initializable {
         jcbDoctor.getSelectionModel().select(oHistoria_Clinica.getDoctor().isFlag()? null: oHistoria_Clinica.getDoctor());
         
         jtfmotivoconsulta.setText(oHistoria_Clinica.getMotivoConsulta());
+        jtfInformeradiografico.setText(oHistoria_Clinica.getInformeRadiografico());
         
         jtfemergenciaNombre.setText(oPaciente.getEmergenciaNombre());
         jtfemergenciaParentesco.setText(oPaciente.getEmergenciaParentesco());
@@ -413,6 +415,7 @@ public class ModificarPacienteController implements Initializable {
         oPersona.setDomicilio(jtfDomicilio.getText());
 
         oHistoria_Clinica.setMotivoConsulta(jtfmotivoconsulta.getText());
+        oHistoria_Clinica.setInformeRadiografico(jtfInformeradiografico.getText());
         oHistoria_Clinica.setDoctor(jcbDoctor.getSelectionModel().getSelectedItem());
         
         oPaciente.setEmergenciaNombre(jtfemergenciaNombre.getText());

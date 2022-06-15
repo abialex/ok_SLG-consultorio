@@ -90,6 +90,8 @@ public class RegistrarPacienteController implements Initializable {
     @FXML
     private JFXTextArea jtaConsulta;
     @FXML
+    private JFXTextField jtfInformeradiografico;
+    @FXML
     private JFXTextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     @FXML
     private JFXTextField jtftutornombre, jtftutordni, jtftutortelefono;
@@ -150,9 +152,9 @@ public class RegistrarPacienteController implements Initializable {
         initRestricciones();
         cargarDoctor();
     }
-    
-    void cargarDoctor(){
-        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag = false and activo = true").getResultList();      
+
+    void cargarDoctor() {
+        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag = false and activo = true").getResultList();
         ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
         for (Doctor odoct : listDoctorG) {
             listDoctor.add(odoct);
@@ -195,7 +197,7 @@ public class RegistrarPacienteController implements Initializable {
 
             List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheck, opaciente);
             List<Paciente_Pregunta> Lista_preguntasPaciente = Paciente_relacionar_pregunta(listcheck, opaciente);
-            
+
             Historia_clinica ohistoria = new Historia_clinica(
                     opaciente,
                     jcbDoctor.getSelectionModel().getSelectedItem(),
@@ -213,7 +215,8 @@ public class RegistrarPacienteController implements Initializable {
                     jtaAltapaciente.getText().trim(),
                     jtaConsulta.getText().trim(),
                     LocalDate.now(),
-                    LocalDate.now());
+                    LocalDate.now(),
+                    jtfInformeradiografico.getText().trim());
             //GuardarPaciente
             App.jpa.getTransaction().begin();
             App.jpa.persist(opersona);
@@ -230,7 +233,7 @@ public class RegistrarPacienteController implements Initializable {
             App.jpa.getTransaction().commit();
             oVerPacienteController.updateListPersona();
             oVerPacienteController.selectAgregado();
-            File carpetaImages = new File("Archivos paciente/"+opersona.getNombres_apellidos());
+            File carpetaImages = new File("Archivos paciente/" + opersona.getNombres_apellidos());
             if (!carpetaImages.exists()) {
                 carpetaImages.mkdirs();
             }
@@ -303,7 +306,7 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     void setController(VerPacienteController aThis) {
-        this.oVerPacienteController=aThis;
+        this.oVerPacienteController = aThis;
         ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
     }
 
@@ -521,7 +524,7 @@ public class RegistrarPacienteController implements Initializable {
         } else {
             jtaConsulta.setStyle("");
         }
-        
+
         if (jcbDoctor.getSelectionModel().getSelectedItem() == null) {
             jcbDoctor.setStyle("-fx-border-color: #ff052b");
             aux = false;
@@ -550,6 +553,14 @@ public class RegistrarPacienteController implements Initializable {
         } else {
             jtfanio.setStyle("");
         }
+
+        if (jtfInformeradiografico.getText().trim().length() == 0) {
+            jtfInformeradiografico.setStyle("-fx-border-color: #ff052b");
+            auxfecha = false;
+        } else {
+            jtfInformeradiografico.setStyle("");
+        }
+
         boolean auxfechaCorrect = isfechavalid(auxfecha);
         if (!aux || !auxfecha) {
             oAlert.Mostrar("error", "Llene los cuadros en rojo");

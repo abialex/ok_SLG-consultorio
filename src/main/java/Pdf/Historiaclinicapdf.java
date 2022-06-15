@@ -407,7 +407,7 @@ public class Historiaclinicapdf {
         TablePresupuesto.addCell(new Cell().add(new Paragraph(montoTotalPresupuesto + "").addStyle(styleTextCenter)));
 
         Paragraph parrafoRadiografico = new Paragraph("INFORME RADIOGRÁFICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-        Table TableRadiografico = getTable("radiografico Falta", volumen, palabraEnBlanco, styleCell, styleTextLeft);
+        Table TableRadiografico = getTable(oHistoriaclinica.getInformeRadiografico(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
 
         Table TableTratamiento = new Table(new float[]{volumen * 0.6f, volumen * 3.1f, volumen * 0.8f, volumen * 0.5f});
         TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)));
