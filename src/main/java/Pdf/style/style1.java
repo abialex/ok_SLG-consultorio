@@ -4,9 +4,12 @@
  */
 package Pdf.style;
 
+import Entidades.Historia_clinica;
+import Entidades.Presupuesto;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.image.ImageDataFactory;
 import com.itextpdf.kernel.color.Color;
+import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.kernel.events.Event;
 import com.itextpdf.kernel.events.IEventHandler;
 import com.itextpdf.kernel.events.PdfDocumentEvent;
@@ -42,9 +45,11 @@ public class style1 implements IEventHandler {
 
     private final Document documento;
     private int pag = 0;
+    private Presupuesto opresupuesto;
 
-    public style1(Document doc) {
+    public style1(Document doc, Presupuesto opresupuesto) {
         documento = doc;
+        this.opresupuesto = opresupuesto;
     }
 
     /**
@@ -142,6 +147,7 @@ public class style1 implements IEventHandler {
         //styles
         Style styleText = new Style().setTextAlignment(TextAlignment.RIGHT).setFontSize(10f);
         Color colorNegro = Color.BLACK;
+        Color colorFirma = new DeviceRgb(90, 111, 152);
         Style styleCell = new Style().setBorder(Border.NO_BORDER);
         Style styleTextRight = new Style().setTextAlignment(TextAlignment.RIGHT).setFontSize(10f);
         Style styleTextLeft = new Style().setTextAlignment(TextAlignment.LEFT).setFontSize(10f);
@@ -171,19 +177,29 @@ public class style1 implements IEventHandler {
                 .setBorder(Border.NO_BORDER);
         tabla_encabezado.addCell(cell);
         //canvasEncabezado.add(tabla_encabezado);
+        String mensaje="sin presupuestar";
+        if(opresupuesto!=null){
+            String dia=opresupuesto.getFechapresupuesto().getDayOfMonth()<10? "0"+opresupuesto.getFechapresupuesto().getDayOfMonth(): opresupuesto.getFechapresupuesto().getDayOfMonth()+"";
+            String mes=opresupuesto.getFechapresupuesto().getMonthValue()<10? "0"+opresupuesto.getFechapresupuesto().getMonthValue(): opresupuesto.getFechapresupuesto().getMonthValue()+"";
 
+            mensaje="FECHA: "+dia+"/"+mes+"/"+opresupuesto.getFechapresupuesto().getYear();
+        }
         Table tablaNumeracion = this.crearTablaPie(docEvent);
         Rectangle rectanguloPie = this.crearRectanguloPie(docEvent);
         Canvas canvasPie = new Canvas(canvas, pdfDoc, rectanguloPie);
-        Table TablePie = new Table(new float[]{volumen * 2.5f, volumen * 2.5f});
+        Table TablePie = new Table(new float[]{volumen * 2f, volumen * 2f, volumen * 1f});
         Table TablePie1 = new Table(new float[]{volumen * 1.4f});
         Table TablePie2 = new Table(new float[]{volumen * 1.4f});
-        Cell cellPie = new Cell().add(new Paragraph("Firma del operador").setBorderTop(new SolidBorder(1f)).setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextCenter);
+        Table TablePie3 = new Table(new float[]{volumen * 1f});
+        Cell cellPie = new Cell().add(new Paragraph("Firma del operador").setBorderTop(new SolidBorder(colorFirma,1f)).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextCenter);
         TablePie1.addCell(cellPie);
-        cellPie = new Cell().add(new Paragraph("Firma del paciente").setBorderTop(new SolidBorder(1f)).setFontColor(colorNegro)).addStyle(styleCell).addStyle(styleTextCenter);
+        cellPie = new Cell().add(new Paragraph("Firma del paciente").setBorderTop(new SolidBorder(colorFirma,1f)).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextCenter);
         TablePie2.addCell(cellPie);
-        TablePie.addCell(new Cell().add(TablePie1).setMarginLeft(70).addStyle(styleCell));
-        TablePie.addCell(new Cell().add(TablePie2).setMarginLeft(70).addStyle(styleCell));
+        cellPie = new Cell().add(new Paragraph(mensaje).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextRight);
+        TablePie3.addCell(cellPie);TablePie.addCell(new Cell().add(TablePie1).setMarginLeft(30).addStyle(styleCell));
+        
+        TablePie.addCell(new Cell().add(TablePie2).setMarginLeft(30).addStyle(styleCell));
+        TablePie.addCell(new Cell().add(TablePie3).addStyle(styleCell).setMarginBottom(20));
         pag++;
         if (pag == 1) {
             canvasPie.add(TablePie);
