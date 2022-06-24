@@ -4,6 +4,7 @@
  */
 package Entidades;
 
+import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,6 +30,9 @@ public class Presupuesto {
     @Column(name = "monto_total", nullable = false)
     private float  monto_total;
     
+    @Column(name = "fechapresupuesto", nullable = true)
+    private LocalDate fechapresupuesto;
+    
     @Column(name = "activo", nullable = false)
     private boolean activo;
     
@@ -38,9 +42,10 @@ public class Presupuesto {
     public Presupuesto() {
     }
 
-    public Presupuesto(Historia_clinica historia_clinica, int monto_total, boolean activo, boolean flag) {
+    public Presupuesto(Historia_clinica historia_clinica, int monto_total,LocalDate fechapresupuesto, boolean activo, boolean flag) {
         this.historia_clinica = historia_clinica;
         this.monto_total = monto_total;
+        this.fechapresupuesto= fechapresupuesto;
         this.activo = activo;
         this.flag = flag;
     }
@@ -89,8 +94,14 @@ public class Presupuesto {
         return this;
     }
 
+    public LocalDate getFechapresupuesto() {
+        return fechapresupuesto;
+    }
 
+    public void setFechapresupuesto(LocalDate fechapresupuesto) {
+        this.fechapresupuesto = fechapresupuesto;
+    }
     
-    
+       
      
 }

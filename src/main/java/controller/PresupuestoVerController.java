@@ -120,7 +120,7 @@ public class PresupuestoVerController implements Initializable {
             btnGuardarPresupuesto.setDisable(!oPresupuesto.isActivo());
             btnAgregar.setDisable(!oPresupuesto.isActivo());
         } else {
-            oPresupuesto = new Presupuesto(oHistoriaclinica, 0, true, false);
+            oPresupuesto = new Presupuesto(oHistoriaclinica, 0, LocalDate.now(), true, false);
             App.jpa.getTransaction().begin();
             App.jpa.persist(oPresupuesto);
             App.jpa.refresh(oPresupuesto);
@@ -150,6 +150,7 @@ public class PresupuestoVerController implements Initializable {
             ap.setDisable(true);
         }
     }
+
     @FXML
     void cerrarPresupuesto() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
