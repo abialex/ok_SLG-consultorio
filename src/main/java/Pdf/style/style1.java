@@ -177,7 +177,7 @@ public class style1 implements IEventHandler {
                 .setBorder(Border.NO_BORDER);
         tabla_encabezado.addCell(cell);
         //canvasEncabezado.add(tabla_encabezado);
-        String mensaje="sin presupuestar";
+        String mensaje="Sin presupuestar";
         if(opresupuesto!=null){
             String dia=opresupuesto.getFechapresupuesto().getDayOfMonth()<10? "0"+opresupuesto.getFechapresupuesto().getDayOfMonth(): opresupuesto.getFechapresupuesto().getDayOfMonth()+"";
             String mes=opresupuesto.getFechapresupuesto().getMonthValue()<10? "0"+opresupuesto.getFechapresupuesto().getMonthValue(): opresupuesto.getFechapresupuesto().getMonthValue()+"";

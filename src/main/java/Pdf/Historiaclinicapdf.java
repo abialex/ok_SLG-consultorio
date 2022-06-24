@@ -185,9 +185,9 @@ public class Historiaclinicapdf {
 
         Table table1Parrafo4 = new Table(new float[]{volumen * 0.6f, volumen * 1.85f, volumen * 0.75f, volumen * 1.8f});
         table1Parrafo4.addCell(getCell("Enf. actual:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
-        table1Parrafo4.addCell(getCell("FALTA", styleTextCenter, styleCell, subrayado));
+        table1Parrafo4.addCell(getCell(opaciente.getEnfermedadActual(), styleTextCenter, styleCell, subrayado));
         table1Parrafo4.addCell(getCell("Enf. sistémicas:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
-        table1Parrafo4.addCell(getCell("FALTA", styleTextCenter, styleCell, subrayado));
+        table1Parrafo4.addCell(getCell(opaciente.getEnfermedadSistemica(), styleTextCenter, styleCell, subrayado));
 
         Table table1Parrafo5 = new Table(new float[]{volumen * 1.2f, volumen * 3.8f});
         table1Parrafo5.addCell(getCell("Antecedentes personales:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
@@ -417,17 +417,17 @@ public class Historiaclinicapdf {
         Paragraph parrafoRadiografico = new Paragraph("INFORME RADIOGRÁFICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableRadiografico = getTable(oHistoriaclinica.getInformeRadiografico(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
 
-        Paragraph parrafoPlantaTratamiento = new Paragraph("INFORME RADIOGRÁFICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+        Paragraph parrafoPlantaTratamiento = new Paragraph("PLAN DE TRATAMIENTO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TablePlanTratamiento = new Table(new float[]{volumen * 2.5f, volumen * 2.5f});
         Table TablePlanTratamiento1 = new Table(new float[]{volumen * 5});
         Table TablePlanTratamiento2 = new Table(new float[]{volumen * 5});
 
         TablePlanTratamiento1.addCell(getCell("1 ...........................................................", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
-        TablePlanTratamiento1.addCell(getCell("2 ...........................................................", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
         TablePlanTratamiento1.addCell(getCell("3 ...........................................................", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
+        TablePlanTratamiento1.addCell(getCell("5 ...........................................................", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
 
+        TablePlanTratamiento2.addCell(getCell("2...........................................................", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
         TablePlanTratamiento2.addCell(getCell("4...........................................................", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
-        TablePlanTratamiento2.addCell(getCell("5...........................................................", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
         TablePlanTratamiento2.addCell(getCell("6...........................................................", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
 
         TablePlanTratamiento.addCell(new Cell().addStyle(styleCell).add(TablePlanTratamiento1));
@@ -439,13 +439,15 @@ public class Historiaclinicapdf {
         TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold).addStyle(styleTextCenter).setFontColor(colorTituloTabla)));
         TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold).addStyle(styleTextCenter).setFontColor(colorTituloTabla)));
         TableTratamiento.addCell(new Cell().add(new Paragraph("SALDO").setFont(bold).addStyle(styleTextCenter).setFontColor(colorTituloTabla)));
-        int montoTotal = 0;
+        float montoTotal = opresupuesto.getMonto_total();
+        
         for (Tratamiento tratamiento : olistTratamiento) {
+            montoTotal=montoTotal-tratamiento.getMonto();
             TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.getFechaRealizada() + "").addStyle(styleTextCenter)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.getTratamiento()).addStyle(styleTextLeft)));
-            TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.isCancelado() ? "SI" : "NO").addStyle(styleTextCenter)));
-            TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.getMonto() + "").addStyle(styleTextCenter)));
-            montoTotal = montoTotal + tratamiento.getMonto();
+            TableTratamiento.addCell(new Cell().add(new Paragraph(tratamiento.getMonto()+"").addStyle(styleTextCenter)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph(montoTotal  + "").addStyle(styleTextCenter)));
+           
         }
         int contadorEspacio = 25 - olistTratamiento.size();
         for (int i = 0; i < contadorEspacio; i++) {
@@ -456,8 +458,8 @@ public class Historiaclinicapdf {
             //montoTotal = montoTotal + tratamiento.getMonto();
         }
 
-        TableTratamiento.addCell(new Cell(1, 3).add(new Paragraph("MONTO TOTAL ").addStyle(styleTextCenter).setFont(bold).setFontColor(colorTituloTabla)));
-        TableTratamiento.addCell(new Cell().add(new Paragraph(montoTotal + "").addStyle(styleTextCenter)));
+        //TableTratamiento.addCell(new Cell(1, 3).add(new Paragraph("MONTO TOTAL ").addStyle(styleTextCenter).setFont(bold).setFontColor(colorTituloTabla)));
+        //TableTratamiento.addCell(new Cell().add(new Paragraph(montoTotal + "").addStyle(styleTextCenter)));
 
         /* Cuerpo del documentos*/
         document.add(Cabecera);
@@ -496,9 +498,10 @@ public class Historiaclinicapdf {
         document.add(TableOdontograma);
         document.add(TablePresupuesto);
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
+
         document.add(parrafoPlantaTratamiento);
         document.add(TablePlanTratamiento);
-
+        
         document.add(parrafoRadiografico);
         document.add(TableRadiografico);
 
