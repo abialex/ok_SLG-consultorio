@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="633.0" prefWidth="850.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegistrarPacienteController">
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="669.0" prefWidth="850.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.RegistrarPacienteController">
     <children>
         <BorderPane layoutX="390.0" layoutY="170.0" prefHeight="811.0" prefWidth="951.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <center>
@@ -34,7 +34,7 @@
                                     <children>
                                         <Accordion fx:id="accordion" layoutX="170.0" layoutY="114.0" prefHeight="558.0" prefWidth="688.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                             <panes>
-                                                <TitledPane fx:id="tpAnamnesis" animated="false" text="Datos personales (Requerido)" textFill="WHITE">
+                                                <TitledPane fx:id="tpAnamnesis" text="I. Datos personales (Requerido)" textFill="WHITE">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                             <children>
@@ -170,7 +170,7 @@
                                                         <Font name="System Bold" size="13.0" />
                                                     </font>
                                                 </TitledPane>
-                                                <TitledPane animated="false" text="Tratamiento (Requerido)" textFill="WHITE">
+                                                <TitledPane text="II. (Requerido)" textFill="WHITE">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                             <children>
@@ -181,6 +181,8 @@
                                                                     <rowConstraints>
                                                                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
                                                                     <children>
                                                                         <JFXTextArea fx:id="jtaConsulta" labelFloat="true" promptText="Motivo de la consulta">
@@ -188,13 +190,23 @@
                                                                                 <Font name="System Bold" size="18.0" />
                                                                             </font>
                                                                             <GridPane.margin>
-                                                                                <Insets bottom="25.0" left="5.0" right="5.0" top="25.0" />
+                                                                                <Insets bottom="15.0" left="5.0" right="5.0" top="15.0" />
                                                                             </GridPane.margin>
                                                                         </JFXTextArea>
-                                                      <JFXTextField fx:id="jtfInformeradiografico" labelFloat="true" promptText="Informe radiográfico" GridPane.rowIndex="1">
+                                                      <JFXTextField fx:id="jtfenfermedadActual" labelFloat="true" promptText="Enfermedad actual" GridPane.rowIndex="1">
                                                          <GridPane.margin>
                                                             <Insets left="5.0" right="5.0" />
                                                          </GridPane.margin>
+                                                      </JFXTextField>
+                                                      <JFXTextField fx:id="jtfenfermedadSistemica" labelFloat="true" promptText="Enfermedad sistémicas" GridPane.rowIndex="2">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" right="5.0" />
+                                                         </GridPane.margin>
+                                                      </JFXTextField>
+                                                      <JFXTextField fx:id="jtfantecedentesPersonales" labelFloat="true" promptText="Antecedentes personales" GridPane.rowIndex="3">
+                                                         <padding>
+                                                            <Insets left="5.0" right="5.0" />
+                                                         </padding>
                                                       </JFXTextField>
                                                                     </children>
                                                                 </GridPane>
@@ -205,7 +217,35 @@
                                                         <Font name="System Bold" size="13.0" />
                                                     </font>
                                                 </TitledPane>
-                                                <TitledPane animated="false" text="En caso de emergencia" textFill="WHITE">
+                                    <TitledPane prefHeight="200.0" prefWidth="200.0" text="III. Radiográfico y Tratamiento" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                       <content>
+                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane layoutX="159.0" layoutY="97.0" prefHeight="313.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                  <columnConstraints>
+                                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                  </columnConstraints>
+                                                  <rowConstraints>
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                  </rowConstraints>
+                                                   <children>
+                                                      <JFXTextField fx:id="jtfInformeradiografico" labelFloat="true" promptText="Informe radiográfico">
+                                                         <GridPane.margin>
+                                                            <Insets left="5.0" right="5.0" />
+                                                         </GridPane.margin>
+                                                      </JFXTextField>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </TitledPane>
+                                                <TitledPane disable="true" text="En caso de emergencia" textFill="WHITE">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                             <children>
@@ -236,7 +276,7 @@
                                                         <Font name="System Bold" size="13.0" />
                                                     </font>
                                                 </TitledPane>
-                                                <TitledPane animated="false" text="Menores de edad" textFill="WHITE">
+                                                <TitledPane disable="true" text="Menores de edad" textFill="WHITE">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                             <children>
@@ -268,7 +308,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="II. Enfermedad Actual">
+                        <Tab disable="true" text="II. Enfermedad Actual">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
@@ -297,7 +337,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="III. Antecedentes">
+                        <Tab disable="true" text="III. Antecedentes">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
@@ -538,7 +578,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="IV. Exploración Física">
+                        <Tab disable="true" text="IV. Exploración Física">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="427.0" prefWidth="667.0">
                                     <children>
@@ -623,7 +663,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="V. Diagnostico">
+                        <Tab disable="true" text="V. Diagnostico">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
@@ -646,7 +686,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="VI. Plan de Tratamiento">
+                        <Tab disable="true" text="VI. Plan de Tratamiento">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>
@@ -672,7 +712,7 @@
                                 </AnchorPane>
                             </content>
                         </Tab>
-                        <Tab text="VII.  Pronóstico">
+                        <Tab disable="true" text="VII.  Pronóstico">
                             <content>
                                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                     <children>

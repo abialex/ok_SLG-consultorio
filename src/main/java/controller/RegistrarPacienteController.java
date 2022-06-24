@@ -98,6 +98,10 @@ public class RegistrarPacienteController implements Initializable {
     @FXML
     private JFXComboBox<Doctor> jcbDoctor;
 
+    //II-Requerido
+    @FXML
+    private JFXTextField jtfenfermedadActual, jtfenfermedadSistemica, jtfantecedentesPersonales;
+
     //II. Enfermedad actual
     @FXML
     private JFXTextField jtfsintomasEnfermedadActual, jtftiempoEnfermedadActual;
@@ -190,7 +194,9 @@ public class RegistrarPacienteController implements Initializable {
                     jtfsintomasEnfermedadActual.getText().trim(),
                     jtftiempoEnfermedadActual.getText().trim(),
                     jtfotrasEnfermedades.getText().trim(),
-                    jtfantecedentesFamiliares.getText().trim());
+                    jtfantecedentesPersonales.getText().trim(),
+                    jtfenfermedadActual.getText().trim(),
+                    jtfenfermedadSistemica.getText().trim());
             opaciente.setEmergenciaNombre(jtfemergenciaNombre.getText().trim());
             opaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText().trim());
             opaciente.setEmergenciaTelefono(jtfemergenciatelefono.getText().trim());
@@ -553,12 +559,26 @@ public class RegistrarPacienteController implements Initializable {
         } else {
             jtfanio.setStyle("");
         }
-
-        if (jtfInformeradiografico.getText().trim().length() == 0) {
-            jtfInformeradiografico.setStyle("-fx-border-color: #ff052b");
+        
+        if (jtfenfermedadActual.getText().trim().length() == 0) {
+            jtfenfermedadActual.setStyle("-fx-border-color: #ff052b");
             auxfecha = false;
         } else {
-            jtfInformeradiografico.setStyle("");
+            jtfenfermedadActual.setStyle("");
+        }
+
+        if (jtfenfermedadSistemica.getText().trim().length() == 0) {
+            jtfenfermedadSistemica.setStyle("-fx-border-color: #ff052b");
+            auxfecha = false;
+        } else {
+            jtfenfermedadSistemica.setStyle("");
+        }
+
+        if (jtfantecedentesPersonales.getText().trim().length() == 0) {
+            jtfantecedentesPersonales.setStyle("-fx-border-color: #ff052b");
+            auxfecha = false;
+        } else {
+            jtfantecedentesPersonales.setStyle("");
         }
 
         boolean auxfechaCorrect = isfechavalid(auxfecha);

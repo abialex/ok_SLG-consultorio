@@ -88,6 +88,10 @@ public class ModificarPacienteController implements Initializable {
     @FXML TextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     @FXML JFXComboBox<Doctor> jcbDoctor;
     
+    //II.
+    @FXML
+    private JFXTextField jtfenfermedadActual, jtfenfermedadSistemica, jtfantecedentesPersonales;
+    
     //Enfermedad actual
     @FXML TextField jtfsintomasEnfermedadActual;
     @FXML TextField jtftiempoEnfermedadActual;
@@ -320,6 +324,9 @@ public class ModificarPacienteController implements Initializable {
         jtfemergenciaNombre.setText(oPaciente.getEmergenciaNombre());
         jtfemergenciaParentesco.setText(oPaciente.getEmergenciaParentesco());
         jtfemergenciatelefono.setText(oPaciente.getEmergenciaTelefono());
+        jtfenfermedadActual.setText(oPaciente.getEnfermedadActual());
+        jtfenfermedadSistemica.setText(oPaciente.getEnfermedadSistemica());
+        jtfantecedentesPersonales.setText(oPaciente.getAntecedentesFamiliares());
         
         jtftutornombre.setText(opersona.getTutorNombre());
         jtftutordni.setText(opersona.getTutorDni());
@@ -429,6 +436,9 @@ public class ModificarPacienteController implements Initializable {
         //Enfermedad actual
         oPaciente.setSintomasEnfermedadActual(jtfsintomasEnfermedadActual.getText());
         oPaciente.setTiempoEnfermedadActual(jtftiempoEnfermedadActual.getText());
+        oPaciente.setEnfermedadActual(jtfenfermedadActual.getText());
+        oPaciente.setEnfermedadSistemica(jtfenfermedadSistemica.getText());
+        oPaciente.setAntecedentesFamiliares(jtfantecedentesPersonales.getText());
         
         //Exploración física
         oHistoria_Clinica.setSignosVitales(jtfsignosvitales.getText());
@@ -452,7 +462,7 @@ public class ModificarPacienteController implements Initializable {
         
         //Antecedentes
         oPaciente.setOtrasEnfermedades(jtfotrasEnfermedades.getText());
-        oPaciente.setAntecedentesFamiliares(jtfantecedentesFamiliares.getText());
+        //oPaciente.setAntecedentesFamiliares(jtfantecedentesFamiliares.getText());
         App.jpa.getTransaction().begin();
         for (Paciente_Enfermedad oPacienteEnfermedad : listPaciente_Enfermedad) {
             boolean borrar = true;

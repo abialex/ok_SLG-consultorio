@@ -28,6 +28,12 @@ public class Paciente {
     @ManyToOne(cascade = CascadeType.ALL)
     private Persona persona;
     
+    @Column(name = "enfermedadActual" , nullable = true)
+    private String enfermedadActual;
+    
+    @Column(name = "enfermedadSistemica" , nullable = true)
+    private String enfermedadSistemica;
+    
     @Column(name = "sintomasEnfermedadActual" , nullable = true)
     private String sintomasEnfermedadActual;
     
@@ -51,12 +57,15 @@ public class Paciente {
     
     
 
-    public Paciente(Persona persona, String sintomasEnfermedadActual, String tiempoEnfermedadActual, String otrasEnfermedades, String antecedentesFamiliares) {
+    public Paciente(Persona persona, String sintomasEnfermedadActual, String tiempoEnfermedadActual, String otrasEnfermedades, String antecedentesFamiliares, String enfermedadActual
+    ,String enfermedadSistemica) {
         this.persona = persona;
         this.sintomasEnfermedadActual = sintomasEnfermedadActual;
         this.tiempoEnfermedadActual = tiempoEnfermedadActual;
         this.otrasEnfermedades = otrasEnfermedades;
         this.antecedentesFamiliares = antecedentesFamiliares;
+        this.enfermedadActual = enfermedadActual;
+        this.enfermedadSistemica = enfermedadSistemica;
     }
     
     public Paciente(){
@@ -138,5 +147,21 @@ public class Paciente {
     public String toString() {
         return this.persona.getNombres_apellidos();
     }
-    
+
+    public String getEnfermedadActual() {
+        return enfermedadActual;
+    }
+
+    public void setEnfermedadActual(String enfermedadActual) {
+        this.enfermedadActual = enfermedadActual;
+    }
+
+    public String getEnfermedadSistemica() {
+        return enfermedadSistemica;
+    }
+
+    public void setEnfermedadSistemica(String enfermedadSistemica) {
+        this.enfermedadSistemica = enfermedadSistemica;
+    }
+     
 }
