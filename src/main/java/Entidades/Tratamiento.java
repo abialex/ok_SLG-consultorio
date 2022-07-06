@@ -37,21 +37,17 @@ public class Tratamiento {
     @Column(name = "monto", nullable = false)
     private int monto;
     
-    @Column(name = "cancelado", nullable = false)
-    private boolean cancelado;
-    
     @Column(name = "flag", nullable = false)
     private boolean flag;
 
     public Tratamiento() {
     }
 
-    public Tratamiento(Persona persona, LocalDate fechaRealizada, String tratamiento, int monto, boolean cancelado) {
+    public Tratamiento(Persona persona, LocalDate fechaRealizada, String tratamiento, int monto) {
         this.persona = persona;
         this.fechaRealizada = fechaRealizada;
         this.tratamiento = tratamiento;
         this.monto = monto;
-        this.cancelado = cancelado;
     }
 
     
@@ -86,14 +82,6 @@ public class Tratamiento {
 
     public void setTratamiento(String tratamiento) {
         this.tratamiento = tratamiento;
-    }
-
-    public boolean isCancelado() {
-        return cancelado;
-    }
-
-    public void setCancelado(boolean cancelado) {
-        this.cancelado = cancelado;
     }
 
     public boolean isFlag() {
