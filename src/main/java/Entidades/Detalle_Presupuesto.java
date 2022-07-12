@@ -88,6 +88,10 @@ public class Detalle_Presupuesto {
     public void setMonto(float monto) {
         this.monto = monto;
     }
+    
+    public Detalle_Presupuesto getDetalle_Presupuesto(){
+        return this;
+    }
 
     
     

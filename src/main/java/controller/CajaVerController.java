@@ -4,6 +4,9 @@
  */
 package controller;
 
+import Entidades.Detalle_Presupuesto;
+import Entidades.Historia_clinica;
+import Entidades.Paciente;
 import Entidades.Persona;
 import Entidades.Presupuesto;
 import Entidades.Tratamiento;
@@ -79,10 +82,25 @@ public class CajaVerController implements Initializable {
     private TableColumn<Tratamiento, Integer> ColumnEstado;
 
     @FXML
+    private TableView<Detalle_Presupuesto> tablePresupuesto;
+
+    @FXML
+    private TableColumn<Detalle_Presupuesto, String> columnDetallePresupuesto;
+
+    @FXML
+    private TableColumn<Detalle_Presupuesto, Float> columnMontoPresupuesto;
+
+    @FXML
+    private TableColumn<Detalle_Presupuesto, Integer> columnCantidad;
+
+    @FXML
+    private TableColumn<Detalle_Presupuesto, Detalle_Presupuesto> columnTotal;
+
+    @FXML
     private JFXTextField jtfTratamiento, jtfMonto;
 
     @FXML
-    private Label lblnombre, lblMontototal, lblAviso, lblAvisoPresupuesto;
+    private Label lblnombre, lblMontototal, lblAviso;
 
     @FXML
     private JFXButton btnAgregar;
@@ -90,6 +108,7 @@ public class CajaVerController implements Initializable {
     double x = 0, y = 0;
     Persona oPersona;
     ObservableList<Tratamiento> listTratamiento = FXCollections.observableArrayList();
+     ObservableList<Detalle_Presupuesto> listPresupuesto = FXCollections.observableArrayList();
     Stage stagePrincipal;
     AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
     CajaVerController odc = this;
@@ -146,8 +165,22 @@ public class CajaVerController implements Initializable {
         MontoTotal = opresupuesto.getMonto_total();
         tableTratamiento.setItems(listTratamiento);
         updateListaTratamiento();
+        getListaPresupuesto(opersona);
         initTable();
+        initTablePresupuesto();
         tableTratamiento.setItems(listTratamiento);
+        tablePresupuesto.setItems(listPresupuesto);
+    }
+
+    void getListaPresupuesto(Persona opersona) {
+        Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
+        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
+        Presupuesto Presupuesto = (Presupuesto) App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getSingleResult();
+        List<Detalle_Presupuesto> olistDetallePresupuesto = App.jpa.createQuery("select p from Detalle_Presupuesto p where idpresupuesto= " + Presupuesto.getIdpresupuesto() + " order by iddetalle_presupuesto ASC").getResultList();
+        for (Detalle_Presupuesto detalle_Presupuesto : olistDetallePresupuesto) {
+            listPresupuesto.add(detalle_Presupuesto);
+            
+        }
     }
 
     void setController(VerPacienteController odc) {
@@ -164,10 +197,9 @@ public class CajaVerController implements Initializable {
             listTratamiento.add(otratamiento);
             acumMonto = acumMonto + otratamiento.getMonto();
         }
-        if(MontoTotal==acumMonto){
+        if (MontoTotal == acumMonto) {
             btnAgregar.setDisable(true);
-        }
-        else{
+        } else {
             btnAgregar.setDisable(false);
         }
         updateMontoAviso(olistTratamiento);
@@ -235,7 +267,7 @@ public class CajaVerController implements Initializable {
                     } else {
                         Label label = new Label();
                         //MontoTotal = MontoTotal - item;
-                        label.setText(MontoTotal + "");
+                        label.setText( "N.A");
                         label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
                         setGraphic(label);
                         setText(null);
@@ -296,7 +328,7 @@ public class CajaVerController implements Initializable {
                     for (int i = 0; i < listTratamiento.size(); i++) {
                         if (listTratamiento.get(i).getIdtratamiento() == (Integer) imag.getUserData()) {
                             CajaModificarController oCajaModificarController = (CajaModificarController) mostrarVentana(CajaModificarController.class, "CajaModificar");
-                            oCajaModificarController.setTratamiento(listTratamiento.get(i),MontoTotal-acumMonto);
+                            oCajaModificarController.setTratamiento(listTratamiento.get(i), MontoTotal - acumMonto);
                             oCajaModificarController.setController(odc);
                             lockedPantalla();
                             break;
@@ -341,6 +373,74 @@ public class CajaVerController implements Initializable {
             return cell;
         };
         ColumnEstado.setCellFactory(cellFoctory);
+
+    }
+
+    void initTablePresupuesto() {
+        columnDetallePresupuesto.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, String>("descripcion"));
+        columnMontoPresupuesto.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Float>("monto"));
+        columnCantidad.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Integer>("cantidad"));
+        columnTotal.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Detalle_Presupuesto>("Detalle_Presupuesto"));
+
+        columnTotal.setCellFactory(column -> {
+            TableCell<Detalle_Presupuesto, Detalle_Presupuesto> cell = new TableCell<Detalle_Presupuesto, Detalle_Presupuesto>() {
+                @Override
+                protected void updateItem(Detalle_Presupuesto item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText(item.getCantidad()*item.getMonto() + "");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+        
+        columnCantidad.setCellFactory(column -> {
+            TableCell<Detalle_Presupuesto, Integer> cell = new TableCell<Detalle_Presupuesto, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText(item+ "");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+        
+        columnMontoPresupuesto.setCellFactory(column -> {
+            TableCell<Detalle_Presupuesto, Float> cell = new TableCell<Detalle_Presupuesto, Float>() {
+                @Override
+                protected void updateItem(Float item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText(item+ "");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
 
     }
 
