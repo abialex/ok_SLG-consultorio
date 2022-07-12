@@ -40,6 +40,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -109,6 +110,7 @@ public class PresupuestoVerController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        initRestricciones();
     }
 
     void getPresupuesto(Persona opersona) {
@@ -205,6 +207,32 @@ public class PresupuestoVerController implements Initializable {
         }
         lblMontototal.setText(acumMontoTotal + "");
     }
+    
+       void initRestricciones() {
+        jtfDescripcion.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        jtfMonto.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
+        jtfCantidad.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
+
+    }
+
+    void SoloLetras(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (Character.isDigit(key)) {
+            event.consume();
+        }
+    }
+
+    void SoloNumerosEnteros8(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 8) {
+            event.consume();
+        }
+    }
 
     void initTable() {
         ColumnCantidad.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, String>("cantidad"));
@@ -279,14 +307,13 @@ public class PresupuestoVerController implements Initializable {
                     }
                 }
 
-                void mostrarModificar(MouseEvent event) {
-                    /*
+                void mostrarModificar(MouseEvent event) {                    
                     ImageView imag = (ImageView) event.getSource();
-                    Presupuesto opresupuesto = (Presupuesto) imag.getUserData();
-                    PresupuestoVerController oPresupuestoVerController = (PresupuestoVerController) mostrarVentana(CajaModificarController.class, "CajaModificar");
-                    oPresupuestoVerController.setTratamiento(listPresupuesto.get(i));
-                    oPresupuestoVerController.setController(odc);
-                    lockedPantalla();*/
+                    Detalle_Presupuesto oDetalle_Presupuesto = (Detalle_Presupuesto) imag.getUserData();
+                    PresupuestoModificarController oPresupuestoModificarController = (PresupuestoModificarController) mostrarVentana(PresupuestoModificarController.class, "PresupuestoModificar");
+                    oPresupuestoModificarController.setDetallePresupuesto(oDetalle_Presupuesto);
+                    oPresupuestoModificarController.setController(odc);
+                    lockedPantalla();
 
                 }
 
