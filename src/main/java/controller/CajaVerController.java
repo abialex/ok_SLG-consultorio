@@ -73,16 +73,13 @@ public class CajaVerController implements Initializable {
     private TableColumn<Tratamiento, Integer> ColumnMonto;
 
     @FXML
-    private TableColumn<Tratamiento, Boolean> ColumnPagado;
+    private TableColumn<Tratamiento, Integer> ColumnPagado;
 
     @FXML
     private TableColumn<Tratamiento, Integer> ColumnEstado;
 
     @FXML
     private JFXTextField jtfTratamiento, jtfMonto;
-
-    @FXML
-    private JFXComboBox<String> jcbCancelado;
 
     @FXML
     private Label lblnombre, lblMontototal, lblAviso, lblAvisoPresupuesto;
@@ -101,29 +98,40 @@ public class CajaVerController implements Initializable {
     AlertController oAlertController = new AlertController();
     VerPacienteController oVerPacienteController;
     Presupuesto oPresupuesto;
+    float MontoTotal = 0;
+    float acumMonto = 0;
+    List<Tratamiento> olistTratamiento;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // el resto de init está en setPersona()
-        ObservableList<String> OCUPACION = FXCollections.observableArrayList("SI", "NO");
-        jcbCancelado.setItems(OCUPACION);
         initRestricciones();
     }
 
     @FXML
     void guardarTratamiento() {
+        float montoacum = 0;
+        for (Tratamiento tratamiento : listTratamiento) {
+            montoacum = montoacum + tratamiento.getMonto();
+        }
+
         if (isCompleto()) {
-            Tratamiento otratamiento = new Tratamiento(oPersona,
-                    LocalDate.now(),
-                    jtfTratamiento.getText(),
-                    Integer.parseInt(jtfMonto.getText()),
-                    jcbCancelado.getSelectionModel().getSelectedItem().equals("SI"));
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(otratamiento);
-            App.jpa.getTransaction().commit();
-            updateListaTratamiento();
-            limpiar();
-            oAlertController.Mostrar("successful", "Agregado");
+            float resta = MontoTotal - (montoacum + Integer.parseInt(jtfMonto.getText()));
+            if (resta >= 0) {
+                Tratamiento otratamiento = new Tratamiento(oPersona,
+                        LocalDate.now(),
+                        jtfTratamiento.getText(),
+                        Integer.parseInt(jtfMonto.getText()));
+                App.jpa.getTransaction().begin();
+                App.jpa.persist(otratamiento);
+                App.jpa.getTransaction().commit();
+                updateListaTratamiento();
+                limpiar();
+                oAlertController.Mostrar("successful", "Agregado");
+            } else {
+                oAlertController.Mostrar("error", "Se pasó del precio");
+
+            }
         } else {
             oAlertController.Mostrar("error", "Llene los espacios en blanco");
         }
@@ -135,6 +143,8 @@ public class CajaVerController implements Initializable {
         lblMontototal.setText(oPresupuesto.getMonto_total() + "");
         this.oPersona = opersona;
         lblnombre.setText(opersona.getNombres_apellidos());
+        MontoTotal = opresupuesto.getMonto_total();
+        tableTratamiento.setItems(listTratamiento);
         updateListaTratamiento();
         initTable();
         tableTratamiento.setItems(listTratamiento);
@@ -147,22 +157,29 @@ public class CajaVerController implements Initializable {
 
     @FXML
     void updateListaTratamiento() {
-        List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + oPersona.getIdpersona() + " and flag = false order by idtratamiento DESC").setMaxResults(10).getResultList();
+        olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + oPersona.getIdpersona() + " and flag = false order by idtratamiento DESC").setMaxResults(10).getResultList();
         listTratamiento.clear();
+        acumMonto = 0;
         for (Tratamiento otratamiento : olistTratamiento) {
             listTratamiento.add(otratamiento);
+            acumMonto = acumMonto + otratamiento.getMonto();
+        }
+        if(MontoTotal==acumMonto){
+            btnAgregar.setDisable(true);
+        }
+        else{
+            btnAgregar.setDisable(false);
         }
         updateMontoAviso(olistTratamiento);
+
     }
 
     void updateMontoAviso(List<Tratamiento> list) {
         int acumMontoTotal = 0;
-        int aviso = 0;
         for (Tratamiento otratamiento : list) {
             acumMontoTotal = acumMontoTotal + otratamiento.getMonto();
-            aviso = aviso + (otratamiento.isCancelado() ? 0 : 1);
         }
-        lblAviso.setText(aviso == 0 ? "No debe" : "Debe " + aviso + " tratamiento(s)"); 
+        lblAviso.setText("SALDO: " + (MontoTotal - acumMontoTotal));
     }
 
     void initRestricciones() {
@@ -184,7 +201,7 @@ public class CajaVerController implements Initializable {
         columnFecha.setCellValueFactory(new PropertyValueFactory<Tratamiento, LocalDate>("fechaRealizada"));
         columnTratamiento.setCellValueFactory(new PropertyValueFactory<Tratamiento, String>("tratamiento"));
         ColumnMonto.setCellValueFactory(new PropertyValueFactory<Tratamiento, Integer>("monto"));
-        ColumnPagado.setCellValueFactory(new PropertyValueFactory<Tratamiento, Boolean>("cancelado"));
+        ColumnPagado.setCellValueFactory(new PropertyValueFactory<Tratamiento, Integer>("monto"));
         ColumnEstado.setCellValueFactory(new PropertyValueFactory<Tratamiento, Integer>("idtratamiento"));
 
         ColumnMonto.setCellFactory(column -> {
@@ -208,16 +225,17 @@ public class CajaVerController implements Initializable {
         });
 
         ColumnPagado.setCellFactory(column -> {
-            TableCell<Tratamiento, Boolean> cell = new TableCell<Tratamiento, Boolean>() {
+            TableCell<Tratamiento, Integer> cell = new TableCell<Tratamiento, Integer>() {
                 @Override
-                protected void updateItem(Boolean item, boolean empty) {
+                protected void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);
-                        setText("");
+                        setText(null);
                     } else {
                         Label label = new Label();
-                        label.setText(item ? "SI" : "NO");
+                        //MontoTotal = MontoTotal - item;
+                        label.setText(MontoTotal + "");
                         label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
                         setGraphic(label);
                         setText(null);
@@ -278,7 +296,7 @@ public class CajaVerController implements Initializable {
                     for (int i = 0; i < listTratamiento.size(); i++) {
                         if (listTratamiento.get(i).getIdtratamiento() == (Integer) imag.getUserData()) {
                             CajaModificarController oCajaModificarController = (CajaModificarController) mostrarVentana(CajaModificarController.class, "CajaModificar");
-                            oCajaModificarController.setTratamiento(listTratamiento.get(i));
+                            oCajaModificarController.setTratamiento(listTratamiento.get(i),MontoTotal-acumMonto);
                             oCajaModificarController.setController(odc);
                             lockedPantalla();
                             break;
@@ -340,7 +358,6 @@ public class CajaVerController implements Initializable {
     void limpiar() {
         jtfMonto.setText("");
         jtfTratamiento.setText("");
-        jcbCancelado.getSelectionModel().select("");
     }
 
     public void lockedPantalla() {
@@ -409,13 +426,6 @@ public class CajaVerController implements Initializable {
             aux = false;
         } else {
             jtfMonto.setStyle("");
-        }
-
-        if (jcbCancelado.getSelectionModel().getSelectedItem() == null) {
-            jcbCancelado.setStyle("-fx-border-color: #ff052b");
-            aux = false;
-        } else {
-            jcbCancelado.setStyle("");
         }
 
         return aux;

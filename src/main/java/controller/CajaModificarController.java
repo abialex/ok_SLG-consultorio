@@ -36,26 +36,23 @@ public class CajaModificarController implements Initializable {
     @FXML
     private JFXTextField jtfMonto;
 
-    @FXML
-    private JFXComboBox<String> jcbCancelado;
-
     Tratamiento oTratamiento;
     CajaVerController oCajaVerController;
     AlertController oAlertController = new AlertController();
+    float resto = 0;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        ObservableList<String> OCUPACION = FXCollections.observableArrayList("SI", "NO");
-        jcbCancelado.setItems(OCUPACION);
         initRestricciones();
 
     }
 
-    public void setTratamiento(Tratamiento get) {
+    public void setTratamiento(Tratamiento get, float resto) {
         this.oTratamiento = get;
+        this.resto = resto+oTratamiento.getMonto();
+        System.out.println(resto+"s");
         jtfTratamiento.setText(get.getTratamiento());
         jtfMonto.setText(get.getMonto() + "");
-        jcbCancelado.getSelectionModel().select(get.isCancelado() ? "SI" : "NO");
     }
 
     void setController(CajaVerController odc) {
@@ -66,15 +63,19 @@ public class CajaModificarController implements Initializable {
     @FXML
     void modificar() {
         if (isCompleto()) {
-            oTratamiento.setTratamiento(jtfTratamiento.getText());
-            oTratamiento.setMonto(Integer.parseInt(jtfMonto.getText()));
-            oTratamiento.setCancelado(jcbCancelado.getSelectionModel().getSelectedItem().equals("SI"));
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(oTratamiento);
-            App.jpa.getTransaction().commit();
-            cerrar();
-            oCajaVerController.updateListaTratamiento();
-            oAlertController.Mostrar("successful", "Modificado");
+            if (resto - Integer.parseInt(jtfMonto.getText()) >= 0) {
+                oTratamiento.setTratamiento(jtfTratamiento.getText());
+                oTratamiento.setMonto(Integer.parseInt(jtfMonto.getText()));
+                App.jpa.getTransaction().begin();
+                App.jpa.persist(oTratamiento);
+                App.jpa.getTransaction().commit();
+                cerrar();
+                oCajaVerController.updateListaTratamiento();
+                oCajaVerController.initTable();
+                oAlertController.Mostrar("successful", "Modificado");
+            } else {
+                oAlertController.Mostrar("error", "Se pasó del precio");
+            }
         } else {
             oAlertController.Mostrar("error", "Llene los espacios en blanco");
         }
@@ -121,13 +122,6 @@ public class CajaModificarController implements Initializable {
             aux = false;
         } else {
             jtfMonto.setStyle("");
-        }
-
-        if (jcbCancelado.getSelectionModel().getSelectedItem().length() == 0) {
-            jcbCancelado.setStyle("-fx-border-color: #ff052b");
-            aux = false;
-        } else {
-            jcbCancelado.setStyle("");
         }
 
         return aux;
