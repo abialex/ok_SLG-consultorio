@@ -11,6 +11,7 @@ import Entidades.Paciente;
 import Entidades.Paciente_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
+import Entidades.PlanTratamiento;
 import Entidades.Pregunta;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -24,6 +25,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -35,18 +37,25 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
@@ -87,6 +96,22 @@ public class ModificarPacienteController implements Initializable {
     @FXML TextField jtftutornombre, jtftutordni, jtftutortelefono;
     @FXML TextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     @FXML JFXComboBox<Doctor> jcbDoctor;
+    
+    //plan tratamiento
+    @FXML
+    private JFXTextField jtfPlandetratamiento;
+
+    @FXML
+    private TableView<PlanTratamiento> tablePlandetratamiento;
+
+    @FXML
+    private TableColumn<PlanTratamiento, String> columnNum;
+
+    @FXML
+    private TableColumn<PlanTratamiento, String> columnPlanTratamiento;
+
+    @FXML
+    private TableColumn<PlanTratamiento, PlanTratamiento> columnEstado;
     
     //II.
     @FXML
@@ -141,6 +166,7 @@ public class ModificarPacienteController implements Initializable {
     /*----------Fin Atributos---------------*/
 
     //Fin Atributos Actualización  
+    Alert alertWarning = new Alert(Alert.AlertType.WARNING);
     AlertController oAlertController=new AlertController();
     VerPacienteController oVerPacienteController;
     Stage stagePrincipal;
@@ -155,6 +181,7 @@ public class ModificarPacienteController implements Initializable {
     Persona oPersona;
     Paciente oPaciente;
     Historia_clinica oHistoria_Clinica;
+    ObservableList<PlanTratamiento> listPlanTratamiento = FXCollections.observableArrayList();
     //Botones y métodos de prueba   
     
     //Fin Botones y métodos de prueba
@@ -172,6 +199,8 @@ public class ModificarPacienteController implements Initializable {
         listCheckPregunta();
         initRestricciones();
         cargarDoctor();
+        initTable();
+        tablePlandetratamiento.setItems(listPlanTratamiento);
         
     }    
     
@@ -283,6 +312,124 @@ public class ModificarPacienteController implements Initializable {
         checkpreguntamujer1.setUserData("¿Está usted embarazada?");
         checkpreguntamujer2.setUserData("¿Está dando de lactar?");
         
+
+    }
+    
+    @FXML
+    void agregarPlanTratamiento() {
+        if (jtfPlandetratamiento.getText().length() != 0) {
+            PlanTratamiento oplantratamiento = new PlanTratamiento();
+            oplantratamiento.setDescripcion(jtfPlandetratamiento.getText());
+            oplantratamiento.setHistoria_clinica(oHistoria_Clinica);
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(oplantratamiento);
+            App.jpa.getTransaction().commit();
+            jtfPlandetratamiento.setStyle("");
+            jtfPlandetratamiento.setText("");
+            updateListPlanTratamiento();
+        } else {
+            jtfPlandetratamiento.setStyle("-fx-border-color: #ff052b");
+            alertWarning.setHeaderText(null);
+            alertWarning.setTitle("Plan de tratamiento");
+            alertWarning.setContentText("Espacio en blanco");
+            alertWarning.showAndWait();
+        }
+    }
+    
+    void updateListPlanTratamiento() {
+        List<PlanTratamiento> olistTratamiento = App.jpa.createQuery("select p from PlanTratamiento p where idhistoria_clinica= " + oHistoria_Clinica.getIdhistoria_clinica() + "  order by idplantratamiento ASC").getResultList();
+        listPlanTratamiento.clear();
+        for (PlanTratamiento planTratamiento : olistTratamiento) {
+            listPlanTratamiento.add(planTratamiento);            
+        }
+
+    }
+    
+    void initTable() {
+        columnNum.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
+        columnPlanTratamiento.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
+        columnEstado.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, PlanTratamiento>("PlanTratamiento"));
+        columnNum.setCellFactory(column -> {
+            TableCell<PlanTratamiento, String> cell = new TableCell<PlanTratamiento, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText((getIndex() + 1) + "");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        columnEstado.setCellFactory(column -> {
+            TableCell<PlanTratamiento, PlanTratamiento> cell = new TableCell<PlanTratamiento, PlanTratamiento>() {
+                @Override
+                protected void updateItem(PlanTratamiento item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        int tamHightImag = 16;
+                        int tamWidthImag = 16;
+                        ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/imagenes/delete-1.png").toExternalForm()));
+                        deleteIcon.setFitHeight(tamHightImag);
+                        deleteIcon.setFitWidth(tamWidthImag);
+                        deleteIcon.setUserData(item);
+                        deleteIcon.setStyle(
+                                " -fx-cursor: hand;"
+                        );
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarEliminar(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarMoved(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarFuera(event));
+                        //deleteIcon.setText("Eliminar");
+                        HBox managebtn = new HBox(deleteIcon);
+                        managebtn.setStyle("-fx-alignment:center");
+                        setGraphic(managebtn);
+                        setText(null);
+
+                    }
+
+                }
+
+                void mostrarEliminar(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    PlanTratamiento plan = (PlanTratamiento) imag.getUserData();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setHeaderText(null);
+                    alert.setTitle("Info");
+                    alert.setContentText("¿Desea eliminar el plan de tratamiento: " + plan.getDescripcion() + "?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        listPlanTratamiento.remove(plan);
+                        App.jpa.getTransaction().begin();
+                        App.jpa.remove(plan);
+                        App.jpa.getTransaction().commit();
+                        updateListPlanTratamiento();
+                    }
+                }
+
+                private void imagEliminarMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/delete-2.png").toExternalForm()));
+                }
+
+                private void imagEliminarFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/delete-1.png").toExternalForm()));
+                }
+
+            };
+            return cell;
+        });
 
     }
     
@@ -403,6 +550,7 @@ public class ModificarPacienteController implements Initializable {
                 }
             }
         }
+        updateListPlanTratamiento();
     }
 
     void setController(VerPacienteController odc) {

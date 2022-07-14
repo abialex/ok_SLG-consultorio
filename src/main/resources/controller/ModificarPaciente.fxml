@@ -12,6 +12,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -22,7 +24,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="669.0" prefWidth="850.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModificarPacienteController">
+<AnchorPane id="AnchorPane" fx:id="ap" prefHeight="700.0" prefWidth="850.0" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ModificarPacienteController">
    <children>
       <BorderPane layoutX="390.0" layoutY="170.0" prefHeight="811.0" prefWidth="951.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -238,6 +240,55 @@
                                                             <Insets left="5.0" right="5.0" />
                                                          </GridPane.margin>
                                                       </JFXTextField>
+                                                   </children>
+                                                </GridPane>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </TitledPane>
+                                    <TitledPane prefHeight="200.0" prefWidth="200.0" text="IV. Plan de Tratamiento" textFill="WHITE">
+                                       <font>
+                                          <Font name="System Bold" size="13.0" />
+                                       </font>
+                                       <content>
+                                          <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                                             <children>
+                                                <GridPane layoutX="241.0" layoutY="115.0" prefHeight="320.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                   <columnConstraints>
+                                                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                   </columnConstraints>
+                                                   <rowConstraints>
+                                                      <RowConstraints maxHeight="145.0" minHeight="10.0" prefHeight="85.99999237060547" vgrow="SOMETIMES" />
+                                                      <RowConstraints maxHeight="259.00000762939453" minHeight="10.0" prefHeight="214.00000762939453" vgrow="SOMETIMES" />
+                                                   </rowConstraints>
+                                                   <children>
+                                                      <TableView fx:id="tablePlandetratamiento" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
+                                                         <columns>
+                                                            <TableColumn fx:id="columnNum" editable="false" prefWidth="30.0" sortable="false" text="N°" />
+                                                            <TableColumn fx:id="columnPlanTratamiento" editable="false" prefWidth="740.0" sortable="false" text="Plan de tratamiento" />
+                                                            <TableColumn fx:id="columnEstado" editable="false" prefWidth="40.0" sortable="false" />
+                                                         </columns>
+                                                         <GridPane.margin>
+                                                            <Insets bottom="2.0" left="2.0" right="2.0" top="5.0" />
+                                                         </GridPane.margin>
+                                                      </TableView>
+                                                      <GridPane>
+                                                         <columnConstraints>
+                                                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="699.9999694824219" minWidth="10.0" prefWidth="699.9999694824219" />
+                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="407.0" minWidth="10.0" prefWidth="125.00003051757812" />
+                                                         </columnConstraints>
+                                                         <rowConstraints>
+                                                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                         </rowConstraints>
+                                                         <children>
+                                                            <JFXTextField fx:id="jtfPlandetratamiento" labelFloat="true" promptText="Plan de tratamiento">
+                                                               <GridPane.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </GridPane.margin>
+                                                            </JFXTextField>
+                                                            <JFXButton onAction="#agregarPlanTratamiento" text="Agregar" GridPane.columnIndex="1" />
+                                                         </children>
+                                                      </GridPane>
                                                    </children>
                                                 </GridPane>
                                              </children>
