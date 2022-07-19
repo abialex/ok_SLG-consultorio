@@ -148,10 +148,17 @@ public class Historiaclinicapdf {
         }
         Cell cellimagUp = new Cell().add(imgUp.setAutoScale(true)).setBorder(Border.NO_BORDER);
         /* new SolidBorder(Color.BLACK,1*/
-
+        String Numero_historia=oHistoriaclinica.getIdhistoria_clinica()+"";
+        if((Numero_historia).length()==1){
+            Numero_historia="00"+Numero_historia;
+        }
+        else if((Numero_historia).length()==2){
+            Numero_historia="0"+Numero_historia;
+        }
+        
         Table TableHC = new Table(new float[]{volumen * 1.2f});
         TableHC.addCell(getCell("HISTORIA CLÍNICA", styleTextCenter, styleTextCenter, subrayadoNo));
-        TableHC.addCell(getCell("N° "+oHistoriaclinica.getIdhistoria_clinica() + "", styleTextCenter, styleCell, subrayado));
+        TableHC.addCell(getCell("N° "+Numero_historia + "", styleTextCenter, styleCell, subrayado));
         //TableHC.addCell(getCell(oHistoriaclinica.getFechainscripcion() + "", styleTextCenter, styleCell, subrayado));
 
         Table Cabecera = new Table(new float[]{volumen * 1.15f, volumen * 2.7f, volumen * 1.15f});
