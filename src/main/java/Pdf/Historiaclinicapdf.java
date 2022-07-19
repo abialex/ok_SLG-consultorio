@@ -151,8 +151,8 @@ public class Historiaclinicapdf {
 
         Table TableHC = new Table(new float[]{volumen * 1.2f});
         TableHC.addCell(getCell("HISTORIA CLÍNICA", styleTextCenter, styleTextCenter, subrayadoNo));
-        TableHC.addCell(getCell(oHistoriaclinica.getIdhistoria_clinica() + "", styleTextCenter, styleCell, subrayado));
-        TableHC.addCell(getCell(oHistoriaclinica.getFechainscripcion() + "", styleTextCenter, styleCell, subrayado));
+        TableHC.addCell(getCell("N° "+oHistoriaclinica.getIdhistoria_clinica() + "", styleTextCenter, styleCell, subrayado));
+        //TableHC.addCell(getCell(oHistoriaclinica.getFechainscripcion() + "", styleTextCenter, styleCell, subrayado));
 
         Table Cabecera = new Table(new float[]{volumen * 1.15f, volumen * 2.7f, volumen * 1.15f});
         Cabecera.addCell(new Cell().add(palabraEnBlancoLimpio).addStyle(styleCell));
@@ -405,7 +405,7 @@ public class Historiaclinicapdf {
             TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getMonto() + "").addStyle(styleTextCenter)));
             montoTotalPresupuesto = montoTotalPresupuesto + presupuesto.getMonto() * presupuesto.getCantidad();
         }
-        int contadorEspacioPresupuesto = 10 - olistDetallePresupuesto.size();
+        int contadorEspacioPresupuesto = 15 - olistDetallePresupuesto.size();
         for (int i = 0; i < contadorEspacioPresupuesto; i++) {
             TablePresupuesto.addCell(new Cell().add(palabraEnBlancoLimpio.addStyle(styleTextCenter)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));

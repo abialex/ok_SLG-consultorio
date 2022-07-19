@@ -191,11 +191,11 @@ public class style1 implements IEventHandler {
         Table TablePie1 = new Table(new float[]{volumen * 1.4f});
         Table TablePie2 = new Table(new float[]{volumen * 1.4f});
         Table TablePie3 = new Table(new float[]{volumen * 1f});
-        Cell cellPie = new Cell().add(new Paragraph("Firma del operador").setBorderTop(new SolidBorder(colorFirma,1f)).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextCenter);
+        Cell cellPie = new Cell().add(new Paragraph("Firma del operador").setBorderTop(new SolidBorder(colorFirma,1f)).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextCenter).setMarginTop(15);
         TablePie1.addCell(cellPie);
-        cellPie = new Cell().add(new Paragraph("Firma del paciente").setBorderTop(new SolidBorder(colorFirma,1f)).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextCenter);
+        cellPie = new Cell().add(new Paragraph("Firma del paciente").setBorderTop(new SolidBorder(colorFirma,1f)).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextCenter).setMarginTop(15);
         TablePie2.addCell(cellPie);
-        cellPie = new Cell().add(new Paragraph(mensaje).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextRight);
+        cellPie = new Cell().add(new Paragraph(mensaje).setFontColor(colorFirma)).addStyle(styleCell).addStyle(styleTextRight).setMarginTop(15);
         TablePie3.addCell(cellPie);TablePie.addCell(new Cell().add(TablePie1).setMarginLeft(30).addStyle(styleCell));
         
         TablePie.addCell(new Cell().add(TablePie2).setMarginLeft(30).addStyle(styleCell));
