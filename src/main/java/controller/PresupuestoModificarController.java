@@ -58,7 +58,7 @@ public class PresupuestoModificarController implements Initializable {
     }
 
     void initRestricciones() {
-        jtfDetallePresupuesto.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        //jtfDetallePresupuesto.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
         jtfMonto.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
         jtfCantidad.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
 

@@ -209,7 +209,7 @@ public class PresupuestoVerController implements Initializable {
     }
     
        void initRestricciones() {
-        jtfDescripcion.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
+        //jtfDescripcion.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
         jtfMonto.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
         jtfCantidad.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
 
