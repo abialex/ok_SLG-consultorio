@@ -76,11 +76,8 @@ public class Historia_clinica {
 
     @Column(name = "fechaultimaatencion", nullable = true)
     private LocalDate fechaultimaatencion;
-    
-    @Column(name = "informeRadiografico", length = 1000, nullable = true)
-    private String informeRadiografico;
 
-    public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion, String informeradiografico) {
+    public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.idpaciente = idpaciente;
         this.doctor = doctor;
         this.signosVitales = signosVitales;
@@ -98,7 +95,6 @@ public class Historia_clinica {
         this.motivoConsulta = motivoConsulta;
         this.fechainscripcion = fechainscripcion;
         this.fechaultimaatencion = fechaultimaatencion;
-        this.informeRadiografico = informeradiografico;
     }
 
     @JoinColumn(insertable = true, updatable = true, name = "iddoctor", nullable = true)
@@ -250,14 +246,6 @@ public class Historia_clinica {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
-    }
-
-    public String getInformeRadiografico() {
-        return informeRadiografico;
-    }
-
-    public void setInformeRadiografico(String informeRadiografico) {
-        this.informeRadiografico = informeRadiografico;
     }
     
 }

@@ -6,6 +6,7 @@ package controller;
 
 import Entidades.Doctor;
 import Entidades.Enfermedad;
+import Entidades.ExamenAuxiliar;
 import Entidades.Historia_clinica;
 import Entidades.Paciente;
 import Entidades.Paciente_Enfermedad;
@@ -92,14 +93,28 @@ public class ModificarPacienteController implements Initializable {
     @FXML ComboBox<String> jcbocupacion;
     @FXML ComboBox<String> jcbsexo;
     @FXML TextArea jtfmotivoconsulta;
-    @FXML TextField jtfInformeradiografico;    
     @FXML TextField jtftutornombre, jtftutordni, jtftutortelefono;
     @FXML TextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     @FXML JFXComboBox<Doctor> jcbDoctor;
+    // examenes auxiliares
+    @FXML
+    private JFXTextField jtfExamenAuxiliar;
     
     //plan tratamiento
     @FXML
     private JFXTextField jtfPlandetratamiento;
+
+    @FXML
+    private TableView<ExamenAuxiliar> tableExamenAuxiliar;
+
+    @FXML
+    private TableColumn<ExamenAuxiliar, String> columnNumExamenAuxiliar;
+
+    @FXML
+    private TableColumn<ExamenAuxiliar, String> columnExamenAuxiliar;
+
+    @FXML
+    private TableColumn<ExamenAuxiliar, ExamenAuxiliar> columnEstadoExamenAuxiliar;
 
     @FXML
     private TableView<PlanTratamiento> tablePlandetratamiento;
@@ -182,6 +197,7 @@ public class ModificarPacienteController implements Initializable {
     Paciente oPaciente;
     Historia_clinica oHistoria_Clinica;
     ObservableList<PlanTratamiento> listPlanTratamiento = FXCollections.observableArrayList();
+    ObservableList<ExamenAuxiliar> listExamenAuxiliar = FXCollections.observableArrayList();
     //Botones y métodos de prueba   
     
     //Fin Botones y métodos de prueba
@@ -199,8 +215,10 @@ public class ModificarPacienteController implements Initializable {
         listCheckPregunta();
         initRestricciones();
         cargarDoctor();
-        initTable();
+        initTablePlanTratamiento();
+        initTableExamenesAuxiliares();
         tablePlandetratamiento.setItems(listPlanTratamiento);
+        tableExamenAuxiliar.setItems(listExamenAuxiliar);
         
     }    
     
@@ -336,16 +354,44 @@ public class ModificarPacienteController implements Initializable {
         }
     }
     
+    @FXML
+    void agregarExamenAuxiliar() {
+        if (jtfExamenAuxiliar.getText().length() != 0) {
+            ExamenAuxiliar oExamenAuxiliar = new ExamenAuxiliar();
+            oExamenAuxiliar.setDescripcion(jtfExamenAuxiliar.getText());
+            oExamenAuxiliar.setHistoria_clinica(oHistoria_Clinica);
+            App.jpa.getTransaction().begin();
+            App.jpa.persist(oExamenAuxiliar);
+            App.jpa.getTransaction().commit();
+            jtfExamenAuxiliar.setStyle("");
+            jtfExamenAuxiliar.setText("");
+            updateListExamenAuxiliar();
+        } else {
+            jtfExamenAuxiliar.setStyle("-fx-border-color: #ff052b");
+            alertWarning.setHeaderText(null);
+            alertWarning.setTitle("Examen Auxiliar");
+            alertWarning.setContentText("Espacio en blanco");
+            alertWarning.showAndWait();
+        }
+    }
+    
     void updateListPlanTratamiento() {
         List<PlanTratamiento> olistTratamiento = App.jpa.createQuery("select p from PlanTratamiento p where idhistoria_clinica= " + oHistoria_Clinica.getIdhistoria_clinica() + "  order by idplantratamiento ASC").getResultList();
         listPlanTratamiento.clear();
         for (PlanTratamiento planTratamiento : olistTratamiento) {
             listPlanTratamiento.add(planTratamiento);            
         }
-
     }
     
-    void initTable() {
+    void updateListExamenAuxiliar() {
+        List<ExamenAuxiliar> olistExamenAuxiliar = App.jpa.createQuery("select p from ExamenAuxiliar p where idhistoria_clinica= " + oHistoria_Clinica.getIdhistoria_clinica() + "  order by idexamenauxiliar ASC").getResultList();
+        listExamenAuxiliar.clear();
+        for (ExamenAuxiliar oexam : olistExamenAuxiliar) {
+            listExamenAuxiliar.add(oexam);            
+        }
+    }
+    
+    void initTablePlanTratamiento() {
         columnNum.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
         columnPlanTratamiento.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
         columnEstado.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, PlanTratamiento>("PlanTratamiento"));
@@ -433,6 +479,94 @@ public class ModificarPacienteController implements Initializable {
 
     }
     
+    void initTableExamenesAuxiliares() {
+        columnNumExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, String>("descripcion"));
+        columnExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, String>("descripcion"));
+        columnEstadoExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, ExamenAuxiliar>("PlanTratamiento"));
+        columnNumExamenAuxiliar.setCellFactory(column -> {
+            TableCell<ExamenAuxiliar, String> cell = new TableCell<ExamenAuxiliar, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText((getIndex() + 1) + "");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        columnEstadoExamenAuxiliar.setCellFactory(column -> {
+            TableCell<ExamenAuxiliar, ExamenAuxiliar> cell = new TableCell<ExamenAuxiliar, ExamenAuxiliar>() {
+                @Override
+                protected void updateItem(ExamenAuxiliar item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        int tamHightImag = 16;
+                        int tamWidthImag = 16;
+                        ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/imagenes/delete-1.png").toExternalForm()));
+                        deleteIcon.setFitHeight(tamHightImag);
+                        deleteIcon.setFitWidth(tamWidthImag);
+                        deleteIcon.setUserData(item);
+                        deleteIcon.setStyle(
+                                " -fx-cursor: hand;"
+                        );
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarEliminar(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarMoved(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarFuera(event));
+                        //deleteIcon.setText("Eliminar");
+                        HBox managebtn = new HBox(deleteIcon);
+                        managebtn.setStyle("-fx-alignment:center");
+                        setGraphic(managebtn);
+                        setText(null);
+
+                    }
+
+                }
+
+                void mostrarEliminar(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    ExamenAuxiliar oexam = (ExamenAuxiliar) imag.getUserData();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setHeaderText(null);
+                    alert.setTitle("Info");
+                    alert.setContentText("¿Desea eliminar el examen auxilair: " + oexam.getDescripcion() + "?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        listPlanTratamiento.remove(oexam);
+                        App.jpa.getTransaction().begin();
+                        App.jpa.remove(oexam);
+                        App.jpa.getTransaction().commit();
+                        updateListExamenAuxiliar();
+                    }
+                }
+
+                private void imagEliminarMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/delete-2.png").toExternalForm()));
+                }
+
+                private void imagEliminarFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/delete-1.png").toExternalForm()));
+                }
+
+            };
+            return cell;
+        });
+
+    }
+    
     void listCheck(){
         listcheckG.add(checkalergia);listcheckG.add(checkfiebrereumatica);listcheckG.add(checkanemia);
         listcheckG.add(checkdiabetes);listcheckG.add(checktuberculosis);listcheckG.add(checkhepatitis);
@@ -466,7 +600,6 @@ public class ModificarPacienteController implements Initializable {
         jcbDoctor.getSelectionModel().select(oHistoria_Clinica.getDoctor().isFlag()? null: oHistoria_Clinica.getDoctor());
         
         jtfmotivoconsulta.setText(oHistoria_Clinica.getMotivoConsulta());
-        jtfInformeradiografico.setText(oHistoria_Clinica.getInformeRadiografico());
         
         jtfemergenciaNombre.setText(oPaciente.getEmergenciaNombre());
         jtfemergenciaParentesco.setText(oPaciente.getEmergenciaParentesco());
@@ -551,6 +684,7 @@ public class ModificarPacienteController implements Initializable {
             }
         }
         updateListPlanTratamiento();
+        updateListExamenAuxiliar();
     }
 
     void setController(VerPacienteController odc) {
@@ -570,7 +704,6 @@ public class ModificarPacienteController implements Initializable {
         oPersona.setDomicilio(jtfDomicilio.getText());
 
         oHistoria_Clinica.setMotivoConsulta(jtfmotivoconsulta.getText());
-        oHistoria_Clinica.setInformeRadiografico(jtfInformeradiografico.getText());
         oHistoria_Clinica.setDoctor(jcbDoctor.getSelectionModel().getSelectedItem());
         
         oPaciente.setEmergenciaNombre(jtfemergenciaNombre.getText());

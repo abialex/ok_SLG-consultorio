@@ -6,6 +6,7 @@ package controller;
 
 import Entidades.Doctor;
 import Entidades.Enfermedad;
+import Entidades.ExamenAuxiliar;
 import Entidades.Historia_clinica;
 import Entidades.Paciente;
 import Entidades.Paciente_Enfermedad;
@@ -100,17 +101,30 @@ public class RegistrarPacienteController implements Initializable {
     @FXML
     private JFXTextArea jtaConsulta;
     @FXML
-    private JFXTextField jtfInformeradiografico;
-    @FXML
     private JFXTextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
     @FXML
     private JFXTextField jtftutornombre, jtftutordni, jtftutortelefono;
     @FXML
     private JFXComboBox<Doctor> jcbDoctor;
 
+    //examen auxiliar
+    @FXML
+    private JFXTextField jtfExamenAuxiliar;
     //plan tratamiento
     @FXML
     private JFXTextField jtfPlandetratamiento;
+    
+    @FXML
+    private TableView<ExamenAuxiliar> tableExamenAuxiliar;
+
+    @FXML
+    private TableColumn<ExamenAuxiliar, String> columnNumExamenAuxiliar;
+
+    @FXML
+    private TableColumn<ExamenAuxiliar, String> columnExamenAuxiliar;
+
+    @FXML
+    private TableColumn<ExamenAuxiliar, ExamenAuxiliar> columnEstadoExamenAuxiliar;
 
     @FXML
     private TableView<PlanTratamiento> tablePlandetratamiento;
@@ -171,6 +185,7 @@ public class RegistrarPacienteController implements Initializable {
     AlertController oAlert = new AlertController();
     VerPacienteController oVerPacienteController;
     ObservableList<PlanTratamiento> listPlanTratamiento = FXCollections.observableArrayList();
+    ObservableList<ExamenAuxiliar> listExamenAuxiliar = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -183,8 +198,10 @@ public class RegistrarPacienteController implements Initializable {
         asignar();
         initRestricciones();
         cargarDoctor();
-        initTable();
+        initTablePlanTratamiento();
+        initTableExamenesAuxiliares();
         tablePlandetratamiento.setItems(listPlanTratamiento);
+        tableExamenAuxiliar.setItems(listExamenAuxiliar);
     }
 
     void cargarDoctor() {
@@ -251,8 +268,7 @@ public class RegistrarPacienteController implements Initializable {
                     jtaAltapaciente.getText().trim(),
                     jtaConsulta.getText().trim(),
                     LocalDate.now(),
-                    LocalDate.now(),
-                    jtfInformeradiografico.getText().trim());
+                    LocalDate.now());
             //GuardarPaciente
             App.jpa.getTransaction().begin();
             App.jpa.persist(opersona);
@@ -267,9 +283,14 @@ public class RegistrarPacienteController implements Initializable {
             }
             App.jpa.persist(ohistoria);
             
-             for (PlanTratamiento oplantratamiento : listPlanTratamiento ){
-                 oplantratamiento.setHistoria_clinica(ohistoria);
+            for (PlanTratamiento oplantratamiento : listPlanTratamiento) {
+                oplantratamiento.setHistoria_clinica(ohistoria);
                 App.jpa.persist(oplantratamiento);
+            }
+
+            for (ExamenAuxiliar oexam : listExamenAuxiliar) {
+                oexam.setHistoria_clinica(ohistoria);
+                App.jpa.persist(oexam);
             }
             
             App.jpa.getTransaction().commit();
@@ -392,8 +413,24 @@ public class RegistrarPacienteController implements Initializable {
             alertWarning.showAndWait();
         }
     }
+    @FXML
+    void agregarExamenAuxiliar() {
+        if (jtfExamenAuxiliar.getText().length() != 0) {
+            ExamenAuxiliar oExamenAuxiliar = new ExamenAuxiliar();
+            oExamenAuxiliar.setDescripcion(jtfExamenAuxiliar.getText());
+            listExamenAuxiliar.add(oExamenAuxiliar);
+            jtfExamenAuxiliar.setStyle("");
+            jtfExamenAuxiliar.setText("");
+        } else {
+            jtfExamenAuxiliar.setStyle("-fx-border-color: #ff052b");
+            alertWarning.setHeaderText(null);
+            alertWarning.setTitle("Examen Auxiliar");
+            alertWarning.setContentText("Espacio en blanco");
+            alertWarning.showAndWait();
+        }
+    }
 
-    void initTable() {
+    void initTablePlanTratamiento() {
         columnNum.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
         columnPlanTratamiento.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
         columnEstado.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, PlanTratamiento>("PlanTratamiento"));
@@ -458,6 +495,89 @@ public class RegistrarPacienteController implements Initializable {
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         listPlanTratamiento.remove(plan);
+                    }
+                }
+
+                private void imagEliminarMoved(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/delete-2.png").toExternalForm()));
+                }
+
+                private void imagEliminarFuera(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    imag.setImage(new Image(getClass().getResource("/imagenes/delete-1.png").toExternalForm()));
+                }
+
+            };
+            return cell;
+        });
+
+    }
+    void initTableExamenesAuxiliares() {
+        columnNumExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, String>("descripcion"));
+        columnExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, String>("descripcion"));
+        columnEstadoExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, ExamenAuxiliar>("PlanTratamiento"));
+        columnNumExamenAuxiliar.setCellFactory(column -> {
+            TableCell<ExamenAuxiliar, String> cell = new TableCell<ExamenAuxiliar, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText((getIndex() + 1) + "");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+
+        columnEstadoExamenAuxiliar.setCellFactory(column -> {
+            TableCell<ExamenAuxiliar, ExamenAuxiliar> cell = new TableCell<ExamenAuxiliar, ExamenAuxiliar>() {
+                @Override
+                protected void updateItem(ExamenAuxiliar item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        int tamHightImag = 16;
+                        int tamWidthImag = 16;
+                        ImageView deleteIcon = new ImageView(new Image(getClass().getResource("/imagenes/delete-1.png").toExternalForm()));
+                        deleteIcon.setFitHeight(tamHightImag);
+                        deleteIcon.setFitWidth(tamWidthImag);
+                        deleteIcon.setUserData(item);
+                        deleteIcon.setStyle(
+                                " -fx-cursor: hand;"
+                        );
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarEliminar(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarMoved(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarFuera(event));
+                        //deleteIcon.setText("Eliminar");
+                        HBox managebtn = new HBox(deleteIcon);
+                        managebtn.setStyle("-fx-alignment:center");
+                        setGraphic(managebtn);
+                        setText(null);
+
+                    }
+
+                }
+
+                void mostrarEliminar(MouseEvent event) {
+                    ImageView imag = (ImageView) event.getSource();
+                    ExamenAuxiliar exa = (ExamenAuxiliar) imag.getUserData();
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setHeaderText(null);
+                    alert.setTitle("Info");
+                    alert.setContentText("¿Desea eliminar el plan de tratamiento: " + exa.getDescripcion() + "?");
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        listExamenAuxiliar.remove(exa);
                     }
                 }
 

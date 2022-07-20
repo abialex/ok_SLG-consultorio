@@ -11,6 +11,7 @@ import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
 import Entidades.Detalle_Presupuesto;
+import Entidades.ExamenAuxiliar;
 import Entidades.PlanTratamiento;
 import Entidades.Presupuesto;
 import Entidades.Tratamiento;
@@ -68,6 +69,7 @@ public class Historiaclinicapdf {
         List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + opersona.getIdpersona() + " and flag = false order by idtratamiento ASC").setMaxResults(10).getResultList();
         List<Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
         List<PlanTratamiento> olistPlanTratamientos = App.jpa.createQuery("select p from PlanTratamiento p where idhistoria_clinica= " + oHistoriaclinica.getIdhistoria_clinica() + "  order by idplantratamiento ASC").getResultList();
+        List<ExamenAuxiliar> olistExamenAuxiliares = App.jpa.createQuery("select p from ExamenAuxiliar p where idhistoria_clinica= " + oHistoriaclinica.getIdhistoria_clinica() + "  order by idexamenauxiliar ASC").getResultList();
 
         Presupuesto opresupuesto = null;
         if (!olistPresupuesto.isEmpty()) {
@@ -104,6 +106,7 @@ public class Historiaclinicapdf {
         Style styleTextRight = new Style().setTextAlignment(TextAlignment.RIGHT).setFontSize(10f);
         Style styleTextLeft = new Style().setTextAlignment(TextAlignment.LEFT).setFontSize(10f);
         Style styleTextCenter = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(10f);
+        Style styleTextCenter12 = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(12f);
         Style styleTextCenter8 = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(8f);
         /*---------------------Color----------*/
         Color prueba = new DeviceRgb(0, 32, 96);
@@ -155,24 +158,25 @@ public class Historiaclinicapdf {
             Numero_historia = "0" + Numero_historia;
         }
 
-        Table TableHC = new Table(new float[]{volumen * 1.2f});
-        TableHC.addCell(getCell("HISTORIA CLÍNICA", styleTextCenter, styleTextCenter, subrayadoNo));
-        TableHC.addCell(getCell("N° " + Numero_historia + "", styleTextCenter, styleCell, subrayado));
+        Table TableHC = new Table(new float[]{volumen * 1f});
+        TableHC.addCell(new Cell().add(new Paragraph("HISTORIA CLÍNICA \n").addStyle(styleTextCenter).setFont(bold)).add(new Paragraph("N° "+Numero_historia).addStyle(styleTextCenter12)));
+        //TableHC.addCell(getCell("HISTORIA CLÍNICA \n N° "+ Numero_historia, styleTextCenter, styleTextCenter, subrayadoNo).setFont(bold));
+        //TableHC.addCell(getCell("N° " + Numero_historia + "", styleTextCenter12, styleCell, subrayadoNo).setMarginTop(4));
         //TableHC.addCell(getCell(oHistoriaclinica.getFechainscripcion() + "", styleTextCenter, styleCell, subrayado));
 
-        Table Cabecera = new Table(new float[]{volumen * 1.15f, volumen * 2.7f, volumen * 1.15f});
+        Table Cabecera = new Table(new float[]{volumen * 1.2f, volumen * 2.6f, volumen * 1.2f});
         Cabecera.addCell(new Cell().add(palabraEnBlancoLimpio).addStyle(styleCell));
         Cabecera.addCell(new Cell().add(cellimagUp.setPaddingTop(0)).addStyle(styleCell));
-        Cabecera.addCell(new Cell().add(TableHC).addStyle(styleCell));
-        Cabecera.setMarginBottom(2);
+        Cabecera.addCell(new Cell().add(TableHC).addStyle(styleCell).setMarginLeft(18));
+        Cabecera.setMarginBottom(10);
 
         //Fin Cabecera
         // ANAMNESIS
-        Table tableinit= new Table(new float[]{volumen * 3.5f, volumen * 0.7f,volumen * 0.8f});
+        Table tableinit = new Table(new float[]{volumen * 3.5f, volumen * 0.7f, volumen * 0.8f});
         tableinit.setMarginBottom(4);
-        tableinit.addCell(getCell("ANAMNESIS", styleCell, styleTextLeft, subrayadoNo).setFontColor(colorAzul).setFont(bold));     
-        tableinit.addCell(getCell("Operador: ", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
-        tableinit.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getNombres_apellidos().substring(0, 9)+"...", styleCell, styleTextCenter8, subrayado));
+        tableinit.addCell(getCell("ANAMNESIS", styleCell, styleTextLeft, subrayadoNo).setFontColor(colorAzul).setFont(bold));
+        tableinit.addCell(getCell("Operador: ", styleCell, styleTextRight, subrayadoNo).setFontColor(colorNegro));
+        tableinit.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getNombres_apellidos().substring(0, 10) + "...", styleCell, styleTextCenter8, subrayado));
         Paragraph parrafoTitulo = new Paragraph("HISTORIA CLÍNICA").setFontSize(14).setFont(bold).setTextAlignment(TextAlignment.CENTER);
         //Paragraph parrafoSubTitulo1 = new Paragraph("ANAMNESIS").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
 
@@ -216,7 +220,7 @@ public class Historiaclinicapdf {
         tableInformacion.addCell(new Cell().add(table1Parrafo3).addStyle(styleCell));
         tableInformacion.addCell(new Cell().add(table1Parrafo4).addStyle(styleCell));
         tableInformacion.addCell(new Cell().add(table1Parrafo5).addStyle(styleCell));
-        tableInformacion.addCell(new Cell().add(table1Parrafo6).addStyle(styleCell));
+        //tableInformacion.addCell(new Cell().add(table1Parrafo6).addStyle(styleCell));
 
         //table1Datos.addCell(cellimag);
         Table TableMenorDeEdadParrafo1 = new Table(new float[]{volumen * 5});
@@ -427,21 +431,31 @@ public class Historiaclinicapdf {
         TablePresupuesto.addCell(new Cell(1, 2).add(new Paragraph("MONTO TOTAL ").addStyle(styleTextCenter).setFont(bold).setFontColor(colorTituloTabla)));
         TablePresupuesto.addCell(new Cell().add(new Paragraph(montoTotalPresupuesto + "").addStyle(styleTextCenter)));
 
-        Paragraph parrafoRadiografico = new Paragraph("INFORME RADIOGRÁFICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-        Table TableRadiografico = getTable(oHistoriaclinica.getInformeRadiografico(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
+        Paragraph parrafoRadiografico = new Paragraph("EXÁMENES AUXILIARES").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+        Table TableExamenesAuxiliares = new Table(new float[]{volumen * 0.12f, volumen * 4.88f});
+        for (int i = 0; i < olistExamenAuxiliares.size(); i++) {
+            TableExamenesAuxiliares.addCell(getCell((i + 1) + ". ", styleCell, styleTextCenter, subrayadoNo).setFontColor(colorNegro));
+            TableExamenesAuxiliares.addCell(getCell(olistExamenAuxiliares.get(i).getDescripcion(), styleCell, styleTextLeft, subrayado));
+        }
+        for (int i = olistExamenAuxiliares.size(); i < 3; i++) {
+            TableExamenesAuxiliares.addCell(getCell((i + 1) + ". ", styleCell, styleTextCenter, subrayadoNo).setFontColor(colorNegro));
+            TableExamenesAuxiliares.addCell(getCell("", styleCell, styleTextLeft, subrayado));
+        }
 
         Paragraph parrafoPlantaTratamiento = new Paragraph("PLAN DE TRATAMIENTO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-        Table TablePlanTratamiento = new Table(new float[]{volumen * 2.5f, volumen * 2.5f});
+        Table TablePlanTratamiento = new Table(new float[]{volumen * 0.12f, volumen * 2.38f, volumen * 0.12f, volumen * 2.38f});
         for (int i = 0; i < olistPlanTratamientos.size(); i++) {
-            TablePlanTratamiento.addCell(getCell((i + 1) + ".- " + olistPlanTratamientos.get(i).getDescripcion(), styleCell, styleCell, subrayado).setFontColor(colorNegro).setMarginRight(15));
+            TablePlanTratamiento.addCell(getCell((i + 1) + ". ", styleCell, styleTextCenter, subrayadoNo).setFontColor(colorNegro));
+            TablePlanTratamiento.addCell(getCell(olistPlanTratamientos.get(i).getDescripcion(), styleCell, styleTextLeft, subrayado).setMarginRight(i % 2 == 0 ? 5 : 0));
         }
         for (int i = olistPlanTratamientos.size(); i < 6; i++) {
-            TablePlanTratamiento.addCell(getCell((i + 1) + ".-", styleCell, styleCell, subrayado).setFontColor(colorNegro).setMarginRight(15));
+            TablePlanTratamiento.addCell(getCell((i + 1) + ". ", styleCell, styleTextCenter, subrayadoNo).setFontColor(colorNegro));
+            TablePlanTratamiento.addCell(getCell("", styleCell, styleTextLeft, subrayado).setFontColor(colorNegro).setMarginRight(i % 2 == 0 ? 5 : 0));
         }
-        Table TableMontoPresupuesto = new Table(new float[]{volumen * 4.17f,volumen * 0.33f, volumen * 0.5f});
+        Table TableMontoPresupuesto = new Table(new float[]{volumen * 4.17f, volumen * 0.33f, volumen * 0.5f});
         TableMontoPresupuesto.addCell(getCell(" ", styleCell, styleCell, subrayadoNo));
         TableMontoPresupuesto.addCell(getCell("Total:", styleCell, styleCell, subrayadoNo).setFontColor(colorNegro));
-        TableMontoPresupuesto.addCell(getCell( montoTotalPresupuesto+"", styleCell, styleTextCenter, subrayado));
+        TableMontoPresupuesto.addCell(getCell(montoTotalPresupuesto + "", styleCell, styleTextCenter, subrayado));
         Table TableTratamiento = new Table(new float[]{volumen * 0.6f, volumen * 3.3f, volumen * 0.6f, volumen * 0.5f});
         TableTratamiento.setMarginTop(10);
         TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter).setFontColor(colorTituloTabla)));
@@ -512,8 +526,8 @@ public class Historiaclinicapdf {
         document.add(TablePlanTratamiento);
 
         document.add(parrafoRadiografico);
-        document.add(TableRadiografico);
-        
+        document.add(TableExamenesAuxiliares);
+
         document.add(TableMontoPresupuesto);
         document.add(TableTratamiento);
 
