@@ -172,7 +172,7 @@
                                                         <Font name="System Bold" size="13.0" />
                                                     </font>
                                                 </TitledPane>
-                                                <TitledPane text="II. (Requerido)" textFill="WHITE">
+                                                <TitledPane text="II. Datos adicionales" textFill="WHITE">
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                             <children>

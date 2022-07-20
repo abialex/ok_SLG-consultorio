@@ -660,13 +660,13 @@ public class RegistrarPacienteController implements Initializable {
         } else {
             jtfDomicilio.setStyle("");
         }
-
+       /*
         if (jtaConsulta.getText().trim().length() == 0) {
             jtaConsulta.setStyle("-fx-border-color: #ff052b");
             aux = false;
         } else {
             jtaConsulta.setStyle("");
-        }
+        }*/
 
         if (jcbDoctor.getSelectionModel().getSelectedItem() == null) {
             jcbDoctor.setStyle("-fx-border-color: #ff052b");
@@ -696,7 +696,7 @@ public class RegistrarPacienteController implements Initializable {
         } else {
             jtfanio.setStyle("");
         }
-
+        /*
         if (jtfenfermedadActual.getText().trim().length() == 0) {
             jtfenfermedadActual.setStyle("-fx-border-color: #ff052b");
             auxfecha = false;
@@ -716,7 +716,7 @@ public class RegistrarPacienteController implements Initializable {
             auxfecha = false;
         } else {
             jtfantecedentesPersonales.setStyle("");
-        }
+        }*/
 
         boolean auxfechaCorrect = isfechavalid(auxfecha);
         if (!aux || !auxfecha) {
