@@ -155,17 +155,26 @@ public class PresupuestoVerController implements Initializable {
 
     @FXML
     void cerrarPresupuesto() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setHeaderText(null);
-        alert.setTitle("Info");
-        alert.setContentText("Una vez cerrado el guardado el presupuesto no se podrá modificar");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.isPresent() && result.get() == ButtonType.OK) {
-            oPresupuesto.setActivo(false);
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(oPresupuesto);
-            App.jpa.getTransaction().commit();
-            cerrar();
+        if (!listPresupuesto.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setHeaderText(null);
+            alert.setTitle("Info");
+            alert.setContentText("Una vez cerrado el guardado el presupuesto no se podrá modificar");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                oPresupuesto.setActivo(false);
+                App.jpa.getTransaction().begin();
+                App.jpa.persist(oPresupuesto);
+                App.jpa.getTransaction().commit();
+                cerrar();
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setTitle("Info");
+            alert.setContentText("No tiene ni un presupuesto");
+            alert.showAndWait();
+
         }
     }
 
@@ -207,8 +216,8 @@ public class PresupuestoVerController implements Initializable {
         }
         lblMontototal.setText(acumMontoTotal + "");
     }
-    
-       void initRestricciones() {
+
+    void initRestricciones() {
         //jtfDescripcion.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
         jtfMonto.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
         jtfCantidad.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
@@ -307,7 +316,7 @@ public class PresupuestoVerController implements Initializable {
                     }
                 }
 
-                void mostrarModificar(MouseEvent event) {                    
+                void mostrarModificar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     Detalle_Presupuesto oDetalle_Presupuesto = (Detalle_Presupuesto) imag.getUserData();
                     PresupuestoModificarController oPresupuestoModificarController = (PresupuestoModificarController) mostrarVentana(PresupuestoModificarController.class, "PresupuestoModificar");
