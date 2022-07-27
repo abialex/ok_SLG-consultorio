@@ -411,15 +411,18 @@ public class Historiaclinicapdf {
         TableOdontograma.addCell(getCell("", styleCell, styleCell, subrayadoNo));
         TableOdontograma.addCell(cellimag.addStyle(styleTextCenter));
         TableOdontograma.addCell(getCell("", styleCell, styleCell, subrayadoNo));
-        Table TablePresupuesto = new Table(new float[]{volumen * 4f, volumen * 0.4f, volumen * 0.6f});
+        Table TablePresupuesto = new Table(new float[]{volumen * 0.25f, volumen * 3.85f, volumen * 0.45f, volumen * 0.45f});
+        TablePresupuesto.addCell(new Cell().add(new Paragraph("C/U")).setFont(bold).addStyle(styleTextCenterColorBlue));
         TablePresupuesto.addCell(new Cell().add(new Paragraph("PRESUPUESTO")).setFont(bold).addStyle(styleTextCenterColorBlue));
-        TablePresupuesto.addCell(new Cell().add(new Paragraph("C/U").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
         TablePresupuesto.addCell(new Cell().add(new Paragraph("MONTO").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
+        TablePresupuesto.addCell(new Cell().add(new Paragraph("MONTO TOTAL").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
         float montoTotalPresupuesto = 0;
         for (Detalle_Presupuesto presupuesto : olistDetallePresupuesto) {
-            TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getDescripcion()).addStyle(styleTextLeft)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getCantidad() + "").addStyle(styleTextCenter)));
+            TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getDescripcion()).addStyle(styleTextLeft)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getMonto() + "").addStyle(styleTextCenter)));
+            TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getCantidad() * presupuesto.getMonto() + "").addStyle(styleTextCenter)));
+
             montoTotalPresupuesto = montoTotalPresupuesto + presupuesto.getMonto() * presupuesto.getCantidad();
         }
         int contadorEspacioPresupuesto = 15 - olistDetallePresupuesto.size();
@@ -427,10 +430,11 @@ public class Historiaclinicapdf {
             TablePresupuesto.addCell(new Cell().add(palabraEnBlancoLimpio.addStyle(styleTextCenter)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
+            TablePresupuesto.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
             //montoTotal = montoTotal + tratamiento.getMonto();
         }
 
-        TablePresupuesto.addCell(new Cell(1, 2).add(new Paragraph("MONTO TOTAL ").addStyle(styleTextCenter).setFont(bold).setFontColor(colorTituloTabla)));
+        TablePresupuesto.addCell(new Cell(1, 3).add(new Paragraph("MONTO TOTAL ").addStyle(styleTextCenter).setFont(bold).setFontColor(colorTituloTabla)));
         TablePresupuesto.addCell(new Cell().add(new Paragraph(montoTotalPresupuesto + "").addStyle(styleTextCenter)));
 
         Paragraph parrafoRadiografico = new Paragraph("EXÁMENES AUXILIARES").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
@@ -468,20 +472,24 @@ public class Historiaclinicapdf {
 
         for (int i = 0; i < olistTratamiento.size(); i++) {
             montoTotal = montoTotal - olistTratamiento.get(i).getMonto();
-              if (i == 27) {
+            if (i == 27) {
                 TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("SALDO").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 //montoTotal = montoTotal + tratamiento.getMonto();
             }
-            TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getFechaRealizada() + "").addStyle(styleTextCenter)));
+            if(olistTratamiento.get(i).getMonto()==0){
+                TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextCenter)));
+            }
+            else{
+                TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getFechaRealizada() + "").addStyle(styleTextCenter)));
+            }
             TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getTratamiento()).addStyle(styleTextLeft)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getMonto() + "").addStyle(styleTextCenter)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(montoTotal + "").addStyle(styleTextCenter)));
 
         }
-
 
         for (int i = olistTratamiento.size(); i < 63; i++) {
             if (i == 27) {
