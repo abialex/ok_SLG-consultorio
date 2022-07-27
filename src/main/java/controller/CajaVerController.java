@@ -190,7 +190,7 @@ public class CajaVerController implements Initializable {
 
     @FXML
     void updateListaTratamiento() {
-        olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + oPersona.getIdpersona() + " and flag = false order by idtratamiento DESC").getResultList();
+        olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + oPersona.getIdpersona() + " and flag = false order by idtratamiento ASC").getResultList();
         listTratamiento.clear();
         acumMonto = 0;
         for (Tratamiento otratamiento : olistTratamiento) {
