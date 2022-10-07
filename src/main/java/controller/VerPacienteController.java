@@ -100,7 +100,7 @@ public class VerPacienteController implements Initializable {
     @FXML
     void updateListPersona() {
         List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where (dni like " + "'" + jtfbuscar.getText() + "%'"
-                + " or " + "nombres_apellidos like " + "'%" + jtfbuscar.getText() + "%') and flag = false and ocupacion <> 'DOCTOR' order by idpersona DESC").setMaxResults(10).getResultList();
+                + " or " + "nombres_apellidos like " + "'%" + jtfbuscar.getText() + "%') and flag = false and ocupacion <> 'DOCTOR' order by idpersona DESC").getResultList();
         listPersona.clear();
         for (Persona ocarta : olistPerson) {
             listPersona.add(ocarta);
@@ -324,7 +324,7 @@ public class VerPacienteController implements Initializable {
                     for (Persona opersona : listPersona) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
                             Presupuesto opresupuesto = getPresupuesto(opersona);
-                            if (opresupuesto.isActivo()) {
+                            if (opresupuesto.isActivo() || opresupuesto.getIdpresupuesto() == 0) {
                                 alert.setHeaderText(null);
                                 alert.setTitle("Tratamiento");
                                 alert.setContentText("No tiene presupuesto finalizado");
