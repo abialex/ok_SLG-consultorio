@@ -299,8 +299,8 @@ public class CajaVerController implements Initializable {
                                 " -fx-cursor: hand;"
                         );
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarEliminar(event));
-                        deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarMoved(event));
-                        deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarFuera(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarFuera(event));
+                        deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarMoved(event));
                         //deleteIcon.setText("Eliminar");
 
                         ImageView editIcon = new ImageView(new Image(getClass().getResource("/imagenes/modify-1.png").toExternalForm()));
