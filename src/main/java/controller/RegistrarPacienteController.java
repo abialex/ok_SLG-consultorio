@@ -12,11 +12,14 @@ import Entidades.Paciente;
 import Entidades.Paciente_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
+import Entidades.PersonaReniec;
 import Entidades.PlanTratamiento;
 import Entidades.Pregunta;
 import Entidades.Tratamiento;
 import Util.FileImagUtil;
 import Pdf.Historiaclinicapdf;
+import Util.HttpMethods;
+import com.google.gson.Gson;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
@@ -28,6 +31,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
@@ -113,7 +117,7 @@ public class RegistrarPacienteController implements Initializable {
     //plan tratamiento
     @FXML
     private JFXTextField jtfPlandetratamiento;
-    
+
     @FXML
     private TableView<ExamenAuxiliar> tableExamenAuxiliar;
 
@@ -186,6 +190,38 @@ public class RegistrarPacienteController implements Initializable {
     VerPacienteController oVerPacienteController;
     ObservableList<PlanTratamiento> listPlanTratamiento = FXCollections.observableArrayList();
     ObservableList<ExamenAuxiliar> listExamenAuxiliar = FXCollections.observableArrayList();
+    HttpMethods http = new HttpMethods();
+    Gson json = new Gson();
+
+    @FXML
+    void consultar() {
+        if (jtfDni.getText().length() == 8) {
+            HttpResponse<String> response = http.consultarDNI(jtfDni.getText());
+            if (response.statusCode() == 200) {
+                PersonaReniec personReniec = json.fromJson(response.body(), PersonaReniec.class);
+                if (personReniec.getApellidoMaterno() == null) {
+                    alertWarning.setHeaderText(null);
+                    alertWarning.setTitle("Búsqueda");
+                    alertWarning.setContentText("No se encontró DNI");
+                    alertWarning.showAndWait();
+
+                } else {
+                    jtfNombresyApellidos.setText(personReniec.getNombres() + " " + personReniec.getApellidoPaterno() + " " + personReniec.getApellidoMaterno());
+                    jtfTelefono.setFocusTraversable(true);
+                }
+            } else {
+                alertWarning.setHeaderText(null);
+                alertWarning.setTitle("Búsqueda");
+                alertWarning.setContentText("Error " + response.statusCode());
+                alertWarning.showAndWait();
+            }
+        } else {
+            alertWarning.setHeaderText(null);
+            alertWarning.setTitle("Búsqueda");
+            alertWarning.setContentText("Ingrese un DNI válido");
+            alertWarning.showAndWait();
+        }
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -282,7 +318,7 @@ public class RegistrarPacienteController implements Initializable {
                 App.jpa.persist(paciente_Pregunta);
             }
             App.jpa.persist(ohistoria);
-            
+
             for (PlanTratamiento oplantratamiento : listPlanTratamiento) {
                 oplantratamiento.setHistoria_clinica(ohistoria);
                 App.jpa.persist(oplantratamiento);
@@ -292,7 +328,7 @@ public class RegistrarPacienteController implements Initializable {
                 oexam.setHistoria_clinica(ohistoria);
                 App.jpa.persist(oexam);
             }
-            
+
             App.jpa.getTransaction().commit();
             oVerPacienteController.updateListPersona();
             oVerPacienteController.selectAgregado();
@@ -413,6 +449,7 @@ public class RegistrarPacienteController implements Initializable {
             alertWarning.showAndWait();
         }
     }
+
     @FXML
     void agregarExamenAuxiliar() {
         if (jtfExamenAuxiliar.getText().length() != 0) {
@@ -513,6 +550,7 @@ public class RegistrarPacienteController implements Initializable {
         });
 
     }
+
     void initTableExamenesAuxiliares() {
         columnNumExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, String>("descripcion"));
         columnExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, String>("descripcion"));
@@ -599,7 +637,7 @@ public class RegistrarPacienteController implements Initializable {
 
     void initRestricciones() {
         jtfNombresyApellidos.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
-        jtfTelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+        jtfTelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero9(event));
         jtfDni.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
         jtfDia.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
         jtfMes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
@@ -607,17 +645,20 @@ public class RegistrarPacienteController implements Initializable {
 
         jtfemergenciaNombre.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
         jtfemergenciaParentesco.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
-        jtfemergenciatelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+        jtfemergenciatelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero9(event));
 
         jtftutornombre.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
         jtftutordni.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
-        jtftutortelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero(event));
+        jtftutortelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero9(event));
     }
 
-    void SoloNumerosEntero(KeyEvent event) {
+    void SoloNumerosEntero9(KeyEvent event) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
         if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 9) {
             event.consume();
         }
     }
@@ -780,7 +821,7 @@ public class RegistrarPacienteController implements Initializable {
         } else {
             jtfDomicilio.setStyle("");
         }
-       /*
+        /*
         if (jtaConsulta.getText().trim().length() == 0) {
             jtaConsulta.setStyle("-fx-border-color: #ff052b");
             aux = false;

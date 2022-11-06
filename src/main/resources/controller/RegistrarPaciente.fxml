@@ -40,66 +40,29 @@
                                                     <content>
                                                         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                                                             <children>
-                                                                <GridPane prefHeight="470.0" prefWidth="686.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                                <GridPane layoutX="20.4" layoutY="20.4" prefHeight="351.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                                                     <columnConstraints>
                                                                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" />
                                                                     </columnConstraints>
                                                                     <rowConstraints>
                                                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="0.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                                                                        <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                                                         <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                                                     </rowConstraints>
                                                                     <children>
-                                                                        <JFXTextField fx:id="jtfNombresyApellidos" labelFloat="true" promptText="Nombres y Apellidos">
-                                                                            <GridPane.margin>
-                                                                                <Insets left="5.0" right="5.0" />
-                                                                            </GridPane.margin>
-                                                                        </JFXTextField>
-                                                     
                                                                         <GridPane GridPane.rowIndex="1">
                                                                             <columnConstraints>
-                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="334.9999694824219" minWidth="10.0" prefWidth="172.0" />
+                                                                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="385.0" minWidth="10.0" prefWidth="385.0" />
+                                                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="498.0" minWidth="10.0" prefWidth="211.0" />
                                                                             </columnConstraints>
                                                                             <rowConstraints>
                                                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                                             </rowConstraints>
                                                                             <children>
-                                                                                <JFXTextField fx:id="jtfDni" labelFloat="true" promptText="DNI">
-                                                                                    <GridPane.margin>
-                                                                                        <Insets left="5.0" right="5.0" />
-                                                                                    </GridPane.margin>
-                                                                                </JFXTextField>
-                                                                                <JFXTextField fx:id="jtfTelefono" labelFloat="true" promptText="Teléfono" GridPane.columnIndex="1">
-                                                                                    <GridPane.margin>
-                                                                                        <Insets left="5.0" right="5.0" />
-                                                                                    </GridPane.margin>
-                                                                                </JFXTextField>
-                                                                                <JFXComboBox fx:id="jcbsexo" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="241.0" promptText="Sexo" GridPane.columnIndex="2">
-                                                                                    <opaqueInsets>
-                                                                                        <Insets />
-                                                                                    </opaqueInsets>
-                                                                                    <GridPane.margin>
-                                                                                        <Insets left="5.0" right="5.0" />
-                                                                                    </GridPane.margin>
-                                                                                </JFXComboBox>
-                                                                            </children>
-                                                                        </GridPane>
-                                                                        <GridPane GridPane.rowIndex="2">
-                                                                            <columnConstraints>
-                                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                                <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                                                                            </columnConstraints>
-                                                                            <rowConstraints>
-                                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                                                            </rowConstraints>
-                                                                            <children>
-                                                                                <GridPane>
+                                                                                <GridPane GridPane.columnIndex="1">
                                                                                     <columnConstraints>
-                                                                                        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
+                                                                                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="100.0" />
                                                                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="15.0" />
                                                                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="15.0" />
                                                                                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="1.7976931348623157E308" minWidth="10.0" prefWidth="15.0" />
@@ -130,37 +93,84 @@
                                                                                         </JFXTextField>                                                                       
                                                                                     </children>
                                                                                 </GridPane>
-                                                                                <JFXComboBox fx:id="jcbocupacion" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Ocupación" GridPane.columnIndex="1">
+                                                                                <JFXComboBox fx:id="jcbocupacion" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Ocupación" GridPane.columnIndex="2">
+                                                                                    <GridPane.margin>
+                                                                                        <Insets left="5.0" right="5.0" />
+                                                                                    </GridPane.margin>
+                                                                                </JFXComboBox>
+                                                                                <JFXComboBox fx:id="jcbsexo" labelFloat="true" maxWidth="1.7976931348623157E308" prefHeight="17.0" prefWidth="241.0" promptText="Sexo">
+                                                                                    <opaqueInsets>
+                                                                                        <Insets />
+                                                                                    </opaqueInsets>
                                                                                     <GridPane.margin>
                                                                                         <Insets left="5.0" right="5.0" />
                                                                                     </GridPane.margin>
                                                                                 </JFXComboBox>
                                                                             </children>
                                                                         </GridPane>
-                                                                        <JFXTextField fx:id="jtflugarprocedencia" labelFloat="true" promptText="Lugar de Procedencia" GridPane.rowIndex="3">
-                                                                            <GridPane.margin>
-                                                                                <Insets left="5.0" right="5.0" />
-                                                                            </GridPane.margin>
-                                                                        </JFXTextField>
-                                                      <GridPane GridPane.rowIndex="4">
+                                                      <GridPane>
+                                                        <columnConstraints>
+                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="754.9999694824219" minWidth="10.0" prefWidth="124.99999237060547" />
+                                                            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="501.00000762939453" minWidth="10.0" prefWidth="79.0" />
+                                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="607.9999694824219" minWidth="10.0" prefWidth="409.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" maxWidth="569.9999694824219" minWidth="10.0" prefWidth="273.0000305175781" />
+                                                        </columnConstraints>
+                                                        <rowConstraints>
+                                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                        </rowConstraints>
+                                                         <children>
+                                                                                <JFXTextField fx:id="jtfDni" labelFloat="true" promptText="DNI">
+                                                                                    <GridPane.margin>
+                                                                                        <Insets left="5.0" right="5.0" />
+                                                                                    </GridPane.margin>
+                                                                                </JFXTextField>
+                                                            <JFXButton onAction="#consultar" text="Buscar" GridPane.columnIndex="1" />
+                                                                              <JFXTextField fx:id="jtfNombresyApellidos" labelFloat="true" promptText="Nombres y Apellidos" GridPane.columnIndex="2">
+                                                                                  <GridPane.margin>
+                                                                                      <Insets left="5.0" right="5.0" />
+                                                                                  </GridPane.margin>
+                                                                              </JFXTextField>
+                                                                                <JFXTextField fx:id="jtfTelefono" labelFloat="true" promptText="Teléfono" GridPane.columnIndex="3">
+                                                                                    <GridPane.margin>
+                                                                                        <Insets left="5.0" right="5.0" />
+                                                                                    </GridPane.margin>
+                                                                                </JFXTextField>
+                                                         </children>
+                                                      </GridPane>
+                                                      <GridPane GridPane.rowIndex="2">
                                                         <columnConstraints>
                                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                                         </columnConstraints>
                                                         <rowConstraints>
                                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                                         </rowConstraints>
                                                          <children>
-                                                                              <JFXTextField fx:id="jtfDomicilio" labelFloat="true" promptText="Domicilio">
+                                                                              <JFXTextField fx:id="jtflugarprocedencia" labelFloat="true" promptText="Lugar de Procedencia">
                                                                                   <GridPane.margin>
                                                                                       <Insets left="5.0" right="5.0" />
                                                                                   </GridPane.margin>
                                                                               </JFXTextField>
-                                                            <JFXComboBox fx:id="jcbDoctor" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Doctor" GridPane.columnIndex="1">
+                                                                              <JFXTextField fx:id="jtfDomicilio" labelFloat="true" promptText="Domicilio" GridPane.columnIndex="1">
+                                                                                  <GridPane.margin>
+                                                                                      <Insets left="5.0" right="5.0" />
+                                                                                  </GridPane.margin>
+                                                                              </JFXTextField>
+                                                            <JFXComboBox fx:id="jcbDoctor" labelFloat="true" maxWidth="1.7976931348623157E308" promptText="Doctor" GridPane.columnIndex="2">
                                                                <GridPane.margin>
                                                                   <Insets left="5.0" right="5.0" top="5.0" />
                                                                </GridPane.margin>
                                                             </JFXComboBox>
+                                                            <GridPane GridPane.columnIndex="2">
+                                                              <columnConstraints>
+                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                                              </columnConstraints>
+                                                              <rowConstraints>
+                                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                                              </rowConstraints>
+                                                            </GridPane>
                                                          </children>
                                                       </GridPane>
                                                                     </children>
