@@ -45,6 +45,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
@@ -557,7 +558,8 @@ public class VerPacienteController implements Initializable {
         Scene scene = new Scene(root);//instancia el controlador (!)
         scene.getStylesheets().add(VerPacienteController.class.getResource("/css/bootstrap3.css").toExternalForm());;
         Stage stage = new Stage();//creando la base vací
-        stage.initStyle(StageStyle.UNDECORATED);
+        stage.initStyle(StageStyle.TRANSPARENT);
+        scene.setFill(Color.TRANSPARENT);
         stage.initOwner(stagePrincipal);
         stage.setScene(scene);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {

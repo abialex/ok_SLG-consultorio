@@ -87,9 +87,9 @@ public class RegistrarPacienteController implements Initializable {
     private AnchorPane ap;
 
     @FXML
-    Accordion accordion, accordion2;
+    Accordion accordion;
     @FXML
-    TitledPane tpAnamnesis, tpEnfermedades;
+    TitledPane tpAnamnesis;
 
     //I. Amnemesis
     @FXML
@@ -104,10 +104,6 @@ public class RegistrarPacienteController implements Initializable {
     private JFXTextField jtflugarprocedencia, jtfDomicilio;
     @FXML
     private JFXTextArea jtaConsulta;
-    @FXML
-    private JFXTextField jtfemergenciaNombre, jtfemergenciaParentesco, jtfemergenciatelefono;
-    @FXML
-    private JFXTextField jtftutornombre, jtftutordni, jtftutortelefono;
     @FXML
     private JFXComboBox<Doctor> jcbDoctor;
 
@@ -147,43 +143,11 @@ public class RegistrarPacienteController implements Initializable {
     private JFXTextField jtfenfermedadActual, jtfenfermedadSistemica, jtfantecedentesPersonales;
 
     //II. Enfermedad actual
-    @FXML
-    private JFXTextField jtfsintomasEnfermedadActual, jtftiempoEnfermedadActual;
-
     //III. Antecedentes
-    @FXML
-    private JFXCheckBox checkalergia, checkfiebrereumatica, checkanemia, checkdiabetes, checktuberculosis, checkhepatitis,
-            checkinfeccionveneria, checkenfermedadcardiaca, checkgastritis, checkepilepsia, checkdolordepecho, checkneuralgia,
-            checkenfermedaddelapiel, checkenfermedadrenal, checkhipertensionarterial;
-    @FXML
-    private JFXTextField jtfotrasEnfermedades, jtfAlergapregunta, jtfantecedentesFamiliares;
-    @FXML
-    private JFXCheckBox checkpreguntamujer1, checkpreguntamujer2;
-    @FXML
-    private JFXCheckBox checkpregunta1, checkpregunta2, checkpregunta3, checkpregunta4;
-    @FXML
-    private JFXTextField jtfpregunta1, jtfpregunta2, jtfpregunta3, jtfpregunta4, jtfPreguntamujer;
-
     //IV. Exploración fisica
-    @FXML
-    private JFXTextField jtfsignosvitales, jtfsaturacionoxigeno;
-    @FXML
-    private JFXTextField jtfPA, jtfFC, jtftemperatura, jtfFR;
-    @FXML
-    private JFXTextField jtfexamenclinicogeneral, jtfexamenclinicoodontoestomatolgico;
-
     //V. Diagnostico
-    @FXML
-    private JFXTextArea jtaDiagCIE10;
-
     //VI. Plan de tratamiento
-    @FXML
-    private JFXTextArea jtfrecomendaciones;
-
     //VII. Pronostico
-    @FXML
-    private JFXTextArea jtapronostico, jtaAltapaciente;
-
     Alert alertWarning = new Alert(Alert.AlertType.WARNING);
     List<CheckBox> listcheck = new ArrayList<>();
     AlertController oAlert = new AlertController();
@@ -197,24 +161,34 @@ public class RegistrarPacienteController implements Initializable {
     void consultar() {
         if (jtfDni.getText().length() == 8) {
             HttpResponse<String> response = http.consultarDNI(jtfDni.getText());
-            if (response.statusCode() == 200) {
-                PersonaReniec personReniec = json.fromJson(response.body(), PersonaReniec.class);
-                if (personReniec.getApellidoMaterno() == null) {
+            if (response != null) {
+                if (response.statusCode() == 200) {
+                    PersonaReniec personReniec = json.fromJson(response.body(), PersonaReniec.class);
+                    if (personReniec.getApellidoMaterno() == null) {
+                        alertWarning.setHeaderText(null);
+                        alertWarning.setTitle("Búsqueda");
+                        alertWarning.setContentText("No se encontró DNI");
+                        alertWarning.showAndWait();
+
+                    } else {
+                        jtfNombresyApellidos.setText(personReniec.getNombres() + " " + personReniec.getApellidoPaterno() + " " + personReniec.getApellidoMaterno());
+                        jtfTelefono.setFocusTraversable(true);
+                    }
+                } else {
                     alertWarning.setHeaderText(null);
                     alertWarning.setTitle("Búsqueda");
-                    alertWarning.setContentText("No se encontró DNI");
+                    alertWarning.setContentText("Error " + response.statusCode());
                     alertWarning.showAndWait();
-
-                } else {
-                    jtfNombresyApellidos.setText(personReniec.getNombres() + " " + personReniec.getApellidoPaterno() + " " + personReniec.getApellidoMaterno());
-                    jtfTelefono.setFocusTraversable(true);
                 }
-            } else {
-                alertWarning.setHeaderText(null);
-                alertWarning.setTitle("Búsqueda");
-                alertWarning.setContentText("Error " + response.statusCode());
-                alertWarning.showAndWait();
+
             }
+            else{
+                  alertWarning.setHeaderText(null);
+                    alertWarning.setTitle("Búsqueda");
+                    alertWarning.setContentText("Sin conexión a internet ");
+                    alertWarning.showAndWait();
+            }
+
         } else {
             alertWarning.setHeaderText(null);
             alertWarning.setTitle("Búsqueda");
@@ -230,8 +204,7 @@ public class RegistrarPacienteController implements Initializable {
         jcbocupacion.setItems(OCUPACION);
         jcbsexo.setItems(SEXO);
         accordion.setExpandedPane(tpAnamnesis);
-        accordion2.setExpandedPane(tpEnfermedades);
-        asignar();
+        //accordion2.setExpandedPane(tpEnfermedades);
         initRestricciones();
         cargarDoctor();
         initTablePlanTratamiento();
@@ -268,40 +241,40 @@ public class RegistrarPacienteController implements Initializable {
                     jtfTelefono.getText().trim(),
                     0
             );
-            opersona.setTutorDni(jtftutordni.getText().trim());
-            opersona.setTutorNombre(jtftutornombre.getText().trim());
-            opersona.setTutorTelefono(jtftutortelefono.getText().trim());
+            opersona.setTutorDni("");
+            opersona.setTutorNombre("");
+            opersona.setTutorTelefono("");
 
             Paciente opaciente = new Paciente(
                     opersona,
-                    jtfsintomasEnfermedadActual.getText().trim(),
-                    jtftiempoEnfermedadActual.getText().trim(),
-                    jtfotrasEnfermedades.getText().trim(),
+                    "",
+                    "",
+                    "",
                     jtfantecedentesPersonales.getText().trim(),
                     jtfenfermedadActual.getText().trim(),
                     jtfenfermedadSistemica.getText().trim());
-            opaciente.setEmergenciaNombre(jtfemergenciaNombre.getText().trim());
-            opaciente.setEmergenciaParentesco(jtfemergenciaParentesco.getText().trim());
-            opaciente.setEmergenciaTelefono(jtfemergenciatelefono.getText().trim());
+            opaciente.setEmergenciaNombre("");
+            opaciente.setEmergenciaParentesco("");
+            opaciente.setEmergenciaTelefono("");
 
-            List<Paciente_Enfermedad> Lista_enfermedadesPaciente = Paciente_relacionar_enfermedad(listcheck, opaciente);
-            List<Paciente_Pregunta> Lista_preguntasPaciente = Paciente_relacionar_pregunta(listcheck, opaciente);
+            List<Paciente_Enfermedad> Lista_enfermedadesPaciente = new ArrayList<>();
+            List<Paciente_Pregunta> Lista_preguntasPaciente = new ArrayList<>();
 
             Historia_clinica ohistoria = new Historia_clinica(
                     opaciente,
                     jcbDoctor.getSelectionModel().getSelectedItem(),
-                    jtfsignosvitales.getText().trim(),
-                    jtfsaturacionoxigeno.getText().trim(),
-                    jtfPA.getText().trim(),
-                    jtfFC.getText().trim(),
-                    jtftemperatura.getText().trim(),
-                    jtfFR.getText(),
-                    jtfexamenclinicogeneral.getText().trim(),
-                    jtfexamenclinicoodontoestomatolgico.getText().trim(),
-                    jtaDiagCIE10.getText().trim(),
-                    jtfrecomendaciones.getText().trim(),
-                    jtapronostico.getText().trim(),
-                    jtaAltapaciente.getText().trim(),
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
+                    "",
                     jtaConsulta.getText().trim(),
                     LocalDate.now(),
                     LocalDate.now());
@@ -340,97 +313,10 @@ public class RegistrarPacienteController implements Initializable {
         }
     }
 
-    List<Paciente_Enfermedad> Paciente_relacionar_enfermedad(List<CheckBox> listC, Paciente opaciente) {
-        List<Enfermedad> list_enfermedad = App.jpa.createQuery("select p from Enfermedad p ").getResultList();
-        List<Paciente_Enfermedad> list_enfermedades_paciente = new ArrayList<Paciente_Enfermedad>();
-        for (CheckBox checkBox : listC) {
-            for (Enfermedad enfermedad : list_enfermedad) {
-                if (checkBox.getUserData().toString().equals(enfermedad.getNombre())) {
-                    String Alergia = "";
-                    if (enfermedad.getNombre().equals("Alergia")) {
-                        Alergia = jtfAlergapregunta.getText().trim();
-                    }
-                    list_enfermedades_paciente.add(new Paciente_Enfermedad(opaciente, enfermedad, Alergia));
-                }
-            }
-        }
-        for (Paciente_Enfermedad paciente_Enfermedad : list_enfermedades_paciente) {
-            System.out.println(paciente_Enfermedad.getEnfermedad().getNombre());
-        }
-        return list_enfermedades_paciente;
-    }
-
-    List<Paciente_Pregunta> Paciente_relacionar_pregunta(List<CheckBox> listcb, Paciente opaciente) {
-        List<Pregunta> list_pregunta = App.jpa.createQuery("select p from Pregunta p ").getResultList();
-        List<Paciente_Pregunta> list_pregunta_paciente = new ArrayList<Paciente_Pregunta>();
-
-        for (CheckBox checkBox : listcb) {
-            for (Pregunta pregunta : list_pregunta) {
-                boolean isMujer = opaciente.getPersona().getSexo().equals("MUJER");
-                if (checkBox.getUserData().toString().equals(pregunta.getTextopregunta())) {
-                    String pgt = "";
-                    if (checkBox.getUserData().toString().equals("¿Reacciona  anormalmente a algún medicamento?")) {
-                        pgt = jtfpregunta1.getText().trim();
-                        isMujer = false;
-                    } else if (checkBox.getUserData().toString().equals("¿Le han realizado alguna intervención quirúrjica?")) {
-                        pgt = jtfpregunta2.getText().trim();
-                        isMujer = false;
-                    } else if (checkBox.getUserData().toString().equals("¿Está usted tomando algún medicamento?")) {
-                        pgt = jtfpregunta3.getText().trim();
-                        isMujer = false;
-                    } else if (checkBox.getUserData().toString().equals("¿Es alérgico a la anestesia dental?")) {
-                        pgt = jtfpregunta4.getText().trim();
-                        isMujer = false;
-                    } else if (checkBox.getUserData().toString().equals("¿Está usted embarazada?")) {
-                        pgt = jtfPreguntamujer.getText().trim();
-                    }
-                    list_pregunta_paciente.add(new Paciente_Pregunta(opaciente, pregunta, pgt, isMujer));
-                }
-            }
-        }
-        return list_pregunta_paciente;
-    }
-
-    @FXML
-    void cuadrarCheckbox(ActionEvent o) {
-        CheckBox ch = (CheckBox) o.getSource();
-        if (ch.isSelected()) {
-            listcheck.add(ch);
-        } else {
-            listcheck.remove(ch);
-        }
-        if (ch.getUserData().toString().equals("Alergia")) {
-            unlockecdAlergia();
-        }
-    }
-
     void setController(VerPacienteController aThis) {
         this.oVerPacienteController = aThis;
+        jtflugarprocedencia.setText("Huanta");
         ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
-    }
-
-    void asignar() {
-        checkalergia.setUserData("Alergia");
-        checkfiebrereumatica.setUserData("Fiebre reumática");
-        checkanemia.setUserData("Anemia");
-        checkdiabetes.setUserData("Diabetes");
-        checktuberculosis.setUserData("Tuberculosis");
-        checkhepatitis.setUserData("Hepatitis");
-        checkinfeccionveneria.setUserData("Infección veneria");
-        checkenfermedadcardiaca.setUserData("Enfermedad cardiaca");
-        checkgastritis.setUserData("Gastritis");
-        checkepilepsia.setUserData("Epilepsia");
-        checkdolordepecho.setUserData("Dolor de pecho");
-        checkneuralgia.setUserData("Neuralgia");
-        checkenfermedaddelapiel.setUserData("Enfermedad de la piel");
-        checkenfermedadrenal.setUserData("Enfermedad renal");
-        checkhipertensionarterial.setUserData("Hipertensión Arterial");
-        checkpregunta1.setUserData("¿Reacciona  anormalmente a algún medicamento?");
-        checkpregunta2.setUserData("¿Está usted tomando algún medicamento?");
-        checkpregunta3.setUserData("¿Le han realizado alguna intervención quirúrjica?");
-        checkpregunta4.setUserData("¿Es alérgico a la anestesia dental?");
-        checkpreguntamujer1.setUserData("¿Está usted embarazada?");
-        checkpreguntamujer2.setUserData("¿Está dando de lactar?");
     }
 
     @FXML
@@ -643,13 +529,6 @@ public class RegistrarPacienteController implements Initializable {
         jtfMes.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros2(event));
         jtfanio.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros4(event));
 
-        jtfemergenciaNombre.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
-        jtfemergenciaParentesco.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
-        jtfemergenciatelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero9(event));
-
-        jtftutornombre.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloLetras(event));
-        jtftutordni.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros8(event));
-        jtftutortelefono.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEntero9(event));
     }
 
     void SoloNumerosEntero9(KeyEvent event) {
@@ -705,72 +584,7 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     /*----------Metodos de ventana---------------*/
-    void unlockecdAlergia() {
-        if (jtfAlergapregunta.isDisable()) {
-            jtfAlergapregunta.setDisable(false);
-        } else {
-            jtfAlergapregunta.setDisable(true);
-        }
-    }
-
-    @FXML
-    void unlockecdPregunta1(ActionEvent event) {
-        if (jtfpregunta1.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfpregunta1.setDisable(false);
-        } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfpregunta1.setDisable(true);
-        }
-    }
-
-    @FXML
-    void unlockecdPregunta2(ActionEvent event) {
-        if (jtfpregunta2.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfpregunta2.setDisable(false);
-        } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfpregunta2.setDisable(true);
-        }
-    }
-
-    @FXML
-    void unlockecdPregunta3(ActionEvent event) {
-        listcheck.add((CheckBox) event.getSource());
-        if (jtfpregunta3.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfpregunta3.setDisable(false);
-        } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfpregunta3.setDisable(true);
-        }
-    }
-
-    @FXML
-    void unlockecdPregunta4(ActionEvent event) {
-        listcheck.add((CheckBox) event.getSource());
-        if (jtfpregunta4.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfpregunta4.setDisable(false);
-        } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfpregunta4.setDisable(true);
-        }
-    }
-
-    @FXML
-    void unlockecdPreguntamujer1(ActionEvent event) {
-        if (jtfPreguntamujer.isDisable()) {
-            listcheck.add((CheckBox) event.getSource());
-            jtfPreguntamujer.setDisable(false);
-        } else {
-            listcheck.remove((CheckBox) event.getSource());
-            jtfPreguntamujer.setDisable(true);
-        }
-    }
-
-    /*------Fin Metodos de ventana---------------*/
+ /*------Fin Metodos de ventana---------------*/
     boolean isCompleto() throws IOException {
         boolean aux = true;
         if (jtfNombresyApellidos.getText().trim().length() == 0) {
