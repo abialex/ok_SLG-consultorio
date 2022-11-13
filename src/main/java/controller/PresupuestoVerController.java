@@ -174,20 +174,20 @@ public class PresupuestoVerController implements Initializable {
             alert.setTitle("Info");
             alert.setContentText("No tiene ni un presupuesto");
             alert.showAndWait();
-
+            
         }
     }
 
     @FXML
     void guardarPresupuesto() {
         if (isCompleto()) {
-            Detalle_Presupuesto opresupuesto = new Detalle_Presupuesto(oPresupuesto,
+            Detalle_Presupuesto odetelle_presupuesto = new Detalle_Presupuesto(oPresupuesto,
                     jtfDescripcion.getText(),
                     Integer.parseInt(jtfCantidad.getText()),
                     Float.parseFloat(jtfMonto.getText()));
             oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() + Float.parseFloat(jtfMonto.getText()) * Float.parseFloat(jtfCantidad.getText()));
             App.jpa.getTransaction().begin();
-            App.jpa.persist(opresupuesto);
+            App.jpa.persist(odetelle_presupuesto);
             App.jpa.persist(oPersona);
             App.jpa.persist(oPresupuesto);
             App.jpa.getTransaction().commit();
