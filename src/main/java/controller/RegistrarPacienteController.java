@@ -354,9 +354,38 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     void initTablePlanTratamiento() {
+         Label columNumeader = new Label("N°");
+        columNumeader.setStyle("-fx-text-fill: white");
+         Label columDescripcionHeader = new Label("Plan de Tratamiento");
+        columDescripcionHeader.setStyle("-fx-text-fill: white");
         columnNum.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
         columnPlanTratamiento.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
         columnEstado.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, PlanTratamiento>("PlanTratamiento"));
+        columnNum.setGraphic(columNumeader);
+        columnPlanTratamiento.setGraphic(columDescripcionHeader);
+        
+         columnPlanTratamiento.setCellFactory(column -> {
+            TableCell<PlanTratamiento, String> cell = new TableCell<PlanTratamiento, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText(item);
+                        label.setStyle("-fx-text-fill: white;");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+        
+        
+        
         columnNum.setCellFactory(column -> {
             TableCell<PlanTratamiento, String> cell = new TableCell<PlanTratamiento, String>() {
                 @Override
@@ -368,7 +397,7 @@ public class RegistrarPacienteController implements Initializable {
                     } else {
                         Label label = new Label();
                         label.setText((getIndex() + 1) + "");
-                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; -fx-text-fill: white;s");
                         setGraphic(label);
                         setText(null);
                     }
@@ -438,9 +467,37 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     void initTableExamenesAuxiliares() {
+        Label columNumeader = new Label("N°");
+        columNumeader.setStyle("-fx-text-fill: white");
+        Label columDescripcionHeader = new Label("Examen Auxiliar");
+        columDescripcionHeader.setStyle("-fx-text-fill: white");
         columnNumExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, String>("descripcion"));
         columnExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, String>("descripcion"));
         columnEstadoExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, ExamenAuxiliar>("PlanTratamiento"));
+        columnNumExamenAuxiliar.setGraphic(columNumeader);
+        columnExamenAuxiliar.setGraphic(columDescripcionHeader);
+        
+        
+         columnExamenAuxiliar.setCellFactory(column -> {
+            TableCell<ExamenAuxiliar, String> cell = new TableCell<ExamenAuxiliar, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText(item);
+                        label.setStyle("-fx-text-fill: white;");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+        
         columnNumExamenAuxiliar.setCellFactory(column -> {
             TableCell<ExamenAuxiliar, String> cell = new TableCell<ExamenAuxiliar, String>() {
                 @Override
@@ -452,7 +509,7 @@ public class RegistrarPacienteController implements Initializable {
                     } else {
                         Label label = new Label();
                         label.setText((getIndex() + 1) + "");
-                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; -fx-text-fill: white;");
                         setGraphic(label);
                         setText(null);
                     }
