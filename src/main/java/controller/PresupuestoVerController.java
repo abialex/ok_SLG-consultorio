@@ -119,8 +119,6 @@ public class PresupuestoVerController implements Initializable {
         List<Presupuesto> list_presupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
         if (!list_presupuesto.isEmpty()) {
             oPresupuesto = list_presupuesto.get(0);
-            btnGuardarPresupuesto.setDisable(!oPresupuesto.isActivo());
-            btnAgregar.setDisable(!oPresupuesto.isActivo());
         } else {
             oPresupuesto = new Presupuesto(oHistoriaclinica, 0, LocalDate.now(), true, false);
             App.jpa.getTransaction().begin();
@@ -293,7 +291,7 @@ public class PresupuestoVerController implements Initializable {
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarEliminar(event));
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagEliminarMoved(event));
                         deleteIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagEliminarFuera(event));
-                        deleteIcon.setVisible(oPresupuesto.isActivo());
+       
 
                         ImageView editIcon = new ImageView(new Image(getClass().getResource("/imagenes/modify-1.png").toExternalForm()));
                         editIcon.setFitHeight(tamHightImag);
@@ -305,7 +303,7 @@ public class PresupuestoVerController implements Initializable {
                         editIcon.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> mostrarModificar(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_MOVED, event -> imagModificarMoved(event));
                         editIcon.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imagModificarFuera(event));
-                        editIcon.setVisible(oPresupuesto.isActivo());
+          
 
                         HBox managebtn = new HBox(editIcon, deleteIcon);
                         managebtn.setStyle("-fx-alignment:center");
