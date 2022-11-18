@@ -59,6 +59,7 @@ public class Persona {
     @Column(name = "tutorTelefono", nullable = true)
     private String tutorTelefono;
     
+
     @Column(name = "", nullable = false)
     private boolean flag;
 
@@ -75,6 +76,10 @@ public class Persona {
         this.ocupacion = ocupacion;
         this.telefono = telefono;
 
+    }
+    
+    public Persona getPersona(){
+        return this;
     }
 
     public int getIdpersona() {

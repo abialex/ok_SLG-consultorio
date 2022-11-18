@@ -4,6 +4,8 @@
  */
 package Entidades;
 
+import controller.App;
+import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -162,6 +164,10 @@ public class Paciente {
 
     public void setEnfermedadSistemica(String enfermedadSistemica) {
         this.enfermedadSistemica = enfermedadSistemica;
+    }
+    public Historia_clinica getHistoriaClinica(){
+        List<Historia_clinica> listhc=App.jpa.createQuery("select p from Historia_clinica p where idpaciente="+idpaciente).getResultList();
+        return listhc.get(0);
     }
      
 }

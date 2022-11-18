@@ -51,13 +51,14 @@
                   </GridPane>
                   <TableView fx:id="tablePersona" prefHeight="257.0" prefWidth="1091.0" GridPane.rowIndex="2">
                     <columns>
-                      <TableColumn fx:id="tableDni" prefWidth="65.0" text="DNI" />
-                      <TableColumn fx:id="tableNombre" prefWidth="275.0" text="Nombres y Apellidos" />
+                        <TableColumn fx:id="columnID" prefWidth="29.0" text="N°" />
+                      <TableColumn fx:id="tableDni" prefWidth="111.0" text="DNI" />
+                      <TableColumn fx:id="tableNombre" prefWidth="260.0" text="Nombres y Apellidos" />
                         <TableColumn fx:id="tableTelefono" prefWidth="118.0" text="Telefono" />
-                        <TableColumn fx:id="tableDomicilio" prefWidth="250.0" text="Domicilio" />
-                        <TableColumn fx:id="tableOcupacion" prefWidth="129.0" text="Ocupación" />
-                        <TableColumn fx:id="tableAdulto" prefWidth="76.0" text="Adulto" />
-                        <TableColumn fx:id="tableOpcion" prefWidth="183.0" />
+                        <TableColumn fx:id="tableDomicilio" prefWidth="200.0" text="Domicilio" />
+                        <TableColumn fx:id="tableOcupacion" prefWidth="133.0" text="Ocupación" />
+                        <TableColumn fx:id="tableAdulto" prefWidth="73.0" text="Adulto" />
+                        <TableColumn fx:id="tableOpcion" prefWidth="170.0" />
                     </columns>
                      <GridPane.margin>
                         <Insets left="5.0" right="5.0" top="5.0" />
