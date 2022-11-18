@@ -119,6 +119,7 @@ public class PresupuestoVerController implements Initializable {
         List<Presupuesto> list_presupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
         if (!list_presupuesto.isEmpty()) {
             oPresupuesto = list_presupuesto.get(0);
+            btnGuardarPresupuesto.setDisable(!oPresupuesto.isActivo());
         } else {
             oPresupuesto = new Presupuesto(oHistoriaclinica, 0, LocalDate.now(), true, false);
             App.jpa.getTransaction().begin();
@@ -157,7 +158,7 @@ public class PresupuestoVerController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setHeaderText(null);
             alert.setTitle("Info");
-            alert.setContentText("Una vez cerrado el guardado el presupuesto no se podrá modificar");
+            alert.setContentText("Podrá seguir agregando presupuesto");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 oPresupuesto.setActivo(false);
