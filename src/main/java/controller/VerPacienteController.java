@@ -42,6 +42,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -61,7 +62,7 @@ public class VerPacienteController implements Initializable {
     AnchorPane ap;
 
     @FXML
-    private JFXTextField jtfbuscar;
+    private JFXTextField jtfbuscar, jtf_buscar_hcl;
 
     @FXML
     private TableView<Persona> tablePersona;
@@ -71,7 +72,7 @@ public class VerPacienteController implements Initializable {
 
     @FXML
     private TableColumn<Persona, Integer> tableOpcion;
-    
+
     @FXML
     private TableColumn<Persona, Persona> columnID, tableNombre;
 
@@ -93,8 +94,15 @@ public class VerPacienteController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         updateListPersona();
         initTableView();
+        initRestricciones();
         tablePersona.setItems(listPersona);
         // TODO
+    }
+    
+     void initRestricciones() {
+        jtf_buscar_hcl.addEventHandler(KeyEvent.KEY_TYPED, event -> SoloNumerosEnteros4(event));
+        
+   
     }
 
     void setController(RegistrarPacienteController aThis) {
@@ -108,6 +116,19 @@ public class VerPacienteController implements Initializable {
         listPersona.clear();
         for (Persona ocarta : olistPerson) {
             listPersona.add(ocarta);
+        }
+    }
+
+    @FXML
+    void buscar_hcl() {
+        if (!jtf_buscar_hcl.getText().isEmpty()) {
+            List<Historia_clinica> olistPerson = App.jpa.createQuery("select p from Historia_clinica p where (idhistoria_clinica = " + "" + jtf_buscar_hcl.getText() + ""
+                    + ") order by idhistoria_clinica DESC").getResultList();
+            listPersona.clear();
+
+            for (Historia_clinica ohcl : olistPerson) {
+                listPersona.add(ohcl.getIdpaciente().getPersona());
+            }
         }
     }
 
@@ -165,7 +186,7 @@ public class VerPacienteController implements Initializable {
         tableOcupacion.setCellValueFactory(new PropertyValueFactory<Persona, String>("ocupacion"));
         tableAdulto.setCellValueFactory(new PropertyValueFactory<Persona, LocalDate>("fechaNacimiento"));
         tableOpcion.setCellValueFactory(new PropertyValueFactory<Persona, Integer>("idpersona"));
-        
+
         tableNombre.setCellFactory(column -> {
             TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
                 @Override
@@ -175,16 +196,15 @@ public class VerPacienteController implements Initializable {
                         setGraphic(null);
                         setText("");
                     } else {
-                        item.getPaciente();                     
-                        setText(item.getNombres_apellidos()+" "+item.getAp_paterno()+" "+item.getAp_materno());
+                        item.getPaciente();
+                        setText(item.getNombres_apellidos() + " " + item.getAp_paterno() + " " + item.getAp_materno());
                     }
                 }
             };
 
             return cell;
         });
-        
-        
+
         columnID.setCellFactory(column -> {
             TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
                 @Override
@@ -195,8 +215,8 @@ public class VerPacienteController implements Initializable {
                         setText("");
                     } else {
                         item.getPaciente();
-                     
-                        setText(item.getPaciente().getHistoriaClinica().getIdhistoria_clinica()+"");
+
+                        setText(item.getPaciente().getHistoriaClinica().getIdhistoria_clinica() + "");
                     }
                 }
             };
@@ -620,5 +640,15 @@ public class VerPacienteController implements Initializable {
         });
         stage.show();
         return loader.getController();
+    }
+    void SoloNumerosEnteros4(KeyEvent event) {
+        JFXTextField o = (JFXTextField) event.getSource();
+        char key = event.getCharacter().charAt(0);
+        if (!Character.isDigit(key)) {
+            event.consume();
+        }
+        if (o.getText().length() >= 4) {
+            event.consume();
+        }
     }
 }
