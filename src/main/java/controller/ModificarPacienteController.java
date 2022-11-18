@@ -130,7 +130,7 @@ public class ModificarPacienteController implements Initializable {
     
     //II.
     @FXML
-    private JFXTextField jtfenfermedadActual, jtfenfermedadSistemica, jtfantecedentesPersonales;
+    private JFXTextField jtfenfermedadActual, jtf_examen_intraoral, jtfantecedentesPersonales;
     
     //Enfermedad actual
     @FXML TextField jtfsintomasEnfermedadActual;
@@ -605,7 +605,7 @@ public class ModificarPacienteController implements Initializable {
         jtfemergenciaParentesco.setText(oPaciente.getEmergenciaParentesco());
         jtfemergenciatelefono.setText(oPaciente.getEmergenciaTelefono());
         jtfenfermedadActual.setText(oPaciente.getEnfermedadActual());
-        jtfenfermedadSistemica.setText(oPaciente.getEnfermedadSistemica());
+        jtf_examen_intraoral.setText(oPaciente.getExamenIntraoral());
         jtfantecedentesPersonales.setText(oPaciente.getAntecedentesFamiliares());
         
         jtftutornombre.setText(opersona.getTutorNombre());
@@ -718,7 +718,7 @@ public class ModificarPacienteController implements Initializable {
         oPaciente.setSintomasEnfermedadActual(jtfsintomasEnfermedadActual.getText());
         oPaciente.setTiempoEnfermedadActual(jtftiempoEnfermedadActual.getText());
         oPaciente.setEnfermedadActual(jtfenfermedadActual.getText());
-        oPaciente.setEnfermedadSistemica(jtfenfermedadSistemica.getText());
+        oPaciente.setExamenIntraoral(jtf_examen_intraoral.getText());
         oPaciente.setAntecedentesFamiliares(jtfantecedentesPersonales.getText());
         
         //Exploración física

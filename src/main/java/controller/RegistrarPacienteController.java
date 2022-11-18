@@ -140,7 +140,7 @@ public class RegistrarPacienteController implements Initializable {
 
     //II-Requerido
     @FXML
-    private JFXTextField jtfenfermedadActual, jtfenfermedadSistemica, jtfantecedentesPersonales;
+    private JFXTextField jtfenfermedadActual, jtf_examen_intraoral, jtfantecedentesPersonales;
 
     //II. Enfermedad actual
     //III. Antecedentes
@@ -252,7 +252,7 @@ public class RegistrarPacienteController implements Initializable {
                     "",
                     jtfantecedentesPersonales.getText().trim(),
                     jtfenfermedadActual.getText().trim(),
-                    jtfenfermedadSistemica.getText().trim());
+                    jtf_examen_intraoral.getText().trim());
             opaciente.setEmergenciaNombre("");
             opaciente.setEmergenciaParentesco("");
             opaciente.setEmergenciaTelefono("");

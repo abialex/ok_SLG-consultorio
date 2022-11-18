@@ -202,11 +202,9 @@ public class Historiaclinicapdf {
         table1Parrafo3.addCell(getCell("Motivo de consulta:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo3.addCell(getCell(oHistoriaclinica.getMotivoConsulta() + "", styleTextCenter, styleCell, subrayado));
 
-        Table table1Parrafo4 = new Table(new float[]{volumen * 0.6f, volumen * 1.85f, volumen * 0.75f, volumen * 1.8f});
-        table1Parrafo4.addCell(getCell("Enf. actual:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
+        Table table1Parrafo4 = new Table(new float[]{volumen * 1f, volumen * 4f});
+        table1Parrafo4.addCell(getCell("Enfermedad actual:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
         table1Parrafo4.addCell(getCell(opaciente.getEnfermedadActual(), styleTextCenter, styleCell, subrayado));
-        table1Parrafo4.addCell(getCell("Enf. sistémicas:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
-        table1Parrafo4.addCell(getCell(opaciente.getEnfermedadSistemica(), styleTextCenter, styleCell, subrayado));
 
         Table table1Parrafo5 = new Table(new float[]{volumen * 1.2f, volumen * 3.8f});
         table1Parrafo5.addCell(getCell("Antecedentes personales:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
@@ -223,6 +221,14 @@ public class Historiaclinicapdf {
         tableInformacion.addCell(new Cell().add(table1Parrafo4).addStyle(styleCell));
         tableInformacion.addCell(new Cell().add(table1Parrafo5).addStyle(styleCell));
         //tableInformacion.addCell(new Cell().add(table1Parrafo6).addStyle(styleCell));
+
+        //EXMAEN INTRAORAL
+        Paragraph parrafo_examen_intraoral = new Paragraph("II. Examen Intraoral.").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+        Table table_examen_intraoral_parrafo1 = getTableField(opaciente.getExamenIntraoral(), "Examen Intraoral.", 0.8f, 4.1f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
+
+        Table table_examen_intraoral = new Table(new float[]{volumen * 5});
+        table_examen_intraoral.addCell(new Cell().add(table_examen_intraoral_parrafo1).addStyle(styleCell));
+        //FIN EXAMEN INTRAORAL
 
         //table1Datos.addCell(cellimag);
         Table TableMenorDeEdadParrafo1 = new Table(new float[]{volumen * 5});
@@ -425,7 +431,7 @@ public class Historiaclinicapdf {
 
             montoTotalPresupuesto = montoTotalPresupuesto + presupuesto.getMonto() * presupuesto.getCantidad();
         }
-        int contadorEspacioPresupuesto = 15 - olistDetallePresupuesto.size();
+        int contadorEspacioPresupuesto = 11 - olistDetallePresupuesto.size();
         for (int i = 0; i < contadorEspacioPresupuesto; i++) {
             TablePresupuesto.addCell(new Cell().add(palabraEnBlancoLimpio.addStyle(styleTextCenter)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
@@ -479,10 +485,9 @@ public class Historiaclinicapdf {
                 TableTratamiento.addCell(new Cell().add(new Paragraph("SALDO").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 //montoTotal = montoTotal + tratamiento.getMonto();
             }
-            if(olistTratamiento.get(i).getMonto()==0){
+            if (olistTratamiento.get(i).getMonto() == 0) {
                 TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextCenter)));
-            }
-            else{
+            } else {
                 TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getFechaRealizada() + "").addStyle(styleTextCenter)));
             }
             TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getTratamiento()).addStyle(styleTextLeft)));
@@ -542,6 +547,7 @@ public class Historiaclinicapdf {
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
          */
         document.add(TableOdontograma);
+        document.add(table_examen_intraoral);
         document.add(TablePresupuesto);
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 
@@ -622,3 +628,4 @@ public class Historiaclinicapdf {
     }
 
 }
+

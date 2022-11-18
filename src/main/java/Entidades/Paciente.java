@@ -33,8 +33,8 @@ public class Paciente {
     @Column(name = "enfermedadActual" , nullable = true)
     private String enfermedadActual;
     
-    @Column(name = "enfermedadSistemica" , nullable = true)
-    private String enfermedadSistemica;
+    @Column(name = "examenIntraoral" , nullable = true)
+    private String examenIntraoral;
     
     @Column(name = "sintomasEnfermedadActual" , nullable = true)
     private String sintomasEnfermedadActual;
@@ -60,14 +60,14 @@ public class Paciente {
     
 
     public Paciente(Persona persona, String sintomasEnfermedadActual, String tiempoEnfermedadActual, String otrasEnfermedades, String antecedentesFamiliares, String enfermedadActual
-    ,String enfermedadSistemica) {
+    ,String examenIntraoral) {
         this.persona = persona;
         this.sintomasEnfermedadActual = sintomasEnfermedadActual;
         this.tiempoEnfermedadActual = tiempoEnfermedadActual;
         this.otrasEnfermedades = otrasEnfermedades;
         this.antecedentesFamiliares = antecedentesFamiliares;
         this.enfermedadActual = enfermedadActual;
-        this.enfermedadSistemica = enfermedadSistemica;
+        this.examenIntraoral = examenIntraoral;
     }
     
     public Paciente(){
@@ -158,13 +158,15 @@ public class Paciente {
         this.enfermedadActual = enfermedadActual;
     }
 
-    public String getEnfermedadSistemica() {
-        return enfermedadSistemica;
+    public String getExamenIntraoral() {
+        return examenIntraoral;
     }
 
-    public void setEnfermedadSistemica(String enfermedadSistemica) {
-        this.enfermedadSistemica = enfermedadSistemica;
+    public void setExamenIntraoral(String examenIntraoral) {
+        this.examenIntraoral = examenIntraoral;
     }
+
+    
     public Historia_clinica getHistoriaClinica(){
         List<Historia_clinica> listhc=App.jpa.createQuery("select p from Historia_clinica p where idpaciente="+idpaciente).getResultList();
         return listhc.get(0);
