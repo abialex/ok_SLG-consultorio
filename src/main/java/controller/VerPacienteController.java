@@ -67,13 +67,13 @@ public class VerPacienteController implements Initializable {
     private TableView<Persona> tablePersona;
 
     @FXML
-    private TableColumn<Persona, String> tableDni, tableNombre, tableTelefono, tableDomicilio, tableOcupacion;
+    private TableColumn<Persona, String> tableDni, tableTelefono, tableDomicilio, tableOcupacion;
 
     @FXML
     private TableColumn<Persona, Integer> tableOpcion;
     
     @FXML
-    private TableColumn<Persona, Persona> columnID;
+    private TableColumn<Persona, Persona> columnID, tableNombre;
 
     @FXML
     private TableColumn<Persona, LocalDate> tableAdulto;
@@ -159,12 +159,30 @@ public class VerPacienteController implements Initializable {
     void initTableView() {
         columnID.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
         tableDni.setCellValueFactory(new PropertyValueFactory<Persona, String>("dni"));
-        tableNombre.setCellValueFactory(new PropertyValueFactory<Persona, String>("nombres_apellidos"));
+        tableNombre.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
         tableTelefono.setCellValueFactory(new PropertyValueFactory<Persona, String>("telefono"));
         tableDomicilio.setCellValueFactory(new PropertyValueFactory<Persona, String>("domicilio"));
         tableOcupacion.setCellValueFactory(new PropertyValueFactory<Persona, String>("ocupacion"));
         tableAdulto.setCellValueFactory(new PropertyValueFactory<Persona, LocalDate>("fechaNacimiento"));
         tableOpcion.setCellValueFactory(new PropertyValueFactory<Persona, Integer>("idpersona"));
+        
+        tableNombre.setCellFactory(column -> {
+            TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
+                @Override
+                protected void updateItem(Persona item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        item.getPaciente();                     
+                        setText(item.getNombres_apellidos()+" "+item.getAp_paterno()+" "+item.getAp_materno());
+                    }
+                }
+            };
+
+            return cell;
+        });
         
         
         columnID.setCellFactory(column -> {

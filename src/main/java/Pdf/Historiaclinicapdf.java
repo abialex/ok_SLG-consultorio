@@ -178,7 +178,7 @@ public class Historiaclinicapdf {
         tableinit.setMarginBottom(4);
         tableinit.addCell(getCell("ANAMNESIS", styleCell, styleTextLeft, subrayadoNo).setFontColor(colorAzul).setFont(bold));
         tableinit.addCell(getCell("Operador: ", styleCell, styleTextRight, subrayadoNo).setFontColor(colorNegro));
-        tableinit.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getNombres_apellidos().substring(0, 10) + "...", styleCell, styleTextCenter8, subrayado));
+        tableinit.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getAp_paterno()+" ", styleCell, styleTextCenter8, subrayado));
         Paragraph parrafoTitulo = new Paragraph("HISTORIA CLÍNICA").setFontSize(14).setFont(bold).setTextAlignment(TextAlignment.CENTER);
         //Paragraph parrafoSubTitulo1 = new Paragraph("ANAMNESIS").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
 

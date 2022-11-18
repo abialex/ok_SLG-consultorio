@@ -65,7 +65,7 @@ public class DoctorVerController implements Initializable {
     private AnchorPane ap;
 
     @FXML
-    private JFXTextField jtfNombres;
+    private JFXTextField jtfNombres, jtf_ap_paterno, jtf_ap_materno;
 
     @FXML
     private TableView<Doctor> tableDoctor;
@@ -109,6 +109,8 @@ public class DoctorVerController implements Initializable {
         if (jtfNombres.getText().length() != 0) {
             Persona opersona = new Persona(
                     jtfNombres.getText(),
+                    jtf_ap_paterno.getText(),
+                    jtf_ap_materno.getText(),
                     "NA",
                     "NA",
                     "NA",
@@ -187,8 +189,8 @@ public class DoctorVerController implements Initializable {
                                 }
                             }
                         });
-                        setGraphic(field);
-                        setText(null);
+                        setGraphic(null);
+                        setText(item.getNombres_apellidos()+" "+item.getAp_paterno()+" "+item.getAp_materno());
                     }
                 }
 

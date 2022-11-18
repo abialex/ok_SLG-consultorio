@@ -93,7 +93,7 @@ public class RegistrarPacienteController implements Initializable {
 
     //I. Amnemesis
     @FXML
-    private JFXTextField jtfNombresyApellidos, jtfDni, jtfTelefono;
+    private JFXTextField jtfNombresyApellidos,jtf_ap_paterno, jtf_ap_materno, jtfDni, jtfTelefono;
     @FXML
     private JFXComboBox<String> jcbsexo;
     @FXML
@@ -171,7 +171,9 @@ public class RegistrarPacienteController implements Initializable {
                         alertWarning.showAndWait();
 
                     } else {
-                        jtfNombresyApellidos.setText(personReniec.getNombres() + " " + personReniec.getApellidoPaterno() + " " + personReniec.getApellidoMaterno());
+                        jtfNombresyApellidos.setText(personReniec.getNombres());
+                        jtf_ap_paterno.setText(personReniec.getApellidoPaterno());
+                        jtf_ap_materno.setText(personReniec.getApellidoMaterno());
                         jtfTelefono.setFocusTraversable(true);
                     }
                 } else {
@@ -232,6 +234,8 @@ public class RegistrarPacienteController implements Initializable {
 
             Persona opersona = new Persona(
                     jtfNombresyApellidos.getText().trim(),
+                    jtf_ap_paterno.getText(),
+                    jtf_ap_materno.getText(),                    
                     jcbsexo.getSelectionModel().getSelectedItem(),
                     jtfDomicilio.getText().trim(),
                     jtfDni.getText().trim(),

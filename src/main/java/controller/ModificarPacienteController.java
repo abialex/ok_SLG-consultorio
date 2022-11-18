@@ -82,7 +82,7 @@ public class ModificarPacienteController implements Initializable {
     @FXML Button jbtnimprimir;
     /*--------------Atributos---------------*/
     //Anamnesis
-    @FXML TextField jtfNombresyApellidos;
+    @FXML TextField jtfNombresyApellidos, jtf_ap_paterno, jtf_ap_materno;
     @FXML TextField jtfDomicilio;
     @FXML TextField jtfDni;
     @FXML TextField jtfDia;
@@ -588,6 +588,8 @@ public class ModificarPacienteController implements Initializable {
         listPaciente_pregunta = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + oPaciente.getIdpaciente()).getResultList();
                 
         jtfNombresyApellidos.setText(opersona.getNombres_apellidos());
+        jtf_ap_paterno.setText(opersona.getAp_paterno());
+        jtf_ap_materno.setText(opersona.getAp_materno());
         jtfDni.setText(opersona.getDni());
         jtfTelefono.setText(opersona.getTelefono());
         jcbsexo.getSelectionModel().select(opersona.getSexo());
@@ -695,6 +697,8 @@ public class ModificarPacienteController implements Initializable {
     @FXML
     void actualizar() {
         oPersona.setNombres_apellidos(jtfNombresyApellidos.getText());
+        oPersona.setAp_paterno(jtf_ap_paterno.getText());
+        oPersona.setAp_materno(jtf_ap_materno.getText());
         oPersona.setDni(jtfDni.getText());
         oPersona.setTelefono(jtfTelefono.getText());
         oPersona.setSexo(jcbsexo.getSelectionModel().getSelectedItem());

@@ -29,6 +29,12 @@ public class Persona {
     @Column(name = "nombres_apellidos", nullable = false)
     private String nombres_apellidos;
 
+    @Column(name = "ap_paterno", nullable = true)
+    private String ap_paterno;
+
+    @Column(name = "ap_materno", nullable = true)
+    private String ap_materno;
+
     @Column(name = "sexo", length = 15, nullable = false)
     private String sexo;
 
@@ -49,16 +55,15 @@ public class Persona {
 
     @Column(name = "telefono", nullable = false)
     private String telefono;
-    
+
     @Column(name = "tutorNombre", nullable = true)
     private String tutorNombre;
-    
+
     @Column(name = "tutorDni", nullable = true)
     private String tutorDni;
-    
+
     @Column(name = "tutorTelefono", nullable = true)
     private String tutorTelefono;
-    
 
     @Column(name = "", nullable = false)
     private boolean flag;
@@ -66,8 +71,10 @@ public class Persona {
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String sexo, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono,float presupuesto) {
+    public Persona(String nombres_apellidos, String ap_paterno, String ap_materno, String sexo, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, float presupuesto) {
         this.nombres_apellidos = nombres_apellidos;
+        this.ap_paterno = ap_paterno;
+        this.ap_materno = ap_materno;
         this.sexo = sexo;
         this.domicilio = domicilio;
         this.dni = dni;
@@ -77,8 +84,8 @@ public class Persona {
         this.telefono = telefono;
 
     }
-    
-    public Persona getPersona(){
+
+    public Persona getPersona() {
         return this;
     }
 
@@ -186,13 +193,29 @@ public class Persona {
         this.flag = flag;
     }
 
+    public String getAp_paterno() {
+        return ap_paterno;
+    }
+
+    public void setAp_paterno(String ap_paterno) {
+        this.ap_paterno = ap_paterno;
+    }
+
+    public String getAp_materno() {
+        return ap_materno;
+    }
+
+    public void setAp_materno(String ap_materno) {
+        this.ap_materno = ap_materno;
+    }
+
     @Override
     public String toString() {
         return this.nombres_apellidos;
     }
 
-    public Paciente getPaciente(){
-        List<Paciente> listpaciente=App.jpa.createQuery("select p from Paciente p where idpersona="+idpersona).getResultList();
+    public Paciente getPaciente() {
+        List<Paciente> listpaciente = App.jpa.createQuery("select p from Paciente p where idpersona=" + idpersona).getResultList();
         return listpaciente.get(0);
     }
 }

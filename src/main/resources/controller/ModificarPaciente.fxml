@@ -21,6 +21,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
@@ -52,11 +53,6 @@
                                                       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <JFXTextField fx:id="jtfNombresyApellidos" labelFloat="true" promptText="Nombres y Apellidos">
-                                                         <GridPane.margin>
-                                                            <Insets left="5.0" right="5.0" />
-                                                         </GridPane.margin>
-                                                      </JFXTextField>
                                                      
                                                       <GridPane GridPane.rowIndex="1">
                                                          <columnConstraints>
@@ -137,11 +133,6 @@
                                                             </JFXComboBox>
                                                          </children>
                                                       </GridPane>
-                                                       <JFXTextField fx:id="jtflugarprocedencia" labelFloat="true" promptText="Lugar de Procedencia" GridPane.rowIndex="3">
-                                                         <GridPane.margin>
-                                                            <Insets left="5.0" right="5.0" />
-                                                         </GridPane.margin>
-                                                      </JFXTextField>
                                                       <GridPane GridPane.rowIndex="4">
                                                         <columnConstraints>
                                                           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -163,6 +154,26 @@
                                                             </JFXComboBox>
                                                          </children>
                                                       </GridPane>
+                                                      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                                         <children>
+                                                            <JFXTextField fx:id="jtfNombresyApellidos" labelFloat="true" prefHeight="31.0" prefWidth="385.0" promptText="Nombres">
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                            </JFXTextField>
+                                                            <JFXTextField fx:id="jtf_ap_paterno" labelFloat="true" prefWidth="205.0" promptText="Ap_paterno">
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                            </JFXTextField>
+                                                            <JFXTextField fx:id="jtf_ap_materno" labelFloat="true" prefWidth="205.0" promptText="Ap_materno">
+                                                               <HBox.margin>
+                                                                  <Insets left="5.0" right="5.0" />
+                                                               </HBox.margin>
+                                                            </JFXTextField>
+                                                         </children>
+                                                      </HBox>
+                                                       <JFXTextField fx:id="jtflugarprocedencia" labelFloat="true" promptText="Lugar de Procedencia" GridPane.rowIndex="3" />
                                                    </children>
                                                 </GridPane>
                                              </children>

@@ -13,6 +13,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
@@ -38,16 +39,30 @@
                       <RowConstraints minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXTextField fx:id="jtfNombres" labelFloat="true" promptText="Nombres y Apellidos">
-                           <GridPane.margin>
-                              <Insets left="5.0" right="5.0" />
-                           </GridPane.margin>
-                        </JFXTextField>
                         <JFXButton onAction="#guardarDoctor" style="-fx-background-color: #ffffff; -fx-border-color: #000000;" text="Guardar" GridPane.rowIndex="1">
                            <GridPane.margin>
                               <Insets left="5.0" right="5.0" />
                            </GridPane.margin>
                         </JFXButton>
+                        <HBox prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <JFXTextField fx:id="jtfNombres" labelFloat="true" prefWidth="180.0" promptText="Nombres">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </JFXTextField>
+                              <JFXTextField fx:id="jtf_ap_paterno" labelFloat="true" prefWidth="120.0" promptText="Ap_paterno">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </JFXTextField>
+                              <JFXTextField fx:id="jtf_ap_materno" labelFloat="true" prefWidth="120.0" promptText="Ap_materno">
+                                 <HBox.margin>
+                                    <Insets left="5.0" right="5.0" />
+                                 </HBox.margin>
+                              </JFXTextField>
+                           </children>
+                        </HBox>
                      </children>
                   </GridPane>
                   <TableView fx:id="tableDoctor" prefHeight="200.0" prefWidth="200.0" GridPane.rowIndex="1">
@@ -75,7 +90,7 @@
                <children>
                   <Label text="DOCTOR" GridPane.rowIndex="1">
                      <font>
-                        <Font name="System Bold" size="31.0" />
+                        <Font name="System Bold" size="25.0" />
                      </font>
                      <GridPane.margin>
                         <Insets left="30.0" />
