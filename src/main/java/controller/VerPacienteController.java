@@ -217,6 +217,7 @@ public class VerPacienteController implements Initializable {
                         item.getPaciente();
 
                         setText(item.getPaciente().getHistoriaClinica().getIdhistoria_clinica() + "");
+                        setStyle("-fx-alignment: center;");
                     }
                 }
             };
