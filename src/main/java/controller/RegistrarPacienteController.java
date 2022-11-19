@@ -183,12 +183,11 @@ public class RegistrarPacienteController implements Initializable {
                     alertWarning.showAndWait();
                 }
 
-            }
-            else{
-                  alertWarning.setHeaderText(null);
-                    alertWarning.setTitle("Búsqueda");
-                    alertWarning.setContentText("Sin conexión a internet ");
-                    alertWarning.showAndWait();
+            } else {
+                alertWarning.setHeaderText(null);
+                alertWarning.setTitle("Búsqueda");
+                alertWarning.setContentText("Sin conexión a internet ");
+                alertWarning.showAndWait();
             }
 
         } else {
@@ -233,9 +232,9 @@ public class RegistrarPacienteController implements Initializable {
                     Integer.parseInt(jtfDia.getText().trim()));
 
             Persona opersona = new Persona(
-                    jtfNombresyApellidos.getText().trim(),
-                    jtf_ap_paterno.getText(),
-                    jtf_ap_materno.getText(),                    
+                    jtfNombresyApellidos.getText().toUpperCase(),
+                    jtf_ap_paterno.getText().toUpperCase(),
+                    jtf_ap_materno.getText().toUpperCase(),
                     jcbsexo.getSelectionModel().getSelectedItem(),
                     jtfDomicilio.getText().trim(),
                     jtfDni.getText().trim(),
@@ -358,17 +357,17 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     void initTablePlanTratamiento() {
-         Label columNumeader = new Label("N°");
+        Label columNumeader = new Label("N°");
         columNumeader.setStyle("-fx-text-fill: white");
-         Label columDescripcionHeader = new Label("Plan de Tratamiento");
+        Label columDescripcionHeader = new Label("Plan de Tratamiento");
         columDescripcionHeader.setStyle("-fx-text-fill: white");
         columnNum.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
         columnPlanTratamiento.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, String>("descripcion"));
         columnEstado.setCellValueFactory(new PropertyValueFactory<PlanTratamiento, PlanTratamiento>("PlanTratamiento"));
         columnNum.setGraphic(columNumeader);
         columnPlanTratamiento.setGraphic(columDescripcionHeader);
-        
-         columnPlanTratamiento.setCellFactory(column -> {
+
+        columnPlanTratamiento.setCellFactory(column -> {
             TableCell<PlanTratamiento, String> cell = new TableCell<PlanTratamiento, String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -387,7 +386,7 @@ public class RegistrarPacienteController implements Initializable {
             };
             return cell;
         });
-        
+
         
         
         columnNum.setCellFactory(column -> {
@@ -480,9 +479,8 @@ public class RegistrarPacienteController implements Initializable {
         columnEstadoExamenAuxiliar.setCellValueFactory(new PropertyValueFactory<ExamenAuxiliar, ExamenAuxiliar>("PlanTratamiento"));
         columnNumExamenAuxiliar.setGraphic(columNumeader);
         columnExamenAuxiliar.setGraphic(columDescripcionHeader);
-        
-        
-         columnExamenAuxiliar.setCellFactory(column -> {
+
+        columnExamenAuxiliar.setCellFactory(column -> {
             TableCell<ExamenAuxiliar, String> cell = new TableCell<ExamenAuxiliar, String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -501,7 +499,7 @@ public class RegistrarPacienteController implements Initializable {
             };
             return cell;
         });
-        
+
         columnNumExamenAuxiliar.setCellFactory(column -> {
             TableCell<ExamenAuxiliar, String> cell = new TableCell<ExamenAuxiliar, String>() {
                 @Override

@@ -696,9 +696,9 @@ public class ModificarPacienteController implements Initializable {
     
     @FXML
     void actualizar() {
-        oPersona.setNombres_apellidos(jtfNombresyApellidos.getText());
-        oPersona.setAp_paterno(jtf_ap_paterno.getText());
-        oPersona.setAp_materno(jtf_ap_materno.getText());
+        oPersona.setNombres_apellidos(jtfNombresyApellidos.getText().toUpperCase());
+        oPersona.setAp_paterno(jtf_ap_paterno.getText().toUpperCase());
+        oPersona.setAp_materno(jtf_ap_materno.getText().toUpperCase());
         oPersona.setDni(jtfDni.getText());
         oPersona.setTelefono(jtfTelefono.getText());
         oPersona.setSexo(jcbsexo.getSelectionModel().getSelectedItem());
