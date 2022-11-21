@@ -6,7 +6,7 @@ package Pdf;
 
 import Entidades.Historia_clinica;
 import Entidades.Paciente;
-import Entidades.Paciente_Enfermedad;
+import Entidades.Persona_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
@@ -61,7 +61,7 @@ public class Historiaclinicapdf {
         List<Detalle_Presupuesto> olistDetallePresupuesto = new ArrayList<>();
         Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
-        List<Paciente_Enfermedad> listPaciente_Enfermedad = App.jpa.createQuery("select p from Paciente_Enfermedad p where idpaciente=" + opaciente.getIdpaciente()).getResultList();
+        List<Persona_Enfermedad> list_enfermedad_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
         List<Paciente_Pregunta> listPaciente_PreguntaIsMujer = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opaciente.getIdpaciente() + " and ismujer=true").getResultList();
         List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opaciente.getIdpaciente() + " and ismujer=false").getResultList();
         List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
@@ -70,6 +70,11 @@ public class Historiaclinicapdf {
         List<Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
         List<PlanTratamiento> olistPlanTratamientos = App.jpa.createQuery("select p from PlanTratamiento p where idhistoria_clinica= " + oHistoriaclinica.getIdhistoria_clinica() + "  order by idplantratamiento ASC").getResultList();
         List<ExamenAuxiliar> olistExamenAuxiliares = App.jpa.createQuery("select p from ExamenAuxiliar p where idhistoria_clinica= " + oHistoriaclinica.getIdhistoria_clinica() + "  order by idexamenauxiliar ASC").getResultList();
+
+        String enfermedades_persona = "";
+        for (Persona_Enfermedad opersona_Enfermedad : list_enfermedad_persona) {
+            enfermedades_persona = enfermedades_persona + opersona_Enfermedad.getEnfermedad().getNombre() + ", ";
+        }
 
         Presupuesto opresupuesto = null;
         if (!olistPresupuesto.isEmpty()) {
@@ -178,7 +183,7 @@ public class Historiaclinicapdf {
         tableinit.setMarginBottom(4);
         tableinit.addCell(getCell("ANAMNESIS", styleCell, styleTextLeft, subrayadoNo).setFontColor(colorAzul).setFont(bold));
         tableinit.addCell(getCell("Operador: ", styleCell, styleTextRight, subrayadoNo).setFontColor(colorNegro));
-        tableinit.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getAp_paterno()+" ", styleCell, styleTextCenter8, subrayado));
+        tableinit.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getAp_paterno() + " ", styleCell, styleTextCenter8, subrayado));
         Paragraph parrafoTitulo = new Paragraph("HISTORIA CLÍNICA").setFontSize(14).setFont(bold).setTextAlignment(TextAlignment.CENTER);
         //Paragraph parrafoSubTitulo1 = new Paragraph("ANAMNESIS").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
 
@@ -208,7 +213,7 @@ public class Historiaclinicapdf {
 
         Table table1Parrafo5 = new Table(new float[]{volumen * 1.2f, volumen * 3.8f});
         table1Parrafo5.addCell(getCell("Antecedentes personales:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
-        table1Parrafo5.addCell(getCell(opaciente.getAntecedentesFamiliares(), styleTextCenter, styleCell, subrayado));
+        table1Parrafo5.addCell(getCell(enfermedades_persona + opaciente.getAntecedentesFamiliares(), styleTextCenter, styleCell, subrayado));
 
         Table table1Parrafo6 = new Table(new float[]{volumen * 0.5f, volumen * 4.5f});
         table1Parrafo6.addCell(getCell("Operador:", styleTextLeft, styleCell, subrayadoNo).setFontColor(colorNegro));
@@ -289,7 +294,7 @@ public class Historiaclinicapdf {
 
         Table TableAntecedentesEnfermedades = new Table(new float[]{volumen * 1.25f, volumen * 1.25f, volumen * 1.25f, volumen * 1.25f});
         int cont = 0;
-        for (Paciente_Enfermedad paciente_Enfermedad : listPaciente_Enfermedad) {
+        for (Persona_Enfermedad paciente_Enfermedad : list_enfermedad_persona) {
             String detalle = "";
             if (!paciente_Enfermedad.getDetalleEnfermedad().isEmpty()) {
                 detalle = " : " + paciente_Enfermedad.getDetalleEnfermedad();
@@ -628,4 +633,3 @@ public class Historiaclinicapdf {
     }
 
 }
-

@@ -18,14 +18,14 @@ import javax.persistence.ManyToOne;
  * @author yalle
  */
 @Entity
-public class Paciente_Enfermedad {
+public class Persona_Enfermedad {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idpaciente_enfermedad;
     
-    @JoinColumn(insertable = true,updatable = true,name="idpaciente",nullable = false)
+    @JoinColumn(insertable = true,updatable = true,name="idpersona",nullable = false)
     @ManyToOne
-    private Paciente paciente;
+    private Persona persona;
     
     @JoinColumn(insertable = true,updatable = true,name="idenfermedad",nullable = false)
     @ManyToOne
@@ -34,11 +34,11 @@ public class Paciente_Enfermedad {
     @Column(name = "detalleEnfermedad", nullable = false)
     private String detalleEnfermedad;
 
-    public Paciente_Enfermedad() {
+    public Persona_Enfermedad() {
     }
 
-    public Paciente_Enfermedad(Paciente paciente, Enfermedad enfermedad, String detalleEnfermedad) {
-        this.paciente = paciente;
+    public Persona_Enfermedad(Persona persona, Enfermedad enfermedad, String detalleEnfermedad) {
+        this.persona = persona;
         this.enfermedad = enfermedad;
         this.detalleEnfermedad = detalleEnfermedad;
     }
@@ -51,12 +51,12 @@ public class Paciente_Enfermedad {
         this.idpaciente_enfermedad = idpaciente_enfermedad;
     }
 
-    public Paciente getPaciente() {
-        return paciente;
+    public Persona getPersona() {
+        return persona;
     }
 
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
+    public void setPersona(Persona persona) {
+        this.persona = persona;
     }
 
     public Enfermedad getEnfermedad() {

@@ -348,12 +348,33 @@
                                                 <Insets left="5.0" right="5.0" />
                                              </GridPane.margin>
                                           </JFXTextField>
-                                          <JFXTextField fx:id="jtfantecedentesPersonales" focusColor="BLACK" labelFloat="true" promptText="Antecedentes personales" styleClass="field-forma1" GridPane.rowIndex="3">
-                                             <padding>
-                                                <Insets left="5.0" right="5.0" />
-                                             </padding>
-                                          </JFXTextField>
                                           <JFXTextField fx:id="jtfMotivoConsulta" focusColor="BLACK" labelFloat="true" promptText="Motivo de Consulta" styleClass="field-forma1" />
+                                          <GridPane GridPane.rowIndex="3">
+                                            <columnConstraints>
+                                              <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                            </columnConstraints>
+                                            <rowConstraints>
+                                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                              <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                                            </rowConstraints>
+                                             <children>
+                                                <JFXTextField fx:id="jtfantecedentesPersonales" focusColor="BLACK" promptText="Otros antecedentes" styleClass="field-forma1" GridPane.rowIndex="2">
+                                                   <padding>
+                                                      <Insets left="5.0" right="5.0" />
+                                                   </padding>
+                                                </JFXTextField>
+                                                <HBox fx:id="hbox_enfermedad" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
+                                                <Label text="Antecendentes">
+                                                   <font>
+                                                      <Font name="System Bold" size="15.0" />
+                                                   </font>
+                                                   <GridPane.margin>
+                                                      <Insets left="6.0" />
+                                                   </GridPane.margin>
+                                                </Label>
+                                             </children>
+                                          </GridPane>
                                        </children>
                                     </GridPane>
                                  </children>

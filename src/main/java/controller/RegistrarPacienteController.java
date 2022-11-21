@@ -9,7 +9,7 @@ import Entidades.Enfermedad;
 import Entidades.ExamenAuxiliar;
 import Entidades.Historia_clinica;
 import Entidades.Paciente;
-import Entidades.Paciente_Enfermedad;
+import Entidades.Persona_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.PersonaReniec;
@@ -39,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -46,6 +48,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
@@ -72,6 +75,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
+import javax.swing.JCheckBox;
 
 /**
  * FXML Controller class
@@ -91,9 +95,12 @@ public class RegistrarPacienteController implements Initializable {
     @FXML
     TitledPane tpAnamnesis;
 
+    @FXML
+    HBox hbox_enfermedad;
+
     //I. Amnemesis
     @FXML
-    private JFXTextField jtfNombresyApellidos,jtf_ap_paterno, jtf_ap_materno, jtfDni, jtfTelefono;
+    private JFXTextField jtfNombresyApellidos, jtf_ap_paterno, jtf_ap_materno, jtfDni, jtfTelefono;
     @FXML
     private JFXComboBox<String> jcbsexo;
     @FXML
@@ -206,8 +213,10 @@ public class RegistrarPacienteController implements Initializable {
         jcbsexo.setItems(SEXO);
         accordion.setExpandedPane(tpAnamnesis);
         //accordion2.setExpandedPane(tpEnfermedades);
+
         initRestricciones();
         cargarDoctor();
+        cargarEnfermedad();
         initTablePlanTratamiento();
         initTableExamenesAuxiliares();
         tablePlandetratamiento.setItems(listPlanTratamiento);
@@ -221,6 +230,37 @@ public class RegistrarPacienteController implements Initializable {
             listDoctor.add(odoct);
         }
         jcbDoctor.setItems(listDoctor);
+    }
+    List<Enfermedad> lista_de_enfermedades_del_paciente = new ArrayList<>();
+
+    void cargarEnfermedad() {
+        List<Enfermedad> listEnfermedad = App.jpa.createQuery("select p from Enfermedad p ").getResultList();
+        EventHandler evento = (event) -> {
+            //Codigo de la función evento
+            JFXCheckBox oCheck = ((JFXCheckBox) event.getSource());
+            if (oCheck.isSelected()) {   
+                lista_de_enfermedades_del_paciente.add((Enfermedad) oCheck.getUserData());
+            } else {               
+                lista_de_enfermedades_del_paciente.remove((Enfermedad) oCheck.getUserData());
+            }
+            for (Enfermedad enfermedad : lista_de_enfermedades_del_paciente) {
+                System.out.println(enfermedad.getNombre());                
+            }
+        };
+        for (Enfermedad oEnferm : listEnfermedad) {
+            JFXCheckBox JB = new JFXCheckBox();
+            Label lbl = new Label();
+            lbl.setStyle("-fx-font-weight: bold; -fx-font-size: 14;");
+            lbl.setText(oEnferm.getNombre());
+            JB.setOnAction(evento);
+            Insets oInsetslbl = new Insets(0, 15, 0, 15);
+            hbox_enfermedad.setMargin(lbl, oInsetslbl);
+            JB.setStyle("-fx-background-color: white;\n" + "-fx-border-color:grey;\n" + "-fx-border-radius:3px; ");
+            hbox_enfermedad.getChildren().add(JB);
+            hbox_enfermedad.getChildren().add(lbl);
+            hbox_enfermedad.getChildren();
+            JB.setUserData(oEnferm);
+        }
     }
 
     @FXML
@@ -260,7 +300,7 @@ public class RegistrarPacienteController implements Initializable {
             opaciente.setEmergenciaParentesco("");
             opaciente.setEmergenciaTelefono("");
 
-            List<Paciente_Enfermedad> Lista_enfermedadesPaciente = new ArrayList<>();
+            List<Persona_Enfermedad> Lista_enfermedadesPaciente = new ArrayList<>();
             List<Paciente_Pregunta> Lista_preguntasPaciente = new ArrayList<>();
 
             Historia_clinica ohistoria = new Historia_clinica(
@@ -287,8 +327,9 @@ public class RegistrarPacienteController implements Initializable {
 
             App.jpa.persist(opaciente);
 
-            for (Paciente_Enfermedad paciente_Enfermedad : Lista_enfermedadesPaciente) {
-                App.jpa.persist(paciente_Enfermedad);
+            //agregando los antecedentes(enfermedades) de la paciente
+            for (Enfermedad enfermedad : lista_de_enfermedades_del_paciente) {
+                App.jpa.persist(new Persona_Enfermedad(opersona, enfermedad, ""));
             }
             for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
                 App.jpa.persist(paciente_Pregunta);
@@ -316,7 +357,8 @@ public class RegistrarPacienteController implements Initializable {
         }
     }
 
-    void setController(VerPacienteController aThis) {
+    void setController(VerPacienteController aThis
+    ) {
         this.oVerPacienteController = aThis;
         jtflugarprocedencia.setText("Huanta");
         ap.getScene().getWindow().addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> cerrar());
@@ -387,8 +429,6 @@ public class RegistrarPacienteController implements Initializable {
             return cell;
         });
 
-        
-        
         columnNum.setCellFactory(column -> {
             TableCell<PlanTratamiento, String> cell = new TableCell<PlanTratamiento, String>() {
                 @Override
@@ -590,7 +630,8 @@ public class RegistrarPacienteController implements Initializable {
 
     }
 
-    void SoloNumerosEntero9(KeyEvent event) {
+    void SoloNumerosEntero9(KeyEvent event
+    ) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
         if (!Character.isDigit(key)) {
@@ -601,7 +642,8 @@ public class RegistrarPacienteController implements Initializable {
         }
     }
 
-    void SoloNumerosEnteros2(KeyEvent event) {
+    void SoloNumerosEnteros2(KeyEvent event
+    ) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
         if (!Character.isDigit(key)) {
@@ -612,7 +654,8 @@ public class RegistrarPacienteController implements Initializable {
         }
     }
 
-    void SoloNumerosEnteros4(KeyEvent event) {
+    void SoloNumerosEnteros4(KeyEvent event
+    ) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
         if (!Character.isDigit(key)) {
@@ -623,7 +666,8 @@ public class RegistrarPacienteController implements Initializable {
         }
     }
 
-    void SoloNumerosEnteros8(KeyEvent event) {
+    void SoloNumerosEnteros8(KeyEvent event
+    ) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
         if (!Character.isDigit(key)) {
@@ -634,7 +678,8 @@ public class RegistrarPacienteController implements Initializable {
         }
     }
 
-    void SoloLetras(KeyEvent event) {
+    void SoloLetras(KeyEvent event
+    ) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
         if (Character.isDigit(key)) {

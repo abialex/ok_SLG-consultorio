@@ -9,7 +9,7 @@ import Entidades.Doctor;
 import Entidades.Historia_clinica;
 import Entidades.HoraAtencion;
 import Entidades.Paciente;
-import Entidades.Paciente_Enfermedad;
+import Entidades.Persona_Enfermedad;
 import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.Pregunta;
