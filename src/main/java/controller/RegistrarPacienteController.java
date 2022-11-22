@@ -110,7 +110,7 @@ public class RegistrarPacienteController implements Initializable {
     @FXML
     private JFXTextField jtflugarprocedencia, jtfDomicilio;
     @FXML
-    private JFXTextField jtfMotivoConsulta;
+    private JFXTextField jtfMotivoConsulta, jtf_examen_radiografico, jtf_diagnostico;
     @FXML
     private JFXComboBox<Doctor> jcbDoctor;
 
@@ -314,11 +314,12 @@ public class RegistrarPacienteController implements Initializable {
                     "",
                     "",
                     "",
-                    "",
+                    jtf_diagnostico.getText(),
                     "",
                     "",
                     "",
                     jtfMotivoConsulta.getText().trim(),
+                    jtf_examen_radiografico.getText(),
                     LocalDate.now(),
                     LocalDate.now());
             //GuardarPaciente

@@ -234,6 +234,13 @@ public class Historiaclinicapdf {
         Table table_examen_intraoral = new Table(new float[]{volumen * 5});
         table_examen_intraoral.addCell(new Cell().add(table_examen_intraoral_parrafo1).addStyle(styleCell));
         //FIN EXAMEN INTRAORAL
+        
+        //EXAMEN RADIOGRÁFICO
+        Paragraph parrafo_examen_radiografico = new Paragraph("II. Examen Radiográfico.").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
+        Table table_examen_radiografico_parrafo1 = getTableField(oHistoriaclinica.getExamen_radiografico(), "Examen Radiográfico.", 1f, 4f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
+        Table table_examen_radiografico = new Table(new float[]{volumen * 5});
+        table_examen_radiografico.addCell(new Cell().add(table_examen_radiografico_parrafo1).addStyle(styleCell));
+        //FIN EXAMEN RADIOGRÁFICO
 
         //table1Datos.addCell(cellimag);
         Table TableMenorDeEdadParrafo1 = new Table(new float[]{volumen * 5});
@@ -383,7 +390,7 @@ public class Historiaclinicapdf {
         //Fin EXPLORACIÓN FÍSICA
         //DIAGNOSTICO
         Paragraph parrafoSubTitulo5 = new Paragraph("V.  DIAGNÓSTICO").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-        Table TableDiagnosticoParrafo1 = getTableField(oHistoriaclinica.getDiagnosticoCIE10(), "Diagnóstico:", 0.6f, 4.4f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
+        Table TableDiagnosticoParrafo1 = getTableField(oHistoriaclinica.getDiagnostico(), "Diagnóstico:", 0.6f, 4.4f, volumen, colorNegro, styleCell, styleTextLeft, palabraEnBlanco);
         Table TableDiagnostico = new Table(new float[]{volumen * 5});
         TableDiagnostico.addCell(new Cell().add(TableDiagnosticoParrafo1).addStyle(styleCell));
 
@@ -475,6 +482,7 @@ public class Historiaclinicapdf {
         TableMontoPresupuesto.addCell(getCell(montoTotalPresupuesto + "", styleCell, styleTextCenter, subrayado));
         Table TableTratamiento = new Table(new float[]{volumen * 0.6f, volumen * 3.3f, volumen * 0.6f, volumen * 0.5f});
         TableTratamiento.setMarginTop(10);
+        TableTratamiento.setMarginBottom(20);
         TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold)).addStyle(styleTextCenterColorBlue));
         TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold)).addStyle(styleTextCenterColorBlue));
         TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold)).addStyle(styleTextCenterColorBlue));
@@ -483,7 +491,7 @@ public class Historiaclinicapdf {
 
         for (int i = 0; i < olistTratamiento.size(); i++) {
             montoTotal = montoTotal - olistTratamiento.get(i).getMonto();
-            if (i == 27) {
+            if (i == 20) {
                 TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold)).addStyle(styleTextCenterColorBlue));
@@ -501,8 +509,8 @@ public class Historiaclinicapdf {
 
         }
 
-        for (int i = olistTratamiento.size(); i < 63; i++) {
-            if (i == 27) {
+        for (int i = olistTratamiento.size(); i < 56; i++) {
+            if (i == 20) {
                 TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold)).addStyle(styleTextCenterColorBlue));
@@ -556,6 +564,8 @@ public class Historiaclinicapdf {
         document.add(TablePresupuesto);
         document.add(new AreaBreak(AreaBreakType.NEXT_PAGE));
 
+        document.add(table_examen_radiografico);
+        document.add(TableDiagnostico);
         document.add(parrafoPlantaTratamiento);
         document.add(TablePlanTratamiento);
 

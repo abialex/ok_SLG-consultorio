@@ -55,8 +55,8 @@ public class Historia_clinica {
     @Column(name = "examenClinicoOdontoestomtologico", nullable = true)
     private String examenClinicoOdontoestomtologico;
     //DIAGNÓSTICO
-    @Column(name = "diagnosticoCIE10", length = 1000, nullable = true)
-    private String diagnosticoCIE10;
+    @Column(name = "diagnostico", length = 1000, nullable = true)
+    private String diagnostico;
 
     //PLAN DE TRATAMIENTO
     @Column(name = "recomendaciones", length = 1000, nullable = true)
@@ -71,13 +71,16 @@ public class Historia_clinica {
     @Column(name = "motivoConsulta", length = 1000, nullable = true)
     private String motivoConsulta;
 
+    @Column(name = "examen_radiografico", length = 1000, nullable = true)
+    private String examen_radiografico;
+
     @Column(name = "fechainscripcion", nullable = true)
     private LocalDate fechainscripcion;
 
     @Column(name = "fechaultimaatencion", nullable = true)
     private LocalDate fechaultimaatencion;
 
-    public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnosticoCIE10, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
+    public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnostico, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, String examen_radiografico, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.idpaciente = idpaciente;
         this.doctor = doctor;
         this.signosVitales = signosVitales;
@@ -88,11 +91,12 @@ public class Historia_clinica {
         this.FR = FR;
         this.examenClinicoGeneral = examenClinicoGeneral;
         this.examenClinicoOdontoestomtologico = examenClinicoOdontoestomtologico;
-        this.diagnosticoCIE10 = diagnosticoCIE10;
+        this.diagnostico = diagnostico;
         this.recomendaciones = recomendaciones;
         this.pronostico = pronostico;
         this.altaPaciente = altaPaciente;
         this.motivoConsulta = motivoConsulta;
+        this.examen_radiografico = examen_radiografico;
         this.fechainscripcion = fechainscripcion;
         this.fechaultimaatencion = fechaultimaatencion;
     }
@@ -208,12 +212,12 @@ public class Historia_clinica {
         this.examenClinicoOdontoestomtologico = examenClinicoOdontoestomtologico;
     }
 
-    public String getDiagnosticoCIE10() {
-        return diagnosticoCIE10;
+    public String getDiagnostico() {
+        return diagnostico;
     }
 
-    public void setDiagnosticoCIE10(String diagnosticoCIE10) {
-        this.diagnosticoCIE10 = diagnosticoCIE10;
+    public void setDiagnostico(String diagnostico) {
+        this.diagnostico = diagnostico;
     }
 
     public String getRecomendaciones() {
@@ -247,5 +251,13 @@ public class Historia_clinica {
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
-    
+
+    public String getExamen_radiografico() {
+        return examen_radiografico;
+    }
+
+    public void setExamen_radiografico(String examen_radiografico) {
+        this.examen_radiografico = examen_radiografico;
+    }
+
 }

@@ -120,7 +120,7 @@ public class ModificarPacienteController implements Initializable {
     @FXML
     ComboBox<String> jcbsexo;
     @FXML
-    TextField jtf_motivo_consulta;
+    TextField jtf_motivo_consulta, jtf_examen_radiografico, jtf_diagnostico;
     @FXML
     JFXComboBox<Doctor> jcbDoctor;
     // examenes auxiliares
@@ -528,7 +528,9 @@ public class ModificarPacienteController implements Initializable {
 
         jtfenfermedadActual.setText(oPaciente.getEnfermedadActual());
         jtf_examen_intraoral.setText(oPaciente.getExamenIntraoral());
+        jtf_examen_radiografico.setText(oHistoria_Clinica.getExamen_radiografico());
         jtfantecedentesPersonales.setText(oPaciente.getAntecedentesFamiliares());
+        jtf_diagnostico.setText(oHistoria_Clinica.getDiagnostico());
 
         //enfermedad actual 
         //exploracin física    
@@ -561,6 +563,8 @@ public class ModificarPacienteController implements Initializable {
 
         oHistoria_Clinica.setMotivoConsulta(jtf_motivo_consulta.getText());
         oHistoria_Clinica.setDoctor(jcbDoctor.getSelectionModel().getSelectedItem());
+        oHistoria_Clinica.setExamen_radiografico(jtf_examen_radiografico.getText());
+        oHistoria_Clinica.setDiagnostico(jtf_diagnostico.getText());
 
         //Enfermedad actual
         oPaciente.setEnfermedadActual(jtfenfermedadActual.getText());

@@ -112,17 +112,17 @@
                                                       <RowConstraints maxHeight="1.7976931348623157E308" minHeight="10.0" prefHeight="46.0" valignment="CENTER" vgrow="SOMETIMES" />
                                                    </rowConstraints>
                                                    <children>
-                                                      <JFXTextField fx:id="jtfDia" focusColor="BLACK" labelFloat="true" promptText="dd" styleClass="field-forma1" GridPane.columnIndex="1">
+                                                      <JFXTextField fx:id="jtfDia" focusColor="BLACK" labelFloat="true" promptText="dd" styleClass="field-forma1" unFocusColor="BLACK" GridPane.columnIndex="1">
                                                          <GridPane.margin>
                                                             <Insets bottom="4.0" left="2.0" right="2.0" />
                                                          </GridPane.margin>
                                                       </JFXTextField>
-                                                      <JFXTextField fx:id="jtfMes" focusColor="BLACK" labelFloat="true" promptText="mm" styleClass="field-forma1" GridPane.columnIndex="2">
+                                                      <JFXTextField fx:id="jtfMes" focusColor="BLACK" labelFloat="true" promptText="mm" styleClass="field-forma1" unFocusColor="BLACK" GridPane.columnIndex="2">
                                                          <GridPane.margin>
                                                             <Insets bottom="4.0" left="2.0" right="2.0" />
                                                          </GridPane.margin>
                                                       </JFXTextField>
-                                                      <JFXTextField fx:id="jtfanio" focusColor="BLACK" labelFloat="true" promptText="aaaa" styleClass="field-forma1" GridPane.columnIndex="3">
+                                                      <JFXTextField fx:id="jtfanio" focusColor="BLACK" labelFloat="true" promptText="aaaa" styleClass="field-forma1" unFocusColor="BLACK" GridPane.columnIndex="3">
                                                          <GridPane.margin>
                                                             <Insets bottom="4.0" left="2.0" right="5.0" />
                                                          </GridPane.margin>
@@ -155,7 +155,7 @@
                                                             <Image url="@../imagenes/icons/icon-ocupacion.png" />
                                                          </image>
                                                       </ImageView>
-                                                      <JFXComboBox fx:id="jcbocupacion" focusColor="BLACK" labelFloat="true" maxWidth="1.7976931348623157E308" prefWidth="180.0" promptText="Ocupación" styleClass="combobox-forma3" />
+                                                      <JFXComboBox fx:id="jcbocupacion" focusColor="BLACK" labelFloat="true" maxWidth="1.7976931348623157E308" prefWidth="180.0" promptText="Ocupación" styleClass="combobox-forma3" unFocusColor="BLACK" />
                                                    </children>
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
@@ -206,7 +206,7 @@
                                                                   <Insets left="5.0" right="5.0" />
                                                                </HBox.margin>
                                                             </ImageView>
-                                                            <JFXTextField fx:id="jtfDni" focusColor="BLACK" labelFloat="true" prefHeight="18.0" prefWidth="140.0" promptText="DNI" styleClass="field-forma1" />
+                                                            <JFXTextField fx:id="jtfDni" focusColor="BLACK" labelFloat="true" prefHeight="18.0" prefWidth="140.0" promptText="DNI" styleClass="field-forma1" unFocusColor="BLACK" />
                                                          </children>
                                                       </HBox>
                                                       <ImageView fitHeight="30.0" fitWidth="30.0" onMouseClicked="#consultar" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
@@ -229,7 +229,7 @@
                                                             <Insets left="5.0" right="5.0" />
                                                          </HBox.margin>
                                                       </ImageView>
-                                                      <JFXTextField fx:id="jtfTelefono" focusColor="BLACK" labelFloat="true" prefWidth="180.0" promptText="Teléfono" styleClass="field-forma1" />
+                                                      <JFXTextField fx:id="jtfTelefono" focusColor="BLACK" labelFloat="true" prefWidth="180.0" promptText="Teléfono" styleClass="field-forma1" unFocusColor="BLACK" />
                                                    </children>
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
@@ -242,16 +242,16 @@
                                                             <Insets left="5.0" right="5.0" />
                                                          </HBox.margin>
                                                       </ImageView>
-                                                      <JFXTextField fx:id="jtfNombresyApellidos" focusColor="BLACK" labelFloat="true" prefWidth="180.0" promptText="Nombres" styleClass="field-forma1">
+                                                      <JFXTextField fx:id="jtfNombresyApellidos" focusColor="BLACK" labelFloat="true" prefWidth="180.0" promptText="Nombres" styleClass="field-forma1" unFocusColor="BLACK">
                                                          <HBox.margin>
                                                             <Insets left="5.0" right="5.0" />
                                                          </HBox.margin></JFXTextField>
-                                                      <JFXTextField fx:id="jtf_ap_paterno" focusColor="BLACK" labelFloat="true" prefWidth="120.0" promptText="Ap. paterno" styleClass="field-forma1">
+                                                      <JFXTextField fx:id="jtf_ap_paterno" focusColor="BLACK" labelFloat="true" prefWidth="120.0" promptText="Ap. paterno" styleClass="field-forma1" unFocusColor="BLACK">
                                                          <HBox.margin>
                                                             <Insets left="5.0" right="5.0" />
                                                          </HBox.margin>
                                                       </JFXTextField>
-                                                      <JFXTextField fx:id="jtf_ap_materno" focusColor="BLACK" labelFloat="true" prefWidth="120.0" promptText="Ap. materno" styleClass="field-forma1">
+                                                      <JFXTextField fx:id="jtf_ap_materno" focusColor="BLACK" labelFloat="true" prefWidth="120.0" promptText="Ap. materno" styleClass="field-forma1" unFocusColor="BLACK">
                                                          <HBox.margin>
                                                             <Insets left="5.0" right="5.0" />
                                                          </HBox.margin>
@@ -280,7 +280,7 @@
                                                             <Insets right="5.0" />
                                                          </HBox.margin>
                                                       </ImageView>
-                                                      <JFXComboBox fx:id="jcbDoctor" focusColor="BLACK" labelFloat="true" maxWidth="1.7976931348623157E308" prefWidth="180.0" promptText="Doctor" styleClass="combobox-forma3" />
+                                                      <JFXComboBox fx:id="jcbDoctor" focusColor="BLACK" labelFloat="true" maxWidth="1.7976931348623157E308" prefWidth="180.0" promptText="Doctor" styleClass="combobox-forma3" unFocusColor="BLACK" />
                                                    </children>
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
@@ -293,7 +293,7 @@
                                                             <Insets left="5.0" right="5.0" />
                                                          </HBox.margin>
                                                       </ImageView>
-                                                      <JFXTextField fx:id="jtflugarprocedencia" focusColor="BLACK" labelFloat="true" prefWidth="170.0" promptText="Lugar de Procedencia" styleClass="field-forma1" />
+                                                      <JFXTextField fx:id="jtflugarprocedencia" focusColor="BLACK" labelFloat="true" prefWidth="170.0" promptText="Lugar de Procedencia" styleClass="field-forma1" unFocusColor="BLACK" />
                                                    </children>
                                                 </HBox>
                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
@@ -306,7 +306,7 @@
                                                             <Insets left="5.0" right="5.0" />
                                                          </HBox.margin>
                                                       </ImageView>
-                                                      <JFXTextField fx:id="jtfDomicilio" focusColor="BLACK" labelFloat="true" prefWidth="380.0" promptText="Domicilio" styleClass="field-forma1">
+                                                      <JFXTextField fx:id="jtfDomicilio" focusColor="BLACK" labelFloat="true" prefWidth="380.0" promptText="Domicilio" styleClass="field-forma1" unFocusColor="BLACK">
                                                          <HBox.margin>
                                                             <Insets right="5.0" />
                                                          </HBox.margin></JFXTextField>
@@ -335,21 +335,15 @@
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                        </rowConstraints>
                                        <children>
-                                          <JFXTextField fx:id="jtfenfermedadActual" focusColor="BLACK" labelFloat="true" promptText="Enfermedad actual" styleClass="field-forma1" GridPane.rowIndex="1">
+                                          <JFXTextField fx:id="jtfenfermedadActual" focusColor="BLACK" labelFloat="true" promptText="Enfermedad actual" styleClass="field-forma1" unFocusColor="BLACK" GridPane.rowIndex="1">
                                              <GridPane.margin>
                                                 <Insets left="5.0" right="5.0" />
                                              </GridPane.margin>
                                           </JFXTextField>
-                                          <JFXTextField fx:id="jtf_examen_intraoral" focusColor="BLACK" labelFloat="true" promptText="Examen intraoral" styleClass="field-forma1" GridPane.rowIndex="2">
-                                             <GridPane.margin>
-                                                <Insets left="5.0" right="5.0" />
-                                             </GridPane.margin>
-                                          </JFXTextField>
-                                          <JFXTextField fx:id="jtfMotivoConsulta" focusColor="BLACK" labelFloat="true" promptText="Motivo de Consulta" styleClass="field-forma1" />
-                                          <GridPane GridPane.rowIndex="3">
+                                          <JFXTextField fx:id="jtfMotivoConsulta" focusColor="BLACK" labelFloat="true" promptText="Motivo de Consulta" styleClass="field-forma1" unFocusColor="BLACK" />
+                                          <GridPane GridPane.rowIndex="2">
                                             <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                             </columnConstraints>
@@ -359,7 +353,7 @@
                                               <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
                                             </rowConstraints>
                                              <children>
-                                                <JFXTextField fx:id="jtfantecedentesPersonales" focusColor="BLACK" promptText="Otros antecedentes" styleClass="field-forma1" GridPane.rowIndex="2">
+                                                <JFXTextField fx:id="jtfantecedentesPersonales" focusColor="BLACK" promptText="Otros antecedentes" styleClass="field-forma1" unFocusColor="BLACK" GridPane.rowIndex="2">
                                                    <padding>
                                                       <Insets left="5.0" right="5.0" />
                                                    </padding>
@@ -375,6 +369,40 @@
                                                 </Label>
                                              </children>
                                           </GridPane>
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                           <font>
+                              <Font name="System Bold" size="13.0" />
+                           </font>
+                        </TitledPane>
+                        <TitledPane text="III. EXAMEN RADIOGRÁFICO, INTRAORAL Y DIAGNÓSTICO" textFill="WHITE">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="slg-background">
+                                 <children>
+                                    <GridPane layoutX="98.0" layoutY="95.0" prefHeight="384.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <children>
+                                          <JFXTextField fx:id="jtf_examen_radiografico" focusColor="BLACK" labelFloat="true" promptText="Examen radiográfico" styleClass="field-forma1" unFocusColor="BLACK" GridPane.rowIndex="1">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="jtf_examen_intraoral" focusColor="BLACK" labelFloat="true" promptText="Examen Intraoral" styleClass="field-forma1" unFocusColor="BLACK">
+                                             <GridPane.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                             </GridPane.margin>
+                                          </JFXTextField>
+                                          <JFXTextField fx:id="jtf_diagnostico" focusColor="BLACK" labelFloat="true" promptText="Diagnostico" styleClass="field-forma1" unFocusColor="BLACK" GridPane.rowIndex="2" />
                                        </children>
                                     </GridPane>
                                  </children>
