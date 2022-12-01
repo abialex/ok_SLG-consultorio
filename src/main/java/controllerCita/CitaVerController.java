@@ -523,7 +523,7 @@ public class CitaVerController implements Initializable {
                                     + "-fx-text-fill: white; "
                                     + " -fx-cursor: hand;");
                             button.setMaxHeight(9);
-                            button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPaciente().getPersona().getNombres_apellidos());
+                            button.setText(cita.getHoraatencion().getHora() + ":" + cita.getMinuto() + " " + cita.getPersona().getNombres_apellidos());
                             button.addEventHandler(ActionEvent.ACTION, event -> modificarCita(event, getTableView()));
                             FlowPane.setMargin(button, new Insets(1, 1, 1, 1));
                             fp.getChildren().add(button);

@@ -174,7 +174,7 @@ public class CajaVerController implements Initializable {
 
     void getListaPresupuesto(Persona opersona) {
         Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
+        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         Presupuesto Presupuesto = (Presupuesto) App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getSingleResult();
         List<Detalle_Presupuesto> olistDetallePresupuesto = App.jpa.createQuery("select p from Detalle_Presupuesto p where idpresupuesto= " + Presupuesto.getIdpresupuesto() + " order by iddetalle_presupuesto ASC").getResultList();
         for (Detalle_Presupuesto detalle_Presupuesto : olistDetallePresupuesto) {

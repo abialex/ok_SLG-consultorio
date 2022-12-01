@@ -119,7 +119,7 @@ public class CitaModificarController implements Initializable {
     void eliminarCita() {
         oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
         oAlertConfimarController.setController(this);
-        oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar \n la cita de\n" + " " + Cita.getPaciente().getPersona().getNombres_apellidos() + "?");
+        oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar \n la cita de\n" + " " + Cita.getPersona().getNombres_apellidos() + "?");
         lockedPantalla();
     }
 
@@ -161,7 +161,7 @@ public class CitaModificarController implements Initializable {
         jtfFecha.setText(oCita.getFechacita() + "");
         jcbHora.getSelectionModel().select(oCita.getHoraatencion());
         jtfminuto.setText(oCita.getMinuto());
-        jtfPaciente.setText(oCita.getPaciente().getPersona().getNombres_apellidos());
+        jtfPaciente.setText(oCita.getPersona().getNombres_apellidos());
         jtfrazon.setText(oCita.getRazon());
     }
 

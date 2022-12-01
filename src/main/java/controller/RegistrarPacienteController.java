@@ -296,9 +296,9 @@ public class RegistrarPacienteController implements Initializable {
                     jtfantecedentesPersonales.getText().trim(),
                     jtfenfermedadActual.getText().trim(),
                     jtf_examen_intraoral.getText().trim());
-            opaciente.setEmergenciaNombre("");
-            opaciente.setEmergenciaParentesco("");
-            opaciente.setEmergenciaTelefono("");
+            //opaciente.setEmergenciaNombre("");
+            //opaciente.setEmergenciaParentesco("");
+            //opaciente.setEmergenciaTelefono("");
 
             List<Persona_Enfermedad> Lista_enfermedadesPaciente = new ArrayList<>();
             List<Paciente_Pregunta> Lista_preguntasPaciente = new ArrayList<>();

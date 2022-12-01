@@ -502,9 +502,8 @@ public class ModificarPacienteController implements Initializable {
     public void setPersona(Persona opersona) {
         this.oPersona = opersona;
         this.oPaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        this.oHistoria_Clinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + oPaciente.getIdpaciente()).getSingleResult();
+        this.oHistoria_Clinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         list_enfermedad_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
-        listPaciente_pregunta = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + oPaciente.getIdpaciente()).getResultList();
         lista_enfermedades_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
         for (Persona_Enfermedad persona_Enfermedad : list_enfermedad_persona) {            
             lista_enfermedades_del_persona_volatil.add(persona_Enfermedad.getEnfermedad());
@@ -526,10 +525,10 @@ public class ModificarPacienteController implements Initializable {
 
         jtf_motivo_consulta.setText(oHistoria_Clinica.getMotivoConsulta());
 
-        jtfenfermedadActual.setText(oPaciente.getEnfermedadActual());
-        jtf_examen_intraoral.setText(oPaciente.getExamenIntraoral());
+        jtfenfermedadActual.setText(oHistoria_Clinica.getEnfermedadActual());
+        jtf_examen_intraoral.setText(oHistoria_Clinica.getExamenIntraoral());
         jtf_examen_radiografico.setText(oHistoria_Clinica.getExamen_radiografico());
-        jtfantecedentesPersonales.setText(oPaciente.getAntecedentesFamiliares());
+        jtfantecedentesPersonales.setText(oHistoria_Clinica.getAntecedentesFamiliares());
         jtf_diagnostico.setText(oHistoria_Clinica.getDiagnostico());
 
         //enfermedad actual 
@@ -567,9 +566,9 @@ public class ModificarPacienteController implements Initializable {
         oHistoria_Clinica.setDiagnostico(jtf_diagnostico.getText());
 
         //Enfermedad actual
-        oPaciente.setEnfermedadActual(jtfenfermedadActual.getText());
-        oPaciente.setExamenIntraoral(jtf_examen_intraoral.getText());
-        oPaciente.setAntecedentesFamiliares(jtfantecedentesPersonales.getText());
+        oHistoria_Clinica.setEnfermedadActual(jtfenfermedadActual.getText());
+        oHistoria_Clinica.setExamenIntraoral(jtf_examen_intraoral.getText());
+        oHistoria_Clinica.setAntecedentesFamiliares(jtfantecedentesPersonales.getText());
         //Exploración física
         //diagnostico
         //Plan de tratamiento

@@ -60,10 +60,10 @@ public class Historiaclinicapdf {
     public static void ImprimirHistoriaClinica(Persona opersona) {
         List<Detalle_Presupuesto> olistDetallePresupuesto = new ArrayList<>();
         Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpaciente=" + opaciente.getIdpaciente()).getSingleResult();
+        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         List<Persona_Enfermedad> list_enfermedad_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
-        List<Paciente_Pregunta> listPaciente_PreguntaIsMujer = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opaciente.getIdpaciente() + " and ismujer=true").getResultList();
-        List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opaciente.getIdpaciente() + " and ismujer=false").getResultList();
+        List<Paciente_Pregunta> listPaciente_PreguntaIsMujer = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opersona.getIdpersona() + " and ismujer=true").getResultList();
+        List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opersona.getIdpersona() + " and ismujer=false").getResultList();
         List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
         List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
         List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + opersona.getIdpersona() + " and flag = false order by idtratamiento ASC").getResultList();
@@ -209,11 +209,11 @@ public class Historiaclinicapdf {
 
         Table table1Parrafo4 = new Table(new float[]{volumen * 1f, volumen * 4f});
         table1Parrafo4.addCell(getCell("Enfermedad actual:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        table1Parrafo4.addCell(getCell(opaciente.getEnfermedadActual(), styleTextCenter, styleCell, subrayado));
+        table1Parrafo4.addCell(getCell(oHistoriaclinica.getEnfermedadActual(), styleTextCenter, styleCell, subrayado));
 
         Table table1Parrafo5 = new Table(new float[]{volumen * 1.2f, volumen * 3.8f});
         table1Parrafo5.addCell(getCell("Antecedentes personales:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        table1Parrafo5.addCell(getCell(enfermedades_persona + opaciente.getAntecedentesFamiliares(), styleTextCenter, styleCell, subrayado));
+        table1Parrafo5.addCell(getCell(enfermedades_persona + oHistoriaclinica.getAntecedentesFamiliares(), styleTextCenter, styleCell, subrayado));
 
         Table table1Parrafo6 = new Table(new float[]{volumen * 0.5f, volumen * 4.5f});
         table1Parrafo6.addCell(getCell("Operador:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
@@ -229,7 +229,7 @@ public class Historiaclinicapdf {
 
         //EXMAEN INTRAORAL
         Paragraph parrafo_examen_intraoral = new Paragraph("II. Examen Intraoral.").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-        Table table_examen_intraoral_parrafo1 = getTableField(opaciente.getExamenIntraoral(), "Examen Intraoral.", 0.8f, 4.1f, volumen, color_slg, styleCell, styleTextLeft, palabraEnBlanco);
+        Table table_examen_intraoral_parrafo1 = getTableField(oHistoriaclinica.getExamenIntraoral(), "Examen Intraoral.", 0.8f, 4.1f, volumen, color_slg, styleCell, styleTextLeft, palabraEnBlanco);
 
         Table table_examen_intraoral = new Table(new float[]{volumen * 5});
         table_examen_intraoral.addCell(new Cell().add(table_examen_intraoral_parrafo1).addStyle(styleCell));
@@ -266,11 +266,11 @@ public class Historiaclinicapdf {
 
         Table TableCasoDeEmergenciaParrafo2 = new Table(new float[]{volumen * 0.45f, volumen * 1.25f, volumen * 0.55f, volumen * 1.25f, volumen * 0.45f, volumen * 1.05f});
         TableCasoDeEmergenciaParrafo2.addCell(getCell("Nombre:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        TableCasoDeEmergenciaParrafo2.addCell(getCell(opaciente.getEmergenciaNombre(), styleTextCenter, styleCell, subrayado));
+        //TableCasoDeEmergenciaParrafo2.addCell(getCell(oHistoriaclinica.getEmergenciaNombre(), styleTextCenter, styleCell, subrayado));
         TableCasoDeEmergenciaParrafo2.addCell(getCell("Parentesco:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        TableCasoDeEmergenciaParrafo2.addCell(getCell(opaciente.getEmergenciaParentesco(), styleTextCenter, styleCell, subrayado));
+        //TableCasoDeEmergenciaParrafo2.addCell(getCell(oHistoriaclinica.getEmergenciaParentesco(), styleTextCenter, styleCell, subrayado));
         TableCasoDeEmergenciaParrafo2.addCell(getCell("Telefono:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        TableCasoDeEmergenciaParrafo2.addCell(getCell(opaciente.getEmergenciaTelefono(), styleTextCenter, styleCell, subrayado));
+        //TableCasoDeEmergenciaParrafo2.addCell(getCell(oHistoriaclinica.getEmergenciaTelefono(), styleTextCenter, styleCell, subrayado));
 
         Table TableCasoDeEmergencia = new Table(new float[]{volumen * 5});
         TableCasoDeEmergencia.addCell(new Cell().add(TableCasoDeEmergenciaParrafo1).addStyle(styleCell));
@@ -289,9 +289,9 @@ public class Historiaclinicapdf {
         Paragraph parrafoSubTitulo2 = new Paragraph("II.  ENFERMEDAD ACTUAL").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
         Table TableEnfermedadActual = new Table(new float[]{volumen * 1.3f, volumen * 3.7f});
         TableEnfermedadActual.addCell(getCell("Signo y síntomas principales:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        TableEnfermedadActual.addCell(getCell(opaciente.getSintomasEnfermedadActual(), styleTextCenter, styleCell, subrayado));
+        // TableEnfermedadActual.addCell(getCell(opaciente.getSintomasEnfermedadActual(), styleTextCenter, styleCell, subrayado));
         TableEnfermedadActual.addCell(getCell("Tiempo de la enfermedad:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        TableEnfermedadActual.addCell(getCell(opaciente.getTiempoEnfermedadActual(), styleTextCenter, styleCell, subrayado));
+        //TableEnfermedadActual.addCell(getCell(opaciente.getTiempoEnfermedadActual(), styleTextCenter, styleCell, subrayado));
         //Fin ENFERMEDAD ACTUAL
 
         //ANTECEDENTES
@@ -313,7 +313,7 @@ public class Historiaclinicapdf {
         //Otras enfermedades
         Table TableOtrasEnfermedades = new Table(new float[]{volumen * 0.95f, volumen * 4.05f});
         TableOtrasEnfermedades.addCell(getCell("Otras enfermedades:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        TableOtrasEnfermedades.addCell(getCell(opaciente.getOtrasEnfermedades(), styleTextCenter, styleCell, subrayado));
+        //TableOtrasEnfermedades.addCell(getCell(opaciente.getOtrasEnfermedades(), styleTextCenter, styleCell, subrayado));
 
         int contP = 0;
         Table TableAntecedentesPreguntas = new Table(new float[]{volumen * 5f});
@@ -350,7 +350,7 @@ public class Historiaclinicapdf {
 
         Table TableAntecedente = new Table(new float[]{volumen * 1.1f, volumen * 3.9f});
         TableAntecedente.addCell(getCell("Antecedentes familiares: ", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        TableAntecedente.addCell(getCell(opaciente.getAntecedentesFamiliares(), styleTextLeft, styleCell, subrayado));
+        TableAntecedente.addCell(getCell(oHistoriaclinica.getAntecedentesFamiliares(), styleTextLeft, styleCell, subrayado));
 
         TableAntecedentes.addCell(new Cell().add(new Paragraph("Ha presentado o presenta algunos de los siguientes síntomas").setFontColor(colorSubtitulo).setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft));
         TableAntecedentes.addCell(new Cell().add(TableAntecedentesEnfermedades).addStyle(styleCell));
@@ -512,7 +512,9 @@ public class Historiaclinicapdf {
                 TableTratamiento.addCell(new Cell().add(new Paragraph("SALDO").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 //montoTotal = montoTotal + tratamiento.getMonto();
             }
-             String fecha_realizada=olistTratamiento.get(i).getFechaRealizada().getDayOfMonth()+"/"+olistTratamiento.get(i).getFechaRealizada().getMonthValue()+"/"+olistTratamiento.get(i).getFechaRealizada().getYear();
+            int mesInt = olistTratamiento.get(i).getFechaRealizada().getMonthValue();
+            String mes = mesInt > 9 ? mesInt + "" : "0" + mesInt;
+            String fecha_realizada = olistTratamiento.get(i).getFechaRealizada().getDayOfMonth() + "/" + mes + "/" + olistTratamiento.get(i).getFechaRealizada().getYear();
             TableTratamiento.addCell(new Cell().add(new Paragraph(fecha_realizada + "").addStyle(styleTextCenter)));
 
             TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getTratamiento()).addStyle(styleTextLeft)));

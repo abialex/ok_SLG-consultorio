@@ -30,6 +30,10 @@ public class Historia_clinica {
     @JoinColumn(insertable = true, updatable = true, name = "idpaciente", nullable = false)
     @ManyToOne(cascade = CascadeType.ALL)
     private Paciente idpaciente;
+
+    @JoinColumn(insertable = true, updatable = true, name = "idpersona", nullable = true)
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Persona persona;
     //EXPLORACIÓN FÍSICA
     @Column(name = "signosVitales", nullable = true)
     private String signosVitales;
@@ -79,6 +83,15 @@ public class Historia_clinica {
 
     @Column(name = "fechaultimaatencion", nullable = true)
     private LocalDate fechaultimaatencion;
+
+    @Column(name = "examenIntraoral", nullable = true)
+    private String examenIntraoral;
+
+    @Column(name = "enfermedadActual", nullable = true)
+    private String enfermedadActual;
+
+    @Column(name = "antecedentesFamiliares", nullable = true)
+    private String antecedentesFamiliares;
 
     public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnostico, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, String examen_radiografico, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.idpaciente = idpaciente;
@@ -258,6 +271,38 @@ public class Historia_clinica {
 
     public void setExamen_radiografico(String examen_radiografico) {
         this.examen_radiografico = examen_radiografico;
+    }
+
+    public Persona getPersona() {
+        return persona;
+    }
+
+    public void setPersona(Persona persona) {
+        this.persona = persona;
+    }
+
+    public String getExamenIntraoral() {
+        return examenIntraoral;
+    }
+
+    public void setExamenIntraoral(String examenIntraoral) {
+        this.examenIntraoral = examenIntraoral;
+    }
+
+    public String getEnfermedadActual() {
+        return enfermedadActual;
+    }
+
+    public void setEnfermedadActual(String enfermedadActual) {
+        this.enfermedadActual = enfermedadActual;
+    }
+
+    public String getAntecedentesFamiliares() {
+        return antecedentesFamiliares;
+    }
+
+    public void setAntecedentesFamiliares(String antecedentesFamiliares) {
+        this.antecedentesFamiliares = antecedentesFamiliares;
     }
 
 }
