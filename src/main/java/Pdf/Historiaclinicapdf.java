@@ -59,13 +59,13 @@ public class Historiaclinicapdf {
 
     public static void ImprimirHistoriaClinica(Persona opersona) {
         List<Detalle_Presupuesto> olistDetallePresupuesto = new ArrayList<>();
-        Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
+        //Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         List<Persona_Enfermedad> list_enfermedad_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
-        List<Paciente_Pregunta> listPaciente_PreguntaIsMujer = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opersona.getIdpersona() + " and ismujer=true").getResultList();
-        List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opersona.getIdpersona() + " and ismujer=false").getResultList();
-        List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
-        List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
+        //List<Paciente_Pregunta> listPaciente_PreguntaIsMujer = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opersona.getIdpersona() + " and ismujer=true").getResultList();
+        //List<Paciente_Pregunta> listPaciente_PreguntaIsHombre = App.jpa.createQuery("select p from Paciente_Pregunta p where idpaciente=" + opersona.getIdpersona() + " and ismujer=false").getResultList();
+        //List<Pregunta> listPreguntaIsMujer = App.jpa.createQuery("select p from Pregunta p where isMujer=true ORDER BY idpregunta ASC").getResultList();
+        //List<Pregunta> listPreguntaIsHombre = App.jpa.createQuery("select p from Pregunta p where isMujer=false  ORDER BY idpregunta ASC").getResultList();
         List<Tratamiento> olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + opersona.getIdpersona() + " and flag = false order by idtratamiento ASC").getResultList();
         List<Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
         List<PlanTratamiento> olistPlanTratamientos = App.jpa.createQuery("select p from PlanTratamiento p where idhistoria_clinica= " + oHistoriaclinica.getIdhistoria_clinica() + "  order by idplantratamiento ASC").getResultList();
@@ -317,25 +317,29 @@ public class Historiaclinicapdf {
 
         int contP = 0;
         Table TableAntecedentesPreguntas = new Table(new float[]{volumen * 5f});
+       /*
         for (Pregunta pregunta : listPreguntaIsHombre) {
             contP++;
             String contexto = "NO";
+            /*
             for (Paciente_Pregunta paciente_Pregunta : listPaciente_PreguntaIsHombre) {
                 if (paciente_Pregunta.getPregunta() == pregunta) {
                     contexto = "SÍ " + paciente_Pregunta.getEspecificaciones();
                 }
-            }
+           }
             Table TableAntecedentesPreguntasParrafo = new Table(new float[]{volumen * 2.4f, volumen * 2.6f});
             TableAntecedentesPreguntasParrafo.addCell(getCell(contP + ": " + pregunta.getTextopregunta(), styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
             TableAntecedentesPreguntasParrafo.addCell(getCell(contexto, styleTextLeft, styleCell, subrayado));
             TableAntecedentesPreguntas.addCell(new Cell().add(TableAntecedentesPreguntasParrafo).addStyle(styleCell));
-        }
+        }*/
 
         Table TableAntecedentesPreguntasMujer = new Table(new float[]{volumen * 5f});
         TableAntecedentesPreguntasMujer.addCell(new Cell().add(new Paragraph("Para pacientes de sexo femenino").setFontColor(colorSubtitulo).setFont(bold)).addStyle(styleCell).addStyle(styleTextLeft));
+       /*
         for (Pregunta pregunta : listPreguntaIsMujer) {
             contP++;
             String contexto = "NO";
+            /*
             for (Paciente_Pregunta paciente_Pregunta : listPaciente_PreguntaIsMujer) {
                 if (paciente_Pregunta.getPregunta() == pregunta) {
                     contexto = "SÍ " + paciente_Pregunta.getEspecificaciones();
@@ -346,7 +350,7 @@ public class Historiaclinicapdf {
             TableAntecedentesPreguntasMujerParrafo.addCell(getCell(contP + ": " + pregunta.getTextopregunta(), styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
             TableAntecedentesPreguntasMujerParrafo.addCell(getCell(contexto, styleTextLeft, styleCell, subrayado));
             TableAntecedentesPreguntasMujer.addCell(new Cell().add(TableAntecedentesPreguntasMujerParrafo).addStyle(styleCell));
-        }
+        }*/
 
         Table TableAntecedente = new Table(new float[]{volumen * 1.1f, volumen * 3.9f});
         TableAntecedente.addCell(getCell("Antecedentes familiares: ", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));

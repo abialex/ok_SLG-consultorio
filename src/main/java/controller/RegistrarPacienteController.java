@@ -304,7 +304,6 @@ public class RegistrarPacienteController implements Initializable {
             List<Paciente_Pregunta> Lista_preguntasPaciente = new ArrayList<>();
 
             Historia_clinica ohistoria = new Historia_clinica(
-                    opaciente,
                     jcbDoctor.getSelectionModel().getSelectedItem(),
                     "",
                     "",

@@ -29,10 +29,6 @@ public class Cita {
     @ManyToOne
     private Doctor doctor;
     
-    @JoinColumn(insertable = true, updatable = true, name = "idpaciente", nullable = true)
-    @ManyToOne
-    private Paciente paciente;
-    
     @JoinColumn(insertable = true, updatable = true, name = "idpersona", nullable = true)
     @ManyToOne
     private Persona persona;
@@ -53,9 +49,9 @@ public class Cita {
     public Cita() {
     }
 
-    public Cita(Doctor doctor, Paciente paciente, HoraAtencion horaatencion, LocalDate fechacita, String razon, String minuto) {
+    public Cita(Doctor doctor, HoraAtencion horaatencion, LocalDate fechacita, String razon, String minuto) {
         this.doctor = doctor;
-        this.paciente = paciente;
+        //this.paciente = paciente;
         this.horaatencion = horaatencion;
         this.fechacita = fechacita;
         this.razon = razon;
@@ -83,14 +79,6 @@ public class Cita {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
     }
 
     public HoraAtencion getHoraatencion() {

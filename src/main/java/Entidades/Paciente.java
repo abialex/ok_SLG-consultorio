@@ -20,7 +20,7 @@ import javax.persistence.OneToOne;
  *
  * @author yalle
  */
-@Entity
+
 public class Paciente {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

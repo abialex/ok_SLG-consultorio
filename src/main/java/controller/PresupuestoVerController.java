@@ -114,7 +114,7 @@ public class PresupuestoVerController implements Initializable {
     }
 
     void getPresupuesto(Persona opersona) {
-        Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
+        //Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         List<Presupuesto> list_presupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
         if (!list_presupuesto.isEmpty()) {

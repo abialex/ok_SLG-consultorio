@@ -14,7 +14,6 @@ import javax.persistence.Id;
  *
  * @author yalle
  */
-@Entity
 public class Pregunta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

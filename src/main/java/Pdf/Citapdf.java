@@ -173,7 +173,7 @@ public class Citapdf {
                 for (Cita cita : listCita) {
                     if (cita.getFechacita().equals(fechaCom) && cita.getHoraatencion() == ohora) {
                         aux = false;
-                        if (cita.getPaciente() != null) {
+                        if (cita.getPersona() != null) {
                             String datos = cita.getPersona().getNombres_apellidos();
                             if (datos.length() > 11) {
                                 datos = datos.substring(0, 11);

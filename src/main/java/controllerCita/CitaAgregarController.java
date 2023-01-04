@@ -97,7 +97,7 @@ public class CitaAgregarController implements Initializable {
     @FXML
     void guardarCita() {
         if (isComplete()) {
-            Cita ocita = new Cita(oDoctor, tablePersona.getSelectionModel().getSelectedItem().getPaciente(), horaAtencion, oFechaCita, jtfrazon.getText(), jtfminuto.getText());
+            Cita ocita = new Cita(oDoctor, horaAtencion, oFechaCita, jtfrazon.getText(), jtfminuto.getText());
             App.jpa.getTransaction().begin();
             App.jpa.persist(ocita);
             App.jpa.getTransaction().commit();

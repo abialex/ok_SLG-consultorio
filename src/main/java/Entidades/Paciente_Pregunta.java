@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
  *
  * @author yalle
  */
-@Entity
 public class Paciente_Pregunta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

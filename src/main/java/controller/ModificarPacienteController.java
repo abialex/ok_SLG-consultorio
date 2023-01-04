@@ -501,7 +501,7 @@ public class ModificarPacienteController implements Initializable {
 
     public void setPersona(Persona opersona) {
         this.oPersona = opersona;
-        this.oPaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
+        //this.oPaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         this.oHistoria_Clinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
         list_enfermedad_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
         lista_enfermedades_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
@@ -614,7 +614,7 @@ public class ModificarPacienteController implements Initializable {
         }
 
         App.jpa.persist(oPersona);
-        App.jpa.persist(oPaciente);
+       // App.jpa.persist(oPaciente);
         App.jpa.getTransaction().commit();
         cerrar();
         oVerPacienteController.updateListPersona();

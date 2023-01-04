@@ -27,10 +27,6 @@ public class Historia_clinica {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idhistoria_clinica;
 
-    @JoinColumn(insertable = true, updatable = true, name = "idpaciente", nullable = false)
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Paciente idpaciente;
-
     @JoinColumn(insertable = true, updatable = true, name = "idpersona", nullable = true)
     @ManyToOne(cascade = CascadeType.ALL)
     private Persona persona;
@@ -93,8 +89,7 @@ public class Historia_clinica {
     @Column(name = "antecedentesFamiliares", nullable = true)
     private String antecedentesFamiliares;
 
-    public Historia_clinica(Paciente idpaciente, Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnostico, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, String examen_radiografico, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
-        this.idpaciente = idpaciente;
+    public Historia_clinica(Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnostico, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, String examen_radiografico, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.doctor = doctor;
         this.signosVitales = signosVitales;
         this.saturacionOxigeno = saturacionOxigeno;
@@ -127,14 +122,6 @@ public class Historia_clinica {
 
     public void setIdhistoria_clinica(int idhistoria_clinica) {
         this.idhistoria_clinica = idhistoria_clinica;
-    }
-
-    public Paciente getIdpaciente() {
-        return idpaciente;
-    }
-
-    public void setIdpaciente(Paciente idpaciente) {
-        this.idpaciente = idpaciente;
     }
 
     public LocalDate getFechainscripcion() {
