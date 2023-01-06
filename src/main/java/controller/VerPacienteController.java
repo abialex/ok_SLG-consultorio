@@ -5,13 +5,11 @@
 package controller;
 
 import Entidades.Historia_clinica;
-import Entidades.Paciente;
 import Entidades.Persona;
 import Entidades.Presupuesto;
 import Pdf.Historiaclinicapdf;
 import Util.FileImagUtil;
 import com.jfoenix.controls.JFXTextField;
-import controllerCita.CitaVerController;
 import controllerDoctor.DoctorVerController;
 import emergente.AlertConfirmarController;
 import java.awt.Desktop;
@@ -590,9 +588,7 @@ public class VerPacienteController implements Initializable {
 
     @FXML
     void mostrarCita() {
-        CitaVerController oCitaVerController = (CitaVerController) mostrarVentana(CitaVerController.class, "CitaVer");
-        oCitaVerController.setController(odc);
-        lockedPantalla();
+        
     }
 
     Presupuesto getPresupuesto(Persona opersona) {

@@ -8,13 +8,10 @@ import Entidades.Doctor;
 import Entidades.Enfermedad;
 import Entidades.ExamenAuxiliar;
 import Entidades.Historia_clinica;
-import Entidades.Paciente;
 import Entidades.Persona_Enfermedad;
-import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
 import Entidades.PersonaReniec;
 import Entidades.PlanTratamiento;
-import Entidades.Pregunta;
 import Entidades.Tratamiento;
 import Util.FileImagUtil;
 import Pdf.Historiaclinicapdf;
@@ -238,13 +235,13 @@ public class RegistrarPacienteController implements Initializable {
         EventHandler evento = (event) -> {
             //Codigo de la función evento
             JFXCheckBox oCheck = ((JFXCheckBox) event.getSource());
-            if (oCheck.isSelected()) {   
+            if (oCheck.isSelected()) {
                 lista_de_enfermedades_del_paciente.add((Enfermedad) oCheck.getUserData());
-            } else {               
+            } else {
                 lista_de_enfermedades_del_paciente.remove((Enfermedad) oCheck.getUserData());
             }
             for (Enfermedad enfermedad : lista_de_enfermedades_del_paciente) {
-                System.out.println(enfermedad.getNombre());                
+                System.out.println(enfermedad.getNombre());
             }
         };
         for (Enfermedad oEnferm : listEnfermedad) {
@@ -284,56 +281,35 @@ public class RegistrarPacienteController implements Initializable {
                     jtfTelefono.getText().trim(),
                     0
             );
-            opersona.setTutorDni("");
-            opersona.setTutorNombre("");
-            opersona.setTutorTelefono("");
-
-            Paciente opaciente = new Paciente(
-                    opersona,
-                    "",
-                    "",
-                    "",
-                    jtfantecedentesPersonales.getText().trim(),
-                    jtfenfermedadActual.getText().trim(),
-                    jtf_examen_intraoral.getText().trim());
             //opaciente.setEmergenciaNombre("");
             //opaciente.setEmergenciaParentesco("");
             //opaciente.setEmergenciaTelefono("");
 
             List<Persona_Enfermedad> Lista_enfermedadesPaciente = new ArrayList<>();
-            List<Paciente_Pregunta> Lista_preguntasPaciente = new ArrayList<>();
+            //List<Paciente_Pregunta> Lista_preguntasPaciente = new ArrayList<>();
 
             Historia_clinica ohistoria = new Historia_clinica(
                     jcbDoctor.getSelectionModel().getSelectedItem(),
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    "",
-                    jtf_diagnostico.getText(),
-                    "",
-                    "",
-                    "",
-                    jtfMotivoConsulta.getText().trim(),
+                    opersona,
+                    jtfMotivoConsulta.getText(),
+                    jtfenfermedadActual.getText(),
+                    jtfantecedentesPersonales.getText(),
+                    jtf_examen_intraoral.getText(),
                     jtf_examen_radiografico.getText(),
+                    jtf_diagnostico.getText(),
                     LocalDate.now(),
                     LocalDate.now());
+
             //GuardarPaciente
             App.jpa.getTransaction().begin();
             App.jpa.persist(opersona);
-
-            App.jpa.persist(opaciente);
-
             //agregando los antecedentes(enfermedades) de la paciente
             for (Enfermedad enfermedad : lista_de_enfermedades_del_paciente) {
                 App.jpa.persist(new Persona_Enfermedad(opersona, enfermedad, ""));
             }
-            for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
+            /*for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
                 App.jpa.persist(paciente_Pregunta);
-            }
+            }*/
             App.jpa.persist(ohistoria);
 
             for (PlanTratamiento oplantratamiento : listPlanTratamiento) {
@@ -349,10 +325,6 @@ public class RegistrarPacienteController implements Initializable {
             App.jpa.getTransaction().commit();
             oVerPacienteController.updateListPersona();
             oVerPacienteController.selectAgregado();
-            File carpetaImages = new File("Archivos paciente/" + opersona.getNombres_apellidos());
-            if (!carpetaImages.exists()) {
-                carpetaImages.mkdirs();
-            }
             cerrar();
         }
     }

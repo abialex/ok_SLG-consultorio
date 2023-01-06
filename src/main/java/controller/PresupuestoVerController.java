@@ -7,7 +7,6 @@ package controller;
 import Entidades.Persona;
 import Entidades.Detalle_Presupuesto;
 import Entidades.Historia_clinica;
-import Entidades.Paciente;
 import Entidades.Presupuesto;
 import Entidades.Tratamiento;
 import com.jfoenix.controls.JFXButton;

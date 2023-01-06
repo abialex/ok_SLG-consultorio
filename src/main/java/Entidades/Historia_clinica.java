@@ -89,26 +89,20 @@ public class Historia_clinica {
     @Column(name = "antecedentesFamiliares", nullable = true)
     private String antecedentesFamiliares;
 
-    public Historia_clinica(Doctor doctor, String signosVitales, String saturacionOxigeno, String PA, String FC, String temperatura, String FR, String examenClinicoGeneral, String examenClinicoOdontoestomtologico, String diagnostico, String recomendaciones, String pronostico, String altaPaciente, String motivoConsulta, String examen_radiografico, LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
+    public Historia_clinica(Doctor doctor,Persona persona, String motivoConsulta,String enfermedad_actual, String antecedentes,String examen_intraoral, String examen_radiografico, String diagnistico,
+            LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.doctor = doctor;
-        this.signosVitales = signosVitales;
-        this.saturacionOxigeno = saturacionOxigeno;
-        this.PA = PA;
-        this.FC = FC;
-        this.temperatura = temperatura;
-        this.FR = FR;
-        this.examenClinicoGeneral = examenClinicoGeneral;
-        this.examenClinicoOdontoestomtologico = examenClinicoOdontoestomtologico;
-        this.diagnostico = diagnostico;
-        this.recomendaciones = recomendaciones;
-        this.pronostico = pronostico;
-        this.altaPaciente = altaPaciente;
+        this.persona = persona;
         this.motivoConsulta = motivoConsulta;
+        this.enfermedadActual = enfermedad_actual;
+        this.antecedentesFamiliares = antecedentes;
+        this.examenIntraoral = examen_intraoral;
         this.examen_radiografico = examen_radiografico;
+        this.diagnostico = diagnistico;
         this.fechainscripcion = fechainscripcion;
         this.fechaultimaatencion = fechaultimaatencion;
     }
-
+    
     @JoinColumn(insertable = true, updatable = true, name = "iddoctor", nullable = true)
     @ManyToOne
     private Doctor doctor;

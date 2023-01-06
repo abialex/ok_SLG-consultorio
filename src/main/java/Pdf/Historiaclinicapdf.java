@@ -5,11 +5,8 @@
 package Pdf;
 
 import Entidades.Historia_clinica;
-import Entidades.Paciente;
 import Entidades.Persona_Enfermedad;
-import Entidades.Paciente_Pregunta;
 import Entidades.Persona;
-import Entidades.Pregunta;
 import Entidades.Detalle_Presupuesto;
 import Entidades.ExamenAuxiliar;
 import Entidades.PlanTratamiento;
@@ -248,13 +245,13 @@ public class Historiaclinicapdf {
         TableMenorDeEdadParrafo1.addCell(cellTableMenorDeEdadParrafo1);
 
         Table TableMenorDeEdadParrafo2 = new Table(new float[]{volumen * 0.95f, volumen * 1.25f, volumen * 0.3f, volumen * 1f, volumen * 0.43f, volumen * 1.08f});
-        TableMenorDeEdadParrafo2.addCell(getCell("Nombre del tutor:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
+        /*TableMenorDeEdadParrafo2.addCell(getCell("Nombre del tutor:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TableMenorDeEdadParrafo2.addCell(getCell(opersona.getTutorNombre(), styleTextCenter, styleCell, subrayado));
         TableMenorDeEdadParrafo2.addCell(getCell("DNI:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TableMenorDeEdadParrafo2.addCell(getCell(opersona.getTutorDni(), styleTextCenter, styleCell, subrayado));
         TableMenorDeEdadParrafo2.addCell(getCell("Telefono:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TableMenorDeEdadParrafo2.addCell(getCell(opersona.getTutorTelefono(), styleTextCenter, styleCell, subrayado));
-
+        */
         Table TableMenorDeEdad = new Table(new float[]{volumen * 5});
         TableMenorDeEdad.addCell(new Cell().add(TableMenorDeEdadParrafo1).addStyle(styleCell));
         TableMenorDeEdad.addCell(new Cell().add(TableMenorDeEdadParrafo2).addStyle(styleCell));
@@ -368,14 +365,15 @@ public class Historiaclinicapdf {
         Paragraph parrafoSubTitulo4 = new Paragraph("IV.  EXPLORACION FÍSICA").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
 
         Table TableExploracionFisicaParrafo1 = new Table(new float[]{volumen * 0.68f, volumen * 1.72f, volumen * 1.06f, volumen * 1.54f});
-        TableExploracionFisicaParrafo1.addCell(getCell("Signos vitales:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
+        /*TableExploracionFisicaParrafo1.addCell(getCell("Signos vitales:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TableExploracionFisicaParrafo1.addCell(getCell(oHistoriaclinica.getSignosVitales(), styleTextCenter, styleCell, subrayado));
         TableExploracionFisicaParrafo1.addCell(getCell("Saturación de oxígeno:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TableExploracionFisicaParrafo1.addCell(getCell(oHistoriaclinica.getSaturacionOxigeno(), styleTextCenter, styleCell, subrayado));
+        */
         //0
         Table TableExploracionFisicaParrafo2 = new Table(new float[]{volumen * 0.25f, volumen * 1f, volumen * 0.25f,
             volumen * 1f, volumen * 0.65f, volumen * 0.6f, volumen * 0.25f, volumen * 1f});
-        TableExploracionFisicaParrafo2.addCell(getCell("P.A:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
+        /*TableExploracionFisicaParrafo2.addCell(getCell("P.A:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TableExploracionFisicaParrafo2.addCell(getCell(oHistoriaclinica.getPA(), styleTextCenter, styleCell, subrayado));
         TableExploracionFisicaParrafo2.addCell(getCell("F.C:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TableExploracionFisicaParrafo2.addCell(getCell(oHistoriaclinica.getFC(), styleTextCenter, styleCell, subrayado));
@@ -384,11 +382,11 @@ public class Historiaclinicapdf {
         TableExploracionFisicaParrafo2.addCell(getCell("F.R:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TableExploracionFisicaParrafo2.addCell(getCell(oHistoriaclinica.getFR(), styleTextCenter, styleCell, subrayado));
         Table TableExploracionFisicaParrafo3 = getTableField(oHistoriaclinica.getExamenClinicoGeneral(), "Examen clínico general:", 1.09f, 3.9f, volumen, color_slg, styleCell, styleTextLeft, palabraEnBlanco);
-
+        */
         Table TableExploracionFisica = new Table(new float[]{volumen * 5});
         TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo1).addStyle(styleCell));
         TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo2).addStyle(styleCell));
-        TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo3).addStyle(styleCell));
+        //TableExploracionFisica.addCell(new Cell().add(TableExploracionFisicaParrafo3).addStyle(styleCell));
         // TableExploracionFisica.addCell(new Cell().add(TableRaya).addStyle(styleCell));
 
         //Fin EXPLORACIÓN FÍSICA
@@ -401,22 +399,22 @@ public class Historiaclinicapdf {
         //Fin DIAGNOSTICO
         //PLAN DE TRATAMIENTO - RECOMENDACIONES
         Paragraph parrafoSubTitulo6 = new Paragraph("VI. PLAN DE TRATAMIENTO - RECOMENDACIONES").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
-        Table TableTramientoRecomendaciones = getTable(oHistoriaclinica.getRecomendaciones(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
+        //Table TableTramientoRecomendaciones = getTable(oHistoriaclinica.getRecomendaciones(), volumen, palabraEnBlanco, styleCell, styleTextLeft);
         //Fin PLAN DE TRATAMIENTO - RECOMENDACIONES
 
         //PRONOSTICO
         Table TablePronostico = new Table(new float[]{volumen * 0.9f, volumen * 4.1f});
-        TablePronostico.addCell(getCell("VII. PRONÓSTICO:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
+       /* TablePronostico.addCell(getCell("VII. PRONÓSTICO:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         TablePronostico.addCell(getCell(oHistoriaclinica.getAltaPaciente(), styleTextCenter, styleCell, subrayado));
         TablePronostico.setMarginTop(5);
         TablePronostico.setMarginBottom(5);
-
+        */
         //fin PRONOSTICO
         //ALTA PACIENTE
         Table TableAlta = new Table(new float[]{volumen * 1.01f, volumen * 3.99f});
         //Fin ALTA PACIENTE
         TableAlta.addCell(getCell("VIII. ALTA PACIENTE:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        TableAlta.addCell(getCell(oHistoriaclinica.getAltaPaciente(), styleTextCenter, styleCell, subrayado));
+        //TableAlta.addCell(getCell(oHistoriaclinica.getAltaPaciente(), styleTextCenter, styleCell, subrayado));
 
         /*----Fin Contenido del documento  página 1------*/
  /*--------Contenido del documento página 2--------*/
