@@ -79,13 +79,13 @@ public class Historiaclinicapdf {
             olistDetallePresupuesto = App.jpa.createQuery("select p from Detalle_Presupuesto p where idpresupuesto= " + olistPresupuesto.get(0).getIdpresupuesto() + " order by iddetalle_presupuesto ASC").getResultList();
         }
 
-        Period period = Period.between(opersona.getFechaNacimiento(), LocalDate.now());
+        Period period = Period.between(opersona.getFecha_cumple(), LocalDate.now());
         long edad = period.getYears();
 
         int volumen = 105;
         PdfWriter writer = null;
         try {
-            writer = new PdfWriter("Pdf\\historia_clinica_" + opersona.getNombres_apellidos() + "_" + opersona.getDni() + ".pdf");
+            writer = new PdfWriter("Pdf\\historia_clinica_" + opersona.getNombres() + "_" + opersona.getDni() + ".pdf");
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(new Label(), "agregue la carpeta Pdf");
         }
@@ -186,7 +186,7 @@ public class Historiaclinicapdf {
 
         Table table1Parrafo1 = new Table(new float[]{volumen * 0.95f, volumen * 2.55f, volumen * 0.3f, volumen * 0.6f, volumen * 0.3f, volumen * 0.3f});
         table1Parrafo1.addCell(getCell("Nombres y Apellidos:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        table1Parrafo1.addCell(getCell(opersona.getNombres_apellidos() + " " + opersona.getAp_paterno() + " " + opersona.getAp_materno(), styleTextCenter, styleCell, subrayado));
+        table1Parrafo1.addCell(getCell(opersona.getNombres() + " " + opersona.getAp_paterno() + " " + opersona.getAp_materno(), styleTextCenter, styleCell, subrayado));
         table1Parrafo1.addCell(getCell("DNI:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
         table1Parrafo1.addCell(getCell(opersona.getDni(), styleTextCenter, styleCell, subrayado));
         table1Parrafo1.addCell(getCell("Edad:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
@@ -214,7 +214,7 @@ public class Historiaclinicapdf {
 
         Table table1Parrafo6 = new Table(new float[]{volumen * 0.5f, volumen * 4.5f});
         table1Parrafo6.addCell(getCell("Operador:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        table1Parrafo6.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getNombres_apellidos(), styleTextCenter, styleCell, subrayado));
+        table1Parrafo6.addCell(getCell(oHistoriaclinica.getDoctor().getPersona().getNombres(), styleTextCenter, styleCell, subrayado));
 
         Table tableInformacion = new Table(new float[]{volumen * 5});
         tableInformacion.addCell(new Cell().add(table1Parrafo1).addStyle(styleCell));

@@ -9,6 +9,7 @@ import Entidades.Persona;
 import Entidades.Presupuesto;
 import Pdf.Historiaclinicapdf;
 import Util.FileImagUtil;
+import Util.HttpMethods;
 import com.jfoenix.controls.JFXTextField;
 import controllerDoctor.DoctorVerController;
 import emergente.AlertConfirmarController;
@@ -63,22 +64,22 @@ public class VerPacienteController implements Initializable {
     private JFXTextField jtfbuscar, jtf_buscar_hcl;
 
     @FXML
-    private TableView<Persona> tablePersona;
+    private TableView<Historia_clinica> tablePersona;
 
     @FXML
-    private TableColumn<Persona, String> tableDni, tableTelefono, tableDomicilio, tableOcupacion;
+    private TableColumn<Persona, Persona> tableDni, tableTelefono, tableDomicilio, tableOcupacion;
 
     @FXML
-    private TableColumn<Persona, Integer> tableOpcion;
+    private TableColumn<Persona, Persona> tableOpcion, tableNombre;
 
     @FXML
-    private TableColumn<Persona, Persona> columnID, tableNombre;
+    private TableColumn<Persona, Integer> columnID;
 
     @FXML
-    private TableColumn<Persona, LocalDate> tableAdulto;
+    private TableColumn<Persona, Persona> tableAdulto;
 
     RegistrarPacienteController oRegistrarPacienteController;
-    ObservableList<Persona> listPersona = FXCollections.observableArrayList();
+    ObservableList<Historia_clinica> list_historia_clinica = FXCollections.observableArrayList();
     private double x = 0;
     private double y = 0;
     Stage stagePrincipal;
@@ -87,13 +88,14 @@ public class VerPacienteController implements Initializable {
     Persona oPersonaEliminar;
     int indexEliminar;
     Alert alert = new Alert(Alert.AlertType.WARNING);
+    HttpMethods http = new HttpMethods();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         updateListPersona();
         initTableView();
         initRestricciones();
-        tablePersona.setItems(listPersona);
+        tablePersona.setItems(list_historia_clinica);
         // TODO
     }
     
@@ -109,23 +111,25 @@ public class VerPacienteController implements Initializable {
 
     @FXML
     void updateListPersona() {
-        List<Persona> olistPerson = App.jpa.createQuery("select p from Persona p where (dni like " + "'" + jtfbuscar.getText() + "%'"
-                + " or " + "nombres_apellidos like " + "'%" + jtfbuscar.getText() + "%') and flag = false and ocupacion <> 'DOCTOR' order by idpersona DESC").getResultList();
-        listPersona.clear();
-        for (Persona ocarta : olistPerson) {
-            listPersona.add(ocarta);
+        String filtro=jtfbuscar.getText();
+        filtro=filtro.length()==0? "_": filtro;
+        List<Historia_clinica> list_hcl_response= http.getList(Historia_clinica.class, "historia_clinica/HistoriaClinicaList/"+filtro);
+        list_historia_clinica.clear();
+        for (Historia_clinica ohistoria : list_hcl_response) {
+            list_historia_clinica.add(ohistoria);
         }
     }
 
     @FXML
     void buscar_hcl() {
         if (!jtf_buscar_hcl.getText().isEmpty()) {
+            
+            Historia_clinica hcl= http.ConsultObject(Historia_clinica.class, "historia_clinica/GetHistoriaClinica", jtf_buscar_hcl.getText());
             List<Historia_clinica> olistPerson = App.jpa.createQuery("select p from Historia_clinica p where (idhistoria_clinica = " + "" + jtf_buscar_hcl.getText() + ""
                     + ") order by idhistoria_clinica DESC").getResultList();
-            listPersona.clear();
-
-            for (Historia_clinica ohcl : olistPerson) {
-                listPersona.add(ohcl.getPersona());
+            list_historia_clinica.clear();
+            if(hcl != null){
+                list_historia_clinica.add(hcl);
             }
         }
     }
@@ -148,14 +152,14 @@ public class VerPacienteController implements Initializable {
     }
 
     void selectAgregado() {
-        if (!listPersona.isEmpty()) {
-            tablePersona.getSelectionModel().select(listPersona.get(0));
+        if (!list_historia_clinica.isEmpty()) {
+            tablePersona.getSelectionModel().select(list_historia_clinica.get(0));
         }
     }
 
-    void selectModificado(Persona opersona) {
-        if (!listPersona.isEmpty()) {
-            for (Persona persona : listPersona) {
+    void selectModificado(Historia_clinica opersona) {
+        if (!list_historia_clinica.isEmpty()) {
+            for (Historia_clinica persona : list_historia_clinica) {
                 if (opersona == persona) {
                     tablePersona.getSelectionModel().select(persona);
                     break;
@@ -170,20 +174,20 @@ public class VerPacienteController implements Initializable {
             App.jpa.getTransaction().begin();
             App.jpa.persist(oPersonaEliminar);
             App.jpa.getTransaction().commit();
-            listPersona.remove(indexEliminar);
+            list_historia_clinica.remove(indexEliminar);
             updateListPersona();
         }
     }
 
     void initTableView() {
-        columnID.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
-        tableDni.setCellValueFactory(new PropertyValueFactory<Persona, String>("dni"));
+        columnID.setCellValueFactory(new PropertyValueFactory<Persona, Integer>("idhistoria_clinica"));
+        tableDni.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
         tableNombre.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
-        tableTelefono.setCellValueFactory(new PropertyValueFactory<Persona, String>("telefono"));
-        tableDomicilio.setCellValueFactory(new PropertyValueFactory<Persona, String>("domicilio"));
-        tableOcupacion.setCellValueFactory(new PropertyValueFactory<Persona, String>("ocupacion"));
-        tableAdulto.setCellValueFactory(new PropertyValueFactory<Persona, LocalDate>("fechaNacimiento"));
-        tableOpcion.setCellValueFactory(new PropertyValueFactory<Persona, Integer>("idpersona"));
+        tableTelefono.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
+        tableDomicilio.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
+        tableOcupacion.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
+        tableAdulto.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
+        tableOpcion.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
 
         tableNombre.setCellFactory(column -> {
             TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
@@ -194,7 +198,7 @@ public class VerPacienteController implements Initializable {
                         setGraphic(null);
                         setText("");
                     } else {                      
-                        setText(item.getNombres_apellidos() + " " + item.getAp_paterno() + " " + item.getAp_materno());
+                        setText(item.getNombres() + " " + item.getAp_paterno() + " " + item.getAp_materno());
                     }
                 }
             };
@@ -203,9 +207,9 @@ public class VerPacienteController implements Initializable {
         });
 
         columnID.setCellFactory(column -> {
-            TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
+            TableCell<Persona, Integer> cell = new TableCell<Persona, Integer>() {
                 @Override
-                protected void updateItem(Persona item, boolean empty) {
+                protected void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);
@@ -213,7 +217,7 @@ public class VerPacienteController implements Initializable {
                     } else {
 
 
-                        setText(item.getHistoriaClinica().getIdhistoria_clinica() + "");
+                        setText(item+"");
                         setStyle("-fx-alignment: center;");
                     }
                 }
@@ -223,15 +227,15 @@ public class VerPacienteController implements Initializable {
         });
 
         tableAdulto.setCellFactory(column -> {
-            TableCell<Persona, LocalDate> cell = new TableCell<Persona, LocalDate>() {
+            TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
                 @Override
-                protected void updateItem(LocalDate item, boolean empty) {
+                protected void updateItem(Persona item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);
                         setText("");
                     } else {
-                        Period period = Period.between(item, LocalDate.now());
+                        Period period = Period.between(item.getFecha_cumple(), LocalDate.now());
                         long edad = period.getYears();
                         Label label = new Label();
                         String color = "";
@@ -252,12 +256,12 @@ public class VerPacienteController implements Initializable {
             return cell;
         });
 
-        Callback<TableColumn<Persona, Integer>, TableCell<Persona, Integer>> cellFoctory = (TableColumn<Persona, Integer> param) -> {
+        Callback<TableColumn<Persona, Persona>, TableCell<Persona, Persona>> cellFoctory = (TableColumn<Persona, Persona> param) -> {
             // make cell containing buttons
-            final TableCell<Persona, Integer> cell = new TableCell<Persona, Integer>() {
+            final TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
 
                 @Override
-                public void updateItem(Integer item, boolean empty) {
+                public void updateItem(Persona item, boolean empty) {
                     super.updateItem(item, empty);
                     //that cell created only on non-empty rows                    
                     if (empty) {
@@ -335,11 +339,11 @@ public class VerPacienteController implements Initializable {
 
                 void mostrarModificar(MouseEvent event) {
                     ImageView buton = (ImageView) event.getSource();
-                    for (Persona opersona : listPersona) {
-                        if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
+                    for (Historia_clinica opersona : list_historia_clinica) {
+                        if (opersona.getPersona().getIdpersona() == (Integer) buton.getUserData()) {
                             ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
                             oModificarPacienteController.setController(odc);
-                            oModificarPacienteController.setPersona(opersona);
+                            //oModificarPacienteController.setPersona(opersona);
                             lockedPantalla();
                             break;
                         }
@@ -348,9 +352,10 @@ public class VerPacienteController implements Initializable {
 
                 void mostrarEliminar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    for (int i = 0; i < listPersona.size(); i++) {
-                        if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
-                            oPersonaEliminar = listPersona.get(i);
+                    /*
+                    for (int i = 0; i < list_historia_clinica.size(); i++) {
+                        if (list_historia_clinica.get(i).getIdpersona() == (Integer) imag.getUserData()) {
+                            oPersonaEliminar = list_historia_clinica.get(i);
                             indexEliminar = i;
                             oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
                             oAlertConfimarController.setController(odc);
@@ -359,14 +364,16 @@ public class VerPacienteController implements Initializable {
                             break;
                         }
                     }
+                    */
                 }
 
                 void mostrarImprimir(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    for (int i = 0; i < listPersona.size(); i++) {
-                        if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
+                    /*
+                    for (int i = 0; i < list_historia_clinica.size(); i++) {
+                        if (list_historia_clinica.get(i).getIdpersona() == (Integer) imag.getUserData()) {
                             try {
-                                Persona opersona = listPersona.get(i);
+                                Persona opersona = list_historia_clinica.get(i);
 
                                 Historiaclinicapdf.ImprimirHistoriaClinica(opersona);
                                 File file = new File("Pdf\\historia_clinica_" + opersona.getNombres_apellidos() + "_" + opersona.getDni() + ".pdf");
@@ -378,11 +385,12 @@ public class VerPacienteController implements Initializable {
                             }
                         }
                     }
+                    */
                 }
 
                 void mostrarCaja(MouseEvent event) {
-                    ImageView buton = (ImageView) event.getSource();
-                    for (Persona opersona : listPersona) {
+                    /* ImageView buton = (ImageView) event.getSource();
+                    for (Persona opersona : list_historia_clinica) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
                             Presupuesto opresupuesto = getPresupuesto(opersona);
                             if (opresupuesto.isActivo() || opresupuesto.getIdpresupuesto() == 0) {
@@ -400,12 +408,13 @@ public class VerPacienteController implements Initializable {
                             }
                             break;
                         }
-                    }
+                    } */
                 }
 
                 void mostrarPresupuesto(MouseEvent event) {
                     ImageView buton = (ImageView) event.getSource();
-                    for (Persona opersona : listPersona) {
+                    /*
+                    for (Persona opersona : list_historia_clinica) {
                         if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
                             PresupuestoVerController oPresupuestoVerController = (PresupuestoVerController) mostrarVentana(PresupuestoVerController.class, "PresupuestoVer");
                             oPresupuestoVerController.setPersona(opersona);
@@ -414,14 +423,15 @@ public class VerPacienteController implements Initializable {
                             break;
                         }
                     }
+                    */
                 }
 
                 void mostrarCarpeta(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    for (int i = 0; i < listPersona.size(); i++) {
-                        if (listPersona.get(i).getIdpersona() == (Integer) imag.getUserData()) {
+                    /* for (int i = 0; i < list_historia_clinica.size(); i++) {
+                        if (list_historia_clinica.get(i).getIdpersona() == (Integer) imag.getUserData()) {
 
-                            Persona opersona = listPersona.get(i);
+                            Persona opersona = list_historia_clinica.get(i);
                             String url = (new File(".").getAbsolutePath()) + "/Archivos paciente/" + opersona.getNombres_apellidos();
                             FileImagUtil oFileImagUtil = new FileImagUtil(url, "Archivos de " + opersona.getNombres_apellidos());
                             try {
@@ -432,7 +442,7 @@ public class VerPacienteController implements Initializable {
                             }
                             break;
                         }
-                    }
+                    } */
                 }
 
                 private void imagEliminarMoved(MouseEvent event) {
@@ -490,9 +500,9 @@ public class VerPacienteController implements Initializable {
         tableOpcion.setCellFactory(cellFoctory);
 
         tableDni.setCellFactory(column -> {
-            TableCell<Persona, String> cell = new TableCell<Persona, String>() {
+            TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
                 @Override
-                protected void updateItem(String item, boolean empty) {
+                protected void updateItem(Persona item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);
@@ -500,7 +510,7 @@ public class VerPacienteController implements Initializable {
                     } else {
                         Label label = new Label();
 
-                        label.setText(item);
+                        label.setText(item.getDni());
                         //fin
                         label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999;");
                         setGraphic(label);
@@ -508,14 +518,13 @@ public class VerPacienteController implements Initializable {
                     }
                 }
             };
-
             return cell;
         });
 
         tableOcupacion.setCellFactory(column -> {
-            TableCell<Persona, String> cell = new TableCell<Persona, String>() {
+            TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
                 @Override
-                protected void updateItem(String item, boolean empty) {
+                protected void updateItem(Persona item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);
@@ -523,7 +532,7 @@ public class VerPacienteController implements Initializable {
                     } else {
                         Label label = new Label();
 
-                        label.setText(item);
+                        label.setText(item.getOcupacion());
                         //fin
                         label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999;");
                         setGraphic(label);
@@ -531,7 +540,50 @@ public class VerPacienteController implements Initializable {
                     }
                 }
             };
+            return cell;
+        });
+        
+        tableTelefono.setCellFactory(column -> {
+            TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
+                @Override
+                protected void updateItem(Persona item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
 
+                        label.setText(item.getTelefono());
+                        //fin
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999;");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+        
+        tableDomicilio.setCellFactory(column -> {
+            TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
+                @Override
+                protected void updateItem(Persona item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+
+                        label.setText(item.getDomicilio());
+                        //fin
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999;");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
             return cell;
         });
     }

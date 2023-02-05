@@ -40,7 +40,7 @@ public class HttpMethods {
     Gson json = new Gson();
     HttpClient httpclient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
     String token = "token=";//;
-    String url="https://dniruc.apisperu.com/api/v1/dni/75195262?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InlhbGxlXzEzQG91dGxvb2suY29tIn0.cCYpO0FV8HcMr58MDvUhPk82YyB67Bv754byZrgvzkc";
+    String url="";
     final String DATA = "data";
     final String ADDRESS = "address";
     final String NOMBREDISPOSITIVO = "nombreDispositivo";
@@ -52,7 +52,7 @@ public class HttpMethods {
         X_CSRFToken = getCSRFToken();
         Cookie = getCokkie();
         token = token+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InlhbGxlXzEzQG91dGxvb2suY29tIn0.cCYpO0FV8HcMr58MDvUhPk82YyB67Bv754byZrgvzkc";
-        
+        url = oUtilClass.leerTXT("server.txt");
     }
     
     public void getUsuario(){
@@ -191,6 +191,24 @@ public class HttpMethods {
         JsonObject Objson = new JsonObject();
         Objson.addProperty("id", var);
         return procesoHttpPOST(metodo, Objson.toString());
+    }
+    
+    public <T> T ConsultObject(Class<T> generico, String metodo,String dato) {
+        HttpResponse<String> response= procesoHttpGET(metodo+"/"+dato);
+        T obj=null;
+        switch (response.statusCode()) {
+            case 200:
+                obj=json.fromJson(response.body(), generico);
+                break;
+            case 204:
+                System.out.println(response.body());
+                obj=null;
+                break;
+            default:
+                obj=null;
+                break;
+        }           
+        return obj;
     }
 
     public void getAddress() {

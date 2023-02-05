@@ -27,7 +27,7 @@ public class Persona {
     private int idpersona;
 
     @Column(name = "nombres_apellidos", nullable = false)
-    private String nombres_apellidos;
+    private String nombres;
 
     @Column(name = "ap_paterno", nullable = true)
     private String ap_paterno;
@@ -45,7 +45,7 @@ public class Persona {
     private String dni;
 
     @Column(name = "fechaNacimiento", nullable = false)
-    private LocalDate fechaNacimiento;
+    private LocalDate fecha_cumple;
 
     @Column(name = "lugar_de_procedencia", length = 100, nullable = false)
     private String lugar_de_procedencia;
@@ -72,13 +72,13 @@ public class Persona {
     }
 
     public Persona(String nombres_apellidos, String ap_paterno, String ap_materno, String sexo, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, float presupuesto) {
-        this.nombres_apellidos = nombres_apellidos;
+        this.nombres = nombres_apellidos;
         this.ap_paterno = ap_paterno;
         this.ap_materno = ap_materno;
         this.sexo = sexo;
         this.domicilio = domicilio;
         this.dni = dni;
-        this.fechaNacimiento = fecha_nacimiento;
+        this.fecha_cumple = fecha_nacimiento;
         this.lugar_de_procedencia = lugar_de_procedencia;
         this.ocupacion = ocupacion;
         this.telefono = telefono;
@@ -97,12 +97,12 @@ public class Persona {
         this.idpersona = idpersona;
     }
 
-    public String getNombres_apellidos() {
-        return nombres_apellidos;
+    public String getNombres() {
+        return nombres;
     }
 
-    public void setNombres_apellidos(String nombres_apellidos) {
-        this.nombres_apellidos = nombres_apellidos;
+    public void setNombres(String nombres_apellidos) {
+        this.nombres = nombres_apellidos;
     }
 
     public String getSexo() {
@@ -129,12 +129,12 @@ public class Persona {
         this.dni = dni;
     }
 
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
+    public LocalDate getFecha_cumple() {
+        return fecha_cumple;
     }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
+    public void setFecha_cumple(LocalDate fechaNacimiento) {
+        this.fecha_cumple = fechaNacimiento;
     }
 
     public String getLugar_de_procedencia() {
@@ -187,7 +187,7 @@ public class Persona {
 
     @Override
     public String toString() {
-        return this.nombres_apellidos;
+        return this.nombres;
     }
     /*
     public Paciente getPaciente() {

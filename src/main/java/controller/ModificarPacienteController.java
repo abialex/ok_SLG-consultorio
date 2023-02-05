@@ -504,15 +504,15 @@ public class ModificarPacienteController implements Initializable {
             lista_enfermedades_del_persona_volatil.add(persona_Enfermedad.getEnfermedad());
         }
          cargarEnfermedad();
-        jtfNombresyApellidos.setText(opersona.getNombres_apellidos());
+        jtfNombresyApellidos.setText(opersona.getNombres());
         jtf_ap_paterno.setText(opersona.getAp_paterno());
         jtf_ap_materno.setText(opersona.getAp_materno());
         jtfDni.setText(opersona.getDni());
         jtfTelefono.setText(opersona.getTelefono());
         jcbsexo.getSelectionModel().select(opersona.getSexo());
-        jtfDia.setText(opersona.getFechaNacimiento().getDayOfMonth() + "");
-        jtfMes.setText(opersona.getFechaNacimiento().getMonthValue() + "");
-        jtfanio.setText(opersona.getFechaNacimiento().getYear() + "");
+        jtfDia.setText(opersona.getFecha_cumple().getDayOfMonth() + "");
+        jtfMes.setText(opersona.getFecha_cumple().getMonthValue() + "");
+        jtfanio.setText(opersona.getFecha_cumple().getYear() + "");
         jcbocupacion.getSelectionModel().select(opersona.getOcupacion());
         jtflugarprocedencia.setText(opersona.getLugar_de_procedencia());
         jtfDomicilio.setText(opersona.getDomicilio());
@@ -544,13 +544,13 @@ public class ModificarPacienteController implements Initializable {
 
     @FXML
     void actualizar() {
-        oPersona.setNombres_apellidos(jtfNombresyApellidos.getText().toUpperCase());
+        oPersona.setNombres(jtfNombresyApellidos.getText().toUpperCase());
         oPersona.setAp_paterno(jtf_ap_paterno.getText().toUpperCase());
         oPersona.setAp_materno(jtf_ap_materno.getText().toUpperCase());
         oPersona.setDni(jtfDni.getText());
         oPersona.setTelefono(jtfTelefono.getText());
         oPersona.setSexo(jcbsexo.getSelectionModel().getSelectedItem());
-        oPersona.setFechaNacimiento(LocalDate.of(Integer.parseInt(jtfanio.getText()), Integer.parseInt(jtfMes.getText()), Integer.parseInt(jtfDia.getText())));
+        oPersona.setFecha_cumple(LocalDate.of(Integer.parseInt(jtfanio.getText()), Integer.parseInt(jtfMes.getText()), Integer.parseInt(jtfDia.getText())));
         oPersona.setOcupacion(jcbocupacion.getSelectionModel().getSelectedItem());
         oPersona.setLugar_de_procedencia(jtflugarprocedencia.getText());
         oPersona.setDomicilio(jtfDomicilio.getText());
@@ -613,7 +613,7 @@ public class ModificarPacienteController implements Initializable {
         App.jpa.getTransaction().commit();
         cerrar();
         oVerPacienteController.updateListPersona();
-        oVerPacienteController.selectModificado(oPersona);
+        //oVerPacienteController.selectModificado(oPersona);
     }
 
     /*--Otras ventanas---*/

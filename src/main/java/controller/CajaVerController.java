@@ -160,7 +160,7 @@ public class CajaVerController implements Initializable {
         oPresupuesto = opresupuesto;
         lblMontototal.setText(oPresupuesto.getMonto_total() + "");
         this.oPersona = opersona;
-        lblnombre.setText(opersona.getNombres_apellidos());
+        lblnombre.setText(opersona.getNombres());
         MontoTotal = opresupuesto.getMonto_total();
         tableTratamiento.setItems(listTratamiento);
         updateListaTratamiento();

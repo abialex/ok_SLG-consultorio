@@ -175,7 +175,7 @@ public class DoctorVerController implements Initializable {
                         JFXTextField field = new JFXTextField();
                         field.setUserData(item);
 
-                        field.setText(item.getNombres_apellidos());
+                        field.setText(item.getNombres());
                         field.setEditable(false);
                         field.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> changueActivo(event));
                         field.addEventHandler(KeyEvent.KEY_RELEASED, event -> modificar(event));
@@ -190,7 +190,7 @@ public class DoctorVerController implements Initializable {
                             }
                         });
                         setGraphic(null);
-                        setText(item.getNombres_apellidos()+" "+item.getAp_paterno()+" "+item.getAp_materno());
+                        setText(item.getNombres()+" "+item.getAp_paterno()+" "+item.getAp_materno());
                     }
                 }
 
@@ -207,7 +207,7 @@ public class DoctorVerController implements Initializable {
                     Persona oper = (Persona) check.getUserData();
                     if (event.getCode() == (KeyCode.ENTER)) {
                         if (check.getText().length() != 0) {
-                            oper.setNombres_apellidos(check.getText());
+                            oper.setNombres(check.getText());
                             App.jpa.getTransaction().begin();
                             App.jpa.persist(oper);
                             App.jpa.getTransaction().commit();
@@ -269,7 +269,7 @@ public class DoctorVerController implements Initializable {
                             indexEliminar = i;
                             oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
                             oAlertConfimarController.setController(odc);
-                            oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar al \n paciente? \n \n" + " " + oDoctorEliminar.getPersona().getNombres_apellidos());
+                            oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar al \n paciente? \n \n" + " " + oDoctorEliminar.getPersona().getNombres());
                             lockedPantalla();
                             break;
                         }

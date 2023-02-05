@@ -132,7 +132,7 @@ public class PresupuestoVerController implements Initializable {
         //Initialize
         getPresupuesto(opersona);
         this.oPersona = opersona;
-        lblnombre.setText(opersona.getNombres_apellidos());
+        lblnombre.setText(opersona.getNombres());
         updateListaPresupuesto();
         initTable();
         tableTratamiento.setItems(listPresupuesto);

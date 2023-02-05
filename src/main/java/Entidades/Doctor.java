@@ -79,7 +79,7 @@ public class Doctor {
     
     @Override
     public String toString() {
-        return this.persona.getNombres_apellidos();
+        return this.persona.getNombres();
     }
     
 }
