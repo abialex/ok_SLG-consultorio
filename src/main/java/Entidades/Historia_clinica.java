@@ -5,7 +5,6 @@
 package Entidades;
 
 import java.time.LocalDate;
-import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
 
 /**
  *
@@ -69,7 +67,7 @@ public class Historia_clinica {
     private String altaPaciente;
 
     @Column(name = "motivoConsulta", length = 1000, nullable = true)
-    private String motivoConsulta;
+    private String motivo_consulta;
 
     @Column(name = "examen_radiografico", length = 1000, nullable = true)
     private String examen_radiografico;
@@ -81,22 +79,22 @@ public class Historia_clinica {
     private LocalDate fechaultimaatencion;
 
     @Column(name = "examenIntraoral", nullable = true)
-    private String examenIntraoral;
+    private String examen_intraoral;
 
     @Column(name = "enfermedadActual", nullable = true)
     private String enfermedadActual;
 
     @Column(name = "antecedentesFamiliares", nullable = true)
-    private String antecedentesFamiliares;
+    private String antecedentes;
 
-    public Historia_clinica(Doctor doctor,Persona persona, String motivoConsulta,String enfermedad_actual, String antecedentes,String examen_intraoral, String examen_radiografico, String diagnistico,
-            LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
+    public Historia_clinica(Doctor doctor, Persona persona, String motivoConsulta, String enfermedad_actual, String antecedentes, String examen_intraoral, String examen_radiografico, String diagnistico,
+                            LocalDate fechainscripcion, LocalDate fechaultimaatencion) {
         this.doctor = doctor;
         this.persona = persona;
-        this.motivoConsulta = motivoConsulta;
+        this.motivo_consulta = motivoConsulta;
         this.enfermedadActual = enfermedad_actual;
-        this.antecedentesFamiliares = antecedentes;
-        this.examenIntraoral = examen_intraoral;
+        this.antecedentes = antecedentes;
+        this.examen_intraoral = examen_intraoral;
         this.examen_radiografico = examen_radiografico;
         this.diagnostico = diagnistico;
         this.fechainscripcion = fechainscripcion;
@@ -134,12 +132,12 @@ public class Historia_clinica {
         this.fechaultimaatencion = fechaultimaatencion;
     }
 
-    public String getMotivoConsulta() {
-        return motivoConsulta;
+    public String getMotivo_consulta() {
+        return motivo_consulta;
     }
 
-    public void setMotivoConsulta(String motivoConsulta) {
-        this.motivoConsulta = motivoConsulta;
+    public void setMotivo_consulta(String motivoConsulta) {
+        this.motivo_consulta = motivoConsulta;
     }
 
     public String getSignosVitales() {
@@ -262,12 +260,12 @@ public class Historia_clinica {
         this.persona = persona;
     }
 
-    public String getExamenIntraoral() {
-        return examenIntraoral;
+    public String getExamen_intraoral() {
+        return examen_intraoral;
     }
 
-    public void setExamenIntraoral(String examenIntraoral) {
-        this.examenIntraoral = examenIntraoral;
+    public void setExamen_intraoral(String examenIntraoral) {
+        this.examen_intraoral = examenIntraoral;
     }
 
     public String getEnfermedadActual() {
@@ -278,12 +276,16 @@ public class Historia_clinica {
         this.enfermedadActual = enfermedadActual;
     }
 
-    public String getAntecedentesFamiliares() {
-        return antecedentesFamiliares;
+    public String getAntecedentes() {
+        return antecedentes;
     }
 
-    public void setAntecedentesFamiliares(String antecedentesFamiliares) {
-        this.antecedentesFamiliares = antecedentesFamiliares;
+    public void setAntecedentes(String antecedentesFamiliares) {
+        this.antecedentes = antecedentesFamiliares;
     }
-
+    
+    public Historia_clinica getHistoria_clinica(){
+        return this;
+    }
+            
 }

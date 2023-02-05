@@ -70,7 +70,10 @@ public class VerPacienteController implements Initializable {
     private TableColumn<Persona, Persona> tableDni, tableTelefono, tableDomicilio, tableOcupacion;
 
     @FXML
-    private TableColumn<Persona, Persona> tableOpcion, tableNombre;
+    private TableColumn<Persona, Persona> tableNombre;
+
+    @FXML
+    private TableColumn<Historia_clinica, Historia_clinica> tableOpcion;
 
     @FXML
     private TableColumn<Persona, Integer> columnID;
@@ -123,7 +126,7 @@ public class VerPacienteController implements Initializable {
     @FXML
     void buscar_hcl() {
         if (!jtf_buscar_hcl.getText().isEmpty()) {
-            
+
             Historia_clinica hcl= http.ConsultObject(Historia_clinica.class, "historia_clinica/GetHistoriaClinica", jtf_buscar_hcl.getText());
             List<Historia_clinica> olistPerson = App.jpa.createQuery("select p from Historia_clinica p where (idhistoria_clinica = " + "" + jtf_buscar_hcl.getText() + ""
                     + ") order by idhistoria_clinica DESC").getResultList();
@@ -187,7 +190,7 @@ public class VerPacienteController implements Initializable {
         tableDomicilio.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
         tableOcupacion.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
         tableAdulto.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
-        tableOpcion.setCellValueFactory(new PropertyValueFactory<Persona, Persona>("persona"));
+        tableOpcion.setCellValueFactory(new PropertyValueFactory<Historia_clinica, Historia_clinica>("historia_clinica"));
 
         tableNombre.setCellFactory(column -> {
             TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
@@ -256,12 +259,12 @@ public class VerPacienteController implements Initializable {
             return cell;
         });
 
-        Callback<TableColumn<Persona, Persona>, TableCell<Persona, Persona>> cellFoctory = (TableColumn<Persona, Persona> param) -> {
+        Callback<TableColumn<Historia_clinica, Historia_clinica>, TableCell<Historia_clinica, Historia_clinica>> cellFoctory = (TableColumn<Historia_clinica, Historia_clinica> param) -> {
             // make cell containing buttons
-            final TableCell<Persona, Persona> cell = new TableCell<Persona, Persona>() {
+            final TableCell<Historia_clinica, Historia_clinica> cell = new TableCell<Historia_clinica, Historia_clinica>() {
 
                 @Override
-                public void updateItem(Persona item, boolean empty) {
+                public void updateItem(Historia_clinica item, boolean empty) {
                     super.updateItem(item, empty);
                     //that cell created only on non-empty rows                    
                     if (empty) {
@@ -369,23 +372,18 @@ public class VerPacienteController implements Initializable {
 
                 void mostrarImprimir(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    /*
-                    for (int i = 0; i < list_historia_clinica.size(); i++) {
-                        if (list_historia_clinica.get(i).getIdpersona() == (Integer) imag.getUserData()) {
-                            try {
-                                Persona opersona = list_historia_clinica.get(i);
+                    Historia_clinica oHistoria_clinica = (Historia_clinica) imag.getUserData();
+                    System.out.println(oHistoria_clinica);
 
-                                Historiaclinicapdf.ImprimirHistoriaClinica(opersona);
-                                File file = new File("Pdf\\historia_clinica_" + opersona.getNombres_apellidos() + "_" + opersona.getDni() + ".pdf");
-                                Desktop.getDesktop().open(file);
+                    try {
+                        Historiaclinicapdf.ImprimirHistoriaClinica(oHistoria_clinica);
+                        File file = new File("Pdf\\historia_clinica_" + oHistoria_clinica.getPersona().getNombres()+ "_" + oHistoria_clinica.getPersona().getDni() + ".pdf");
+                        Desktop.getDesktop().open(file);
 
-                                break;
-                            } catch (IOException ex) {
-                                Logger.getLogger(VerPacienteController.class.getName()).log(Level.SEVERE, null, ex);
-                            }
-                        }
+                    } catch (IOException ex) {
+                        Logger.getLogger(VerPacienteController.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    */
+
                 }
 
                 void mostrarCaja(MouseEvent event) {

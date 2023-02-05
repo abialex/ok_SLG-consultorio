@@ -51,7 +51,7 @@ public class CajaModificarController implements Initializable {
         this.oTratamiento = get;
         this.resto = resto+oTratamiento.getMonto();
         System.out.println(resto+"s");
-        jtfTratamiento.setText(get.getTratamiento());
+        jtfTratamiento.setText(get.getNombre());
         jtfMonto.setText(get.getMonto() + "");
     }
 
@@ -64,7 +64,7 @@ public class CajaModificarController implements Initializable {
     void modificar() {
         if (isCompleto()) {
             if (resto - Integer.parseInt(jtfMonto.getText()) >= 0) {
-                oTratamiento.setTratamiento(jtfTratamiento.getText());
+                oTratamiento.setNombre(jtfTratamiento.getText());
                 oTratamiento.setMonto(Integer.parseInt(jtfMonto.getText()));
                 App.jpa.getTransaction().begin();
                 App.jpa.persist(oTratamiento);

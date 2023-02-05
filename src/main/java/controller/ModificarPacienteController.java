@@ -4,23 +4,15 @@
  */
 package controller;
 
-import Entidades.Doctor;
-import Entidades.Enfermedad;
-import Entidades.ExamenAuxiliar;
-import Entidades.Historia_clinica;
-import Entidades.Persona_Enfermedad;
-import Entidades.Persona;
-import Entidades.PlanTratamiento;
+import Entidades.*;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
-import java.io.IOException;
+
 import java.net.URL;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -30,11 +22,8 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -45,7 +34,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -56,7 +44,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 /**
@@ -65,6 +52,7 @@ import javafx.stage.WindowEvent;
  * @author UTIC
  */
 public class ModificarPacienteController implements Initializable {
+
 
     //Atributos de la ventana
     @FXML
@@ -255,6 +243,11 @@ public class ModificarPacienteController implements Initializable {
         }
 
     }
+
+     public void addition(){
+        //get addition<
+     }
+
 
     void setStagePrincipall(Stage stage) {
         this.stagePrincipal = stage;
@@ -518,12 +511,12 @@ public class ModificarPacienteController implements Initializable {
         jtfDomicilio.setText(opersona.getDomicilio());
         jcbDoctor.getSelectionModel().select(oHistoria_Clinica.getDoctor().isFlag() ? null : oHistoria_Clinica.getDoctor());
 
-        jtf_motivo_consulta.setText(oHistoria_Clinica.getMotivoConsulta());
+        jtf_motivo_consulta.setText(oHistoria_Clinica.getMotivo_consulta());
 
         jtfenfermedadActual.setText(oHistoria_Clinica.getEnfermedadActual());
-        jtf_examen_intraoral.setText(oHistoria_Clinica.getExamenIntraoral());
+        jtf_examen_intraoral.setText(oHistoria_Clinica.getExamen_intraoral());
         jtf_examen_radiografico.setText(oHistoria_Clinica.getExamen_radiografico());
-        jtfantecedentesPersonales.setText(oHistoria_Clinica.getAntecedentesFamiliares());
+        jtfantecedentesPersonales.setText(oHistoria_Clinica.getAntecedentes());
         jtf_diagnostico.setText(oHistoria_Clinica.getDiagnostico());
 
         //enfermedad actual 
@@ -555,15 +548,15 @@ public class ModificarPacienteController implements Initializable {
         oPersona.setLugar_de_procedencia(jtflugarprocedencia.getText());
         oPersona.setDomicilio(jtfDomicilio.getText());
 
-        oHistoria_Clinica.setMotivoConsulta(jtf_motivo_consulta.getText());
+        oHistoria_Clinica.setMotivo_consulta(jtf_motivo_consulta.getText());
         oHistoria_Clinica.setDoctor(jcbDoctor.getSelectionModel().getSelectedItem());
         oHistoria_Clinica.setExamen_radiografico(jtf_examen_radiografico.getText());
         oHistoria_Clinica.setDiagnostico(jtf_diagnostico.getText());
 
         //Enfermedad actual
         oHistoria_Clinica.setEnfermedadActual(jtfenfermedadActual.getText());
-        oHistoria_Clinica.setExamenIntraoral(jtf_examen_intraoral.getText());
-        oHistoria_Clinica.setAntecedentesFamiliares(jtfantecedentesPersonales.getText());
+        oHistoria_Clinica.setExamen_intraoral(jtf_examen_intraoral.getText());
+        oHistoria_Clinica.setAntecedentes(jtfantecedentesPersonales.getText());
         //Exploración física
         //diagnostico
         //Plan de tratamiento

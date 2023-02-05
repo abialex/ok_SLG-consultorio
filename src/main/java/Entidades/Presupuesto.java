@@ -31,7 +31,7 @@ public class Presupuesto {
     private float  monto_total;
     
     @Column(name = "fechapresupuesto", nullable = true)
-    private LocalDate fechapresupuesto;
+    private LocalDate fecha_realizada;
     
     @Column(name = "activo", nullable = false)
     private boolean activo;
@@ -42,10 +42,10 @@ public class Presupuesto {
     public Presupuesto() {
     }
 
-    public Presupuesto(Historia_clinica historia_clinica, int monto_total,LocalDate fechapresupuesto, boolean activo, boolean flag) {
+    public Presupuesto(Historia_clinica historia_clinica, int monto_total, LocalDate fecha_realizada, boolean activo, boolean flag) {
         this.historia_clinica = historia_clinica;
         this.monto_total = monto_total;
-        this.fechapresupuesto= fechapresupuesto;
+        this.fecha_realizada = fecha_realizada;
         this.activo = activo;
         this.flag = flag;
     }
@@ -94,12 +94,12 @@ public class Presupuesto {
         return this;
     }
 
-    public LocalDate getFechapresupuesto() {
-        return fechapresupuesto;
+    public LocalDate getFecha_realizada() {
+        return fecha_realizada;
     }
 
-    public void setFechapresupuesto(LocalDate fechapresupuesto) {
-        this.fechapresupuesto = fechapresupuesto;
+    public void setFecha_realizada(LocalDate fecha_realizada) {
+        this.fecha_realizada = fecha_realizada;
     }
     
        

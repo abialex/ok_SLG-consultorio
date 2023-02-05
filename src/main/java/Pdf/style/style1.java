@@ -179,10 +179,10 @@ public class style1 implements IEventHandler {
         //canvasEncabezado.add(tabla_encabezado);
         String mensaje="Sin presupuestar";
         if(opresupuesto!=null){
-            String dia=opresupuesto.getFechapresupuesto().getDayOfMonth()<10? "0"+opresupuesto.getFechapresupuesto().getDayOfMonth(): opresupuesto.getFechapresupuesto().getDayOfMonth()+"";
-            String mes=opresupuesto.getFechapresupuesto().getMonthValue()<10? "0"+opresupuesto.getFechapresupuesto().getMonthValue(): opresupuesto.getFechapresupuesto().getMonthValue()+"";
+            String dia=opresupuesto.getFecha_realizada().getDayOfMonth()<10? "0"+opresupuesto.getFecha_realizada().getDayOfMonth(): opresupuesto.getFecha_realizada().getDayOfMonth()+"";
+            String mes=opresupuesto.getFecha_realizada().getMonthValue()<10? "0"+opresupuesto.getFecha_realizada().getMonthValue(): opresupuesto.getFecha_realizada().getMonthValue()+"";
 
-            mensaje="FECHA: "+dia+"/"+mes+"/"+opresupuesto.getFechapresupuesto().getYear();
+            mensaje="FECHA: "+dia+"/"+mes+"/"+opresupuesto.getFecha_realizada().getYear();
         }
         Table tablaNumeracion = this.crearTablaPie(docEvent);
         Rectangle rectanguloPie = this.crearRectanguloPie(docEvent);

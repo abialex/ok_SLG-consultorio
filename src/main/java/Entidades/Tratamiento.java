@@ -26,13 +26,17 @@ public class Tratamiento {
     
     @JoinColumn(insertable = true,updatable = true,name="idpersona",nullable = false)
     @ManyToOne
-    private Persona persona;
+    private Historia_clinica historia_clinica;
+
+    @JoinColumn(insertable = true,updatable = true,name="iddoctor",nullable = false)
+    @ManyToOne
+    private Doctor doctor;
     
     @Column(name = "fechaRealizada", nullable = false)
-    private LocalDate fechaRealizada;
+    private LocalDate fecha_realizada;
     
     @Column(name = "tratamiento", nullable = false)
-    private String tratamiento;
+    private String nombre;
     
     @Column(name = "monto", nullable = false)
     private int monto;
@@ -43,10 +47,10 @@ public class Tratamiento {
     public Tratamiento() {
     }
 
-    public Tratamiento(Persona persona, LocalDate fechaRealizada, String tratamiento, int monto) {
-        this.persona = persona;
-        this.fechaRealizada = fechaRealizada;
-        this.tratamiento = tratamiento;
+    public Tratamiento(Historia_clinica ohistoria_clinica, LocalDate fechaRealizada, String tratamiento, int monto) {
+        this.historia_clinica = ohistoria_clinica;
+        this.fecha_realizada = fechaRealizada;
+        this.nombre = tratamiento;
         this.monto = monto;
     }
 
@@ -60,28 +64,28 @@ public class Tratamiento {
         this.idtratamiento = idtratamiento;
     }
 
-    public Persona getPersona() {
-        return persona;
+    public Historia_clinica getHistoria_clinica() {
+        return historia_clinica;
     }
 
-    public void setPersona(Persona persona) {
-        this.persona = persona;
+    public void setHistoria_clinica(Historia_clinica historia_clinica) {
+        this.historia_clinica = historia_clinica;
     }
 
-    public LocalDate getFechaRealizada() {
-        return fechaRealizada;
+    public LocalDate getFecha_realizada() {
+        return fecha_realizada;
     }
 
-    public void setFechaRealizada(LocalDate fechaRealizada) {
-        this.fechaRealizada = fechaRealizada;
+    public void setFecha_realizada(LocalDate fecha_realizada) {
+        this.fecha_realizada = fecha_realizada;
     }
 
-    public String getTratamiento() {
-        return tratamiento;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setTratamiento(String tratamiento) {
-        this.tratamiento = tratamiento;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public boolean isFlag() {
@@ -99,6 +103,13 @@ public class Tratamiento {
     public void setMonto(int monto) {
         this.monto = monto;
     }
+    public Doctor getDoctor() {
+        return doctor;
+    }
+    public void setDoctor(Doctor doctor) {
+        this.doctor = doctor;
+    }
+
     
     
     
