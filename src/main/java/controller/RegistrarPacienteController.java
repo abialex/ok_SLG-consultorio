@@ -7,60 +7,42 @@ package controller;
 import Entidades.Doctor;
 import Entidades.Enfermedad;
 import Entidades.ExamenAuxiliar;
-import Entidades.Historia_clinica;
 import Entidades.Persona_Enfermedad;
-import Entidades.Persona;
 import Entidades.PersonaReniec;
 import Entidades.PlanTratamiento;
-import Entidades.Tratamiento;
-import Util.FileImagUtil;
-import Pdf.Historiaclinicapdf;
 import Util.HttpMethods;
 import com.google.gson.Gson;
-import com.jfoenix.controls.JFXButton;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDatePicker;
-import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
-import java.awt.Desktop;
-import java.io.File;
+
 import java.io.IOException;
 import java.net.URL;
 import java.net.http.HttpResponse;
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Accordion;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.SingleSelectionModel;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -70,9 +52,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
-import javax.swing.JCheckBox;
 
 /**
  * FXML Controller class
@@ -107,7 +87,7 @@ public class RegistrarPacienteController implements Initializable {
     @FXML
     private JFXTextField jtflugarprocedencia, jtfDomicilio;
     @FXML
-    private JFXTextField jtfMotivoConsulta, jtf_examen_radiografico, jtf_diagnostico;
+    private JFXTextField jtf_motivo_consulta, jtf_examen_radiografico, jtf_diagnostico;
     @FXML
     private JFXComboBox<Doctor> jcbDoctor;
 
@@ -221,7 +201,7 @@ public class RegistrarPacienteController implements Initializable {
     }
 
     void cargarDoctor() {
-        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag = false and activo = true").getResultList();
+        List<Doctor> listDoctorG = http.getList(Doctor.class, "cita/DoctorAll");
         ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
         for (Doctor odoct : listDoctorG) {
             listDoctor.add(odoct);
@@ -231,7 +211,7 @@ public class RegistrarPacienteController implements Initializable {
     List<Enfermedad> lista_de_enfermedades_del_paciente = new ArrayList<>();
 
     void cargarEnfermedad() {
-        List<Enfermedad> listEnfermedad = App.jpa.createQuery("select p from Enfermedad p ").getResultList();
+        List<Enfermedad> listEnfermedad = http.getList(Enfermedad.class,"historia_clinica/EnfermedadList");
         EventHandler evento = (event) -> {
             //Codigo de la función evento
             JFXCheckBox oCheck = ((JFXCheckBox) event.getSource());
@@ -263,66 +243,56 @@ public class RegistrarPacienteController implements Initializable {
     @FXML
     void GuardarPaciente(ActionEvent evt) throws IOException {
         if (isCompleto()) {
-            LocalDate fechaNacimiento = LocalDate.of(
-                    Integer.parseInt(jtfanio.getText().trim()),
-                    Integer.parseInt(jtfMes.getText().trim()),
-                    Integer.parseInt(jtfDia.getText().trim()));
+            JsonObject responseJSON = new JsonObject();
+            JsonObject opersonaJSON = new JsonObject();
+            opersonaJSON.addProperty("dni", jtfDni.getText());
+            opersonaJSON.addProperty("nombres", jtfNombresyApellidos.getText());
+            opersonaJSON.addProperty("ap_paterno", jtf_ap_paterno.getText());
+            opersonaJSON.addProperty("ap_materno", jtf_ap_materno.getText());
+            opersonaJSON.addProperty("telefono", jtfTelefono.getText());
+            opersonaJSON.addProperty("sexo", jcbsexo.getSelectionModel().getSelectedItem());
+            opersonaJSON.addProperty("fecha_cumple_formato", LocalDate.of(Integer.parseInt(jtfanio.getText()), Integer.parseInt(jtfMes.getText()), Integer.parseInt(jtfDia.getText())).toString());
+            opersonaJSON.addProperty("ocupacion", jcbocupacion.getSelectionModel().getSelectedItem());
+            opersonaJSON.addProperty("lugar_de_procedencia", jtflugarprocedencia.getText());
+            opersonaJSON.addProperty("domicilio", jtfDomicilio.getText());
+            responseJSON.add("persona", opersonaJSON);
 
-            Persona opersona = new Persona(
-                    jtfNombresyApellidos.getText().toUpperCase(),
-                    jtf_ap_paterno.getText().toUpperCase(),
-                    jtf_ap_materno.getText().toUpperCase(),
-                    jcbsexo.getSelectionModel().getSelectedItem(),
-                    jtfDomicilio.getText().trim(),
-                    jtfDni.getText().trim(),
-                    fechaNacimiento,
-                    jtflugarprocedencia.getText().trim(),
-                    jcbocupacion.getSelectionModel().getSelectedItem(),
-                    jtfTelefono.getText().trim(),
-                    0
-            );
-            //opaciente.setEmergenciaNombre("");
-            //opaciente.setEmergenciaParentesco("");
-            //opaciente.setEmergenciaTelefono("");
+            JsonObject ohistoria_clinicaJSON = new JsonObject();
+            ohistoria_clinicaJSON.addProperty("doctor_id",  jcbDoctor.getSelectionModel().getSelectedItem().getIddoctor());
+            ohistoria_clinicaJSON.addProperty("motivo_consulta", jtf_motivo_consulta.getText());
+            ohistoria_clinicaJSON.addProperty("enfermedad_actual", jtfenfermedadActual.getText());
+            ohistoria_clinicaJSON.addProperty("examen_intraoral", jtf_examen_intraoral.getText());
+            ohistoria_clinicaJSON.addProperty("examen_radiografico", jtf_examen_radiografico.getText());
+            ohistoria_clinicaJSON.addProperty("antecedentes", jtfantecedentesPersonales.getText());
+            ohistoria_clinicaJSON.addProperty("diagnostico", jtf_diagnostico.getText());
+            responseJSON.add("historia_clinica", ohistoria_clinicaJSON);
 
-            List<Persona_Enfermedad> Lista_enfermedadesPaciente = new ArrayList<>();
-            //List<Paciente_Pregunta> Lista_preguntasPaciente = new ArrayList<>();
-
-            Historia_clinica ohistoria = new Historia_clinica(
-                    jcbDoctor.getSelectionModel().getSelectedItem(),
-                    opersona,
-                    jtfMotivoConsulta.getText(),
-                    jtfenfermedadActual.getText(),
-                    jtfantecedentesPersonales.getText(),
-                    jtf_examen_intraoral.getText(),
-                    jtf_examen_radiografico.getText(),
-                    jtf_diagnostico.getText(),
-                    LocalDate.now(),
-                    LocalDate.now());
-
-            //GuardarPaciente
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(opersona);
-            //agregando los antecedentes(enfermedades) de la paciente
-            for (Enfermedad enfermedad : lista_de_enfermedades_del_paciente) {
-                App.jpa.persist(new Persona_Enfermedad(opersona, enfermedad, ""));
+            JsonArray list_enfermedades_del_persona = new JsonArray();
+            for (Enfermedad oenfermedad :lista_de_enfermedades_del_paciente){
+                JsonObject enfermedadJSON = new JsonObject();
+                enfermedadJSON.addProperty("idenfermedad", oenfermedad.getIdenfermedad());
+                enfermedadJSON.addProperty("nombre", oenfermedad.getNombre());
+                list_enfermedades_del_persona.add(enfermedadJSON);
             }
-            /*for (Paciente_Pregunta paciente_Pregunta : Lista_preguntasPaciente) {
-                App.jpa.persist(paciente_Pregunta);
-            }*/
-            App.jpa.persist(ohistoria);
+            responseJSON.add("list_enfermedad", list_enfermedades_del_persona);
 
-            for (PlanTratamiento oplantratamiento : listPlanTratamiento) {
-                oplantratamiento.setHistoria_clinica(ohistoria);
-                App.jpa.persist(oplantratamiento);
+            JsonArray list_examen_auxiliar=new JsonArray();
+            for (ExamenAuxiliar oexamen_auxiliar : listExamenAuxiliar) {
+                JsonObject examen_auxiliarJSON = new JsonObject();
+                examen_auxiliarJSON.addProperty("descripcion", oexamen_auxiliar.getDescripcion());
+                list_examen_auxiliar.add(examen_auxiliarJSON);
             }
+            responseJSON.add("list_examen_auxiliar", list_examen_auxiliar);
 
-            for (ExamenAuxiliar oexam : listExamenAuxiliar) {
-                oexam.setHistoria_clinica(ohistoria);
-                App.jpa.persist(oexam);
+            JsonArray list_plan_tratamiento = new JsonArray();
+            for(PlanTratamiento oplan_tratamiento:listPlanTratamiento){
+                JsonObject plan_tratamientoJSON = new JsonObject();
+                plan_tratamientoJSON.addProperty("descripcion", oplan_tratamiento.getDescripcion());
+                list_plan_tratamiento.add(plan_tratamientoJSON);
             }
+            responseJSON.add("list_plan_tratamiento", list_plan_tratamiento);
 
-            App.jpa.getTransaction().commit();
+            http.AddObjects(responseJSON,"historia_clinica/RegistrarHistoriaClinica");
             oVerPacienteController.updateListPersona();
             oVerPacienteController.selectAgregado();
             cerrar();
