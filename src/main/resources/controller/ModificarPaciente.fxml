@@ -286,7 +286,7 @@
                               <Font name="System Bold" size="13.0" />
                            </font>
                            <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="slg-background">
                                  <children>
                                     <GridPane layoutX="241.0" layoutY="115.0" prefHeight="320.0" prefWidth="846.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
@@ -316,7 +316,7 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
-                                                <JFXTextField fx:id="jtfPlandetratamiento" labelFloat="true" promptText="Plan de tratamiento" styleClass="field-forma1">
+                                                <JFXTextField fx:id="jtfPlandetratamiento" focusColor="BLACK" labelFloat="true" promptText="Plan de tratamiento" styleClass="field-forma1" unFocusColor="BLACK">
                                                    <GridPane.margin>
                                                       <Insets left="5.0" right="5.0" />
                                                    </GridPane.margin>
@@ -335,7 +335,7 @@
                               <Font name="System Bold" size="13.0" />
                            </font>
                            <content>
-                              <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" styleClass="slg-background">
                                  <children>
                                     <GridPane prefHeight="372.0" prefWidth="888.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <columnConstraints>
@@ -365,7 +365,7 @@
                                                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                              </rowConstraints>
                                              <children>
-                                                <JFXTextField fx:id="jtfExamenAuxiliar" labelFloat="true" promptText="Examen Auxiliar" styleClass="field-forma1">
+                                                <JFXTextField fx:id="jtfExamenAuxiliar" focusColor="BLACK" labelFloat="true" promptText="Examen Auxiliar" styleClass="field-forma1" unFocusColor="BLACK">
                                                    <GridPane.margin>
                                                       <Insets left="5.0" right="5.0" />
                                                    </GridPane.margin>

@@ -21,7 +21,7 @@ public class PlanTratamiento {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idplantratamiento;
+    private int idplan_tratamiento;
 
     @JoinColumn(insertable = true, updatable = true, name = "idhistoria_clinica", nullable = false)
     @ManyToOne
@@ -38,12 +38,12 @@ public class PlanTratamiento {
         this.descripcion = descripcion;
     }
 
-    public int getIdplantratamiento() {
-        return idplantratamiento;
+    public int getIdplan_tratamiento() {
+        return idplan_tratamiento;
     }
 
-    public void setIdplantratamiento(int idplantratamiento) {
-        this.idplantratamiento = idplantratamiento;
+    public void setIdplan_tratamiento(int idplan_tratamiento) {
+        this.idplan_tratamiento = idplan_tratamiento;
     }
 
     public Historia_clinica getHistoria_clinica() {

@@ -178,6 +178,11 @@ public class HttpMethods {
         return procesoHttpPOST(metodo, jsonResponse.toString());
     }
 
+    public HttpResponse<String> AddObjects(Object objeto, String metodo) {
+        String jsonResponse = json.toJson(objeto);
+        return procesoHttpPOST(metodo, objeto.toString());
+    }
+
     public <T> String UpdateObject(Class<T> generico, Object objeto, String metodo) {
         T obj = (T) objeto;
         String jsonResponse = json.toJson(obj);

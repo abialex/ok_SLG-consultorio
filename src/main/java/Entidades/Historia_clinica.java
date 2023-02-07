@@ -82,7 +82,7 @@ public class Historia_clinica {
     private String examen_intraoral;
 
     @Column(name = "enfermedadActual", nullable = true)
-    private String enfermedadActual;
+    private String enfermedad_actual;
 
     @Column(name = "antecedentesFamiliares", nullable = true)
     private String antecedentes;
@@ -92,7 +92,7 @@ public class Historia_clinica {
         this.doctor = doctor;
         this.persona = persona;
         this.motivo_consulta = motivoConsulta;
-        this.enfermedadActual = enfermedad_actual;
+        this.enfermedad_actual = enfermedad_actual;
         this.antecedentes = antecedentes;
         this.examen_intraoral = examen_intraoral;
         this.examen_radiografico = examen_radiografico;
@@ -268,12 +268,12 @@ public class Historia_clinica {
         this.examen_intraoral = examenIntraoral;
     }
 
-    public String getEnfermedadActual() {
-        return enfermedadActual;
+    public String getEnfermedad_actual() {
+        return enfermedad_actual;
     }
 
-    public void setEnfermedadActual(String enfermedadActual) {
-        this.enfermedadActual = enfermedadActual;
+    public void setEnfermedad_actual(String enfermedad_actual) {
+        this.enfermedad_actual = enfermedad_actual;
     }
 
     public String getAntecedentes() {

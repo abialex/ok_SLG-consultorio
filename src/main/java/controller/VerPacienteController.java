@@ -342,15 +342,11 @@ public class VerPacienteController implements Initializable {
 
                 void mostrarModificar(MouseEvent event) {
                     ImageView buton = (ImageView) event.getSource();
-                    for (Historia_clinica opersona : list_historia_clinica) {
-                        if (opersona.getPersona().getIdpersona() == (Integer) buton.getUserData()) {
-                            ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
-                            oModificarPacienteController.setController(odc);
-                            //oModificarPacienteController.setPersona(opersona);
-                            lockedPantalla();
-                            break;
-                        }
-                    }
+                    Historia_clinica ohistoria_clinica = (Historia_clinica) buton.getUserData();
+                    ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
+                    oModificarPacienteController.setController(odc);
+                    oModificarPacienteController.setPersona(ohistoria_clinica.getPersona(),ohistoria_clinica);
+                    lockedPantalla();
                 }
 
                 void mostrarEliminar(MouseEvent event) {

@@ -5,6 +5,9 @@
 package controller;
 
 import Entidades.*;
+import Util.HttpMethods;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDatePicker;
@@ -162,13 +165,13 @@ public class ModificarPacienteController implements Initializable {
     List<CheckBox> listcheckPregunta = new ArrayList<>();
     List<CheckBox> listcheckG = new ArrayList<>();
     List<CheckBox> listcheckGPregunta = new ArrayList<>();
-    List<Persona_Enfermedad> list_enfermedad_persona;
     Persona oPersona;
-    Historia_clinica oHistoria_Clinica;
+    Historia_clinica ohistoria_Clinica;
     ObservableList<PlanTratamiento> listPlanTratamiento = FXCollections.observableArrayList();
     ObservableList<ExamenAuxiliar> listExamenAuxiliar = FXCollections.observableArrayList();
     List<Enfermedad> lista_enfermedades_del_persona_volatil = new ArrayList<>();
-    List<Persona_Enfermedad> lista_enfermedades_persona = new ArrayList<>();
+    List<Enfermedad> lista_enfermedades_persona = new ArrayList<>();
+    HttpMethods http = new HttpMethods();
     //Botones y métodos de prueba   
 
     //Fin Botones y métodos de prueba
@@ -180,7 +183,6 @@ public class ModificarPacienteController implements Initializable {
         jcbsexo.setItems(SEXO);
         accordion.setExpandedPane(tpAnamnesis);
         initRestricciones();
-        cargarDoctor();
         initTablePlanTratamiento();
         initTableExamenesAuxiliares();
         tablePlandetratamiento.setItems(listPlanTratamiento);
@@ -189,14 +191,19 @@ public class ModificarPacienteController implements Initializable {
     }
 
     void cargarEnfermedad() {
-        List<Enfermedad> listEnfermedad = App.jpa.createQuery("select p from Enfermedad p ").getResultList();
+        List<Enfermedad> listEnfermedad = http.getList(Enfermedad.class,"historia_clinica/EnfermedadList");
         EventHandler evento = (event) -> {
             //Codigo de la función evento
             JFXCheckBox oCheck = ((JFXCheckBox) event.getSource());
             if (oCheck.isSelected()) {
                 lista_enfermedades_del_persona_volatil.add((Enfermedad) oCheck.getUserData());
             } else {
-                lista_enfermedades_del_persona_volatil.remove((Enfermedad) oCheck.getUserData());
+                for(Enfermedad oenfermedad : lista_enfermedades_del_persona_volatil){
+                    if(oenfermedad.getIdenfermedad()==((Enfermedad)oCheck.getUserData()).getIdenfermedad()){
+                        lista_enfermedades_del_persona_volatil.remove(oenfermedad);
+                        break;
+                    }
+                }
             }
         };
         for (Enfermedad enfermedad_general : listEnfermedad) {            
@@ -209,7 +216,7 @@ public class ModificarPacienteController implements Initializable {
             hbox_enfermedad.setMargin(lbl, oInsetslbl);
             JB.setStyle("-fx-background-color: white;\n" + "-fx-border-color:grey;\n" + "-fx-border-radius:3px; ");
             for (Enfermedad enfermedad_paciente : lista_enfermedades_del_persona_volatil) {
-                if(enfermedad_general.getIdenfermedad()==enfermedad_paciente.getIdenfermedad()){                   
+                if(enfermedad_general.getIdenfermedad()==enfermedad_paciente.getIdenfermedad()){
                     JB.setSelected(true);
                 }
             }
@@ -220,13 +227,21 @@ public class ModificarPacienteController implements Initializable {
         }
     }
 
-    void cargarDoctor() {
-        List<Doctor> listDoctorG = App.jpa.createQuery("select p from Doctor p where flag = false and activo = true").getResultList();
+    void cargarDoctor(Doctor doctor) {
+        List<Doctor> listDoctorG = http.getList(Doctor.class, "cita/DoctorAll");
         ObservableList<Doctor> listDoctor = FXCollections.observableArrayList();
         for (Doctor odoct : listDoctorG) {
             listDoctor.add(odoct);
         }
         jcbDoctor.setItems(listDoctor);
+        if(doctor!=null){
+            for(Doctor odoc : listDoctor){
+                if(odoc.getIddoctor()==doctor.getIddoctor()){
+                    jcbDoctor.getSelectionModel().select(odoc);
+                    break;
+                }
+            }
+        }
     }
 
     @FXML
@@ -258,13 +273,10 @@ public class ModificarPacienteController implements Initializable {
         if (jtfPlandetratamiento.getText().length() != 0) {
             PlanTratamiento oplantratamiento = new PlanTratamiento();
             oplantratamiento.setDescripcion(jtfPlandetratamiento.getText());
-            oplantratamiento.setHistoria_clinica(oHistoria_Clinica);
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(oplantratamiento);
-            App.jpa.getTransaction().commit();
+            oplantratamiento.setHistoria_clinica(ohistoria_Clinica);
             jtfPlandetratamiento.setStyle("");
             jtfPlandetratamiento.setText("");
-            updateListPlanTratamiento();
+            listPlanTratamiento.add(oplantratamiento);
         } else {
             jtfPlandetratamiento.setStyle("-fx-border-color: #ff052b");
             alertWarning.setHeaderText(null);
@@ -279,13 +291,10 @@ public class ModificarPacienteController implements Initializable {
         if (jtfExamenAuxiliar.getText().length() != 0) {
             ExamenAuxiliar oExamenAuxiliar = new ExamenAuxiliar();
             oExamenAuxiliar.setDescripcion(jtfExamenAuxiliar.getText());
-            oExamenAuxiliar.setHistoria_clinica(oHistoria_Clinica);
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(oExamenAuxiliar);
-            App.jpa.getTransaction().commit();
+            oExamenAuxiliar.setHistoria_clinica(ohistoria_Clinica);
             jtfExamenAuxiliar.setStyle("");
             jtfExamenAuxiliar.setText("");
-            updateListExamenAuxiliar();
+            listExamenAuxiliar.add(oExamenAuxiliar);
         } else {
             jtfExamenAuxiliar.setStyle("-fx-border-color: #ff052b");
             alertWarning.setHeaderText(null);
@@ -296,7 +305,7 @@ public class ModificarPacienteController implements Initializable {
     }
 
     void updateListPlanTratamiento() {
-        List<PlanTratamiento> olistTratamiento = App.jpa.createQuery("select p from PlanTratamiento p where idhistoria_clinica= " + oHistoria_Clinica.getIdhistoria_clinica() + "  order by idplantratamiento ASC").getResultList();
+        List<PlanTratamiento> olistTratamiento =  http.getList(PlanTratamiento.class, "historia_clinica/PlanTratamientoList/"+ ohistoria_Clinica.getIdhistoria_clinica()+"");
         listPlanTratamiento.clear();
         for (PlanTratamiento planTratamiento : olistTratamiento) {
             listPlanTratamiento.add(planTratamiento);
@@ -304,7 +313,7 @@ public class ModificarPacienteController implements Initializable {
     }
 
     void updateListExamenAuxiliar() {
-        List<ExamenAuxiliar> olistExamenAuxiliar = App.jpa.createQuery("select p from ExamenAuxiliar p where idhistoria_clinica= " + oHistoria_Clinica.getIdhistoria_clinica() + "  order by idexamenauxiliar ASC").getResultList();
+        List<ExamenAuxiliar> olistExamenAuxiliar = http.getList(ExamenAuxiliar.class, "historia_clinica/ExamenAuxiliarList/"+ ohistoria_Clinica.getIdhistoria_clinica()+"");
         listExamenAuxiliar.clear();
         for (ExamenAuxiliar oexam : olistExamenAuxiliar) {
             listExamenAuxiliar.add(oexam);
@@ -375,11 +384,12 @@ public class ModificarPacienteController implements Initializable {
                     alert.setContentText("¿Desea eliminar el plan de tratamiento: " + plan.getDescripcion() + "?");
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
-                        listPlanTratamiento.remove(plan);
-                        App.jpa.getTransaction().begin();
-                        App.jpa.remove(plan);
-                        App.jpa.getTransaction().commit();
-                        updateListPlanTratamiento();
+                        for(PlanTratamiento planTratamiento : listPlanTratamiento) {
+                            if(planTratamiento.getIdplan_tratamiento()==plan.getIdplan_tratamiento()) {
+                                listPlanTratamiento.remove(planTratamiento);
+                                break;
+                            }
+                        }
                     }
                 }
 
@@ -463,11 +473,12 @@ public class ModificarPacienteController implements Initializable {
                     alert.setContentText("¿Desea eliminar el examen auxilair: " + oexam.getDescripcion() + "?");
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
-                        listPlanTratamiento.remove(oexam);
-                        App.jpa.getTransaction().begin();
-                        App.jpa.remove(oexam);
-                        App.jpa.getTransaction().commit();
-                        updateListExamenAuxiliar();
+                        for(ExamenAuxiliar oexamen_auxiliar : listExamenAuxiliar) {
+                            if(oexamen_auxiliar.getIdexamen_auxiliar()==oexam.getIdexamen_auxiliar()) {
+                                listExamenAuxiliar.remove(oexam);
+                                break;
+                            }
+                        }
                     }
                 }
 
@@ -487,16 +498,15 @@ public class ModificarPacienteController implements Initializable {
 
     }
 
-    public void setPersona(Persona opersona) {
+    public void setPersona(Persona opersona, Historia_clinica ohistoria_Clinica) {
         this.oPersona = opersona;
-        //this.oPaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        this.oHistoria_Clinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        list_enfermedad_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
-        lista_enfermedades_persona = App.jpa.createQuery("select p from Persona_Enfermedad p where idpersona=" + opersona.getIdpersona()).getResultList();
-        for (Persona_Enfermedad persona_Enfermedad : list_enfermedad_persona) {            
-            lista_enfermedades_del_persona_volatil.add(persona_Enfermedad.getEnfermedad());
+        this.ohistoria_Clinica = ohistoria_Clinica;
+
+        lista_enfermedades_persona = http.getList(Enfermedad.class, "historia_clinica/Persona_EnfermedadList/"+ohistoria_Clinica.getPersona().getIdpersona());
+        for (Enfermedad persona_Enfermedad : lista_enfermedades_persona) {
+            lista_enfermedades_del_persona_volatil.add(persona_Enfermedad);
         }
-         cargarEnfermedad();
+        cargarEnfermedad();
         jtfNombresyApellidos.setText(opersona.getNombres());
         jtf_ap_paterno.setText(opersona.getAp_paterno());
         jtf_ap_materno.setText(opersona.getAp_materno());
@@ -509,15 +519,15 @@ public class ModificarPacienteController implements Initializable {
         jcbocupacion.getSelectionModel().select(opersona.getOcupacion());
         jtflugarprocedencia.setText(opersona.getLugar_de_procedencia());
         jtfDomicilio.setText(opersona.getDomicilio());
-        jcbDoctor.getSelectionModel().select(oHistoria_Clinica.getDoctor().isFlag() ? null : oHistoria_Clinica.getDoctor());
+        //jcbDoctor.getSelectionModel().select(ohistoria_Clinica.getDoctor().isFlag() ? null : ohistoria_Clinica.getDoctor());
+        cargarDoctor(ohistoria_Clinica.getDoctor().isFlag() ? null : ohistoria_Clinica.getDoctor());
+        jtf_motivo_consulta.setText(ohistoria_Clinica.getMotivo_consulta());
 
-        jtf_motivo_consulta.setText(oHistoria_Clinica.getMotivo_consulta());
-
-        jtfenfermedadActual.setText(oHistoria_Clinica.getEnfermedadActual());
-        jtf_examen_intraoral.setText(oHistoria_Clinica.getExamen_intraoral());
-        jtf_examen_radiografico.setText(oHistoria_Clinica.getExamen_radiografico());
-        jtfantecedentesPersonales.setText(oHistoria_Clinica.getAntecedentes());
-        jtf_diagnostico.setText(oHistoria_Clinica.getDiagnostico());
+        jtfenfermedadActual.setText(ohistoria_Clinica.getEnfermedad_actual());
+        jtf_examen_intraoral.setText(ohistoria_Clinica.getExamen_intraoral());
+        jtf_examen_radiografico.setText(ohistoria_Clinica.getExamen_radiografico());
+        jtfantecedentesPersonales.setText(ohistoria_Clinica.getAntecedentes());
+        jtf_diagnostico.setText(ohistoria_Clinica.getDiagnostico());
 
         //enfermedad actual 
         //exploracin física    
@@ -537,76 +547,67 @@ public class ModificarPacienteController implements Initializable {
 
     @FXML
     void actualizar() {
-        oPersona.setNombres(jtfNombresyApellidos.getText().toUpperCase());
-        oPersona.setAp_paterno(jtf_ap_paterno.getText().toUpperCase());
-        oPersona.setAp_materno(jtf_ap_materno.getText().toUpperCase());
-        oPersona.setDni(jtfDni.getText());
-        oPersona.setTelefono(jtfTelefono.getText());
-        oPersona.setSexo(jcbsexo.getSelectionModel().getSelectedItem());
-        oPersona.setFecha_cumple(LocalDate.of(Integer.parseInt(jtfanio.getText()), Integer.parseInt(jtfMes.getText()), Integer.parseInt(jtfDia.getText())));
-        oPersona.setOcupacion(jcbocupacion.getSelectionModel().getSelectedItem());
-        oPersona.setLugar_de_procedencia(jtflugarprocedencia.getText());
-        oPersona.setDomicilio(jtfDomicilio.getText());
+        JsonObject responseJSON = new JsonObject();
+        JsonObject opersonaJSON = new JsonObject();
+        opersonaJSON.addProperty("idpersona", oPersona.getIdpersona());
+        opersonaJSON.addProperty("dni", jtfDni.getText());
+        opersonaJSON.addProperty("nombres", jtfNombresyApellidos.getText());
+        opersonaJSON.addProperty("ap_paterno", jtf_ap_paterno.getText());
+        opersonaJSON.addProperty("ap_materno", jtf_ap_materno.getText());
+        opersonaJSON.addProperty("telefono", jtfTelefono.getText());
+        opersonaJSON.addProperty("sexo", jcbsexo.getSelectionModel().getSelectedItem());
+        opersonaJSON.addProperty("fecha_cumple_formato", LocalDate.of(Integer.parseInt(jtfanio.getText()), Integer.parseInt(jtfMes.getText()), Integer.parseInt(jtfDia.getText())).toString());
+        opersonaJSON.addProperty("ocupacion", jcbocupacion.getSelectionModel().getSelectedItem());
+        opersonaJSON.addProperty("lugar_de_procedencia", jtflugarprocedencia.getText());
+        opersonaJSON.addProperty("domicilio", jtfDomicilio.getText());
+        responseJSON.add("persona", opersonaJSON);
 
-        oHistoria_Clinica.setMotivo_consulta(jtf_motivo_consulta.getText());
-        oHistoria_Clinica.setDoctor(jcbDoctor.getSelectionModel().getSelectedItem());
-        oHistoria_Clinica.setExamen_radiografico(jtf_examen_radiografico.getText());
-        oHistoria_Clinica.setDiagnostico(jtf_diagnostico.getText());
 
-        //Enfermedad actual
-        oHistoria_Clinica.setEnfermedadActual(jtfenfermedadActual.getText());
-        oHistoria_Clinica.setExamen_intraoral(jtf_examen_intraoral.getText());
-        oHistoria_Clinica.setAntecedentes(jtfantecedentesPersonales.getText());
-        //Exploración física
-        //diagnostico
-        //Plan de tratamiento
-        //Pronóstico
-        //Antecedentes
-        //oPaciente.setAntecedentesFamiliares(jtfantecedentesFamiliares.getText());
-        App.jpa.getTransaction().begin();
-        for (Persona_Enfermedad oPacienteEnfermedad : list_enfermedad_persona) {
-            boolean borrar = true;
-            for (CheckBox checkBox : listcheck) {
-                if (oPacienteEnfermedad.getEnfermedad().getNombre().equals(checkBox.getUserData().toString())) {
-                    borrar = false;
-                }
-            }
-            if (borrar) {
-                App.jpa.remove(oPacienteEnfermedad);
-            }
-        }
-        
-        
-        for (Persona_Enfermedad enfermedad_persona : lista_enfermedades_persona) {
-            boolean isDelete=true;
-            for (Enfermedad enfermedad_volatil : lista_enfermedades_del_persona_volatil) {
-                if(enfermedad_persona.getEnfermedad().getIdenfermedad()==enfermedad_volatil.getIdenfermedad()){
-                    isDelete=false;
-                }
-            }
-            if(isDelete){
-                App.jpa.remove(enfermedad_persona);
-            }      
-        }
-        
-        for (Enfermedad enfermedad_persona : lista_enfermedades_del_persona_volatil) {
-            boolean isAgregable=true;
-            for (Persona_Enfermedad enfermedad_volatil : lista_enfermedades_persona) {
-                if(enfermedad_volatil.getEnfermedad().getIdenfermedad()==enfermedad_persona.getIdenfermedad()){
-                    isAgregable=false;
-                }
-            }
-            if(isAgregable){
-                App.jpa.persist(new Persona_Enfermedad(oPersona, enfermedad_persona, ""));
-            }      
-        }
+        JsonObject ohistoria_clinicaJSON = new JsonObject();
+        ohistoria_clinicaJSON.addProperty("idhistoria_clinica", ohistoria_Clinica.getIdhistoria_clinica());
+        ohistoria_clinicaJSON.addProperty("doctor_id",  ohistoria_Clinica.getDoctor().getIddoctor());
+        ohistoria_clinicaJSON.addProperty("motivo_consulta", jtf_motivo_consulta.getText());
+        ohistoria_clinicaJSON.addProperty("enfermedad_actual", jtfenfermedadActual.getText());
+        ohistoria_clinicaJSON.addProperty("examen_intraoral", jtf_examen_intraoral.getText());
+        ohistoria_clinicaJSON.addProperty("examen_radiografico", jtf_examen_radiografico.getText());
+        ohistoria_clinicaJSON.addProperty("antecedentes", jtfantecedentesPersonales.getText());
+        ohistoria_clinicaJSON.addProperty("diagnostico", jtf_diagnostico.getText());
+        responseJSON.add("historia_clinica", ohistoria_clinicaJSON);
 
-        App.jpa.persist(oPersona);
-       // App.jpa.persist(oPaciente);
-        App.jpa.getTransaction().commit();
+        JsonArray list_enfermedades_del_persona = new JsonArray();
+        for (Enfermedad oenfermedad :lista_enfermedades_del_persona_volatil){
+            JsonObject enfermedadJSON = new JsonObject();
+            enfermedadJSON.addProperty("idenfermedad", oenfermedad.getIdenfermedad());
+            enfermedadJSON.addProperty("nombre", oenfermedad.getNombre());
+            list_enfermedades_del_persona.add(enfermedadJSON);
+        }
+        responseJSON.add("list_enfermedad", list_enfermedades_del_persona);
+
+        JsonArray list_examen_auxiliar=new JsonArray();
+        for (ExamenAuxiliar oexamen_auxiliar : listExamenAuxiliar) {
+            JsonObject examen_auxiliarJSON = new JsonObject();
+            examen_auxiliarJSON.addProperty("idexamen_auxiliar", oexamen_auxiliar.getIdexamen_auxiliar());
+            examen_auxiliarJSON.addProperty("descripcion", oexamen_auxiliar.getDescripcion());
+            examen_auxiliarJSON.addProperty("historia_clinica_id", oexamen_auxiliar.getHistoria_clinica().getIdhistoria_clinica() + "");
+            list_examen_auxiliar.add(examen_auxiliarJSON);
+        }
+        responseJSON.add("list_examen_auxiliar", list_examen_auxiliar);
+
+        JsonArray list_plan_tratamiento = new JsonArray();
+        for(PlanTratamiento oplan_tratamiento:listPlanTratamiento){
+            JsonObject plan_tratamientoJSON = new JsonObject();
+            plan_tratamientoJSON.addProperty("idplan_tratamiento", oplan_tratamiento.getIdplan_tratamiento());
+            plan_tratamientoJSON.addProperty("historia_clinica_id", oplan_tratamiento.getHistoria_clinica().getIdhistoria_clinica() + "");
+            plan_tratamientoJSON.addProperty("descripcion", oplan_tratamiento.getDescripcion());
+            list_plan_tratamiento.add(plan_tratamientoJSON);
+        }
+        responseJSON.add("list_plan_tratamiento", list_plan_tratamiento);
+
+
+        http.AddObjects(responseJSON,"historia_clinica/AddObjects");
         cerrar();
         oVerPacienteController.updateListPersona();
-        //oVerPacienteController.selectModificado(oPersona);
+        oVerPacienteController.selectModificado(ohistoria_Clinica);
     }
 
     /*--Otras ventanas---*/

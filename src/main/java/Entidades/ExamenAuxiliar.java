@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne;
 public class ExamenAuxiliar {    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idexamenauxiliar;
+    private int idexamen_auxiliar;
 
     @JoinColumn(insertable = true, updatable = true, name = "idhistoria_clinica", nullable = false)
     @ManyToOne
@@ -37,12 +37,12 @@ public class ExamenAuxiliar {
         this.descripcion = descripcion;
     }
 
-    public int getIdexamenauxiliar() {
-        return idexamenauxiliar;
+    public int getIdexamen_auxiliar() {
+        return idexamen_auxiliar;
     }
 
-    public void setIdexamenauxiliar(int idexamenauxiliar) {
-        this.idexamenauxiliar = idexamenauxiliar;
+    public void setIdexamen_auxiliar(int idexamen_auxiliar) {
+        this.idexamen_auxiliar = idexamen_auxiliar;
     } 
 
     public Historia_clinica getHistoria_clinica() {
