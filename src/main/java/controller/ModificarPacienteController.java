@@ -604,7 +604,7 @@ public class ModificarPacienteController implements Initializable {
         responseJSON.add("list_plan_tratamiento", list_plan_tratamiento);
 
 
-        http.AddObjects(responseJSON,"historia_clinica/AddObjects");
+        http.AddObjects(responseJSON,"historia_clinica/ModificarHistoriaClinica");
         cerrar();
         oVerPacienteController.updateListPersona();
         oVerPacienteController.selectModificado(ohistoria_Clinica);
