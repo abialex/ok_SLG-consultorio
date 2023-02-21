@@ -406,18 +406,12 @@ public class VerPacienteController implements Initializable {
                 }
 
                 void mostrarPresupuesto(MouseEvent event) {
-                    ImageView buton = (ImageView) event.getSource();
-                    /*
-                    for (Persona opersona : list_historia_clinica) {
-                        if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
-                            PresupuestoVerController oPresupuestoVerController = (PresupuestoVerController) mostrarVentana(PresupuestoVerController.class, "PresupuestoVer");
-                            oPresupuestoVerController.setPersona(opersona);
-                            oPresupuestoVerController.setController(odc);
-                            lockedPantalla();
-                            break;
-                        }
-                    }
-                    */
+                    ImageView imag = (ImageView) event.getSource();
+                    Historia_clinica oHistoria_clinica = (Historia_clinica) imag.getUserData();
+                    PresupuestoVerController oPresupuestoVerController = (PresupuestoVerController) mostrarVentana(PresupuestoVerController.class, "PresupuestoVer");
+                    oPresupuestoVerController.setPersona(oHistoria_clinica.getPersona(), oHistoria_clinica);
+                    oPresupuestoVerController.setController(odc);
+                    lockedPantalla();
                 }
 
                 void mostrarCarpeta(MouseEvent event) {

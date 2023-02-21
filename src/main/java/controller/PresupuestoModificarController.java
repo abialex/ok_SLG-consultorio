@@ -5,7 +5,7 @@
 package controller;
 
 import Entidades.Detalle_Presupuesto;
-import Entidades.Presupuesto;
+import Util.UtilClass;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
 import java.net.URL;
@@ -39,6 +39,7 @@ public class PresupuestoModificarController implements Initializable {
     PresupuestoVerController oPresupuestoVerController;
     Detalle_Presupuesto oDetalle_presupuesto;
     AlertController oAlertController = new AlertController();
+    UtilClass oUtilClass = new UtilClass();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -64,14 +65,6 @@ public class PresupuestoModificarController implements Initializable {
 
     }
 
-    void SoloLetras(KeyEvent event) {
-        JFXTextField o = (JFXTextField) event.getSource();
-        char key = event.getCharacter().charAt(0);
-        if (Character.isDigit(key)) {
-            event.consume();
-        }
-    }
-
     void SoloNumerosEnteros8(KeyEvent event) {
         JFXTextField o = (JFXTextField) event.getSource();
         char key = event.getCharacter().charAt(0);
@@ -88,22 +81,18 @@ public class PresupuestoModificarController implements Initializable {
         if (isCompleto()) {
             float cant_inicial=oDetalle_presupuesto.getMonto()*oDetalle_presupuesto.getCantidad();
             float cant_modificada=Float.parseFloat(jtfMonto.getText())*Integer.parseInt(jtfCantidad.getText());
-            oDetalle_presupuesto.getPresupuesto().setMonto_total(oDetalle_presupuesto.getPresupuesto().getMonto_total()-cant_inicial+cant_modificada);
+            oPresupuestoVerController.oPresupuesto.setMonto_total(oPresupuestoVerController.oPresupuesto.getPresupuesto().getMonto_total()-cant_inicial+cant_modificada);
             oDetalle_presupuesto.setDescripcion(jtfDetallePresupuesto.getText());
             oDetalle_presupuesto.setMonto(Float.parseFloat(jtfMonto.getText()));
-            oDetalle_presupuesto.setCantidad(Integer.parseInt(jtfCantidad.getText()));          
-            oDetalle_presupuesto.getPresupuesto();
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(oDetalle_presupuesto.getPresupuesto());
-            App.jpa.persist(oDetalle_presupuesto);
-            App.jpa.getTransaction().commit();
-            cerrar();
-            oPresupuestoVerController.updateListaPresupuesto();
+            oDetalle_presupuesto.setCantidad(Integer.parseInt(jtfCantidad.getText()));
             oPresupuestoVerController.initTable();
-            oAlertController.Mostrar("successful", "Modificado");
+            oPresupuestoVerController.updateMontoAviso();
+            //oPresupuestoVerController.modificar_detalle_presupuesto(oDetalle_presupuesto);
+            oUtilClass.mostrar_alerta_success("exito", "sub presupuesto Modificado");
+            cerrar();
 
         } else {
-            oAlertController.Mostrar("error", "Llene los espacios en blanco");
+            oUtilClass.mostrar_alerta_error("error", "Llene los campos en blanco");
         }
     }
 

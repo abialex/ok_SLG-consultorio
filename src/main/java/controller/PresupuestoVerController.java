@@ -8,14 +8,16 @@ import Entidades.Persona;
 import Entidades.Detalle_Presupuesto;
 import Entidades.Historia_clinica;
 import Entidades.Presupuesto;
-import Entidades.Tratamiento;
+import Util.HttpMethods;
+import Util.UtilClass;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertConfirmarController;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -97,14 +99,15 @@ public class PresupuestoVerController implements Initializable {
     Persona oPersona;
     double x = 0, y = 0;
     VerPacienteController oVerPacienteController;
-    ObservableList<Detalle_Presupuesto> listPresupuesto = FXCollections.observableArrayList();
+    ObservableList<Detalle_Presupuesto> list_Detalle_presupuesto = FXCollections.observableArrayList();
     PresupuestoVerController odc = this;
     AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
-    Detalle_Presupuesto oPresupuesto_detalleEliminar;
     Presupuesto oPresupuesto;
-    Alert alert = new Alert(Alert.AlertType.WARNING);
 
     int indexEliminar;
+    Historia_clinica oHistoriaclinica;
+    HttpMethods http = new HttpMethods();
+    UtilClass oUtilClass = new UtilClass();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -112,30 +115,19 @@ public class PresupuestoVerController implements Initializable {
         initRestricciones();
     }
 
-    void getPresupuesto(Persona opersona) {
-        //Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        List<Presupuesto> list_presupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
-        if (!list_presupuesto.isEmpty()) {
-            oPresupuesto = list_presupuesto.get(0);
-            btnGuardarPresupuesto.setDisable(!oPresupuesto.isActivo());
-        } else {
-            oPresupuesto = new Presupuesto(oHistoriaclinica, 0, LocalDate.now(), true, false);
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(oPresupuesto);
-            App.jpa.refresh(oPresupuesto);
-            App.jpa.getTransaction().commit();
-        }
-    }
 
-    void setPersona(Persona opersona) {
+
+    void setPersona(Persona opersona, Historia_clinica ohistoria_clinica) {
         //Initialize
-        getPresupuesto(opersona);
+        this.oHistoriaclinica = ohistoria_clinica;
         this.oPersona = opersona;
-        lblnombre.setText(opersona.getNombres());
-        updateListaPresupuesto();
+        this.oPresupuesto = http.ConsultObject(Presupuesto.class, "historia_clinica/GetPresupuesto",ohistoria_clinica.getIdhistoria_clinica()+"" );
+        if (oPresupuesto!= null) {
+            update_list_detalle_presuesto();
+        }
+        lblnombre.setText(opersona.getNombres()+" "+opersona.getAp_paterno());
         initTable();
-        tableTratamiento.setItems(listPresupuesto);
+        tableTratamiento.setItems(list_Detalle_presupuesto);
     }
 
     void setController(VerPacienteController odc) {
@@ -153,63 +145,83 @@ public class PresupuestoVerController implements Initializable {
 
     @FXML
     void cerrarPresupuesto() {
-        if (!listPresupuesto.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setHeaderText(null);
-            alert.setTitle("Info");
-            alert.setContentText("Podrá seguir agregando presupuesto");
-            Optional<ButtonType> result = alert.showAndWait();
+        if (!list_Detalle_presupuesto.isEmpty()) {
+            Optional<ButtonType> result= oUtilClass.mostrar_confirmación("info","¿Desea guardar el presupuesto?");
             if (result.isPresent() && result.get() == ButtonType.OK) {
-                oPresupuesto.setActivo(false);
-                App.jpa.getTransaction().begin();
-                App.jpa.persist(oPresupuesto);
-                App.jpa.getTransaction().commit();
-                cerrar();
+                //guardar presupuesto con la lista de detalle de presupuesto
+                JsonObject jsonResponse=new JsonObject();
+                JsonObject jsonPresupuesto=new JsonObject();
+                jsonPresupuesto.addProperty("idpresupuesto", oPresupuesto.getIdpresupuesto());
+                jsonPresupuesto.addProperty("historia_clinica_id",oHistoriaclinica.getIdhistoria_clinica());
+                jsonPresupuesto.addProperty("monto_total", oPresupuesto.getMonto_total());
+                jsonResponse.add("presupuesto", jsonPresupuesto);
+
+
+                JsonArray jsonDetalle_presupuesto=new JsonArray();
+                for (Detalle_Presupuesto oDetalle_presupuesto : list_Detalle_presupuesto) {
+                    JsonObject jsonDetalle_presupuesto_aux=new JsonObject();
+                    jsonDetalle_presupuesto_aux.addProperty("iddetalle_presupuesto", oDetalle_presupuesto.getIddetalle_presupuesto());
+                    jsonDetalle_presupuesto_aux.addProperty("presupuesto_id", oPresupuesto.getIdpresupuesto());
+                    jsonDetalle_presupuesto_aux.addProperty("descripcion", oDetalle_presupuesto.getDescripcion());
+                    jsonDetalle_presupuesto_aux.addProperty("cantidad", oDetalle_presupuesto.getCantidad());
+                    jsonDetalle_presupuesto_aux.addProperty("monto", oDetalle_presupuesto.getMonto());
+                    jsonDetalle_presupuesto.add(jsonDetalle_presupuesto_aux);
+                }
+                jsonResponse.add("list_detalle_presupuesto", jsonDetalle_presupuesto);
+                HttpResponse<String> response = http.AddObjects(jsonResponse,"historia_clinica/PresupuestoUpdate");
+                switch (response.statusCode()) {
+                    case 200:
+                        oUtilClass.mostrar_alerta_success("info", "Presupuesto guardado con éxito");
+                        cerrar();
+                        break;
+                    case 400:
+                        oUtilClass.mostrar_alerta_error("error", response.body());
+                        break;
+                    case 404:
+                        oUtilClass.mostrar_alerta_error("error", "El presupuesto no existe");
+                        break;
+                    case 500:
+                        oUtilClass.mostrar_alerta_error("error", response.body());
+                        break;
+                }
+
             }
         } else {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText(null);
-            alert.setTitle("Info");
-            alert.setContentText("No tiene ni un presupuesto");
-            alert.showAndWait();
-            
+            oUtilClass.mostrar_alerta_warning("info","No ha asignado un presupuesto" );
         }
     }
 
     @FXML
-    void guardarPresupuesto() {
+    void agregar_detalle_presupuesto() {
         if (isCompleto()) {
-            Detalle_Presupuesto odetelle_presupuesto = new Detalle_Presupuesto(oPresupuesto,
+            Detalle_Presupuesto odetalle_presupuesto = new Detalle_Presupuesto(oPresupuesto,
                     jtfDescripcion.getText(),
                     Integer.parseInt(jtfCantidad.getText()),
                     Float.parseFloat(jtfMonto.getText()));
-            oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() + Float.parseFloat(jtfMonto.getText()) * Float.parseFloat(jtfCantidad.getText()));
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(odetelle_presupuesto);
-            App.jpa.persist(oPersona);
-            App.jpa.persist(oPresupuesto);
-            App.jpa.getTransaction().commit();
-            updateListaPresupuesto();
+            oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() +( Float.parseFloat(jtfMonto.getText()) * Float.parseFloat(jtfCantidad.getText())));
+            list_Detalle_presupuesto.add(odetalle_presupuesto);
+            initTable();
+            updateMontoAviso();
             limpiar();
-            //oAlertController.Mostrar("successful", "Agregado");
+
         } else {
-            //oAlertController.Mostrar("error", "Llene los espacios en blanco");
+            oUtilClass.mostrar_alerta_error("error","Debe completar todos los campos");
         }
     }
 
     @FXML
-    void updateListaPresupuesto() {
-        List<Detalle_Presupuesto> olistPresupuesto = App.jpa.createQuery("select p from Detalle_Presupuesto p where idpresupuesto= " + oPresupuesto.getIdpresupuesto() + " order by idpresupuesto DESC").setMaxResults(10).getResultList();
-        listPresupuesto.clear();
-        for (Detalle_Presupuesto opresupuesto : olistPresupuesto) {
-            listPresupuesto.add(opresupuesto);
+    void update_list_detalle_presuesto() {
+        List<Detalle_Presupuesto> olist_detalle_presupuesto = http.getList(Detalle_Presupuesto.class, "historia_clinica/DetallePresupuestoList/"+oPresupuesto.getIdpresupuesto());
+        list_Detalle_presupuesto.clear();
+        for (Detalle_Presupuesto opresupuesto : olist_detalle_presupuesto) {
+            list_Detalle_presupuesto.add(opresupuesto);
         }
-        updateMontoAviso(olistPresupuesto);
+        updateMontoAviso();
     }
 
-    void updateMontoAviso(List<Detalle_Presupuesto> list) {
+    public void updateMontoAviso() {
         float acumMontoTotal = 0;
-        for (Detalle_Presupuesto opresupuesto : list) {
+        for (Detalle_Presupuesto opresupuesto : list_Detalle_presupuesto) {
             acumMontoTotal = acumMontoTotal + opresupuesto.getMonto() * opresupuesto.getCantidad();
         }
         lblMontototal.setText(acumMontoTotal + "");
@@ -318,7 +330,12 @@ public class PresupuestoVerController implements Initializable {
                     ImageView imag = (ImageView) event.getSource();
                     Detalle_Presupuesto oDetalle_Presupuesto = (Detalle_Presupuesto) imag.getUserData();
                     PresupuestoModificarController oPresupuestoModificarController = (PresupuestoModificarController) mostrarVentana(PresupuestoModificarController.class, "PresupuestoModificar");
-                    oPresupuestoModificarController.setDetallePresupuesto(oDetalle_Presupuesto);
+                   oPresupuestoModificarController.setDetallePresupuesto(oDetalle_Presupuesto);
+                    for (Detalle_Presupuesto odetalle_presu : list_Detalle_presupuesto){
+                        if (odetalle_presu.getIddetalle_presupuesto()==(oDetalle_Presupuesto.getIddetalle_presupuesto())){
+                            //oPresupuestoModificarController.setDetallePresupuesto(odetalle_presu);
+                            }
+                    }
                     oPresupuestoModificarController.setController(odc);
                     lockedPantalla();
 
@@ -327,12 +344,18 @@ public class PresupuestoVerController implements Initializable {
                 void mostrarEliminar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
                     Detalle_Presupuesto opresupuesto = (Detalle_Presupuesto) imag.getUserData();
-                    oPresupuesto_detalleEliminar = opresupuesto;
-                    oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
-                    oAlertConfimarController.setController(odc);
-                    oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar \n el presupuesto?");
-                    lockedPantalla();
-
+                    Optional<ButtonType> result= oUtilClass.mostrar_confirmación("Eliminar Presupuesto", "¿Está seguro que desea eliminar el sub presupuesto?");
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        for (Detalle_Presupuesto odetalle_presupuesto : list_Detalle_presupuesto){
+                            if (odetalle_presupuesto.getIddetalle_presupuesto()==(opresupuesto.getIddetalle_presupuesto())){
+                                list_Detalle_presupuesto.remove(odetalle_presupuesto);
+                                oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() - (opresupuesto.getMonto() * opresupuesto.getCantidad()));
+                                initTable();
+                                updateMontoAviso();
+                                break;
+                            }
+                        }
+                    }
                 }
 
                 private void imagEliminarMoved(MouseEvent event) {
@@ -361,16 +384,7 @@ public class PresupuestoVerController implements Initializable {
 
     }
 
-    public void eliminar() {
-        if (indexEliminar != -1) {
-            oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() - oPresupuesto_detalleEliminar.getMonto() * oPresupuesto_detalleEliminar.getCantidad());
-            App.jpa.getTransaction().begin();
-            App.jpa.remove(oPresupuesto_detalleEliminar);
-            App.jpa.getTransaction().commit();
-            listPresupuesto.remove(indexEliminar);
-            updateListaPresupuesto();
-        }
-    }
+
 
     @FXML
     void cerrar() {

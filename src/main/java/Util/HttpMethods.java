@@ -209,6 +209,10 @@ public class HttpMethods {
                 System.out.println(response.body());
                 obj=null;
                 break;
+            case 404:
+                System.out.println(response.body());
+                obj=null;
+                break;
             default:
                 obj=null;
                 break;

@@ -16,12 +16,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -237,5 +240,38 @@ public class UtilClass {
         } catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException ex) {
             Logger.getLogger(UtilClass.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public void mostrar_alerta_warning(String title,String mensaje) {
+        Alert alertWarning = new Alert(Alert.AlertType.WARNING);
+        alertWarning.setHeaderText(null);
+        alertWarning.setTitle(title);
+        alertWarning.setContentText(mensaje);
+        alertWarning.showAndWait();
+    }
+
+    public void mostrar_alerta_success(String title,String mensaje) {
+        Alert alertWarning = new Alert(Alert.AlertType.INFORMATION);
+        alertWarning.setHeaderText(null);
+        alertWarning.setTitle(title);
+        alertWarning.setContentText(mensaje);
+        alertWarning.showAndWait();
+    }
+
+    public void mostrar_alerta_error(String title,String mensaje) {
+        Alert alertWarning = new Alert(Alert.AlertType.ERROR);
+        alertWarning.setHeaderText(null);
+        alertWarning.setTitle(title);
+        alertWarning.setContentText(mensaje);
+        alertWarning.showAndWait();
+    }
+
+    public Optional<ButtonType> mostrar_confirmación(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setHeaderText(null);
+        alert.setTitle(titulo);
+        alert.setContentText(mensaje);
+
+        return alert.showAndWait();
     }
 }
