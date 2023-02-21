@@ -47,15 +47,18 @@ public class Tratamiento {
     public Tratamiento() {
     }
 
-    public Tratamiento(Historia_clinica ohistoria_clinica, LocalDate fechaRealizada, String tratamiento, int monto) {
+    public Tratamiento(Historia_clinica ohistoria_clinica,Doctor odoctor, LocalDate fechaRealizada, String tratamiento, int monto) {
         this.historia_clinica = ohistoria_clinica;
+        this.doctor = odoctor;
         this.fecha_realizada = fechaRealizada;
         this.nombre = tratamiento;
         this.monto = monto;
     }
 
     
-
+    public Tratamiento getTratamiento() {
+        return this;
+    }
     public int getIdtratamiento() {
         return idtratamiento;
     }

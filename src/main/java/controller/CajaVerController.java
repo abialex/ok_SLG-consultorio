@@ -4,42 +4,37 @@
  */
 package controller;
 
-import Entidades.Detalle_Presupuesto;
-import Entidades.Historia_clinica;
-import Entidades.Persona;
-import Entidades.Presupuesto;
-import Entidades.Tratamiento;
-import Pdf.Historiaclinicapdf;
+import Entidades.*;
+import Util.HttpMethods;
+import Util.UtilClass;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertConfirmarController;
 import emergente.AlertController;
-import java.awt.Desktop;
-import java.io.File;
+
 import java.io.IOException;
 import java.net.URL;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -75,10 +70,10 @@ public class CajaVerController implements Initializable {
     private TableColumn<Tratamiento, Integer> ColumnMonto;
 
     @FXML
-    private TableColumn<Tratamiento, Integer> ColumnPagado;
+    private TableColumn<Tratamiento, Doctor> ColumnDoctor;
 
     @FXML
-    private TableColumn<Tratamiento, Integer> ColumnEstado;
+    private TableColumn<Tratamiento, Tratamiento> ColumnEstado;
 
     @FXML
     private TableView<Detalle_Presupuesto> tablePresupuesto;
@@ -104,6 +99,9 @@ public class CajaVerController implements Initializable {
     @FXML
     private JFXButton btnAgregar;
 
+    @FXML
+    private JFXComboBox<Doctor> jcb_doctor;
+
     double x = 0, y = 0;
     Persona oPersona;
     ObservableList<Tratamiento> listTratamiento = FXCollections.observableArrayList();
@@ -112,18 +110,32 @@ public class CajaVerController implements Initializable {
     AlertConfirmarController oAlertConfimarController = new AlertConfirmarController();
     CajaVerController odc = this;
     Tratamiento oTratamientoEliminar;
+    HttpMethods http = new HttpMethods();
     int indexEliminar;
     AlertController oAlertController = new AlertController();
     VerPacienteController oVerPacienteController;
     Presupuesto oPresupuesto;
     float MontoTotal = 0;
     float acumMonto = 0;
-    List<Tratamiento> olistTratamiento;
+    List<Tratamiento> olistTratamiento_response;
+    ObservableList<Doctor> olistDoctor = FXCollections.observableArrayList();
+    UtilClass oUtilClass = new UtilClass();
+    Historia_clinica oHistoria_clinica=new Historia_clinica();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // el resto de init está en setPersona()
         initRestricciones();
+        cargar_doctores();
+
+
+    }
+    void cargar_doctores() {
+        List<Doctor> olistDoctor_response = http.getList(Doctor.class, "cita/DoctorAll");
+        for (Doctor oDoctor : olistDoctor_response) {
+            olistDoctor.add(oDoctor);
+        }
+        jcb_doctor.setItems(olistDoctor);
     }
 
     @FXML
@@ -136,46 +148,86 @@ public class CajaVerController implements Initializable {
         if (isCompleto()) {
             float resta = MontoTotal - (montoacum + Integer.parseInt(jtfMonto.getText()));
             if (resta >= 0) {
-                Tratamiento otratamiento = new Tratamiento(oPersona,
+                Tratamiento otratamiento = new Tratamiento(
+                        oHistoria_clinica,
+                        jcb_doctor.getSelectionModel().getSelectedItem(),
                         LocalDate.now(),
                         jtfTratamiento.getText(),
                         Integer.parseInt(jtfMonto.getText()));
-                App.jpa.getTransaction().begin();
-                App.jpa.persist(otratamiento);
-                App.jpa.getTransaction().commit();
-                updateListaTratamiento();
+                listTratamiento.add(otratamiento);
+                updateMontoAviso();
+                initTable();
                 limpiar();
-                oAlertController.Mostrar("successful", "Agregado");
+
+                oUtilClass.mostrar_alerta_success("Exitoso","Tratamiento guardado correctamente");
             } else {
-                oAlertController.Mostrar("error", "Se pasó del precio");
+                oUtilClass.mostrar_alerta_error("Error", "Se excedio el monto total");
 
             }
         } else {
-            oAlertController.Mostrar("error", "Llene los espacios en blanco");
+            oUtilClass.mostrar_alerta_error("Error", "Llene los espacios en blanco");
         }
     }
 
-    void setPersona(Persona opersona, Presupuesto opresupuesto) {
+    void setPersona(Historia_clinica ohistoria_clinica, Presupuesto opresupuesto) {
         //Initialize
-        oPresupuesto = opresupuesto;
+        this.oPersona = ohistoria_clinica.getPersona();
+        this.oPresupuesto =  opresupuesto;
+        this.oHistoria_clinica = ohistoria_clinica;
         lblMontototal.setText(oPresupuesto.getMonto_total() + "");
-        this.oPersona = opersona;
-        lblnombre.setText(opersona.getNombres());
-        MontoTotal = opresupuesto.getMonto_total();
+        lblnombre.setText(ohistoria_clinica.getPersona().getNombres()+" "+ ohistoria_clinica.getPersona().getAp_paterno()+ " " + ohistoria_clinica.getPersona().getAp_materno());
+        MontoTotal = oPresupuesto.getMonto_total();
         tableTratamiento.setItems(listTratamiento);
         updateListaTratamiento();
-        getListaPresupuesto(opersona);
+        getListaPresupuesto(ohistoria_clinica.getPersona());
         initTable();
         initTablePresupuesto();
         tableTratamiento.setItems(listTratamiento);
         tablePresupuesto.setItems(listPresupuesto);
     }
 
+    @FXML
+    void actualizar_tratamiento() {
+        Optional<ButtonType> result= oUtilClass.mostrar_confirmación("info","¿Desea guardar el tratamiento?");
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            JsonObject jsonResponse=new JsonObject();
+            JsonArray jsonDetalle_presupuesto=new JsonArray();
+
+            for (Tratamiento otratamiento : listTratamiento) {
+                JsonObject jsonDetalle_presupuesto_aux=new JsonObject();
+                jsonDetalle_presupuesto_aux.addProperty("idtratamiento", otratamiento.getIdtratamiento());
+                jsonDetalle_presupuesto_aux.addProperty("historia_clinica_id", otratamiento.getHistoria_clinica().getIdhistoria_clinica());
+                jsonDetalle_presupuesto_aux.addProperty("doctor_id", otratamiento.getDoctor().getIddoctor());
+                jsonDetalle_presupuesto_aux.addProperty("nombre", otratamiento.getNombre());
+                jsonDetalle_presupuesto_aux.addProperty("fecha_realizada_formato", otratamiento.getFecha_realizada()+"");
+                jsonDetalle_presupuesto_aux.addProperty("monto", otratamiento.getMonto());
+                jsonDetalle_presupuesto.add(jsonDetalle_presupuesto_aux);
+            }
+            jsonResponse.addProperty("historia_clinica_id", oHistoria_clinica.getIdhistoria_clinica());
+            jsonResponse.add("list_tratamiento", jsonDetalle_presupuesto);
+            System.out.println(jsonResponse);
+            HttpResponse<String> response = http.AddObjects(jsonResponse,"historia_clinica/TratamientoUpdate");
+            switch (response.statusCode()) {
+                case 200:
+                    oUtilClass.mostrar_alerta_success("info", "Tratamientos guardados con éxito");
+                    cerrar();
+                    break;
+                case 400:
+                    oUtilClass.mostrar_alerta_error("error", response.body());
+                    break;
+                case 404:
+                    oUtilClass.mostrar_alerta_error("error", "no encontrado");
+                    break;
+                case 500:
+                    oUtilClass.mostrar_alerta_error("error", response.body());
+                    break;
+            }
+
+        }
+    }
+
     void getListaPresupuesto(Persona opersona) {
-        //Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        Presupuesto Presupuesto = (Presupuesto) App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getSingleResult();
-        List<Detalle_Presupuesto> olistDetallePresupuesto = App.jpa.createQuery("select p from Detalle_Presupuesto p where idpresupuesto= " + Presupuesto.getIdpresupuesto() + " order by iddetalle_presupuesto ASC").getResultList();
+        List<Detalle_Presupuesto> olistDetallePresupuesto = http.getList(Detalle_Presupuesto.class, "historia_clinica/DetallePresupuestoList/"+oPresupuesto.getIdpresupuesto());
         for (Detalle_Presupuesto detalle_Presupuesto : olistDetallePresupuesto) {
             listPresupuesto.add(detalle_Presupuesto);
             
@@ -189,10 +241,10 @@ public class CajaVerController implements Initializable {
 
     @FXML
     void updateListaTratamiento() {
-        olistTratamiento = App.jpa.createQuery("select p from Tratamiento p where idpersona= " + oPersona.getIdpersona() + " and flag = false order by idtratamiento ASC").getResultList();
+        olistTratamiento_response =  http.getList(Tratamiento.class, "historia_clinica/TratamientoList/"+oPresupuesto.getHistoria_clinica().getIdhistoria_clinica()+"");
         listTratamiento.clear();
         acumMonto = 0;
-        for (Tratamiento otratamiento : olistTratamiento) {
+        for (Tratamiento otratamiento : olistTratamiento_response) {
             listTratamiento.add(otratamiento);
             acumMonto = acumMonto + otratamiento.getMonto();
         }
@@ -201,13 +253,13 @@ public class CajaVerController implements Initializable {
         } else {
             btnAgregar.setDisable(false);
         }
-        updateMontoAviso(olistTratamiento);
+        updateMontoAviso();
 
     }
 
-    void updateMontoAviso(List<Tratamiento> list) {
+    void updateMontoAviso() {
         int acumMontoTotal = 0;
-        for (Tratamiento otratamiento : list) {
+        for (Tratamiento otratamiento : listTratamiento) {
             acumMontoTotal = acumMontoTotal + otratamiento.getMonto();
         }
         lblAviso.setText("SALDO: " + (MontoTotal - acumMontoTotal));
@@ -229,11 +281,11 @@ public class CajaVerController implements Initializable {
     }
 
     void initTable() {
-        columnFecha.setCellValueFactory(new PropertyValueFactory<Tratamiento, LocalDate>("fechaRealizada"));
-        columnTratamiento.setCellValueFactory(new PropertyValueFactory<Tratamiento, String>("tratamiento"));
+        columnFecha.setCellValueFactory(new PropertyValueFactory<Tratamiento, LocalDate>("fecha_realizada"));
+        columnTratamiento.setCellValueFactory(new PropertyValueFactory<Tratamiento, String>("nombre"));
         ColumnMonto.setCellValueFactory(new PropertyValueFactory<Tratamiento, Integer>("monto"));
-        ColumnPagado.setCellValueFactory(new PropertyValueFactory<Tratamiento, Integer>("monto"));
-        ColumnEstado.setCellValueFactory(new PropertyValueFactory<Tratamiento, Integer>("idtratamiento"));
+        ColumnDoctor.setCellValueFactory(new PropertyValueFactory<Tratamiento, Doctor>("doctor"));
+        ColumnEstado.setCellValueFactory(new PropertyValueFactory<Tratamiento, Tratamiento>("tratamiento"));
 
         ColumnMonto.setCellFactory(column -> {
             TableCell<Tratamiento, Integer> cell = new TableCell<Tratamiento, Integer>() {
@@ -255,10 +307,10 @@ public class CajaVerController implements Initializable {
             return cell;
         });
 
-        ColumnPagado.setCellFactory(column -> {
-            TableCell<Tratamiento, Integer> cell = new TableCell<Tratamiento, Integer>() {
+        ColumnDoctor.setCellFactory(column -> {
+            TableCell<Tratamiento, Doctor> cell = new TableCell<Tratamiento, Doctor>() {
                 @Override
-                protected void updateItem(Integer item, boolean empty) {
+                protected void updateItem(Doctor item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);
@@ -266,7 +318,7 @@ public class CajaVerController implements Initializable {
                     } else {
                         Label label = new Label();
                         //MontoTotal = MontoTotal - item;
-                        label.setText( "N.A");
+                        label.setText( item.getPersona().getNombres() + " " + item.getPersona().getAp_paterno());
                         label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
                         setGraphic(label);
                         setText(null);
@@ -276,12 +328,12 @@ public class CajaVerController implements Initializable {
             return cell;
         });
 
-        Callback<TableColumn<Tratamiento, Integer>, TableCell<Tratamiento, Integer>> cellFoctory = (TableColumn<Tratamiento, Integer> param) -> {
+        Callback<TableColumn<Tratamiento, Tratamiento>, TableCell<Tratamiento, Tratamiento>> cellFoctory = (TableColumn<Tratamiento, Tratamiento> param) -> {
             // make cell containing buttons
-            final TableCell<Tratamiento, Integer> cell = new TableCell<Tratamiento, Integer>() {
+            final TableCell<Tratamiento, Tratamiento> cell = new TableCell<Tratamiento, Tratamiento>() {
 
                 @Override
-                public void updateItem(Integer item, boolean empty) {
+                public void updateItem(Tratamiento item, boolean empty) {
                     super.updateItem(item, empty);
                     //that cell created only on non-empty rows                    
                     if (empty) {
@@ -324,27 +376,25 @@ public class CajaVerController implements Initializable {
 
                 void mostrarModificar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    for (int i = 0; i < listTratamiento.size(); i++) {
-                        if (listTratamiento.get(i).getIdtratamiento() == (Integer) imag.getUserData()) {
-                            CajaModificarController oCajaModificarController = (CajaModificarController) mostrarVentana(CajaModificarController.class, "CajaModificar");
-                            oCajaModificarController.setTratamiento(listTratamiento.get(i), MontoTotal - acumMonto);
-                            oCajaModificarController.setController(odc);
-                            lockedPantalla();
-                            break;
-                        }
-                    }
+                    Tratamiento otratamiento = (Tratamiento) imag.getUserData();
+                    CajaModificarController oCajaModificarController = (CajaModificarController) mostrarVentana(CajaModificarController.class, "CajaModificar");
+                    oCajaModificarController.setTratamiento(otratamiento, MontoTotal - acumMonto, olistDoctor);
+                    oCajaModificarController.setController(odc);
+                    lockedPantalla();
                 }
 
                 void mostrarEliminar(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
-                    for (int i = 0; i < listTratamiento.size(); i++) {
-                        if (listTratamiento.get(i).getIdtratamiento() == (Integer) imag.getUserData()) {
-                            oTratamientoEliminar = listTratamiento.get(i);
-                            oAlertConfimarController = (AlertConfirmarController) mostrarVentana(AlertConfirmarController.class, "/fxml/AlertConfirmar");
-                            oAlertConfimarController.setController(odc);
-                            oAlertConfimarController.setMensaje(" ¿Está seguro de eliminar \n el tratamiento?");
-                            lockedPantalla();
-                            break;
+                    Tratamiento otratamiento = (Tratamiento) imag.getUserData();
+                    Optional<ButtonType> result= oUtilClass.mostrar_confirmación("Eliminar Tratamiento", "¿Está seguro que desea eliminar el tratamiento?");
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        for (Tratamiento otratamiento_o : listTratamiento) {
+                            if (otratamiento_o.getIdtratamiento()==(otratamiento.getIdtratamiento())){
+                                listTratamiento.remove(otratamiento_o);
+                                initTable();
+                                updateMontoAviso();
+                                break;
+                            }
                         }
                     }
                 }
@@ -381,6 +431,26 @@ public class CajaVerController implements Initializable {
         columnCantidad.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Integer>("cantidad"));
         columnTotal.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Detalle_Presupuesto>("Detalle_Presupuesto"));
 
+        columnDetallePresupuesto.setCellFactory(column -> {
+            TableCell<Detalle_Presupuesto, String> cell = new TableCell<Detalle_Presupuesto, String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText(item+ "");
+                        label.setStyle("-fx-font-size: 10; -fx-alignment: CENTER_LEFT; -fx-max-width:999; ");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+
         columnTotal.setCellFactory(column -> {
             TableCell<Detalle_Presupuesto, Detalle_Presupuesto> cell = new TableCell<Detalle_Presupuesto, Detalle_Presupuesto>() {
                 @Override
@@ -392,7 +462,7 @@ public class CajaVerController implements Initializable {
                     } else {
                         Label label = new Label();
                         label.setText(item.getCantidad()*item.getMonto() + "");
-                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        label.setStyle("-fx-font-size: 10; -fx-alignment: CENTER_LEFT; -fx-max-width:999; ");
                         setGraphic(label);
                         setText(null);
                     }
@@ -412,7 +482,7 @@ public class CajaVerController implements Initializable {
                     } else {
                         Label label = new Label();
                         label.setText(item+ "");
-                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        label.setStyle("-fx-font-size: 10; -fx-alignment: center; -fx-max-width:999; ");
                         setGraphic(label);
                         setText(null);
                     }
@@ -432,7 +502,7 @@ public class CajaVerController implements Initializable {
                     } else {
                         Label label = new Label();
                         label.setText(item+ "");
-                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        label.setStyle("-fx-font-size: 10; -fx-alignment: center; -fx-max-width:999; ");
                         setGraphic(label);
                         setText(null);
                     }
@@ -446,9 +516,9 @@ public class CajaVerController implements Initializable {
     public void eliminar() {
         if (indexEliminar != -1) {
             oTratamientoEliminar.setFlag(true);
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(oTratamientoEliminar);
-            App.jpa.getTransaction().commit();
+            //App.jpa.getTransaction().begin();
+            //App.jpa.persist(oTratamientoEliminar);
+            //App.jpa.getTransaction().commit();
             listTratamiento.remove(indexEliminar);
             updateListaTratamiento();
         }
@@ -471,10 +541,6 @@ public class CajaVerController implements Initializable {
     void cerrar() {
         oVerPacienteController.lockedPantalla();
         ((Stage) ap.getScene().getWindow()).close();//cerrando la ventanada anterior
-    }
-
-    void setStagePrincipall(Stage aThis) {
-        this.stagePrincipal = aThis;
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {
@@ -512,6 +578,12 @@ public class CajaVerController implements Initializable {
 
     boolean isCompleto() {
         boolean aux = true;
+        if (jcb_doctor.getSelectionModel().getSelectedItem() == null) {
+            jcb_doctor.setStyle("-fx-border-color: #ff052b");
+            aux = false;
+        } else {
+            jcb_doctor.setStyle("");
+        }
 
         if (jtfTratamiento.getText().trim().length() == 0) {
             jtfTratamiento.setStyle("-fx-border-color: #ff052b");

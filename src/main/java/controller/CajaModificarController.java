@@ -4,14 +4,15 @@
  */
 package controller;
 
+import Entidades.Doctor;
 import Entidades.Tratamiento;
+import Util.UtilClass;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
 import java.net.URL;
 import java.util.ResourceBundle;
-import javafx.application.Application;
-import javafx.collections.FXCollections;
+
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -35,11 +36,14 @@ public class CajaModificarController implements Initializable {
 
     @FXML
     private JFXTextField jtfMonto;
-
+    
+    @FXML
+    private JFXComboBox<Doctor> jcb_doctor;
     Tratamiento oTratamiento;
     CajaVerController oCajaVerController;
     AlertController oAlertController = new AlertController();
     float resto = 0;
+    UtilClass oUtilClass = new UtilClass();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -47,12 +51,22 @@ public class CajaModificarController implements Initializable {
 
     }
 
-    public void setTratamiento(Tratamiento get, float resto) {
-        this.oTratamiento = get;
+    public void setTratamiento(Tratamiento otratamiento, float resto, ObservableList<Doctor> list_doctor) {
+        this.oTratamiento = otratamiento;
         this.resto = resto+oTratamiento.getMonto();
-        System.out.println(resto+"s");
-        jtfTratamiento.setText(get.getNombre());
-        jtfMonto.setText(get.getMonto() + "");
+        jtfTratamiento.setText(otratamiento.getNombre());
+        jtfMonto.setText(otratamiento.getMonto() + "");
+        jcb_doctor.setItems(list_doctor);
+        jcb_select_doctor(list_doctor,otratamiento.getDoctor());
+    }
+
+    void jcb_select_doctor(ObservableList<Doctor> list_doctor_sd, Doctor oDoctor){
+        for(Doctor doctor : list_doctor_sd){
+            if(doctor.getIddoctor()==(oDoctor.getIddoctor())){
+                jcb_doctor.getSelectionModel().select(doctor);
+            }
+        }
+
     }
 
     void setController(CajaVerController odc) {
@@ -66,18 +80,16 @@ public class CajaModificarController implements Initializable {
             if (resto - Integer.parseInt(jtfMonto.getText()) >= 0) {
                 oTratamiento.setNombre(jtfTratamiento.getText());
                 oTratamiento.setMonto(Integer.parseInt(jtfMonto.getText()));
-                App.jpa.getTransaction().begin();
-                App.jpa.persist(oTratamiento);
-                App.jpa.getTransaction().commit();
+                oTratamiento.setDoctor(jcb_doctor.getSelectionModel().getSelectedItem());
                 cerrar();
-                oCajaVerController.updateListaTratamiento();
                 oCajaVerController.initTable();
-                oAlertController.Mostrar("successful", "Modificado");
+                oCajaVerController.updateMontoAviso();
+                oUtilClass.mostrar_alerta_success("Exitoso", "Tratamiento Modificado");
             } else {
-                oAlertController.Mostrar("error", "Se pasó del precio");
+                oUtilClass.mostrar_alerta_error("Error", "Se excediò del presupuesto");
             }
         } else {
-            oAlertController.Mostrar("error", "Llene los espacios en blanco");
+            oUtilClass.mostrar_alerta_warning("info","Llene todos los campos");
         }
     }
 
@@ -104,7 +116,7 @@ public class CajaModificarController implements Initializable {
 
     @FXML
     void hola() {
-        System.out.println("terminando");
+        System.out.println("terminò de cargar la pantalla");
     }
 
     boolean isCompleto() {

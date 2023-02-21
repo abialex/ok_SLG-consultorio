@@ -10,6 +10,7 @@ import Entidades.Presupuesto;
 import Pdf.Historiaclinicapdf;
 import Util.FileImagUtil;
 import Util.HttpMethods;
+import Util.UtilClass;
 import com.jfoenix.controls.JFXTextField;
 import controllerDoctor.DoctorVerController;
 import emergente.AlertConfirmarController;
@@ -49,6 +50,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import jdk.jshell.execution.Util;
 
 /**
  * FXML Controller class
@@ -92,6 +94,8 @@ public class VerPacienteController implements Initializable {
     int indexEliminar;
     Alert alert = new Alert(Alert.AlertType.WARNING);
     HttpMethods http = new HttpMethods();
+    UtilClass oUtilClass = new UtilClass();
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -383,27 +387,21 @@ public class VerPacienteController implements Initializable {
                 }
 
                 void mostrarCaja(MouseEvent event) {
-                    /* ImageView buton = (ImageView) event.getSource();
-                    for (Persona opersona : list_historia_clinica) {
-                        if (opersona.getIdpersona() == (Integer) buton.getUserData()) {
-                            Presupuesto opresupuesto = getPresupuesto(opersona);
-                            if (opresupuesto.isActivo() || opresupuesto.getIdpresupuesto() == 0) {
-                                alert.setHeaderText(null);
-                                alert.setTitle("Tratamiento");
-                                alert.setContentText("No tiene presupuesto finalizado");
-                                alert.showAndWait();
+                    ImageView buton = (ImageView) event.getSource();
+                    Historia_clinica oHistoria_clinica = (Historia_clinica) buton.getUserData();
 
-                            } else {
-                                CajaVerController oCajaVerController = (CajaVerController) mostrarVentana(CajaVerController.class, "CajaVer");
-                                oCajaVerController.setPersona(opersona, opresupuesto);
-                                oCajaVerController.setController(odc);
-                                lockedPantalla();
+                    Presupuesto opresupuesto=http.ConsultObject(Presupuesto.class, "historia_clinica/GetPresupuesto",+oHistoria_clinica.getIdhistoria_clinica()+"");
+                    if(opresupuesto!=null){
+                        CajaVerController oCajaVerController = (CajaVerController) mostrarVentana(CajaVerController.class, "CajaVer");
+                        oCajaVerController.setPersona(oHistoria_clinica, opresupuesto);
+                        oCajaVerController.setController(odc);
+                        lockedPantalla();
+                    }
+                    else{
+                        oUtilClass.mostrar_alerta_warning("Tratamiento","No tiene un presupuesto");
 
-                            }
-                            break;
-                        }
-                    } */
-                }
+                    }
+                    }
 
                 void mostrarPresupuesto(MouseEvent event) {
                     ImageView imag = (ImageView) event.getSource();
