@@ -94,7 +94,7 @@ public class CajaVerController implements Initializable {
     private JFXTextField jtfTratamiento, jtfMonto;
 
     @FXML
-    private Label lblnombre, lblMontototal, lblAviso;
+    private Label lblnombre, lblMontototal, lblAviso, lbl_id_hc;
 
     @FXML
     private JFXButton btnAgregar;
@@ -174,6 +174,7 @@ public class CajaVerController implements Initializable {
         this.oPersona = ohistoria_clinica.getPersona();
         this.oPresupuesto =  opresupuesto;
         this.oHistoria_clinica = ohistoria_clinica;
+        lbl_id_hc.setText(ohistoria_clinica.getIdhistoria_clinica()+"");
         lblMontototal.setText(oPresupuesto.getMonto_total() + "");
         lblnombre.setText(ohistoria_clinica.getPersona().getNombres()+" "+ ohistoria_clinica.getPersona().getAp_paterno()+ " " + ohistoria_clinica.getPersona().getAp_materno());
         MontoTotal = oPresupuesto.getMonto_total();
