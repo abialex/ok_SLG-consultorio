@@ -6,6 +6,7 @@ package controller;
 
 import Entidades.*;
 import Util.HttpMethods;
+import Util.UtilClass;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.jfoenix.controls.JFXCheckBox;
@@ -15,6 +16,7 @@ import com.jfoenix.controls.JFXTextField;
 import emergente.AlertController;
 
 import java.net.URL;
+import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,6 +50,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import okhttp3.Response;
 
 /**
  * FXML Controller class
@@ -172,6 +175,7 @@ public class ModificarPacienteController implements Initializable {
     List<Enfermedad> lista_enfermedades_del_persona_volatil = new ArrayList<>();
     List<Enfermedad> lista_enfermedades_persona = new ArrayList<>();
     HttpMethods http = new HttpMethods();
+    UtilClass oUtilClass = new UtilClass();
     //Botones y métodos de prueba   
 
     //Fin Botones y métodos de prueba
@@ -604,7 +608,13 @@ public class ModificarPacienteController implements Initializable {
         responseJSON.add("list_plan_tratamiento", list_plan_tratamiento);
 
 
-        http.AddObjects(responseJSON,"historia_clinica/ModificarHistoriaClinica");
+        HttpResponse<String> response = http.AddObjects(responseJSON,"historia_clinica/ModificarHistoriaClinica");
+        if(response.statusCode() == 200){
+            oUtilClass.mostrar_alerta_success("info", "Historia Clinica Modificada");
+        }
+        else{
+            oUtilClass.mostrar_alerta_error("error "+ response.statusCode() , response.body());
+        }
         cerrar();
         oVerPacienteController.updateListPersona();
         oVerPacienteController.selectModificado(ohistoria_Clinica);
