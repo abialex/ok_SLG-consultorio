@@ -97,11 +97,12 @@ public class DoctorVerController implements Initializable {
 
     @FXML
     void updateListDoctor() {
+        /*
         List<Doctor> olistDoc = App.jpa.createQuery("select p from Doctor p where flag = false order by iddoctor DESC").setMaxResults(10).getResultList();
         listDoctor.clear();
         for (Doctor oDoc : olistDoc) {
             listDoctor.add(oDoc);
-        }
+        }*/
     }
 
     @FXML
@@ -117,10 +118,10 @@ public class DoctorVerController implements Initializable {
                     LocalDate.now(),
                     "NA", "DOCTOR", "NA",0);
             Doctor odoctor = new Doctor(opersona);
-            App.jpa.getTransaction().begin();
+           /* App.jpa.getTransaction().begin();
             App.jpa.persist(opersona);
             App.jpa.persist(odoctor);
-            App.jpa.getTransaction().commit();
+            App.jpa.getTransaction().commit();*/
             updateListDoctor();
         }
     }
@@ -153,9 +154,10 @@ public class DoctorVerController implements Initializable {
                     JFXCheckBox check = (JFXCheckBox) event.getSource();
                     Doctor odoc = (Doctor) check.getUserData();
                     odoc.setActivo(check.isSelected());
+                    /*
                     App.jpa.getTransaction().begin();
                     App.jpa.persist(odoc);
-                    App.jpa.getTransaction().commit();
+                    App.jpa.getTransaction().commit();*/
                 }
 
             };
@@ -208,9 +210,9 @@ public class DoctorVerController implements Initializable {
                     if (event.getCode() == (KeyCode.ENTER)) {
                         if (check.getText().length() != 0) {
                             oper.setNombres(check.getText());
-                            App.jpa.getTransaction().begin();
+                         /*   App.jpa.getTransaction().begin();
                             App.jpa.persist(oper);
-                            App.jpa.getTransaction().commit();
+                            App.jpa.getTransaction().commit();*/
                             updateListDoctor();
                         }
                     }
@@ -294,10 +296,10 @@ public class DoctorVerController implements Initializable {
 
     public void eliminar() {
         if (indexEliminar != -1) {
-            oDoctorEliminar.setFlag(true);
+            oDoctorEliminar.setFlag(true);/*
             App.jpa.getTransaction().begin();
             App.jpa.persist(oDoctorEliminar);
-            App.jpa.getTransaction().commit();
+            App.jpa.getTransaction().commit();*/
             listDoctor.remove(indexEliminar);
             updateListDoctor();
         }

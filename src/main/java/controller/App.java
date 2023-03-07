@@ -21,7 +21,7 @@ import javax.persistence.EntityManager;
 public class App extends Application {
 
     private static Scene scene;
-    public static EntityManager jpa= JPAUtil.getEntityManagerFactory().createEntityManager();
+    //public static EntityManager jpa= JPAUtil.getEntityManagerFactory().createEntityManager();
     private double x = 0;
     private double y = 0;
     VerPacienteController ocControlller;
