@@ -125,6 +125,10 @@ public class PresupuestoVerController implements Initializable {
         if (oPresupuesto!= null) {
             update_list_detalle_presuesto();
         }
+        else{
+            oPresupuesto = new Presupuesto();
+        }
+
         lblnombre.setText(opersona.getNombres()+" "+opersona.getAp_paterno());
         initTable();
         tableTratamiento.setItems(list_Detalle_presupuesto);

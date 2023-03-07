@@ -132,8 +132,6 @@ public class VerPacienteController implements Initializable {
         if (!jtf_buscar_hcl.getText().isEmpty()) {
 
             Historia_clinica hcl= http.ConsultObject(Historia_clinica.class, "historia_clinica/GetHistoriaClinica", jtf_buscar_hcl.getText());
-            List<Historia_clinica> olistPerson = App.jpa.createQuery("select p from Historia_clinica p where (idhistoria_clinica = " + "" + jtf_buscar_hcl.getText() + ""
-                    + ") order by idhistoria_clinica DESC").getResultList();
             list_historia_clinica.clear();
             if(hcl != null){
                 list_historia_clinica.add(hcl);
@@ -178,9 +176,6 @@ public class VerPacienteController implements Initializable {
     public void eliminar() {
         if (indexEliminar != -1) {
             oPersonaEliminar.setFlag(true);
-            App.jpa.getTransaction().begin();
-            App.jpa.persist(oPersonaEliminar);
-            App.jpa.getTransaction().commit();
             list_historia_clinica.remove(indexEliminar);
             updateListPersona();
         }
@@ -627,19 +622,6 @@ public class VerPacienteController implements Initializable {
     @FXML
     void mostrarCita() {
         
-    }
-
-    Presupuesto getPresupuesto(Persona opersona) {
-        //Paciente opaciente = (Paciente) App.jpa.createQuery("select p from Paciente p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        Historia_clinica oHistoriaclinica = (Historia_clinica) App.jpa.createQuery("select p from Historia_clinica p where idpersona=" + opersona.getIdpersona()).getSingleResult();
-        List<Presupuesto> list_presupuesto = App.jpa.createQuery("select p from Presupuesto p where idhistoria_clinica=" + oHistoriaclinica.getIdhistoria_clinica()).getResultList();
-        if (!list_presupuesto.isEmpty()) {
-            return list_presupuesto.get(0);
-        } else {
-            Presupuesto opre = new Presupuesto();
-            opre.setActivo(false);
-            return opre;
-        }
     }
 
     public Object mostrarVentana(Class generico, String nameFXML) {

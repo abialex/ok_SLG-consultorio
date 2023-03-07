@@ -194,9 +194,5 @@ public class Persona {
         List<Paciente> listpaciente = App.jpa.createQuery("select p from Paciente p where idpersona=" + idpersona).getResultList();
         return listpaciente.get(0);
     }*/
-    
-      public Historia_clinica getHistoriaClinica(){
-        List<Historia_clinica> listhc=App.jpa.createQuery("select p from Historia_clinica p where idpersona="+ idpersona).getResultList();
-        return listhc.get(0);
-    }
+
 }
