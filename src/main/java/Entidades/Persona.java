@@ -71,7 +71,7 @@ public class Persona {
     public Persona() {
     }
 
-    public Persona(String nombres_apellidos, String ap_paterno, String ap_materno, String sexo, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, float presupuesto) {
+    public Persona(String nombres_apellidos, String ap_paterno, String ap_materno, String sexo, String domicilio, String dni, LocalDate fecha_nacimiento, String lugar_de_procedencia, String ocupacion, String telefono, int presupuesto) {
         this.nombres = nombres_apellidos;
         this.ap_paterno = ap_paterno;
         this.ap_materno = ap_materno;

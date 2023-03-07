@@ -79,11 +79,11 @@ public class PresupuestoModificarController implements Initializable {
     @FXML
     void modificar() {
         if (isCompleto()) {
-            float cant_inicial=oDetalle_presupuesto.getMonto()*oDetalle_presupuesto.getCantidad();
-            float cant_modificada=Float.parseFloat(jtfMonto.getText())*Integer.parseInt(jtfCantidad.getText());
+            int cant_inicial=oDetalle_presupuesto.getMonto()*oDetalle_presupuesto.getCantidad();
+            int cant_modificada=Integer.parseInt(jtfMonto.getText())*Integer.parseInt(jtfCantidad.getText());
             oPresupuestoVerController.oPresupuesto.setMonto_total(oPresupuestoVerController.oPresupuesto.getPresupuesto().getMonto_total()-cant_inicial+cant_modificada);
             oDetalle_presupuesto.setDescripcion(jtfDetallePresupuesto.getText());
-            oDetalle_presupuesto.setMonto(Float.parseFloat(jtfMonto.getText()));
+            oDetalle_presupuesto.setMonto(Integer.parseInt(jtfMonto.getText()));
             oDetalle_presupuesto.setCantidad(Integer.parseInt(jtfCantidad.getText()));
             oPresupuestoVerController.initTable();
             oPresupuestoVerController.updateMontoAviso();

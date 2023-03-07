@@ -42,7 +42,7 @@ public class CajaModificarController implements Initializable {
     Tratamiento oTratamiento;
     CajaVerController oCajaVerController;
     AlertController oAlertController = new AlertController();
-    float resto = 0;
+    int resto = 0;
     UtilClass oUtilClass = new UtilClass();
 
     @Override
@@ -51,7 +51,7 @@ public class CajaModificarController implements Initializable {
 
     }
 
-    public void setTratamiento(Tratamiento otratamiento, float resto, ObservableList<Doctor> list_doctor) {
+    public void setTratamiento(Tratamiento otratamiento, int resto, ObservableList<Doctor> list_doctor) {
         this.oTratamiento = otratamiento;
         this.resto = resto+oTratamiento.getMonto();
         jtfTratamiento.setText(otratamiento.getNombre());

@@ -70,10 +70,10 @@ public class PresupuestoVerController implements Initializable {
     private TableColumn<Detalle_Presupuesto, String> columnTratamiento;
 
     @FXML
-    private TableColumn<Detalle_Presupuesto, String> ColumnCantidad;
+    private TableColumn<Detalle_Presupuesto, Integer> ColumnCantidad;
 
     @FXML
-    private TableColumn<Detalle_Presupuesto, Float> ColumnMonto;
+    private TableColumn<Detalle_Presupuesto, Integer> ColumnMonto;
 
     @FXML
     private TableColumn<Detalle_Presupuesto, Detalle_Presupuesto> ColumnEstado;
@@ -201,8 +201,8 @@ public class PresupuestoVerController implements Initializable {
             Detalle_Presupuesto odetalle_presupuesto = new Detalle_Presupuesto(oPresupuesto,
                     jtfDescripcion.getText(),
                     Integer.parseInt(jtfCantidad.getText()),
-                    Float.parseFloat(jtfMonto.getText()));
-            oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() +( Float.parseFloat(jtfMonto.getText()) * Float.parseFloat(jtfCantidad.getText())));
+                    Integer.parseInt(jtfMonto.getText()));
+            oPresupuesto.setMonto_total(oPresupuesto.getMonto_total() +( Integer.parseInt(jtfMonto.getText()) * Integer.parseInt(jtfCantidad.getText())));
             list_Detalle_presupuesto.add(odetalle_presupuesto);
             initTable();
             updateMontoAviso();
@@ -224,7 +224,7 @@ public class PresupuestoVerController implements Initializable {
     }
 
     public void updateMontoAviso() {
-        float acumMontoTotal = 0;
+        int acumMontoTotal = 0;
         for (Detalle_Presupuesto opresupuesto : list_Detalle_presupuesto) {
             acumMontoTotal = acumMontoTotal + opresupuesto.getMonto() * opresupuesto.getCantidad();
         }
@@ -258,15 +258,36 @@ public class PresupuestoVerController implements Initializable {
     }
 
     void initTable() {
-        ColumnCantidad.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, String>("cantidad"));
+        ColumnCantidad.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Integer>("cantidad"));
         columnTratamiento.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, String>("descripcion"));
-        ColumnMonto.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Float>("monto"));
+        ColumnMonto.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Integer>("monto"));
         ColumnEstado.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Detalle_Presupuesto>("DetallePresupuesto"));
 
-        ColumnMonto.setCellFactory(column -> {
-            TableCell<Detalle_Presupuesto, Float> cell = new TableCell<Detalle_Presupuesto, Float>() {
+        ColumnCantidad.setCellFactory(column -> {
+            TableCell<Detalle_Presupuesto, Integer> cell = new TableCell<Detalle_Presupuesto, Integer>() {
                 @Override
-                protected void updateItem(Float item, boolean empty) {
+                protected void updateItem(Integer item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                        setText("");
+                    } else {
+                        Label label = new Label();
+                        label.setText(item + "");
+                        label.setStyle("-fx-font-size: 12; -fx-alignment: center; -fx-max-width:999; ");
+                        setGraphic(label);
+                        setText(null);
+                    }
+                }
+            };
+            return cell;
+        });
+
+
+        ColumnMonto.setCellFactory(column -> {
+            TableCell<Detalle_Presupuesto, Integer> cell = new TableCell<Detalle_Presupuesto, Integer>() {
+                @Override
+                protected void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);

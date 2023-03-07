@@ -82,7 +82,7 @@ public class CajaVerController implements Initializable {
     private TableColumn<Detalle_Presupuesto, String> columnDetallePresupuesto;
 
     @FXML
-    private TableColumn<Detalle_Presupuesto, Float> columnMontoPresupuesto;
+    private TableColumn<Detalle_Presupuesto, Integer> columnMontoPresupuesto;
 
     @FXML
     private TableColumn<Detalle_Presupuesto, Integer> columnCantidad;
@@ -115,8 +115,8 @@ public class CajaVerController implements Initializable {
     AlertController oAlertController = new AlertController();
     VerPacienteController oVerPacienteController;
     Presupuesto oPresupuesto;
-    float MontoTotal = 0;
-    float acumMonto = 0;
+    int MontoTotal = 0;
+    int acumMonto = 0;
     List<Tratamiento> olistTratamiento_response;
     ObservableList<Doctor> olistDoctor = FXCollections.observableArrayList();
     UtilClass oUtilClass = new UtilClass();
@@ -140,13 +140,13 @@ public class CajaVerController implements Initializable {
 
     @FXML
     void guardarTratamiento() {
-        float montoacum = 0;
+        int montoacum = 0;
         for (Tratamiento tratamiento : listTratamiento) {
             montoacum = montoacum + tratamiento.getMonto();
         }
 
         if (isCompleto()) {
-            float resta = MontoTotal - (montoacum + Integer.parseInt(jtfMonto.getText()));
+            int resta = MontoTotal - (montoacum + Integer.parseInt(jtfMonto.getText()));
             if (resta >= 0) {
                 Tratamiento otratamiento = new Tratamiento(
                         oHistoria_clinica,
@@ -427,7 +427,7 @@ public class CajaVerController implements Initializable {
 
     void initTablePresupuesto() {
         columnDetallePresupuesto.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, String>("descripcion"));
-        columnMontoPresupuesto.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Float>("monto"));
+        columnMontoPresupuesto.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Integer>("monto"));
         columnCantidad.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Integer>("cantidad"));
         columnTotal.setCellValueFactory(new PropertyValueFactory<Detalle_Presupuesto, Detalle_Presupuesto>("Detalle_Presupuesto"));
 
@@ -462,7 +462,7 @@ public class CajaVerController implements Initializable {
                     } else {
                         Label label = new Label();
                         label.setText(item.getCantidad()*item.getMonto() + "");
-                        label.setStyle("-fx-font-size: 10; -fx-alignment: CENTER_LEFT; -fx-max-width:999; ");
+                        label.setStyle("-fx-font-size: 10; -fx-alignment: CENTER; -fx-max-width:999; ");
                         setGraphic(label);
                         setText(null);
                     }
@@ -492,9 +492,9 @@ public class CajaVerController implements Initializable {
         });
         
         columnMontoPresupuesto.setCellFactory(column -> {
-            TableCell<Detalle_Presupuesto, Float> cell = new TableCell<Detalle_Presupuesto, Float>() {
+            TableCell<Detalle_Presupuesto, Integer> cell = new TableCell<Detalle_Presupuesto, Integer>() {
                 @Override
-                protected void updateItem(Float item, boolean empty) {
+                protected void updateItem(Integer item, boolean empty) {
                     super.updateItem(item, empty);
                     if (empty) {
                         setGraphic(null);

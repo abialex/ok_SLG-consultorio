@@ -28,7 +28,7 @@ public class Presupuesto {
     private Historia_clinica historia_clinica;
     
     @Column(name = "monto_total", nullable = false)
-    private float  monto_total;
+    private int  monto_total;
     
     @Column(name = "fechapresupuesto", nullable = true)
     private LocalDate fecha_realizada;
@@ -66,11 +66,11 @@ public class Presupuesto {
         this.historia_clinica = historia_clinica;
     }
 
-    public float getMonto_total() {
+    public int getMonto_total() {
         return monto_total;
     }
 
-    public void setMonto_total(float monto_total) {
+    public void setMonto_total(int monto_total) {
         this.monto_total = monto_total;
     }
 

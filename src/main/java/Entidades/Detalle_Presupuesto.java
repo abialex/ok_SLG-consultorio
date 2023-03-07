@@ -33,12 +33,12 @@ public class Detalle_Presupuesto {
     private int cantidad;
     
     @Column(name = "monto", nullable = false)
-    private float monto;
+    private int monto;
 
     public Detalle_Presupuesto() {
     }
 
-    public Detalle_Presupuesto(Presupuesto presupuesto, String descripcion, int cantidad, float monto) {
+    public Detalle_Presupuesto(Presupuesto presupuesto, String descripcion, int cantidad, int monto) {
         this.presupuesto = presupuesto;
         this.descripcion = descripcion;
         this.cantidad = cantidad;
@@ -81,11 +81,11 @@ public class Detalle_Presupuesto {
         this.cantidad = cantidad;
     }
 
-    public float getMonto() {
+    public int getMonto() {
         return monto;
     }
 
-    public void setMonto(float monto) {
+    public void setMonto(int monto) {
         this.monto = monto;
     }
     

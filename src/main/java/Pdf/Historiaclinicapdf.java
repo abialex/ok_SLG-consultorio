@@ -5,8 +5,6 @@
 package Pdf;
 
 import Entidades.Historia_clinica;
-import Entidades.Persona_Enfermedad;
-import Entidades.Persona;
 import Entidades.Detalle_Presupuesto;
 import Entidades.Enfermedad;
 import Entidades.ExamenAuxiliar;
@@ -35,7 +33,6 @@ import com.itextpdf.kernel.color.DeviceRgb;
 import com.itextpdf.layout.border.SolidBorder;
 import com.itextpdf.layout.element.AreaBreak;
 import com.itextpdf.layout.property.AreaBreakType;
-import controller.App;
 import java.awt.Label;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -59,7 +56,7 @@ public class Historiaclinicapdf {
 
     public static void ImprimirHistoriaClinica(Historia_clinica ohistoria_clinica) {
         List<Enfermedad> list_enfermedad = http.getList(Enfermedad.class, "historia_clinica/Persona_EnfermedadList/"+ohistoria_clinica.getPersona().getIdpersona());
-        Presupuesto oPresupuesto =  http.ConsultObject(Presupuesto.class, "historia_clinica/GetPresupuesto",+ohistoria_clinica.getIdhistoria_clinica()+"");
+        Presupuesto oPresupuesto =  http.ConsultObject(Presupuesto.class, "historia_clinica/GetPresupuesto",ohistoria_clinica.getIdhistoria_clinica()+ "");
         List<Detalle_Presupuesto> olistDetallePresupuesto = new ArrayList<>();
         if (oPresupuesto !=null) {
             olistDetallePresupuesto = http.getList(Detalle_Presupuesto.class, "historia_clinica/DetallePresupuestoList/"+oPresupuesto.getIdpresupuesto());
@@ -90,17 +87,15 @@ public class Historiaclinicapdf {
 
         style1 evento = new style1(document, oPresupuesto);
         pdf.addEventHandler(PdfDocumentEvent.START_PAGE, evento);
-        PdfFont bold = null, font = null;
+        PdfFont bold = null;
         try {
             /*--------styles-------------*/
-            font = PdfFontFactory.createFont(FontConstants.TIMES_BOLD);
             bold = PdfFontFactory.createFont(FontConstants.HELVETICA_BOLD);
         } catch (IOException ex) {
             Logger.getLogger(Historiaclinicapdf.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         /*---------------------Color----------*/
-        Color prueba = new DeviceRgb(0, 32, 96);
         Color colorAzul = new DeviceRgb(0, 32, 96);
         Color colorSubtitulo = Color.BLACK;
         Color color_slg = new DeviceRgb(90, 111, 152);
@@ -423,7 +418,7 @@ public class Historiaclinicapdf {
         TablePresupuesto.addCell(new Cell().add(new Paragraph("PRESUPUESTO")).setFont(bold).addStyle(styleTextCenterColorBlue));
         TablePresupuesto.addCell(new Cell().add(new Paragraph("MONTO").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
         TablePresupuesto.addCell(new Cell().add(new Paragraph("MONTO TOTAL").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
-        float montoTotalPresupuesto = 0;
+        int montoTotalPresupuesto = 0;
         for (Detalle_Presupuesto presupuesto : olistDetallePresupuesto) {
             TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getCantidad() + "").addStyle(styleTextCenter)));
             TablePresupuesto.addCell(new Cell().add(new Paragraph(presupuesto.getDescripcion()).addStyle(styleTextLeft)));
@@ -491,7 +486,7 @@ public class Historiaclinicapdf {
         TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold)).addStyle(styleTextCenterColorBlue));
         TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold)).addStyle(styleTextCenterColorBlue));
         TableTratamiento.addCell(new Cell().add(new Paragraph("SALDO").setFont(bold)).addStyle(styleTextCenterColorBlue));
-        float montoTotal = oPresupuesto != null ? oPresupuesto.getMonto_total() : 0;
+        int montoTotal = oPresupuesto != null ? oPresupuesto.getMonto_total() : 0;
 
         for (int i = 0; i < olistTratamiento.size(); i++) {
             montoTotal = montoTotal - olistTratamiento.get(i).getMonto();
