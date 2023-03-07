@@ -114,7 +114,7 @@ public class Historiaclinicapdf {
         Style styleTextCenterColorBlue = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(10f).setBackgroundColor(colorTituloTabla).setFontColor(colorBlanco);
         Style styleTextCenter12 = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(12f);
         Style styleTextCenter8 = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(8f);
-
+        Style styleTextCenter6 = new Style().setTextAlignment(TextAlignment.CENTER).setFontSize(6f).setMarginTop(4);
         /*----------------Border--------------*/
         Border subrayado = new SolidBorder(color_slg, 0.5f);
         Border subrayadoNo = Border.NO_BORDER;
@@ -483,10 +483,11 @@ public class Historiaclinicapdf {
         TableMontoPresupuesto.addCell(getCell(" ", styleCell, styleCell, subrayadoNo));
         TableMontoPresupuesto.addCell(getCell("Total:", styleCell, styleCell, subrayadoNo).setFontColor(color_slg));
         TableMontoPresupuesto.addCell(getCell(montoTotalPresupuesto + "", styleCell, styleTextCenter, subrayado));
-        Table TableTratamiento = new Table(new float[]{volumen * 0.6f, volumen * 3.3f, volumen * 0.6f, volumen * 0.5f});
+        Table TableTratamiento = new Table(new float[]{volumen * 0.6f,volumen * 0.5f, volumen * 3f, volumen * 0.5f, volumen * 0.4f});
         TableTratamiento.setMarginTop(10);
         TableTratamiento.setMarginBottom(20);
         TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold)).addStyle(styleTextCenterColorBlue));
+        TableTratamiento.addCell(new Cell().add(new Paragraph("DOCTOR").setFont(bold)).addStyle(styleTextCenterColorBlue));
         TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold)).addStyle(styleTextCenterColorBlue));
         TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold)).addStyle(styleTextCenterColorBlue));
         TableTratamiento.addCell(new Cell().add(new Paragraph("SALDO").setFont(bold)).addStyle(styleTextCenterColorBlue));
@@ -496,6 +497,7 @@ public class Historiaclinicapdf {
             montoTotal = montoTotal - olistTratamiento.get(i).getMonto();
             if (i == 25) {
                 TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
+                TableTratamiento.addCell(new Cell().add(new Paragraph("DOCTOR").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("SALDO").setFont(bold)).addStyle(styleTextCenterColorBlue));
@@ -505,7 +507,7 @@ public class Historiaclinicapdf {
             String mes = mesInt > 9 ? mesInt + "" : "0" + mesInt;
             String fecha_realizada = olistTratamiento.get(i).getFecha_realizada().getDayOfMonth() + "/" + mes + "/" + olistTratamiento.get(i).getFecha_realizada().getYear();
             TableTratamiento.addCell(new Cell().add(new Paragraph(fecha_realizada + "").addStyle(styleTextCenter)));
-
+            TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getDoctor().getPersona().getNombres() + "").addStyle(styleTextCenter6)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getNombre()).addStyle(styleTextLeft)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getMonto() + "").addStyle(styleTextCenter)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(montoTotal + "").addStyle(styleTextCenter)));
@@ -516,11 +518,13 @@ public class Historiaclinicapdf {
             if (i == 25) {
                 TableTratamiento.addCell(new Cell().add(new Paragraph("FECHA").setFont(bold).addStyle(styleTextCenter)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("PROCEDIMIENTO").setFont(bold)).addStyle(styleTextCenterColorBlue));
+                TableTratamiento.addCell(new Cell().add(new Paragraph("DOCTOR").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("A CTA").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 TableTratamiento.addCell(new Cell().add(new Paragraph("SALDO").setFont(bold)).addStyle(styleTextCenterColorBlue));
                 //montoTotal = montoTotal + tratamiento.getMonto();
             }
             TableTratamiento.addCell(new Cell().add(palabraEnBlancoLimpio.addStyle(styleTextCenter)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
             TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextLeft)));
             TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextCenter)));
             TableTratamiento.addCell(new Cell().add(new Paragraph("").addStyle(styleTextCenter)));
