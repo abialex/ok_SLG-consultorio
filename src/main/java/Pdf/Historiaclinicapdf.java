@@ -196,7 +196,7 @@ public class Historiaclinicapdf {
 
         Table table1Parrafo4 = new Table(new float[]{volumen * 1f, volumen * 4f});
         table1Parrafo4.addCell(getCell("Enfermedad actual:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        //table1Parrafo4.addCell(getCell(ohistoria_clinica.getEnfermedadActual(), styleTextCenter, styleCell, subrayado));
+        table1Parrafo4.addCell(getCell(ohistoria_clinica.getEnfermedad_actual(), styleTextCenter, styleCell, subrayado));
 
         Table table1Parrafo5 = new Table(new float[]{volumen * 1.2f, volumen * 3.8f});
         table1Parrafo5.addCell(getCell("Antecedentes personales:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
