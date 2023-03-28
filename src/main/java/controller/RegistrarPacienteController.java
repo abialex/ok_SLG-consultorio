@@ -4,12 +4,7 @@
  */
 package controller;
 
-import Entidades.Doctor;
-import Entidades.Enfermedad;
-import Entidades.ExamenAuxiliar;
-import Entidades.Persona_Enfermedad;
-import Entidades.PersonaReniec;
-import Entidades.PlanTratamiento;
+import Entidades.*;
 import Util.HttpMethods;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -245,6 +240,19 @@ public class RegistrarPacienteController implements Initializable {
         if (isCompleto()) {
             JsonObject responseJSON = new JsonObject();
             JsonObject opersonaJSON = new JsonObject();
+            Persona persona =new Persona();
+
+            persona.setDni(jtfDni.getText());
+            persona.setNombres(jtfNombresyApellidos.getText());
+            persona.setAp_paterno(jtf_ap_paterno.getText());
+            persona.setAp_materno(jtf_ap_materno.getText());
+            persona.setTelefono(jtfTelefono.getText());
+            persona.setSexo(jcbsexo.getSelectionModel().getSelectedItem());
+            persona.setFecha_cumple(LocalDate.of(Integer.parseInt(jtfanio.getText()), Integer.parseInt(jtfMes.getText()), Integer.parseInt(jtfDia.getText())));
+            persona.setOcupacion(jcbocupacion.getSelectionModel().getSelectedItem());
+            persona.setLugar_de_procedencia(jtflugarprocedencia.getText());
+            persona.setDomicilio(jtfDomicilio.getText());
+
             opersonaJSON.addProperty("dni", jtfDni.getText());
             opersonaJSON.addProperty("nombres", jtfNombresyApellidos.getText());
             opersonaJSON.addProperty("ap_paterno", jtf_ap_paterno.getText());
@@ -258,6 +266,16 @@ public class RegistrarPacienteController implements Initializable {
             responseJSON.add("persona", opersonaJSON);
 
             JsonObject ohistoria_clinicaJSON = new JsonObject();
+            Historia_clinica historia_clinica = new Historia_clinica();
+            historia_clinica.setDoctor(jcbDoctor.getSelectionModel().getSelectedItem());
+            historia_clinica.setMotivo_consulta(jtf_motivo_consulta.getText());
+            historia_clinica.setEnfermedad_actual(jtfenfermedadActual.getText());
+            historia_clinica.setExamen_intraoral(jtf_examen_intraoral.getText());
+            historia_clinica.setExamen_radiografico(jtf_examen_radiografico.getText());
+            historia_clinica.setAntecedentes(jtfantecedentesPersonales.getText());
+            historia_clinica.setDiagnostico(jtf_diagnostico.getText());
+            historia_clinica.setPersona(persona);
+
             ohistoria_clinicaJSON.addProperty("doctor_id",  jcbDoctor.getSelectionModel().getSelectedItem().getIddoctor());
             ohistoria_clinicaJSON.addProperty("motivo_consulta", jtf_motivo_consulta.getText());
             ohistoria_clinicaJSON.addProperty("enfermedad_actual", jtfenfermedadActual.getText());
@@ -292,9 +310,15 @@ public class RegistrarPacienteController implements Initializable {
             }
             responseJSON.add("list_plan_tratamiento", list_plan_tratamiento);
 
-            http.AddObjects(responseJSON,"historia_clinica/RegistrarHistoriaClinica");
-            oVerPacienteController.updateListPersona();
-            oVerPacienteController.selectAgregado();
+            HttpResponse<String> response=http.AddObjects(responseJSON,"historia_clinica/RegistrarHistoriaClinica");
+            if(response.statusCode()==200){
+               JsonObject jsonResponse =json.fromJson(response.body(), JsonObject.class);
+                historia_clinica.setIdhistoria_clinica(jsonResponse.get("idhistoria_clinica").getAsInt());
+                persona.setIdpersona(jsonResponse.get("idpersona").getAsInt());
+                oVerPacienteController.addHistoriaClinica(historia_clinica);
+                oVerPacienteController.displayPaginas(true);
+                oVerPacienteController.selectAgregado();
+            }
             cerrar();
         }
     }

@@ -4,7 +4,6 @@
  */
 package Pdf.style;
 
-import Entidades.Historia_clinica;
 import Entidades.Presupuesto;
 import com.itextpdf.io.font.FontConstants;
 import com.itextpdf.io.image.ImageDataFactory;
@@ -28,14 +27,11 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Image;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
-import com.itextpdf.layout.property.HorizontalAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.text.StyleConstants;
 
 /**
  *
@@ -179,10 +175,10 @@ public class style1 implements IEventHandler {
         //canvasEncabezado.add(tabla_encabezado);
         String mensaje="Sin presupuestar";
         if(opresupuesto!=null){
-            String dia=opresupuesto.getFecha_realizada().getDayOfMonth()<10? "0"+opresupuesto.getFecha_realizada().getDayOfMonth(): opresupuesto.getFecha_realizada().getDayOfMonth()+"";
-            String mes=opresupuesto.getFecha_realizada().getMonthValue()<10? "0"+opresupuesto.getFecha_realizada().getMonthValue(): opresupuesto.getFecha_realizada().getMonthValue()+"";
+            String dia=opresupuesto.getFecha_registro().getDayOfMonth()<10? "0"+opresupuesto.getFecha_registro().getDayOfMonth(): opresupuesto.getFecha_registro().getDayOfMonth()+"";
+            String mes=opresupuesto.getFecha_registro().getMonthValue()<10? "0"+opresupuesto.getFecha_registro().getMonthValue(): opresupuesto.getFecha_registro().getMonthValue()+"";
 
-            mensaje="FECHA: "+dia+"/"+mes+"/"+opresupuesto.getFecha_realizada().getYear();
+            mensaje="FECHA: "+dia+"/"+mes+"/"+opresupuesto.getFecha_registro().getYear();
         }
         Table tablaNumeracion = this.crearTablaPie(docEvent);
         Rectangle rectanguloPie = this.crearRectanguloPie(docEvent);
