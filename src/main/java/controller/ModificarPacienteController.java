@@ -176,6 +176,7 @@ public class ModificarPacienteController implements Initializable {
     List<Enfermedad> lista_enfermedades_persona = new ArrayList<>();
     HttpMethods http = new HttpMethods();
     UtilClass oUtilClass = new UtilClass();
+    int indexPagina;
     //Botones y métodos de prueba   
 
     //Fin Botones y métodos de prueba
@@ -502,9 +503,10 @@ public class ModificarPacienteController implements Initializable {
 
     }
 
-    public void setPersona(Persona opersona, Historia_clinica ohistoria_Clinica) {
+    public void setPersona(Persona opersona, Historia_clinica ohistoria_Clinica, int indexPagina) {
         this.oPersona = opersona;
         this.ohistoria_Clinica = ohistoria_Clinica;
+        this.indexPagina = indexPagina;
 
         lista_enfermedades_persona = http.getList(Enfermedad.class, "historia_clinica/Persona_EnfermedadList/"+ohistoria_Clinica.getPersona().getIdpersona());
         for (Enfermedad persona_Enfermedad : lista_enfermedades_persona) {
@@ -569,7 +571,7 @@ public class ModificarPacienteController implements Initializable {
 
         JsonObject ohistoria_clinicaJSON = new JsonObject();
         ohistoria_clinicaJSON.addProperty("idhistoria_clinica", ohistoria_Clinica.getIdhistoria_clinica());
-        ohistoria_clinicaJSON.addProperty("doctor_id",  ohistoria_Clinica.getDoctor().getIddoctor());
+        ohistoria_clinicaJSON.addProperty("doctor_id",  jcbDoctor.getSelectionModel().getSelectedItem().getIddoctor());
         ohistoria_clinicaJSON.addProperty("motivo_consulta", jtf_motivo_consulta.getText());
         ohistoria_clinicaJSON.addProperty("enfermedad_actual", jtfenfermedadActual.getText());
         ohistoria_clinicaJSON.addProperty("examen_intraoral", jtf_examen_intraoral.getText());
@@ -609,15 +611,34 @@ public class ModificarPacienteController implements Initializable {
 
 
         HttpResponse<String> response = http.AddObjects(responseJSON,"historia_clinica/ModificarHistoriaClinica");
-        if(response.statusCode() == 200){
+        if(response.statusCode() == 200) {
+            oPersona.setNombres(jtfNombresyApellidos.getText());
+            oPersona.setAp_paterno(jtf_ap_paterno.getText());
+            oPersona.setAp_materno(jtf_ap_materno.getText());
+            oPersona.setTelefono(jtfTelefono.getText());
+            oPersona.setSexo(jcbsexo.getSelectionModel().getSelectedItem());
+            oPersona.setFecha_cumple(LocalDate.of(Integer.parseInt(jtfanio.getText()), Integer.parseInt(jtfMes.getText()), Integer.parseInt(jtfDia.getText())));
+            oPersona.setOcupacion(jcbocupacion.getSelectionModel().getSelectedItem());
+            oPersona.setLugar_de_procedencia(jtflugarprocedencia.getText());
+            oPersona.setDomicilio(jtfDomicilio.getText());
+
+            ohistoria_Clinica.setDoctor(jcbDoctor.getSelectionModel().getSelectedItem());
+            ohistoria_Clinica.setMotivo_consulta(jtf_motivo_consulta.getText());
+            ohistoria_Clinica.setEnfermedad_actual(jtfenfermedadActual.getText());
+            ohistoria_Clinica.setExamen_intraoral(jtf_examen_intraoral.getText());
+            ohistoria_Clinica.setExamen_radiografico(jtf_examen_radiografico.getText());
+            ohistoria_Clinica.setAntecedentes(jtfantecedentesPersonales.getText());
+            ohistoria_Clinica.setDiagnostico(jtf_diagnostico.getText());
+
             oUtilClass.mostrar_alerta_success("info", "Historia Clinica Modificada");
+            oVerPacienteController.displayHistoriaClinica(indexPagina);
+            oVerPacienteController.selectModificado(ohistoria_Clinica);
         }
         else{
             oUtilClass.mostrar_alerta_error("error "+ response.statusCode() , response.body());
         }
         cerrar();
-        oVerPacienteController.updateListPersona();
-        oVerPacienteController.selectModificado(ohistoria_Clinica);
+
     }
 
     /*--Otras ventanas---*/

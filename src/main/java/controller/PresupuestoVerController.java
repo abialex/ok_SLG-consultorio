@@ -185,7 +185,7 @@ public class PresupuestoVerController implements Initializable {
                         oUtilClass.mostrar_alerta_error("error", "El presupuesto no existe");
                         break;
                     case 500:
-                        oUtilClass.mostrar_alerta_error("error", response.body());
+                        oUtilClass.mostrar_alerta_error("error", response.statusCode()+"");
                         break;
                 }
 

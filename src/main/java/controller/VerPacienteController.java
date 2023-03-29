@@ -8,18 +8,20 @@ import Entidades.Historia_clinica;
 import Entidades.Persona;
 import Entidades.Presupuesto;
 import Pdf.Historiaclinicapdf;
-import Util.FileImagUtil;
 import Util.HttpMethods;
 import Util.UtilClass;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import controllerDoctor.DoctorVerController;
 import emergente.AlertConfirmarController;
-import java.awt.Desktop;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -45,12 +47,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import jdk.jshell.execution.Util;
 
 /**
  * FXML Controller class
@@ -61,6 +63,9 @@ public class VerPacienteController implements Initializable {
 
     @FXML
     AnchorPane ap;
+
+    @FXML
+    FlowPane fp_pagination;
 
     @FXML
     private JFXTextField jtfbuscar, jtf_buscar_hcl;
@@ -84,7 +89,7 @@ public class VerPacienteController implements Initializable {
     private TableColumn<Persona, Persona> tableAdulto;
 
     RegistrarPacienteController oRegistrarPacienteController;
-    ObservableList<Historia_clinica> list_historia_clinica = FXCollections.observableArrayList();
+    ObservableList<Historia_clinica> list_observable_hcl = FXCollections.observableArrayList();
     private double x = 0;
     private double y = 0;
     Stage stagePrincipal;
@@ -95,14 +100,19 @@ public class VerPacienteController implements Initializable {
     Alert alert = new Alert(Alert.AlertType.WARNING);
     HttpMethods http = new HttpMethods();
     UtilClass oUtilClass = new UtilClass();
+    List<Historia_clinica> list_hcl_response;
+    List<Historia_clinica> list_hcl_filter=new ArrayList<>();
+    int indexPagina;
+
 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        updateListPersona();
+        getListHistoriaClinica();
         initTableView();
+
+        tablePersona.setItems(list_observable_hcl);
         initRestricciones();
-        tablePersona.setItems(list_historia_clinica);
         // TODO
     }
     
@@ -116,28 +126,102 @@ public class VerPacienteController implements Initializable {
         this.oRegistrarPacienteController = aThis;
     }
 
-    @FXML
-    void updateListPersona() {
-        String filtro=jtfbuscar.getText();
-        filtro=filtro.length()==0? "_": filtro;
-        List<Historia_clinica> list_hcl_response= http.getList(Historia_clinica.class, "historia_clinica/HistoriaClinicaList/"+filtro);
-        list_historia_clinica.clear();
-        for (Historia_clinica ohistoria : list_hcl_response) {
-            list_historia_clinica.add(ohistoria);
-        }
+    void addHistoriaClinica(Historia_clinica hcl){
+        list_hcl_response.add(hcl);
+        list_hcl_filter.add(hcl);
     }
 
+    @FXML
+    void getListHistoriaClinica() {
+        String filtro=jtfbuscar.getText();
+        filtro=filtro.length()==0? "_": filtro;//para el link get
+        list_hcl_response= http.getList(Historia_clinica.class, "historia_clinica/HistoriaClinicaList/"+filtro);
+        Collections.reverse(list_hcl_response);
+        for (Historia_clinica hcl: list_hcl_response) {
+            list_hcl_filter.add(hcl);
+
+        }
+        displayPaginas(true);
+    }
     @FXML
     void buscar_hcl() {
         if (!jtf_buscar_hcl.getText().isEmpty()) {
+            int idhistoria_clinica=Integer.parseInt(jtf_buscar_hcl.getText());
+            list_hcl_filter.clear();
+            for(Historia_clinica hcl: list_hcl_response){
+                if(hcl.getIdhistoria_clinica()==idhistoria_clinica){
+                    list_hcl_filter.add(hcl);
 
-            Historia_clinica hcl= http.ConsultObject(Historia_clinica.class, "historia_clinica/GetHistoriaClinica", jtf_buscar_hcl.getText());
-            list_historia_clinica.clear();
-            if(hcl != null){
-                list_historia_clinica.add(hcl);
+                }
+            }
+            displayPaginas(false);
+        }
+    }
+    @FXML
+    void lookforHistoriaClinica(){
+        list_hcl_filter.clear();
+        for (Historia_clinica hcl: list_hcl_response) {
+                if(hcl.getPersona().getNombres().contains(jtfbuscar.getText()) || hcl.getPersona().getDni().contains(jtfbuscar.getText())){
+                    list_hcl_filter.add(hcl);
+                }
+        }
+        if(jtfbuscar.getText().isEmpty()){
+        displayPaginas(true);}
+        else{
+            displayPaginas(false);
+        }
+    }
+
+    List<JFXButton> listaBotonesPagina = new ArrayList<>();
+    void displayPaginas(boolean iSLastPagina){
+        fp_pagination.getChildren().clear();
+        int paginas = (list_hcl_filter.size()/10);
+        paginas = list_hcl_filter.size()-paginas*10>0 ? paginas+1:paginas;
+        for (int i = 0; i <  paginas; i++) {
+            JFXButton btn_pagina = new JFXButton(i+1 < 10 ? "0" + (i+1) : "" + (i+1));
+            FlowPane.setMargin(btn_pagina, new Insets(5, 2, 1, 2));
+            btn_pagina.getStyleClass().add("button-forma1");
+            btn_pagina.setUserData(((i+1)));
+            btn_pagina.addEventHandler(ActionEvent.ACTION, event -> setPagina(event));
+            listaBotonesPagina.add(btn_pagina);
+            fp_pagination.getChildren().add(btn_pagina);
+        }
+
+        if(iSLastPagina){
+            displayHistoriaClinica(paginas);
+            indexPagina=paginas;
+        }
+        else{
+            displayHistoriaClinica(1);
+            indexPagina=1;
+        }
+
+    }
+
+    void setPagina(ActionEvent event){
+        JFXButton buton = (JFXButton) event.getSource();
+        int pagina=(int) buton.getUserData();
+        indexPagina=pagina;
+        displayHistoriaClinica(pagina);
+    }
+    void displayHistoriaClinica(int pagina){
+        boolean isLasPage = (pagina*10) > list_hcl_filter.size();
+        int index=pagina-1;
+        list_observable_hcl.clear();
+        if(isLasPage){
+
+            for(Historia_clinica hcl: list_hcl_filter.subList(index*10,list_hcl_filter.size())) {
+                list_observable_hcl.add(hcl);}
+        }
+        else{
+            for(Historia_clinica hcl: list_hcl_filter.subList(index*10,(index*10)+10)){
+                list_observable_hcl.add(hcl);
             }
         }
     }
+
+
+
 
     void setStagePrincipall(Stage aThis) {
         this.stagePrincipal = aThis;
@@ -157,16 +241,16 @@ public class VerPacienteController implements Initializable {
     }
 
     void selectAgregado() {
-        if (!list_historia_clinica.isEmpty()) {
-            tablePersona.getSelectionModel().select(list_historia_clinica.get(0));
+        if (!list_observable_hcl.isEmpty()) {
+            tablePersona.getSelectionModel().select(list_observable_hcl.get(list_observable_hcl.size() - 1));
         }
     }
 
-    void selectModificado(Historia_clinica opersona) {
-        if (!list_historia_clinica.isEmpty()) {
-            for (Historia_clinica persona : list_historia_clinica) {
-                if (opersona == persona) {
-                    tablePersona.getSelectionModel().select(persona);
+    void selectModificado(Historia_clinica historia_clinica) {
+        if (!list_observable_hcl.isEmpty()) {
+            for (Historia_clinica hcl : list_observable_hcl) {
+                if (historia_clinica == hcl) {
+                    tablePersona.getSelectionModel().select(hcl);
                     break;
                 }
             }
@@ -176,8 +260,7 @@ public class VerPacienteController implements Initializable {
     public void eliminar() {
         if (indexEliminar != -1) {
             oPersonaEliminar.setFlag(true);
-            list_historia_clinica.remove(indexEliminar);
-            updateListPersona();
+            list_observable_hcl.remove(indexEliminar);
         }
     }
 
@@ -344,7 +427,7 @@ public class VerPacienteController implements Initializable {
                     Historia_clinica ohistoria_clinica = (Historia_clinica) buton.getUserData();
                     ModificarPacienteController oModificarPacienteController = (ModificarPacienteController) mostrarVentana(ModificarPacienteController.class, "ModificarPaciente");
                     oModificarPacienteController.setController(odc);
-                    oModificarPacienteController.setPersona(ohistoria_clinica.getPersona(),ohistoria_clinica);
+                    oModificarPacienteController.setPersona(ohistoria_clinica.getPersona(),ohistoria_clinica,indexPagina);
                     lockedPantalla();
                 }
 
@@ -591,18 +674,6 @@ public class VerPacienteController implements Initializable {
     void imagDoctorFuera(MouseEvent event) {
         ImageView imag = (ImageView) event.getSource();
         imag.setImage(new Image(getClass().getResource("/imagenes/doctor-1.png").toExternalForm()));
-    }
-
-    @FXML
-    void imagCitaMoved(MouseEvent event) {
-        ImageView imag = (ImageView) event.getSource();
-        imag.setImage(new Image(getClass().getResource("/imagenes/cita-2.png").toExternalForm()));
-    }
-
-    @FXML
-    void imagCitaFuera(MouseEvent event) {
-        ImageView imag = (ImageView) event.getSource();
-        imag.setImage(new Image(getClass().getResource("/imagenes/cita-1.png").toExternalForm()));
     }
 
     @FXML
