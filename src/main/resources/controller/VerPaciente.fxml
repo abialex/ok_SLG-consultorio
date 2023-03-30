@@ -117,7 +117,7 @@
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
                               </ImageView>
-                              <ImageView fx:id="imgDoctor" fitHeight="84.0" fitWidth="50.0" onMouseClicked="#mostrarDoctor" onMouseExited="#imagDoctorFuera" onMouseMoved="#imagDoctoreMoved" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1">
+                              <ImageView fx:id="imgDoctor" fitHeight="84.0" fitWidth="50.0" onMouseClicked="#mostrarDoctor" onMouseExited="#imagDoctorFuera" onMouseMoved="#imagDoctoreMoved" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="1">
                                  <image>
                                     <Image url="@../imagenes/doctor-1.png" />
                                  </image>
