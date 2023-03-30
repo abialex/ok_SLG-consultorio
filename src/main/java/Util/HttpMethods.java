@@ -130,11 +130,11 @@ public class HttpMethods {
     
 
     //el tipo object en este método recibe String y Persona
-    public HttpResponse<String> loguear(String nickname, String contrasenia, String metodo) {
+    public HttpResponse<String> loguear(String nickname, String contrasenia) {
         JsonObject Objson = new JsonObject();
         Objson.addProperty("username", nickname);
         Objson.addProperty("password", contrasenia);
-        return procesoHttpPOST("loguear", Objson.toString());
+        return procesoHttpPOST("session/loguear", Objson.toString());
     }
     
     public HttpResponse<String> CerrarSesion(){

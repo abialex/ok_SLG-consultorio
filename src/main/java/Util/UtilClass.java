@@ -99,7 +99,7 @@ public class UtilClass {
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
         stage.initOwner(st);
-        stage.getIcons().add(new Image(getClass().getResource("/imagenes/logo.png").toExternalForm()));
+        stage.getIcons().add(new Image(getClass().getResource("/imagenes/logo.jpg").toExternalForm()));
         stage.setScene(scene);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
