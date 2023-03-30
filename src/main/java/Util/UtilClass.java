@@ -40,48 +40,7 @@ import javafx.stage.StageStyle;
 public class UtilClass {
 
     double x = 0, y = 0;
-
-    public UtilClass(double x, double y) {
-        this.x = x;
-        this.y = y;
-    }
-
     public UtilClass() {
-    }
-
-    public Object mostrarVentana(Class generico, String nameFXML, AnchorPane ap) {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(generico.getResource(nameFXML + ".fxml"));
-        Parent root = null;
-        try {
-            root = loader.load();
-        } catch (IOException ex) {
-            Logger.getLogger(generico.getName()).log(Level.SEVERE, null, ex);
-        }
-        Scene scene = new Scene(root);//instancia el controlador (!)
-        scene.getStylesheets().add(generico.getResource("/css/bootstrap3.css").toExternalForm());;
-        Stage stage = new Stage();//creando la base vací
-        stage.initStyle(StageStyle.TRANSPARENT);
-        scene.setFill(Color.TRANSPARENT);
-
-        stage.initOwner(((Stage) ap.getScene().getWindow()));
-        stage.setScene(scene);
-        root.setOnMousePressed(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                x = event.getX();
-                y = event.getY();
-            }
-        });
-        root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            }
-        });
-        stage.show();
-        return loader.getController();
     }
 
     public Object mostrarVentana(Class generico, String nameFXML, Stage st) {
@@ -117,14 +76,6 @@ public class UtilClass {
         });
         stage.show();
         return loader.getController();
-    }
-
-    public void lockedPantalla(AnchorPane ap) {
-        if (ap.isDisable()) {
-            ap.setDisable(false);
-        } else {
-            ap.setDisable(true);
-        }
     }
 
     public void SoloNumerosEnteros2(KeyEvent event) {

@@ -26,38 +26,16 @@ public class App extends Application {
     private double x = 0;
     private double y = 0;
     LoginController ocControlller;
-    public static Stage stagePrincpal;
     UtilClass oUtilClass = new UtilClass();
 
     @Override
-    public void start(Stage stage) throws IOException {
-        stagePrincpal = stage;
+    public void start(Stage stage)  {
         ocControlller = (LoginController) oUtilClass.mostrarVentana(LoginController.class,"Login",stage);
         ocControlller.validarWithCookie();
-        ocControlller.setStagePrincipall(stage);
-
     }
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
-    }
-
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
-    }
-
     public static void main(String[] args) {
         launch();
     }
-    static void CrearArchivos(){
-        File carpetaImages = new File("Archivos paciente");
-        if (!carpetaImages.exists()) {
-            carpetaImages.mkdirs();
-        }
-        File carpetaPdf = new File("Pdf");
-        if (!carpetaPdf.exists()) {
-            carpetaPdf.mkdirs();
-        }
-    }
+
 
 }

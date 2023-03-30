@@ -38,6 +38,8 @@ import javafx.stage.Stage;
  * @author alexis
  */
 public class LoginController implements Initializable {
+    //loguear
+    //visualizar contraseña
 
     @FXML
     private AnchorPane ap;
@@ -50,13 +52,10 @@ public class LoginController implements Initializable {
 
     @FXML
     private Label lblMensaje, lbl_password_show;
-    private double x = 0;
-    private double y = 0;
-    UtilClass oUtilClass = new UtilClass(x, y);
+    UtilClass oUtilClass = new UtilClass();
     HttpMethods http = new HttpMethods();
     Gson json = new Gson();
     VerPacienteController oControllerVista;
-    Stage stagePrincipal;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -125,10 +124,6 @@ public class LoginController implements Initializable {
         oControllerVista = (VerPacienteController) oUtilClass.mostrarVentana(VerPacienteController.class, "VerPaciente", stage);
         cerrar();
     }
-
-    public void setStagePrincipall(Stage aThis) {
-        this.stagePrincipal = aThis;
-    }
     private boolean isCompleto() {
         boolean aux = true;
         if (jtfNickname.getText().isEmpty()) {
@@ -177,12 +172,6 @@ public class LoginController implements Initializable {
             lbl_password_show.setVisible(true);
             visible = true;
         }
-    }
-
-    @FXML
-    void imagAddpacienteFuera(MouseEvent event) {
-        ImageView imag = (ImageView) event.getSource();
-        imag.setImage(new Image(getClass().getResource("/imagenes/visible-1.png").toExternalForm()));
     }
 
 }
