@@ -4,11 +4,15 @@
  */
 package Entidades;
 
+import Util.Json;
+
+import java.io.Serializable;
+
 /**
  *
  * @author alexis
  */
-public class User {
+public class User extends Json {
     private int id;
     private String username;
     private String email;
@@ -60,6 +64,10 @@ public class User {
 
     public User getUser(){
         return this;
+    }
+
+    public static User fromJson(String jsonResponse){
+        return json.fromJson(jsonResponse, User.class);
     }
     
     

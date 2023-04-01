@@ -43,7 +43,7 @@ public class UtilClass {
     public UtilClass() {
     }
 
-    public Object mostrarVentana(Class generico, String nameFXML, Stage st) {
+    public Object mostrarVentana(Class generico, String nameFXML) {
         FXMLLoader loader = new FXMLLoader();
         loader.setLocation(generico.getResource(nameFXML + ".fxml"));
         Parent root = null;
@@ -57,7 +57,6 @@ public class UtilClass {
         Stage stage = new Stage();//creando la base vací
         stage.initStyle(StageStyle.TRANSPARENT);
         scene.setFill(Color.TRANSPARENT);
-        stage.initOwner(st);
         stage.getIcons().add(new Image(getClass().getResource("/imagenes/logo.jpg").toExternalForm()));
         stage.setScene(scene);
         root.setOnMousePressed(new EventHandler<MouseEvent>() {

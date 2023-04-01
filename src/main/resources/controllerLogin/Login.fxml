@@ -45,7 +45,7 @@
                       <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                      <children>
-                        <JFXButton onAction="#validar" prefHeight="20.0" prefWidth="209.0" styleClass="button-forma3" text="INGRESAR" GridPane.rowIndex="1" />
+                        <JFXButton onAction="#submit" prefHeight="20.0" prefWidth="209.0" styleClass="button-forma3" text="INGRESAR" GridPane.rowIndex="1" />
                         <GridPane>
                           <columnConstraints>
                             <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
