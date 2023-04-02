@@ -13,6 +13,11 @@ public class AutheticationRepository implements IAutheticationRepository {
 
     @Override
     public User login(String username, String password) {
-        return oAutheticationAPI.loguear(username, password);
+        return oAutheticationAPI.login(username, password);
+    }
+
+    @Override
+    public boolean logout() {
+        return oAutheticationAPI.logout();
     }
 }

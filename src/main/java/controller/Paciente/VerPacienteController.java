@@ -8,6 +8,9 @@ import Entidades.Historia_clinica;
 import Entidades.Persona;
 import Entidades.Presupuesto;
 import Pdf.Historiaclinicapdf;
+import Repository.remote.AutheticationRepository;
+import RepositoryInterface.remote.IAutheticationRepository;
+import Util.AlertMessage;
 import Util.HttpMethods;
 import Util.UtilClass;
 import com.jfoenix.controls.JFXButton;
@@ -27,6 +30,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import controllerLogin.LoginController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -97,12 +102,12 @@ public class VerPacienteController implements Initializable {
     VerPacienteController odc = this;
     Persona oPersonaEliminar;
     int indexEliminar;
-    Alert alert = new Alert(Alert.AlertType.WARNING);
     HttpMethods http = new HttpMethods();
     UtilClass oUtilClass = new UtilClass();
     List<Historia_clinica> list_hcl_response;
     List<Historia_clinica> list_hcl_filter=new ArrayList<>();
     int indexPagina;
+    IAutheticationRepository autheticationRepositoryI = new AutheticationRepository();
 
 
 
@@ -113,6 +118,17 @@ public class VerPacienteController implements Initializable {
         tablePersona.setItems(list_observable_hcl);
         initRestricciones();
         // TODO
+    }
+    @FXML
+    void logout() {
+        boolean isClosed=autheticationRepositoryI.logout();
+        if(isClosed){
+        oUtilClass.mostrarVentana(LoginController.class, "Login");
+        cerrar();
+        }
+        else{
+            AlertMessage.mostrar_alerta_error("Error","No se cerró sessión");
+        }
     }
     
      void initRestricciones() {
