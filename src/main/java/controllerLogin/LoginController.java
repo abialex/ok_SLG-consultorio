@@ -6,7 +6,9 @@ package controllerLogin;
 
 
 import Entidades.User;
+import Repository.local.LocalRepository;
 import Repository.remote.AutheticationRepository;
+import RepositoryInterface.local.ILocalRepository;
 import RepositoryInterface.remote.IAutheticationRepository;
 import Util.UtilClass;
 import com.jfoenix.controls.JFXPasswordField;
@@ -42,25 +44,32 @@ public class LoginController implements Initializable {
     private Label lblMensaje, lbl_password_show;
     VerPacienteController oVerPacienteController;
     IAutheticationRepository autheticationRepositoryI = new AutheticationRepository();
+    ILocalRepository IlocalRepository = new LocalRepository();
     boolean visible = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lbl_password_show.setVisible(false);
+        jtfNickname.setText(IlocalRepository.getUserName());
     }
 
     @FXML
     void submit() {
+        //INCOMPLETO
         if (!isCompleto()) {
             lblMensaje.setText("llene los campos");
             return;
         }
+
         User user= autheticationRepositoryI.login(jtfNickname.getText(),jtf_password.getText());
+        //INCORRECTO
         if(user==null){
             lblMensaje.setText("Datos incorrectos");
             return;
         }
+        //CORRECTO
         oVerPacienteController = (VerPacienteController) oUtilClass.mostrarVentana(VerPacienteController.class, "VerPaciente");
+        IlocalRepository.saveUserName(jtfNickname.getText());
         cerrar();
         }
     private boolean isCompleto() {

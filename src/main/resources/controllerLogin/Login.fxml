@@ -90,7 +90,7 @@
                                     <Image url="@../imagenes/geminisLogo.png" />
                                  </image>
                               </ImageView>
-                              <Label text="BIENVENIDO" textFill="WHITE" GridPane.columnIndex="1">
+                              <Label text="Login" textFill="WHITE" GridPane.columnIndex="1">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>

@@ -1,13 +1,12 @@
 package controllerLogin;
 
+import Entidades.User;
 import Repository.local.LocalRepository;
 import Repository.remote.AutheticationRepository;
 import RepositoryInterface.local.ILocalRepository;
-import Util.PreferencesLocal;
+import RepositoryInterface.remote.IAutheticationRepository;
 import Util.UtilClass;
 import controller.Paciente.VerPacienteController;
-import global.Global;
-import global.HeaderHttp;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -18,33 +17,31 @@ import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.prefs.BackingStoreException;
-import java.util.prefs.Preferences;
 
 public class SplashController implements Initializable {
     @FXML
     AnchorPane ap;
     UtilClass oUtilClass = new UtilClass();
-    AutheticationRepository autheticationRepository = new AutheticationRepository();
+    IAutheticationRepository IautheticationRepository = new AutheticationRepository();
+    ILocalRepository IlocalRepository = new LocalRepository();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         validateSession();
     }
 
-
-
     private void validateSession(){
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
-            if (!PreferencesLocal.prefs.get(HeaderHttp.CSRFToken,"empty").equals("empty")) {
-                oUtilClass.mostrarVentana(VerPacienteController.class, "VerPaciente");
-                autheticationRepository.getUser();
+            //COOKIE existe
+            if (!IlocalRepository.getCSRFToken().isEmpty()) {
+                //SI EL COOKIE ES VÁLIDO
+                User user_current = IautheticationRepository.getUser();
+                if (user_current != null) {
+                    oUtilClass.mostrarVentana(VerPacienteController.class, "VerPaciente");
+                    cerrar();
+                    return;
+                }
             }
-            else{
-                oUtilClass.mostrarVentana(LoginController.class, "Login");
-            }
+            oUtilClass.mostrarVentana(LoginController.class, "Login");
             cerrar();
         }));
         timeline.play();
