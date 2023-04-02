@@ -170,7 +170,7 @@ public class Historiaclinicapdf {
         tableinit.setMarginBottom(4);
         tableinit.addCell(getCell("ANAMNESIS", styleCell, styleTextLeft, subrayadoNo).setFontColor(colorAzul).setFont(bold));
         tableinit.addCell(getCell("Operador: ", styleCell, styleTextRight, subrayadoNo).setFontColor(color_slg));
-        tableinit.addCell(getCell(ohistoria_clinica.getDoctor().getPersona().getAp_paterno() + " ", styleCell, styleTextCenter8, subrayado));
+        tableinit.addCell(getCell(ohistoria_clinica.getDoctor().getPersona().getAp_paterno() + " "+ ohistoria_clinica.getDoctor().getPersona().getNombres().substring(0,1)+".", styleCell, styleTextCenter8, subrayado));
         Paragraph parrafoTitulo = new Paragraph("HISTORIA CLÍNICA").setFontSize(14).setFont(bold).setTextAlignment(TextAlignment.CENTER);
         //Paragraph parrafoSubTitulo1 = new Paragraph("ANAMNESIS").setFontSize(10).setFontColor(colorAzul).setFont(bold).addStyle(styleTextLeft);
 
@@ -204,7 +204,8 @@ public class Historiaclinicapdf {
 
         Table table1Parrafo6 = new Table(new float[]{volumen * 0.5f, volumen * 4.5f});
         table1Parrafo6.addCell(getCell("Operador:", styleTextLeft, styleCell, subrayadoNo).setFontColor(color_slg));
-        table1Parrafo6.addCell(getCell(ohistoria_clinica.getDoctor().getPersona().getNombres(), styleTextCenter, styleCell, subrayado));
+        String hls=ohistoria_clinica.getDoctor().getPersona().getNombres().substring(0,3);
+        table1Parrafo6.addCell(getCell(ohistoria_clinica.getDoctor().getPersona().getAp_paterno() +"S"+ohistoria_clinica.getDoctor().getPersona().getNombres().substring(0,3), styleTextCenter, styleCell, subrayado));
 
         Table tableInformacion = new Table(new float[]{volumen * 5});
         tableInformacion.addCell(new Cell().add(table1Parrafo1).addStyle(styleCell));
@@ -502,7 +503,7 @@ public class Historiaclinicapdf {
             String mes = mesInt > 9 ? mesInt + "" : "0" + mesInt;
             String fecha_realizada = olistTratamiento.get(i).getFecha_realizada().getDayOfMonth() + "/" + mes + "/" + olistTratamiento.get(i).getFecha_realizada().getYear();
             TableTratamiento.addCell(new Cell().add(new Paragraph(fecha_realizada + "").addStyle(styleTextCenter)));
-            TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getDoctor().getPersona().getNombres() + "").addStyle(styleTextCenter6)));
+            TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getDoctor().getPersona().getAp_paterno() + " "+ olistTratamiento.get(i).getDoctor().getPersona().getNombres().substring(0,1)+"." ).addStyle(styleTextCenter6)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getNombre()).addStyle(styleTextLeft)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(olistTratamiento.get(i).getMonto() + "").addStyle(styleTextCenter)));
             TableTratamiento.addCell(new Cell().add(new Paragraph(montoTotal + "").addStyle(styleTextCenter)));
